@@ -1,0 +1,275 @@
+@font-face {
+    font-family: Rubik-Regular; /* Гарнитура шрифта */
+    src: url(../fonts/Rubik-Regular.ttf); /* Путь к файлу со шрифтом */
+}
+@font-face {
+    font-family: Rubik-Bold; /* Гарнитура шрифта */
+    src: url(../fonts/Rubik-Bold.ttf); /* Путь к файлу со шрифтом */
+}
+@font-face {
+    font-family: OpenSans-Regular; /* Гарнитура шрифта */
+    src: url(../fonts/OpenSans-Regular.ttf); /* Путь к файлу со шрифтом */
+}
+@font-face {
+    font-family: OpenSans-Bold; /* Гарнитура шрифта */
+    src: url(../fonts/OpenSans-Bold.ttf); /* Путь к файлу со шрифтом */
+}
+
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    /*text-align:left;*/
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+.recenter {
+    text-align: left !important;
+    float: left !important;
+    display: block !important;
+    margin-right: 0 !important;
+}
+textarea {
+    resize: none;
+}
+html,body {
+    /*font-family: Rubik-Regular, 'Comic Sans MS', cursive !important;*/
+    font-family: OpenSans-Regular, 'Open Sans', cursive !important;
+    height: 100%;
+}
+.bold {
+    /*font-family: Rubik-Bold, 'Comic Sans MS', cursive !important;*/
+    font-family: OpenSans-Bold, 'Open Sans', cursive !important;
+    font-weight: bold;
+}
+.main_content {
+    margin-top: 10px;
+    font-size: 14px;
+}
+.fill {
+    height: 100%;
+    min-height: 100%;
+}
+/*TOP*/
+.top {
+    background-color: #e6e8f2;
+    padding-bottom: 20px;
+    border-bottom: 1px #d7d7d7 solid;
+}
+.desc_panel {
+    margin-bottom: 60px;
+}
+.panel_top .panel-body {
+    padding-left: 0;
+    padding-right: 0;
+}
+.global_shares {
+    margin-top: 30px;
+}
+.global_shares div {
+    float: left;
+}
+.global_shares #shares {
+    margin-left: 13px;
+    position: relative;
+    bottom: 10px;
+}
+/*HEADER*/
+.header, .header div {
+    height: 68px;
+}
+.logo {
+    font-size: 30px;
+    color: #000;
+    position: relative;
+    font-weight: 800;
+    top: 10px;
+}
+.logo:hover, .logo:active {
+    color: #000;
+    text-decoration: none;
+}
+.links ul{
+    position: relative;
+    right: 45px;
+}
+.links a {
+    font-size: 16px;
+    position: relative;
+    color: #000;
+    margin: 10px;
+    margin-top: 12px;
+}
+.links a:hover, .links a:active {
+    color: #1e1e1e;
+    text-decoration: none;
+}
+.custom_nav a:hover, .custom_nav a:active, .custom_nav a:focus{
+    background-color: rgba(255,255,255,1) !important;
+}
+/*HACK*/
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {background-color: rgba(255,255,255,1) !important;}
+/*HACK*/
+.custom_dropdown_menu {
+    border-radius: 0;
+    /*background-color: rgba(0,0,0,0.3) !important;*/
+    color: #000 !important;
+}
+.custom_dropdown_menu a{
+    color: #000 !important;
+}
+/*VIBE*/
+#vibes {
+    margin-top: 40px;
+}
+.vibes_header {
+    text-align: left !important;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.vibes_container {
+    margin-bottom: 48px;
+}
+.vibe {
+    margin-top: 20px;
+    text-align: left !important;
+}
+.vibe_desc {
+    text-align: left;
+}
+.vibe_title:hover {
+    cursor: pointer;
+}
+#vibeModal {
+    text-align: left;
+}
+/*SHARE*/
+.shares {
+    margin-bottom: 5px;
+}
+.inline_shares {
+    bottom: 5px;
+    right: 30px;
+    margin-bottom: 0px;
+}
+.shares span, .shares a {
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+}
+.share {
+    margin: 4px 10px 4px 0;
+    background-image: url('../img/share.png');
+}
+.share:hover {
+    cursor: pointer;
+}
+.share_link:hover {
+    cursor: pointer;
+}
+.share_facebook {background-position:  0 0;} .share_facebook:hover {background-position:  -96px 0;}
+.share_twitter {background-position: -32px 0;} .share_twitter:hover {background-position:  -128px 0;}
+.share_linkedIn {background-position: -64px 0;} .share_linkedIn:hover {background-position:  -160px 0;}
+
+.shares_big span, .shares_big a {
+    width: 32px;
+    height: 31px;
+    display: inline-block;
+}
+.share_big {
+    margin: 4px 13px 4px 0;
+    background-image: url('../img/share_big.png');
+}
+.share_big:hover {
+    cursor: pointer;
+}
+.share_facebook_big {background-position:  0 0;} .share_facebook_big:hover {background-position:  -137px 0;}
+.share_twitter_big {background-position: -46px 0;} .share_twitter_big:hover {background-position:  -183px 0;}
+.share_linkedIn_big {background-position: -91px 0;} .share_linkedIn_big:hover {background-position:  -228px 0;}
+
+/*LIKES*/
+.votes {
+    margin-bottom: 5px;
+}
+.inline_voting {
+    bottom: 3px;
+    right: 50px;
+    margin-bottom: 0px;
+}
+.votes span, .votes a {
+    width: 15px;
+    height: 14px;
+    display: inline-block;
+}
+.vote {
+    margin: 4px 10px 4px 0;
+    background-image: url('../img/votes.png');
+}
+.vote:hover {
+    cursor: pointer;
+}
+.vote_link:hover {
+    cursor: pointer;
+}
+.vote_like {
+    background-position:  0 0;
+}
+.vote_like:hover {
+    background-position: -30px 0;
+}
+.vote_dislike {
+    position: relative;
+    top: 5px;
+    background-position: -15px 0;
+}
+.vote_dislike:hover {
+    background-position: -45px 0;
+}
+.vote_liked {
+    background-position: -30px 0;
+}
+.vote_disliked {
+    position: relative;
+    top: 5px;
+    background-position: -45px 0;
+}
+
+
+/*MODAL*/
+.modal_block {
+    margin-top: 20px;
+}
+.modal_block .modal_info {
+    max-height: 20px;
+}
+/*.modal_share {*/
+    /*max-height: 20px;*/
+/*}*/
+/*FOOTER*/
+.footer_container {
+    background-color: #727272;
+    height: 50px;
+    /*margin-top: 40px;*/
+}
+.footer_logo_block {
+    text-align: right;
+}
+.footer_logo {
+    font-size: 22px;
+    position: relative;
+    top: 10px;
+    color: white;
+}
+.footer_logo:hover, .footer_logo:active {
+    color: white;
+    text-decoration: none;
+}
+.footer_statement {
+    font-size: 16px;
+    position: relative;
+    top: 15px;
+    color: white;
+}

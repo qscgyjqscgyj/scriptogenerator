@@ -1,0 +1,92 @@
+#form_block {
+	margin-top: 15px;
+}
+.form_button_block {
+    padding: 10px;
+    border-radius: 38px;
+    background-color: rgba(245, 245, 245, 0.77);
+    -moz-box-shadow:    inset 0px 2px 0px #cfcfcf;
+    -webkit-box-shadow: inset 0px 2px 0px #cfcfcf;
+    box-shadow:         inset 0px 2px 0px #cfcfcf;
+    margin-top: 10px;
+    margin-bottom: 0px !important;
+}
+.form_button_block button {
+	-moz-box-shadow: 0px 1px 0px 0px #9b9b9d;
+	-webkit-box-shadow: 0px 1px 0px 0px #9b9b9d;
+	box-shadow: 0px 1px 0px 0px #9b9b9d;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.50, #94caf0), color-stop(1, #78a4c8));
+	background:-moz-linear-gradient(top, #94caf0 50%, #78a4c8 100%);
+	background:-webkit-linear-gradient(top, #94caf0 50%, #78a4c8 100%);
+	background:-o-linear-gradient(top, #94caf0 50%, #78a4c8 100%);
+	background:-ms-linear-gradient(top, #94caf0 50%, #78a4c8 100%);
+	background:linear-gradient(to bottom, #94caf0 50%, #78a4c8 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#94caf0', endColorstr='#94caf0',GradientType=0);
+	background-color:#78a4c8;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:30px;
+	border:1px solid #78a4c8;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-size:21px;
+	font-weight:bold;
+	padding:6px 41px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #4c8ab6;
+    margin: 0 !important;
+}
+.form_button_block button:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #94caf0), color-stop(1, #94caf0));
+	background:-moz-linear-gradient(top, #94caf0 5%, #94caf0 100%);
+	background:-webkit-linear-gradient(top, #94caf0 5%, #94caf0 100%);
+	background:-o-linear-gradient(top, #94caf0 5%, #94caf0 100%);
+	background:-ms-linear-gradient(top, #94caf0 5%, #94caf0 100%);
+	background:linear-gradient(to bottom, #94caf0 5%, #94caf0 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#94caf0', endColorstr='#94caf0',GradientType=0);
+	background-color:#94caf0;
+}
+.form_button_block button:active {
+	position:relative;
+	top:1px;
+	-moz-box-shadow: 0px 0px 0px 0px #5e5e5f;
+	-webkit-box-shadow: 0px 0px 0px 0px #5e5e5f;
+	box-shadow: 0px 0px 0px 0px #5e5e5f;
+}
+.form_title {
+    text-align: center !important;
+    font-size: 21px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+.from_footer_block {
+    margin-top: 10px;
+}
+.form_footer {
+    position: relative;
+    top: 5px;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+.form_header {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 40px;
+    font-weight: 600;
+}
+.form_total_donation {
+    text-align: center;
+    font-size: 14px;
+    width: 50%;
+    margin-left: 25%;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.field {
+    border-radius: 20px;
+}
+/*.field::-webkit-input-placeholder {color:white;}*/
+/*.field:-moz-placeholder {color:white;}*/
+/*.field:-ms-input-placeholder {color:white;}*/
+/*.field::-moz-placeholder {color:white;}*/

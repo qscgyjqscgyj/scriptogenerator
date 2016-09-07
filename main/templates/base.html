@@ -12,9 +12,17 @@
         data-projects-url="{% url 'projects' %}"
     >
         {% block content %}
-            <div id="content"></div>
+            {% if request.user.is_authenticated %}
+                <div id="content"></div>
+            {% else %}
+                <div class="container">
+                    <h1>Необходимо авторизоваться</h1>
+                </div>
+            {% endif %}
         {% endblock content %}
 
-        <script src="{% static 'js/bundle.min.js' %}"></script>
+        {% if request.user.is_authenticated %}
+            <script src="{% static 'js/bundle.min.js' %}"></script>
+        {% endif %}
     </body>
 </html>

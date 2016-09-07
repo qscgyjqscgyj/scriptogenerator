@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router'
-//import {createHashHistory} from 'history';
+import {createHistory} from 'history';
 
 import {Scripts} from './scripts';
 import {Tables} from './tables';
@@ -17,7 +17,7 @@ class ScriptsWrapper extends React.Component {
 }
 
 ReactDOM.render(
-    <Router history={browserHistory}>
+    <Router history={createHistory}>
         <Route path="/" component={App}>
             <IndexRoute component={ScriptsWrapper}/>
             <Route path="scripts/user" component={ScriptsWrapper}/>

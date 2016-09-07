@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router'
-import {createHistory} from 'history';
+import createHistory from 'history';
 
 import {Scripts} from './scripts';
 import {Tables} from './tables';

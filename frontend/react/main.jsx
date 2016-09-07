@@ -17,7 +17,7 @@ class ScriptsWrapper extends React.Component {
 }
 
 ReactDOM.render(
-    <Router history={createHistory}>
+    <Router history={browserHistory}>
         <Route path="/" component={App}>
             <IndexRoute component={ScriptsWrapper}/>
             <Route path="scripts/user" component={ScriptsWrapper}/>

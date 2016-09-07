@@ -8,7 +8,9 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     </head>
     <body
-        data-scripts-url="{% url 'scripts' %}">
+        data-scripts-url="{% url 'scripts' %}"
+        data-projects-url="{% url 'projects' %}"
+    >
         {% block content %}
             <div id="content"></div>
         {% endblock content %}

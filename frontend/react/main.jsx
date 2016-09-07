@@ -3,26 +3,19 @@ import * as ReactDOM from 'react-dom';
 import {Router, Route, IndexRoute} from 'react-router'
 import {createHashHistory} from 'history';
 
-import {Scripts} from './scripts';
+import {ScriptsWrapper} from './scripts';
+import {ProjectsWrapper} from './projects';
 import {Tables} from './tables';
-import {App} from './app';
-import ScriptsStore from '../mobx/scriptsStore';
-
-class ScriptsWrapper extends React.Component {
-    render() {
-        return(
-            <Scripts store={ScriptsStore}/>
-        )
-    }
-}
+import {AppWrapper} from './app';
 
 ReactDOM.render(
     <Router history={createHashHistory({queryKey: false})}>
-        <Route path="/" component={App}>
+        <Route path="/" component={AppWrapper}>
             <IndexRoute component={ScriptsWrapper}/>
-            <Route path="scripts/user" component={ScriptsWrapper}/>
-            <Route path="scripts/available" component={ScriptsWrapper}/>
-            <Route path="tables/:script" component={Tables}/>
+            <Route path="/projects" component={ProjectsWrapper}/>
+            <Route path="/scripts/user" component={ScriptsWrapper}/>
+            <Route path="/scripts/available" component={ScriptsWrapper}/>
+            <Route path="/tables/:script" component={Tables}/>
         </Route>
     </Router>,
     document.getElementById('content')

@@ -8,7 +8,7 @@ from rest_framework.renderers import JSONRenderer
 import json
 
 from main.models import Script, Project
-from main.serializers import ScriptSerializer
+from main.serializers import ScriptSerializer, ProjectSerializer
 
 
 class MainView(TemplateView):
@@ -24,12 +24,25 @@ class JSONResponse(HttpResponse):
 
 class ScriptsView(View):
     def get(self, request, *args, **kwargs):
-        return JSONResponse(ScriptSerializer(Script.objects.all(), many=True).data)
+        return JSONResponse(ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data)
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         script = ScriptSerializer(data=data)
         if script.is_valid():
             script.save()
-            return JSONResponse(ScriptSerializer(Script.objects.all(), many=True).data, status=201)
+            return JSONResponse(ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data, status=201)
         return JSONResponse(script.errors, status=400)
+
+
+class ProjectsView(View):
+    def get(self, request, *args, **kwargs):
+        return JSONResponse(ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data)
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        project = ProjectSerializer(data=data)
+        if project.is_valid():
+            project.save()
+            return JSONResponse(ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data, status=201)
+        return JSONResponse(project.errors, status=400)

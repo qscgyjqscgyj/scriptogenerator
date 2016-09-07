@@ -6,6 +6,9 @@ import uglify from 'gulp-uglify';
 import buffer from 'vinyl-buffer';
 import source from 'vinyl-source-stream';
 import {exec} from 'child_process';
+import argv from 'yargs';
+import gulpif from 'gulp-if';
+
 
 gulp.task('build', () => {
     return browserify({
@@ -24,8 +27,8 @@ gulp.task('build', () => {
             this.emit('end');
         })
         .pipe(source('./main/static/js/bundle.min.js'))
-        .pipe(buffer())
-        .pipe(uglify())
+        .pipe(gulpif(argv.production, uglify()))
+        .pipe(gulpif(argv.production, buffer()))
         .pipe(gulp.dest('./'));
 });
 

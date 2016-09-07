@@ -20,7 +20,6 @@ def deploy():
         with main_prefix:
             run('git pull')
             run('pip install -r requirements/development.pip')
-            run('python builds.py')
             run('python ./manage.py syncdb')
             run('python ./manage.py makemigrations --merge')
             run('python ./manage.py migrate')

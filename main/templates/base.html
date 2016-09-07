@@ -8,6 +8,10 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     </head>
     <body
+        {% if request.user.is_authenticated %}
+            data-user-id="{{ request.user.id }}"
+        {% endif %}
+
         data-scripts-url="{% url 'scripts' %}"
         data-projects-url="{% url 'projects' %}"
     >

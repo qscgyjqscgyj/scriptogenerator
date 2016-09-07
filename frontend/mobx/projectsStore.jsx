@@ -10,7 +10,7 @@ export class ProjectsStore {
         return this.projects.filter(project => !this.filter_by_name || matches_by_name.test(project.name));
     }
     @computed get owner() {
-        return this.projects.length > 0 ? this.projects[0].owner : null;
+        return this.projects.length > 0 ? this.projects[0].owner : document.body.getAttribute('data-user-id');
     }
 }
 

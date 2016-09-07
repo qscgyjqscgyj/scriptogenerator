@@ -61,7 +61,7 @@ export class Scripts extends React.Component {
         return(
             <div className="col-md-12">
                 <div className="col-md-2">
-                    <button onClick={() => scriptsStore.modal = true} className="btn btn-success">+ Создать скрипт</button>
+                    <button onClick={() => modalStore.modal = true} className="btn btn-success">+ Создать скрипт</button>
                 </div>
                 <div className="col-md-3">
                     <div className="form-group">

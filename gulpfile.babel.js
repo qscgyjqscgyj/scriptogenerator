@@ -2,6 +2,8 @@ import gulp from 'gulp';
 import gutil from 'gulp-util';
 import browserify from 'browserify';
 import babelify from 'babelify';
+import uglify from 'gulp-uglify';
+import buffer from 'vinyl-buffer';
 import source from 'vinyl-source-stream';
 import {exec} from 'child_process';
 
@@ -22,6 +24,8 @@ gulp.task('build', () => {
             this.emit('end');
         })
         .pipe(source('./main/static/js/bundle.min.js'))
+        .pipe(buffer())
+        .pipe(uglify())
         .pipe(gulp.dest('./'));
 });
 

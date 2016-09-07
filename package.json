@@ -32,7 +32,9 @@
   "dependencies": {
     "babel-plugin-syntax-decorators": "^6.13.0",
     "babel-plugin-transform-decorators": "^6.13.0",
+    "gulp-uglify": "^2.0.0",
     "jquery": "^1.12.4",
-    "react-modal": "^1.4.0"
+    "react-modal": "^1.4.0",
+    "vinyl-buffer": "^1.0.0"
   }
 }

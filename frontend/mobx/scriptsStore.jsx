@@ -4,6 +4,10 @@ export class ScriptsStore {
     @observable scripts = [];
     @observable filter_by_name = '';
     @observable filter_by_project = null;
+
+    @observable creating_name = '';
+    @observable creating_project = null;
+
     @observable modal = false;
     @computed get filteredScripts() {
         var scripts;
@@ -15,12 +19,15 @@ export class ScriptsStore {
         var projects = [];
         var exist_projects = [];
         this.scripts.map((script)=>{
-            if(!exist_projects.includes(script.project)) {
+            if(!exist_projects.includes(script.project.id)) {
                 projects.push(script.project);
-                exist_projects.push(script.project);
+                exist_projects.push(script.project.id);
             }
         });
         return projects;
+    }
+    project(id) {
+        return this.projects.find((project => project.id === id));
     }
 }
 

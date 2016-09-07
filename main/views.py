@@ -5,8 +5,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, View
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
+import json
 
-from main.models import Script
+from main.models import Script, Project
 from main.serializers import ScriptSerializer
 
 
@@ -25,10 +26,9 @@ class ScriptsView(View):
     def get(self, request, *args, **kwargs):
         return JSONResponse(ScriptSerializer(Script.objects.all(), many=True).data)
 
-    @method_decorator(csrf_exempt)
     def post(self, request, *args, **kwargs):
-        data = JSONParser().parse(request)
-        script = ScriptSerializer(data)
+        data = json.loads(request.body)
+        script = ScriptSerializer(data=data)
         if script.is_valid():
             script.save()
             return JSONResponse(ScriptSerializer(Script.objects.all(), many=True).data, status=201)

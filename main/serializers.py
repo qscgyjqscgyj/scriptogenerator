@@ -20,8 +20,10 @@ class ScriptSerializer(serializers.ModelSerializer):
     project = ProjectSerializer()
 
     def create(self, validated_data):
+        project = validated_data.pop('project', None)
+        project = Project.objects.get(**project)
+        validated_data['project'] = project
         script = Script(**validated_data)
-        script.owner = self.request.user
         script.save()
         return script
 

@@ -30,6 +30,23 @@ export class Scripts extends React.Component {
             }
         });
     }
+    createScript(e) {
+        const {store} = this.props;
+        e.preventDefault();
+        let project = store.project(store.creating_project);
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-scripts-url'),
+            data: JSON.stringify({name: store.creating_name, project: project, owner: project.owner}),
+            success: (res) => {
+                store.scripts = res;
+                store.modal = false;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
     render() {
         const {filteredScripts, projects} = this.props.store;
         return(
@@ -90,26 +107,34 @@ export class Scripts extends React.Component {
                 <Modal
                     isOpen={this.props.store.modal}
                     onRequestClose={() => this.props.store.modal = false}
+                    onAfterOpen={() => {this.props.store.creating_name = '';this.props.store.creating_project = null}}
                     style={customModalStyles}>
 
                     <div className="row">
-                        <div className="col-md-12">
-                            <div className="form-group">
-                                <input className="form-control" type="text" placeholder="Имя скрипта"/>
+                        <form action="" onSubmit={(e) => this.createScript(e)}>
+                            <div className="col-md-12">
+                                <div className="form-group">
+                                    <input className="form-control" onChange={(e) => this.props.store.creating_name = e.target.value} type="text" name="name" placeholder="Имя скрипта"/>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-12">
-                            <div className="form-group">
-                                <select className="form-control">
-                                    <option value="">-- Выберите проект --</option>
-                                    {projects.map((project, key)=>{
-                                        return(
-                                            <option key={key} value={project.id}>{project.name}</option>
-                                        )
-                                    })}
-                                </select>
+                            <div className="col-md-12">
+                                <div className="form-group">
+                                    <select onChange={(e) => this.props.store.creating_project = (e.target.value ? parseInt(e.target.value) : null)} name="project" className="form-control">
+                                        <option value="">-- Выберите проект --</option>
+                                        {projects.map((project, key)=>{
+                                            return(
+                                                <option key={key} value={project.id}>{project.name}</option>
+                                            )
+                                        })}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                            <div className="col-md-12">
+                                <div className="form-group">
+                                    <button className="btn btn-success" type="submit">Создать</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </Modal>
             </div>

@@ -1,11 +1,13 @@
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import User, AbstractUser, BaseUserManager
 from django.db import models
 from registration.signals import user_registered
 
 
 class CustomUser(AbstractUser):
     web_site = models.URLField(max_length=1024)
+
+    objects = BaseUserManager()
 
     def __unicode__(self):
         return self.username

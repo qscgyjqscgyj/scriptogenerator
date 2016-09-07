@@ -5,12 +5,13 @@ from fabric.operations import local
 from scripts.settings import LOCAL_APPS
 
 env.hosts = ['root@alpateks.ru:22']
-main_prefix = prefix('source /home/Env/vk/bin/activate')
+main_prefix = prefix('source /home/Env/scripts/bin/activate')
 
 
 def deploy():
-    with cd('/home/Django/vkalpateks'):
+    with cd('/home/Django/scripts'):
         try:
+            local('gulp build')
             local('git add .')
             local('git commit -a -m "deploy: %s"' % datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             local('git push origin master')
@@ -25,11 +26,11 @@ def deploy():
             run('python ./manage.py migrate')
             run('python ./manage.py collectstatic --noinput')
             sudo('service nginx restart')
-            sudo('supervisorctl restart vk.alpateks')
+            sudo('supervisorctl restart scripts')
 
 
 def manage(command='help'):
-    with cd('/home/Django/vkalpateks'):
+    with cd('/home/Django/scripts'):
         with prefix:
             run('python ./manage.py %s' % command)
 

@@ -12,11 +12,12 @@ import {observer} from 'mobx-react';
 @observer
 export class App extends React.Component {
     componentDidMount() {
+        const {projectsStore} = this.props;
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-projects-url'),
             success: (res) => {
-                this.props.projectsStore.projects = res;
+                projectsStore.createProjects(res);
             },
             error: (res) => {
                 console.log(res);

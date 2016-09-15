@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -46,3 +47,23 @@ class ProjectsView(View):
             project.save()
             return JSONResponse(ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data, status=201)
         return JSONResponse(project.errors, status=400)
+
+    def update(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        project = ProjectSerializer(data=data)
+        if project.is_valid():
+            project.save()
+            return JSONResponse(ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data, status=201)
+        return JSONResponse(project.errors, status=400)
+
+    def delete(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        try:
+            project = Project.objects.get(pk=int(data['pk']))
+            project.delete()
+            return JSONResponse({
+                'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
+                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+            }, status=201)
+        except ObjectDoesNotExist:
+            return JSONResponse({'error': 'Object does not exist.'}, status=400)

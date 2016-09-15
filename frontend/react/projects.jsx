@@ -122,15 +122,13 @@ export class Projects extends React.Component {
                         </table>
                     </div>
                 </div>
-                <ModalWrapper
-                    onAfterOpen={() => {projectsStore.creating_name = ''}}
-                    component={}/>
+                <ModalWrapper/>
             </div>
         );
     }
 }
 
-export class ModalWrapper extends React.Component {
+class ModalWrapper extends React.Component {
     render() {
         return (
             <Modal

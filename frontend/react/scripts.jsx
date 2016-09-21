@@ -5,30 +5,13 @@ import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import Modal from 'react-modal';
 import {ModalWrapper} from './modal';
+import {Link} from 'react-router';
 
 @observer
 export class Scripts extends React.Component {
-    componentDidMount() {
-        const {scriptsStore, modalStore} = this.props;
-        $.ajax({
-            method: 'GET',
-            url: document.body.getAttribute('data-scripts-url'),
-            success: (res) => {
-                scriptsStore.scripts = res;
-                modalStore.modal = false;
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
-    }
-    project(id) {
-        const {projectsStore} = this.props;
-        return projectsStore.projects.find((project => project.id === id));
-    }
     createScript(e) {
-        const {scriptsStore, modalStore} = this.props;
-        let project = this.project(scriptsStore.creating_project);
+        const {projectsStore, scriptsStore, modalStore} = this.props;
+        let project = projectsStore.project(scriptsStore.creating_project);
         e.preventDefault();
         $.ajax({
             method: 'POST',
@@ -123,7 +106,7 @@ export class Scripts extends React.Component {
                             {scriptsStore.filteredScripts.map((script, key)=>{
                                 return (
                                     <tr key={key}>
-                                        <td>{script.name}</td>
+                                        <td><Link to={'/tables/' + script.id + ''}>{script.name}</Link></td>
                                         <td>{script.project.name}</td>
                                         <td>Свойтсва</td>
                                         <td>Скопировать</td>

@@ -14,6 +14,9 @@ export class ScriptsStore {
         scripts = this.scripts.filter(script => !this.filter_by_name || matches_by_name.test(script.name));
         return scripts.filter(script => !this.filter_by_project || script.project.id === this.filter_by_project);
     }
+    script(id) {
+        return this.scripts.find(script => parseInt(script.id) === parseInt(id));
+    }
 }
 
 export default new ScriptsStore

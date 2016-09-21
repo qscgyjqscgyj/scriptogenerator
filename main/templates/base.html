@@ -12,6 +12,7 @@
             data-user-id="{{ request.user.id }}"
         {% endif %}
 
+        data-init-url="{% url 'init' %}"
         data-scripts-url="{% url 'scripts' %}"
         data-projects-url="{% url 'projects' %}"
     >

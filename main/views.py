@@ -84,3 +84,12 @@ class ProjectsView(View):
             }, status=201)
         except ObjectDoesNotExist:
             return JSONResponse({'error': 'Object does not exist.'}, status=400)
+
+
+class InitView(View):
+    def get(self, request, *args, **kwargs):
+        return JSONResponse({
+            'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
+            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+        }, status=201)
+

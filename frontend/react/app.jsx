@@ -11,13 +11,14 @@ import {observer} from 'mobx-react';
 
 @observer
 export class App extends React.Component {
-    componentDidMount() {
-        const {projectsStore} = this.props;
+    componentWillMount() {
+        const {projectsStore, scriptsStore} = this.props;
         $.ajax({
             method: 'GET',
-            url: document.body.getAttribute('data-projects-url'),
+            url: document.body.getAttribute('data-init-url'),
             success: (res) => {
-                projectsStore.createProjects(res);
+                projectsStore.createProjects(res.projects);
+                scriptsStore.scripts = res.scripts;
             },
             error: (res) => {
                 console.log(res);
@@ -48,7 +49,6 @@ export class AppWrapper extends React.Component {
                 projectsStore: projectsStore,
                 scriptsStore: scriptsStore,
                 modalStore: modalStore
-
             })
         );
         return(

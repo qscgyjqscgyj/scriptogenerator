@@ -3,19 +3,8 @@ import * as ReactDOM from 'react-dom';
 import $ from 'jquery';
 import update from 'react-addons-update';
 import {observer} from 'mobx-react';
-import Modal from 'react-modal';
 import ProjectsStore from '../mobx/projectsStore';
-
-const customModalStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
+import {ModalWrapper} from './modal';
 
 @observer
 export class Projects extends React.Component {
@@ -101,18 +90,7 @@ export class Projects extends React.Component {
                                 {filteredProjects.map((project, key)=>{
                                     return (
                                         <tr key={key}>
-                                            <td>
-                                                {project.editing ?
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        value={project.name}
-                                                        onChange={(e)=>{project.name = e.target.value}}
-                                                    />
-                                                    :
-                                                    project.name
-                                                }
-                                            </td>
+                                            <td>{project.name}</td>
                                             <td className="text-right">
                                                 <button className="btn btn-default" onClick={()=>{
                                                     projectsStore.editing = project;
@@ -137,28 +115,6 @@ export class Projects extends React.Component {
 }
 
 @observer
-class ModalWrapper extends React.Component {
-    render() {
-        const {projectsStore, modalStore} = this.props;
-        return (
-            <Modal
-                isOpen={modalStore.modal}
-                style={customModalStyles}
-                onRequestClose={() => {modalStore.modal = false; projectsStore.editing = null}}
-                onAfterOpen={() => {projectsStore.creating_name = '';}}>
-                {
-                    modalStore.component ?
-                        React.createElement(
-                            modalStore.component,
-                            this.props
-                        )
-                        : ''
-                }
-            </Modal>
-        )
-    }
-}
-
 class CreatingProject extends React.Component {
     render() {
         const {projectsStore} = this.props;
@@ -167,7 +123,7 @@ class CreatingProject extends React.Component {
                 <form action="" onSubmit={(e) => this.props.createProject(e)}>
                     <div className="col-md-12">
                         <div className="form-group">
-                            <input className="form-control" onChange={(e) => projectsStore.creating_name = e.target.value} type="text" name="name" placeholder="Имя проекта"/>
+                            <input className="form-control" onChange={(e) => projectsStore.creating_name = e.target.value} value={projectsStore.creating_name} type="text" name="name" placeholder="Имя проекта"/>
                         </div>
                     </div>
                     <div className="col-md-12">

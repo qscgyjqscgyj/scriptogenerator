@@ -35,6 +35,23 @@ class ScriptsView(View):
             return JSONResponse(ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data, status=201)
         return JSONResponse(script.errors, status=400)
 
+    def put(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        script = ScriptSerializer(Script.objects.get(pk=int(data['id'])), data=data)
+        if script.is_valid():
+            script.save()
+            return JSONResponse(ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data, status=201)
+        return JSONResponse(script.errors, status=400)
+
+    def delete(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        try:
+            script = Script.objects.get(pk=int(data['id']))
+            script.delete()
+            return JSONResponse(ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data, status=201)
+        except ObjectDoesNotExist:
+            return JSONResponse({'error': 'Object does not exist.'}, status=400)
+
 
 class ProjectsView(View):
     def get(self, request, *args, **kwargs):
@@ -50,8 +67,7 @@ class ProjectsView(View):
 
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        project = Project.objects.get(pk=int(data['id']))
-        project = ProjectSerializer(project, data=data)
+        project = ProjectSerializer(Project.objects.get(pk=int(data['id'])), data=data)
         if project.is_valid():
             project.save()
             return JSONResponse(ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data, status=201)
@@ -60,7 +76,7 @@ class ProjectsView(View):
     def delete(self, request, *args, **kwargs):
         data = json.loads(request.body)
         try:
-            project = Project.objects.get(pk=int(data['pk']))
+            project = Project.objects.get(pk=int(data['id']))
             project.delete()
             return JSONResponse({
                 'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,

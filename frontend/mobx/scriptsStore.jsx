@@ -6,6 +6,7 @@ export class ScriptsStore {
     @observable filter_by_project = null;
     @observable creating_name = '';
     @observable creating_project = null;
+    @observable editing = null;
 
     @computed get filteredScripts() {
         var scripts;

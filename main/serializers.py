@@ -28,7 +28,10 @@ class ScriptSerializer(serializers.ModelSerializer):
         return script
 
     def update(self, instance, validated_data):
+        project = validated_data.pop('project', None)
+
         instance.name = validated_data.get('name', instance.name)
+        instance.project = Project.objects.get(**project)
         instance.save()
         return instance
 

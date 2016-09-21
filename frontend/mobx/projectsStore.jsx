@@ -1,11 +1,8 @@
 import {computed, observable} from 'mobx';
 
 class Project {
-    @observable editing;
-
     constructor(project) {
         this.__proto__ = Object.create(project);
-        this.editing = false;
     }
 }
 
@@ -23,8 +20,9 @@ export class ProjectsStore {
         return this.projects.length > 0 ? this.projects[0].owner : parseInt(document.body.getAttribute('data-user-id'));
     }
     createProjects(projects) {
-        this.projects = [];
-        projects.map(project => this.projects.push(new Project(project)));
+        //this.projects = [];
+        //projects.map(project => this.projects.push(new Project(project)));
+        this.projects = projects;
     }
 }
 

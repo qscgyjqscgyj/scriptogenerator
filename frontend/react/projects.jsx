@@ -53,14 +53,16 @@ export class Projects extends React.Component {
             });
         }
     }
-    updateProject() {
-        const {projectsStore} = this.props;
+    updateProject(e) {
+        const {projectsStore, modalStore} = this.props;
+        e.preventDefault();
         $.ajax({
-            method: 'UPDATE',
+            method: 'PUT',
             url: document.body.getAttribute('data-projects-url'),
             data: JSON.stringify(projectsStore.editing),
             success: (res) => {
                 projectsStore.createProjects(res);
+                modalStore.modal = false;
                 projectsStore.editing = null;
             },
             error: (res) => {
@@ -69,12 +71,15 @@ export class Projects extends React.Component {
         });
     }
     render() {
-        const {filteredProjects, projects} = this.props.projectsStore;
+        const {filteredProjects} = this.props.projectsStore;
         const {projectsStore, modalStore} = this.props;
         return(
             <div className="col-md-12">
                 <div className="col-md-2">
-                    <button onClick={() => modalStore.modal = true} className="btn btn-success">+ Создать проект</button>
+                    <button onClick={() => {
+                        modalStore.modal = true;
+                        modalStore.component = CreatingProject
+                    }} className="btn btn-success">+ Создать проект</button>
                 </div>
                 <div className="col-md-3">
                     <div className="form-group">
@@ -94,7 +99,6 @@ export class Projects extends React.Component {
                             </thead>
                             <tbody>
                                 {filteredProjects.map((project, key)=>{
-                                    console.log(project);
                                     return (
                                         <tr key={key}>
                                             <td>
@@ -110,7 +114,11 @@ export class Projects extends React.Component {
                                                 }
                                             </td>
                                             <td className="text-right">
-                                                <button className="btn btn-default" onClick={()=>{project.editing = true}}>Ред.</button>
+                                                <button className="btn btn-default" onClick={()=>{
+                                                    projectsStore.editing = project;
+                                                    modalStore.modal = true;
+                                                    modalStore.component = EditingProject
+                                                }}>Ред.</button>
                                             </td>
                                             <td className="text-right">
                                                 <button className="btn btn-danger" onClick={()=>{this.deleteProject(project)}}>Удалить</button>
@@ -122,44 +130,87 @@ export class Projects extends React.Component {
                         </table>
                     </div>
                 </div>
-                <ModalWrapper/>
+                <ModalWrapper projectsStore={projectsStore} modalStore={modalStore} createProject={this.createProject.bind(this)} updateProject={this.updateProject.bind(this)}/>
             </div>
         );
     }
 }
 
+@observer
 class ModalWrapper extends React.Component {
     render() {
+        const {projectsStore, modalStore} = this.props;
         return (
             <Modal
                 isOpen={modalStore.modal}
-                style={customModalStyles}>
-                onRequestClose={() => modalStore.modal = false}
-                onAfterOpen={() => {projectsStore.creating_name = ''}}
+                style={customModalStyles}
+                onRequestClose={() => {modalStore.modal = false; projectsStore.editing = null}}
+                onAfterOpen={() => {projectsStore.creating_name = '';}}>
+                {
+                    modalStore.component ?
+                        React.createElement(
+                            modalStore.component,
+                            this.props
+                        )
+                        : ''
+                }
+            </Modal>
+        )
+    }
+}
 
+class CreatingProject extends React.Component {
+    render() {
+        const {projectsStore} = this.props;
+        return (
+            <div className="row">
+                <form action="" onSubmit={(e) => this.props.createProject(e)}>
+                    <div className="col-md-12">
+                        <div className="form-group">
+                            <input className="form-control" onChange={(e) => projectsStore.creating_name = e.target.value} type="text" name="name" placeholder="Имя проекта"/>
+                        </div>
+                    </div>
+                    <div className="col-md-12">
+                        <div className="form-group">
+                            <button className="btn btn-success" type="submit">Создать</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        )
+    }
+}
+
+@observer
+class EditingProject extends React.Component {
+    render() {
+        const {projectsStore} = this.props;
+        if(projectsStore.editing) {
+            return (
                 <div className="row">
-                    <form action="" onSubmit={(e) => this.createProject(e)}>
+                    <form action="" onSubmit={(e) => {this.props.updateProject(e)}}>
                         <div className="col-md-12">
                             <div className="form-group">
-                                <input className="form-control" onChange={(e) => projectsStore.creating_name = e.target.value} type="text" name="name" placeholder="Имя проекта"/>
+                                <input className="form-control" onChange={(e) => {projectsStore.editing.name = e.target.value}} value={projectsStore.editing.name} type="text" name="name" placeholder="Имя проекта"/>
                             </div>
                         </div>
                         <div className="col-md-12">
                             <div className="form-group">
-                                <button className="btn btn-success" type="submit">Создать</button>
+                                <button className="btn btn-success" type="submit">Сохранить</button>
                             </div>
                         </div>
                     </form>
                 </div>
-            </Modal>
-        )
+            )
+        }
+        return <div></div>;
     }
 }
 
 export class ProjectsWrapper extends React.Component {
     render() {
         return(
-            <Projects modalStore={this.props.modalStore} scripteStore={this.props.scriptsStore} projectsStore={this.props.projectsStore}/>
+            <Projects modalStore={this.props.modalStore} scriptsStore={this.props.scriptsStore} projectsStore={this.props.projectsStore}/>
         )
     }
 }

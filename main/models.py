@@ -14,6 +14,9 @@ class Script(models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ('-pk',)
+
 
 class Project(models.Model):
     name = models.CharField(max_length=1024)
@@ -21,6 +24,9 @@ class Project(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ('-pk',)
 
 
 class Table(models.Model):

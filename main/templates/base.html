@@ -15,6 +15,7 @@
         data-init-url="{% url 'init' %}"
         data-scripts-url="{% url 'scripts' %}"
         data-projects-url="{% url 'projects' %}"
+        data-tables-url="{% url 'tables' %}"
     >
         {% block content %}
             {% if request.user.is_authenticated %}

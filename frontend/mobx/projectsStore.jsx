@@ -27,6 +27,9 @@ export class ProjectsStore {
         //projects.map(project => this.projects.push(new Project(project)));
         this.projects = projects;
     }
+    resetCreating() {
+        this.creating_name = '';
+    }
 }
 
 export default new ProjectsStore

@@ -18,7 +18,7 @@ const customModalStyles = {
 @observer
 export class ModalWrapper extends React.Component {
     render() {
-        const {scriptsStore, projectsStore, modalStore} = this.props;
+        const {scriptsStore, projectsStore, tablesStore, modalStore} = this.props;
         return (
             <Modal
                 isOpen={modalStore.modal}
@@ -27,11 +27,12 @@ export class ModalWrapper extends React.Component {
                     modalStore.modal = false;
                     projectsStore.editing = null;
                     scriptsStore.editing = null;
+                    tablesStore.editing = null;
                 }}
                 onAfterOpen={() => {
-                    projectsStore.creating_name = '';
-                    scriptsStore.creating_name = '';
-                    scriptsStore.creating_project = null;
+                    projectsStore.resetCreating();
+                    scriptsStore.resetCreating();
+                    tablesStore.resetCreating();
                 }}>
                 {
                     modalStore.component ?

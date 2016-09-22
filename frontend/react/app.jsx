@@ -6,6 +6,7 @@ import {Nav} from './nav';
 import ProjectsStore from '../mobx/projectsStore';
 import ModalStore from '../mobx/modalStore';
 import ScriptsStore from '../mobx/scriptsStore';
+import TablesStore from '../mobx/tablesStore';
 import {observer} from 'mobx-react';
 
 
@@ -42,17 +43,19 @@ export class AppWrapper extends React.Component {
     render() {
         let projectsStore = ProjectsStore;
         let scriptsStore = ScriptsStore;
+        let tablesStore = TablesStore;
         let modalStore = ModalStore;
 
         const childrenWithProps = React.Children.map(this.props.children,
             (child) => React.cloneElement(child, {
                 projectsStore: projectsStore,
                 scriptsStore: scriptsStore,
+                tablesStore: tablesStore,
                 modalStore: modalStore
             })
         );
         return(
-            <App modalStore={modalStore} scriptsStore={scriptsStore} projectsStore={projectsStore} children={childrenWithProps}/>
+            <App modalStore={modalStore} scriptsStore={scriptsStore} projectsStore={projectsStore} tablesStore={tablesStore} children={childrenWithProps}/>
         )
     }
 }

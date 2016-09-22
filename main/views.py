@@ -8,8 +8,8 @@ from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 import json
 
-from main.models import Script, Project
-from main.serializers import ScriptSerializer, ProjectSerializer
+from main.models import Script, Project, Table
+from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer
 
 
 class MainView(TemplateView):
@@ -70,7 +70,10 @@ class ProjectsView(View):
         project = ProjectSerializer(Project.objects.get(pk=int(data['id'])), data=data)
         if project.is_valid():
             project.save()
-            return JSONResponse(ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data, status=201)
+            return JSONResponse({
+                'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
+                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+            }, status=201)
         return JSONResponse(project.errors, status=400)
 
     def delete(self, request, *args, **kwargs):
@@ -86,10 +89,40 @@ class ProjectsView(View):
             return JSONResponse({'error': 'Object does not exist.'}, status=400)
 
 
+class TablesView(View):
+    def get(self, request, *args, **kwargs):
+        return JSONResponse(TableSerializer(Table.objects.filter(script__pk=int(request.GET.get('id'))), many=True).data)
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        table = TableSerializer(data=data)
+        if table.is_valid():
+            table.save()
+            return JSONResponse(TableSerializer(Table.objects.filter(script__pk=int(data['script']['id'])), many=True).data)
+        return JSONResponse(table.errors, status=400)
+
+    def put(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        table = TableSerializer(Table.objects.get(pk=int(data['id'])), data=data)
+        if table.is_valid():
+            table.save()
+            return JSONResponse(TableSerializer(Table.objects.filter(script__pk=int(data['script']['id'])), many=True).data)
+        return JSONResponse(table.errors, status=400)
+
+    def delete(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        try:
+            table = Table.objects.get(pk=int(data['id']))
+            table.delete()
+            return JSONResponse(TableSerializer(Table.objects.filter(script__pk=int(data['script']['id'])), many=True).data)
+        except ObjectDoesNotExist:
+            return JSONResponse({'error': 'Object does not exist.'}, status=400)
+
+
 class InitView(View):
     def get(self, request, *args, **kwargs):
         return JSONResponse({
             'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
-            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
         }, status=201)
 

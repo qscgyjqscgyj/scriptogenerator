@@ -43,14 +43,15 @@ export class Projects extends React.Component {
         }
     }
     updateProject(e) {
-        const {projectsStore, modalStore} = this.props;
+        const {scriptsStore, projectsStore, modalStore} = this.props;
         e.preventDefault();
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-projects-url'),
             data: JSON.stringify(projectsStore.editing),
             success: (res) => {
-                projectsStore.createProjects(res);
+                projectsStore.createProjects(res.projects);
+                scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;
                 projectsStore.editing = null;
             },

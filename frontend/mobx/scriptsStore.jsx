@@ -17,6 +17,10 @@ export class ScriptsStore {
     script(id) {
         return this.scripts.find(script => parseInt(script.id) === parseInt(id));
     }
+    resetCreating() {
+        this.creating_name = '';
+        this.creating_project = null;
+    }
 }
 
 export default new ScriptsStore

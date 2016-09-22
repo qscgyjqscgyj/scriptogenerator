@@ -32,16 +32,21 @@ class Project(models.Model):
 class Table(models.Model):
     name = models.CharField(max_length=1024)
     script = models.ForeignKey('Script', related_name='table_script_script')
+    text_coll_name = models.CharField(max_length=1024, default='Текстовое поле')
     text_coll_size = models.IntegerField()
     text_coll_position = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
     date_mod = models.DateTimeField(auto_now=True)
+
+    def colls(self):
+        return TableLinksColl.objects.filter(table=self)
 
     def __unicode__(self):
         return self.name
 
 
 class TableLinksColl(models.Model):
+    name = models.CharField(max_length=1024, default='Колонка с ссылками')
     size = models.IntegerField()
     position = models.IntegerField()
     table = models.ForeignKey('Table', related_name='table_links_coll_table_table')

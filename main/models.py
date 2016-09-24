@@ -38,9 +38,6 @@ class Table(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     date_mod = models.DateTimeField(auto_now=True)
 
-    def colls(self):
-        return TableLinksColl.objects.filter(table=self)
-
     def __unicode__(self):
         return self.name
 

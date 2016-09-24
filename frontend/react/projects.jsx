@@ -16,7 +16,7 @@ export class Projects extends React.Component {
             url: document.body.getAttribute('data-projects-url'),
             data: JSON.stringify({name: projectsStore.creating_name, owner: projectsStore.owner}),
             success: (res) => {
-                projectsStore.createProjects(res);
+                projectsStore.createProjects(res.projects);
                 modalStore.modal = false;
             },
             error: (res) => {

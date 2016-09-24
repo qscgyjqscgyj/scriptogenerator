@@ -16,6 +16,7 @@
         data-scripts-url="{% url 'scripts' %}"
         data-projects-url="{% url 'projects' %}"
         data-tables-url="{% url 'tables' %}"
+        data-colls-url="{% url 'colls' %}"
     >
         {% block content %}
             {% if request.user.is_authenticated %}

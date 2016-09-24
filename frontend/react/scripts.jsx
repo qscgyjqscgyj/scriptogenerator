@@ -18,7 +18,7 @@ export class Scripts extends React.Component {
             url: document.body.getAttribute('data-scripts-url'),
             data: JSON.stringify({name: scriptsStore.creating_name, project: project, owner: project.owner}),
             success: (res) => {
-                scriptsStore.scripts = res;
+                scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;
             },
             error: (res) => {
@@ -34,7 +34,7 @@ export class Scripts extends React.Component {
             url: document.body.getAttribute('data-scripts-url'),
             data: JSON.stringify(scriptsStore.editing),
             success: (res) => {
-                scriptsStore.scripts = res;
+                scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;
             },
             error: (res) => {
@@ -51,7 +51,7 @@ export class Scripts extends React.Component {
                 url: document.body.getAttribute('data-scripts-url'),
                 data: JSON.stringify({pk: script.id}),
                 success: (res) => {
-                    scriptsStore.scripts = res;
+                    scriptsStore.scripts = res.scripts;
                 },
                 error: (res) => {
                     console.log(res);

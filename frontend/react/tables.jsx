@@ -15,7 +15,7 @@ export class Tables extends React.Component {
             url: document.body.getAttribute('data-tables-url'),
             data: {id: this.props.params.script},
             success: (res) => {
-                tablesStore.tables = res;
+                tablesStore.tables = res.tables;
             },
             error: (res) => {
                 console.log(res);
@@ -38,7 +38,7 @@ export class Tables extends React.Component {
                 //script: scriptsStore.script((tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)))
             }),
             success: (res) => {
-                tablesStore.tables = res;
+                tablesStore.tables = res.tables;
                 modalStore.modal = false;
             },
             error: (res) => {
@@ -55,7 +55,7 @@ export class Tables extends React.Component {
                 url: document.body.getAttribute('data-tables-url'),
                 data: JSON.stringify(table),
                 success: (res) => {
-                    tablesStore.tables = res;
+                    tablesStore.tables = res.tables;
                 },
                 error: (res) => {
                     console.log(res);
@@ -71,7 +71,7 @@ export class Tables extends React.Component {
             url: document.body.getAttribute('data-tables-url'),
             data: JSON.stringify(tablesStore.editing),
             success: (res) => {
-                tablesStore.tables = res;
+                tablesStore.tables = res.tables;
                 tablesStore.editing = null;
                 modalStore.modal = false;
             },
@@ -129,7 +129,7 @@ export class Tables extends React.Component {
                             </table>
                         </div>
                     </div>
-                    <ModalWrapper tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createTable={this.createTable.bind(this)} updateTable={this.updateTable.bind(this)}/>
+                    <ModalWrapper scriptsStore={scriptsStore} tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createTable={this.createTable.bind(this)} updateTable={this.updateTable.bind(this)}/>
                 </div>
             );
         }
@@ -167,7 +167,7 @@ class CreatingTable extends React.Component {
 class EditingTable extends React.Component {
     render() {
         const {tablesStore} = this.props;
-        if(TablesStore.editing) {
+        if(tablesStore.editing) {
             return (
                 <div className="row">
                     <form action="" onSubmit={(e) => this.props.updateTable(e)}>
@@ -194,6 +194,24 @@ class EditingTable extends React.Component {
 
 @observer
 class CollsCreating extends React.Component {
+    deleteColl(colls, coll, i) {
+        var r = confirm("Вы действительно хотите удалить столбец: " + coll.name);
+        const {tablesStore} = this.props;
+        if (r == true) {
+            $.ajax({
+                method: 'DELETE',
+                url: document.body.getAttribute('data-colls-url'),
+                data: JSON.stringify(coll),
+                success: (res) => {
+                    tablesStore.tables = res.tables;
+                    colls.splice(i, 1);
+                },
+                error: (res) => {
+                    console.log(res);
+                }
+            });
+        }
+    }
     render() {
         const {tablesStore} = this.props;
         let colls = tablesStore.editing ? tablesStore.editing.colls : tablesStore.creating_colls;
@@ -247,14 +265,21 @@ class CollsCreating extends React.Component {
                                         />
                                     </td>
                                     <td className="text-right">
-                                        <button className="btn btn-danger" onClick={()=>{colls.splice(i, 1)}}>Удалить</button>
+                                        <button className="btn btn-danger" onClick={(e)=>{
+                                            e.preventDefault();
+                                            if(coll.id) {
+                                                this.deleteColl(colls, coll, i);
+                                            } else {
+                                                colls.splice(i, 1);
+                                            }
+                                        }}>Удалить</button>
                                     </td>
                                 </tr>
                             )
                         })}
                         <tr>
                             <td>
-                                <button className="btn btn-success" onClick={() => {colls.push(new Coll())}}>+ Добавить столбец</button>
+                                <button className="btn btn-success" onClick={(e) => {e.preventDefault();colls.push(new Coll(tablesStore.editing))}}>+ Добавить столбец</button>
                             </td>
                         </tr>
                     </tbody>

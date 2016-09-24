@@ -76,12 +76,14 @@ class CollsField(serializers.Field):
                 c['table'] = table
             elif isinstance(c.get('table'), int):
                 c['table'] = Table.objects.get(pk=c.get('table'))
-            coll, created = TableLinksColl.objects.get_or_create(**c)
-            if not created:
+            if c.get('id'):
+                coll = TableLinksColl.objects.get(pk=int(c.get('id')))
                 coll.name = c['name']
                 coll.position = c['position']
                 coll.size = c['size']
                 coll.save()
+            else:
+                TableLinksColl.objects.create(**c)
         return colls
 
 

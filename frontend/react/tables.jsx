@@ -227,7 +227,13 @@ class CollsCreating extends React.Component {
                                     type="text"
                                     className="form-control"
                                     placeholder="Название столбца"
-                                    onChange={(e) => {text_coll_name = e.target.value}}
+                                    onChange={(e) => {
+                                        if(tablesStore.editing) {
+                                            tablesStore.editing.text_coll_name = e.target.value;
+                                        } else {
+                                            tablesStore.creating_text_coll_name = e.target.value;
+                                        }
+                                    }}
                                     value={text_coll_name}
                                 />
                             </td>
@@ -237,7 +243,13 @@ class CollsCreating extends React.Component {
                                     type="text"
                                     className="form-control"
                                     placeholder="Размер столбца (в %)"
-                                    onChange={(e) => {text_coll_size = e.target.value}}
+                                    onChange={(e) => {
+                                        if(tablesStore.editing) {
+                                            tablesStore.editing.text_coll_size = e.target.value;
+                                        } else {
+                                            tablesStore.creating_text_coll_size = e.target.value;
+                                        }
+                                    }}
                                     value={text_coll_size}
                                 />
                             </td>

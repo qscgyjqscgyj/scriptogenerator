@@ -158,7 +158,7 @@ export class Table extends React.Component {
                                                         <div key={key} className={category.hidden ? 'hidden_links' : ''}>
                                                             <h3>
                                                                 <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
-                                                                {!category.hidden ? category.name : 'Скрытый раздел'}
+                                                                {category.name}
                                                             </h3>
                                                             <button className="btn btn-success" onClick={()=>{this.createLink(category)}}>+ ссылка</button>
                                                             <ul className="list-group">

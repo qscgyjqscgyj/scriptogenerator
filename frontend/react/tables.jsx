@@ -5,22 +5,13 @@ import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
+import {Link} from 'react-router';
 
 @observer
 export class Tables extends React.Component {
     componentWillMount() {
         const {tablesStore} = this.props;
-        $.ajax({
-            method: 'GET',
-            url: document.body.getAttribute('data-tables-url'),
-            data: {id: this.props.params.script},
-            success: (res) => {
-                tablesStore.tables = res.tables;
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
+        tablesStore.pullTables(this.props.params.script);
     }
     createTable(e) {
         const {modalStore, tablesStore, scriptsStore} = this.props;
@@ -111,7 +102,12 @@ export class Tables extends React.Component {
                                     {tablesStore.tables.map((table, key)=>{
                                         return (
                                             <tr key={key}>
-                                                <td>{table.name}</td>
+                                                <td>
+                                                    <Link to={
+                                                        '/tables/' + this.props.params.script +
+                                                        '/table/' + table.id
+                                                    }>{table.name}</Link>
+                                                </td>
                                                 <td className="text-right">
                                                     <button className="btn btn-default" onClick={()=>{
                                                         tablesStore.editing = table;

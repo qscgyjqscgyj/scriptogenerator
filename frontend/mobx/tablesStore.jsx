@@ -1,4 +1,5 @@
-import {computed, observable} from 'mobx';
+import {computed, observable, action} from 'mobx';
+import $ from 'jquery';
 
 export class Coll {
     @observable name = 'Колонка с сылками';
@@ -21,6 +22,7 @@ const defaults = {
 
 export class TablesStore {
     @observable tables = [];
+
     @observable creating_name = '';
     @observable creating_colls = [new Coll()];
     @observable creating_text_coll_name = defaults.text_coll_name;
@@ -29,9 +31,45 @@ export class TablesStore {
     @observable creating_script = null;
     @observable editing = null;
 
+    @observable active_link = null;
+
+    @action pullTables(script) {
+        $.ajax({
+            method: 'GET',
+            url: document.body.getAttribute('data-tables-url'),
+            data: {id: script},
+            success: (res) => {
+                this.tables = res.tables;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
+    @action setLink(table_id, link_id) {
+        this.active_link = this.link(table_id, link_id);
+    }
+
     table(id) {
         return this.tables.find(table => parseInt(table.id) === parseInt(id));
     }
+
+    link(table_id, link_id) {
+        let table = this.table(table_id);
+        let all_links = [];
+        if(table) {
+            table.colls.map(coll => {
+                coll.categories.map(category => {
+                    category.links.map(link => {
+                        all_links.push(link);
+                    });
+                })
+            });
+            return all_links.find(link => parseInt(link.id) === parseInt(link_id));
+        }
+    }
+
     resetCreating() {
         this.creating_name = '';
         this.creating_colls = [new Coll()];

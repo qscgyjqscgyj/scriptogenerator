@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from main.models import Script, Project, Table, TableLinksColl
+from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -40,7 +40,90 @@ class ScriptSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'owner', 'project', 'date', 'date_mod')
 
 
+class LinkSerializer(serializers.ModelSerializer):
+    category = LinkCategory()
+
+    def create(self, validated_data):
+        return Link.objects.get_or_create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.text = validated_data.get('text', instance.text)
+        instance.category = validated_data.get('category', instance.category)
+        instance.order = validated_data.get('order', instance.order)
+        instance.save()
+        return instance
+
+    class Meta:
+        model = Link
+        fields = ('id', 'name', 'category', 'text', 'order')
+
+
+class LinksField(serializers.Field):
+    def to_representation(self, category):
+        return LinkSerializer(Link.objects.filter(category=category), many=True).data
+
+    def get_attribute(self, links):
+        return links
+
+    def to_internal_value(self, links):
+        # for l in links:
+        #     if not c.get('table'):
+        #         if self.root.initial_data.get('colls'):
+        #             del self.root.initial_data['colls']
+        #         try:
+        #             self.root.initial_data['script'] = Script.objects.get(pk=int(self.root.initial_data['script']))
+        #         except TypeError:
+        #             pass
+        #         table, created = Table.objects.get_or_create(**self.root.initial_data)
+        #         c['table'] = table
+        #     elif isinstance(c.get('table'), int):
+        #         c['table'] = Table.objects.get(pk=c.get('table'))
+        #     if c.get('id'):
+        #         coll = TableLinksColl.objects.get(pk=int(c.get('id')))
+        #         coll.name = c['name']
+        #         coll.position = c['position']
+        #         coll.size = c['size']
+        #         coll.save()
+        #     else:
+        #         TableLinksColl.objects.create(**c)
+        return links
+
+
+class LinkCategoriesField(serializers.Field):
+    def to_representation(self, coll):
+        return LinkCategorySerializer(LinkCategory.objects.filter(table=coll), many=True).data
+
+    def get_attribute(self, categories):
+        return categories
+
+    def to_internal_value(self, categories):
+        # for l in links:
+        #     if not c.get('table'):
+        #         if self.root.initial_data.get('colls'):
+        #             del self.root.initial_data['colls']
+        #         try:
+        #             self.root.initial_data['script'] = Script.objects.get(pk=int(self.root.initial_data['script']))
+        #         except TypeError:
+        #             pass
+        #         table, created = Table.objects.get_or_create(**self.root.initial_data)
+        #         c['table'] = table
+        #     elif isinstance(c.get('table'), int):
+        #         c['table'] = Table.objects.get(pk=c.get('table'))
+        #     if c.get('id'):
+        #         coll = TableLinksColl.objects.get(pk=int(c.get('id')))
+        #         coll.name = c['name']
+        #         coll.position = c['position']
+        #         coll.size = c['size']
+        #         coll.save()
+        #     else:
+        #         TableLinksColl.objects.create(**c)
+        return categories
+
+
 class TableLinksCollSerializer(serializers.ModelSerializer):
+    categories = LinkCategoriesField()
+
     def create(self, validated_data):
         return TableLinksColl.objects.create(**validated_data)
 
@@ -53,7 +136,7 @@ class TableLinksCollSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TableLinksColl
-        fields = ('id', 'table', 'name', 'size', 'position')
+        fields = ('id', 'table', 'name', 'size', 'position', 'categories')
 
 
 class CollsField(serializers.Field):
@@ -105,3 +188,20 @@ class TableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Table
         fields = ('id', 'name', 'script', 'text_coll_name', 'text_coll_size', 'text_coll_position', 'date', 'date_mod', 'colls')
+
+
+class LinkCategorySerializer(serializers.ModelSerializer):
+    links = LinksField()
+
+    def create(self, validated_data):
+        return LinkCategory.objects.get_or_create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.order = validated_data.get('order', instance.order)
+        instance.save()
+        return instance
+
+    class Meta:
+        model = LinkCategory
+        fields = ('id', 'name', 'hidden', 'order', 'table', 'links')

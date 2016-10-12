@@ -8,8 +8,9 @@ from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 import json
 
-from main.models import Script, Project, Table, TableLinksColl, LinkCategory
-from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer, LinkCategorySerializer
+from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link
+from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer, LinkCategorySerializer, \
+    LinkSerializer
 
 
 class MainView(TemplateView):
@@ -170,6 +171,31 @@ class LinkCategoriesView(View):
         try:
             category = LinkCategory.objects.get(pk=int(data['category']))
             category.delete()
+            table = Table.objects.get(pk=int(data['table']))
+            return JSONResponse({
+                'tables': TableSerializer(Table.objects.filter(script=table.script), many=True).data
+            })
+        except ObjectDoesNotExist:
+            return JSONResponse({'error': 'Object does not exist.'}, status=400)
+
+
+class LinkView(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        category = LinkCategory.objects.get(pk=int(data['category']))
+        link = LinkSerializer(data=data)
+        if link.is_valid():
+            link.create(data)
+            return JSONResponse({
+                'tables': TableSerializer(Table.objects.filter(script=category.table.table.script), many=True).data
+            })
+        return JSONResponse(category.errors, status=400)
+
+    def delete(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        try:
+            link = Link.objects.get(pk=int(data['link']))
+            link.delete()
             table = Table.objects.get(pk=int(data['table']))
             return JSONResponse({
                 'tables': TableSerializer(Table.objects.filter(script=table.script), many=True).data

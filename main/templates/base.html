@@ -19,6 +19,7 @@
         data-tables-url="{% url 'tables' %}"
         data-colls-url="{% url 'colls' %}"
         data-link-categories-url="{% url 'link_categories' %}"
+        data-links-url="{% url 'links' %}"
     >
         {% block content %}
             {% if request.user.is_authenticated %}

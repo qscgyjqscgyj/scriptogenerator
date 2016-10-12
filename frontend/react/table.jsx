@@ -48,6 +48,39 @@ export class Table extends React.Component {
         }
     }
 
+    createLink(category) {
+        const {tablesStore} = this.props;
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-links-url'),
+            data: JSON.stringify({name: 'Ссылка', category: category.id, text: 'Текст ссылки'}),
+            success: (res) => {
+                tablesStore.tables = res.tables;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
+    deleteLink(link) {
+        const {tablesStore} = this.props;
+        var r = confirm("Вы действительно хотите удалить ссылку: " + link.name);
+        if (r) {
+            $.ajax({
+                method: 'DELETE',
+                url: document.body.getAttribute('data-links-url'),
+                data: JSON.stringify({link: link.id, table: this.props.params.table}),
+                success: (res) => {
+                    tablesStore.tables = res.tables;
+                },
+                error: (res) => {
+                    console.log(res);
+                }
+            });
+        }
+    }
+
     sortedColls() {
         const {tablesStore} = this.props;
         let table = tablesStore.table(this.props.params.table);
@@ -123,12 +156,18 @@ export class Table extends React.Component {
                                                 {coll.categories.map((category, key) => {
                                                     return (
                                                         <div key={key} className={category.hidden ? 'hidden_links' : ''}>
-                                                            <h3><span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/> {!category.hidden ? category.name : 'Скрытый раздел'}</h3>
-                                                            <button className="btn btn-success">+ ссылка</button>
+                                                            <h3>
+                                                                <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
+                                                                {!category.hidden ? category.name : 'Скрытый раздел'}
+                                                            </h3>
+                                                            <button className="btn btn-success" onClick={()=>{this.createLink(category)}}>+ ссылка</button>
                                                             <ul className="list-group">
                                                                 {category.links.map((link, key) => {
                                                                     return (
-                                                                        <li key={key} className="list-group-item">{link.name}</li>
+                                                                        <li key={key} className="list-group-item">
+                                                                            <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
+                                                                            {link.name}
+                                                                        </li>
                                                                     )
                                                                 })}
                                                             </ul>

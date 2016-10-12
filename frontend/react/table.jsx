@@ -6,6 +6,7 @@ import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
+import ContentEditable from 'react-contenteditable';
 
 @observer
 export class Table extends React.Component {
@@ -46,6 +47,21 @@ export class Table extends React.Component {
                 }
             });
         }
+    }
+
+    updateLinkCategory(category) {
+        alert(category.name);
+        //$.ajax({
+        //    method: 'PUT',
+        //    url: document.body.getAttribute('data-link-categories-url'),
+        //    data: JSON.stringify(category),
+        //    success: (res) => {
+        //        tablesStore.tables = res.tables;
+        //    },
+        //    error: (res) => {
+        //        console.log(res);
+        //    }
+        //});
     }
 
     createLink(category) {
@@ -158,7 +174,11 @@ export class Table extends React.Component {
                                                         <div key={key} className={category.hidden ? 'hidden_links' : ''}>
                                                             <h3>
                                                                 <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
-                                                                {category.name}
+                                                                <ContentEditable
+                                                                    html={category.name}
+                                                                    disabled={false}
+                                                                    onChange={()=>{this.updateLinkCategory(category)}}
+                                                                />
                                                             </h3>
                                                             <button className="btn btn-success" onClick={()=>{this.createLink(category)}}>+ ссылка</button>
                                                             <ul className="list-group">

@@ -8,7 +8,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 import json
 
-from main.models import Script, Project, Table, TableLinksColl
+from main.models import Script, Project, Table, TableLinksColl, LinkCategory
 from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer, LinkCategorySerializer
 
 
@@ -164,6 +164,18 @@ class LinkCategoriesView(View):
                 'tables': TableSerializer(Table.objects.filter(script=coll.table.script), many=True).data
             })
         return JSONResponse(category.errors, status=400)
+
+    def delete(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        try:
+            category = LinkCategory.objects.get(pk=int(data['category']))
+            category.delete()
+            table = Table.objects.get(pk=int(data['table']))
+            return JSONResponse({
+                'tables': TableSerializer(Table.objects.filter(script=table.script), many=True).data
+            })
+        except ObjectDoesNotExist:
+            return JSONResponse({'error': 'Object does not exist.'}, status=400)
 
 
 class InitView(View):

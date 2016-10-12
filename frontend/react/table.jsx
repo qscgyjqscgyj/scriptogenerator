@@ -16,10 +16,11 @@ export class Table extends React.Component {
 
     createLinkCategory(coll) {
         const {tablesStore} = this.props;
+        var r = confirm("Вы хотите создать скрытый раздел?");
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-link-categories-url'),
-            data: JSON.stringify({name: 'Пустой раздел', table: coll.id}),
+            data: JSON.stringify({name: 'Пустой раздел', table: coll.id, hidden: r}),
             success: (res) => {
                 tablesStore.tables = res.tables;
             },
@@ -29,18 +30,22 @@ export class Table extends React.Component {
         });
     }
 
-    deleteLinkCategory(coll) {
-        $.ajax({
-            method: 'delete',
-            url: document.body.getAttribute('data-link-categories-url'),
-            data: {id: coll.id},
-            success: (res) => {
-                this.tables = res.tables;
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
+    deleteLinkCategory(category) {
+        const {tablesStore} = this.props;
+        var r = confirm("Вы действительно хотите удалить категорию: " + category.name);
+        if (r == true) {
+            $.ajax({
+                method: 'DELETE',
+                url: document.body.getAttribute('data-link-categories-url'),
+                data: JSON.stringify({category: category.id, table: this.props.params.table}),
+                success: (res) => {
+                    tablesStore.tables = res.tables;
+                },
+                error: (res) => {
+                    console.log(res);
+                }
+            });
+        }
     }
 
     sortedColls() {
@@ -118,7 +123,7 @@ export class Table extends React.Component {
                                                 {coll.categories.map((category, key) => {
                                                     return (
                                                         <div key={key} className={category.hidden ? 'hidden_links' : ''}>
-                                                            <h3>{!category.hidden ? category.name : 'Скрытый раздел'} <i className="fa fa-times" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(coll)}}/></h3>
+                                                            <h3><span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/> {!category.hidden ? category.name : 'Скрытый раздел'}</h3>
                                                             <button className="btn btn-success">+ ссылка</button>
                                                             <ul className="list-group">
                                                                 {category.links.map((link, key) => {

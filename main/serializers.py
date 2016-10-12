@@ -191,10 +191,11 @@ class TableSerializer(serializers.ModelSerializer):
 
 
 class LinkCategorySerializer(serializers.ModelSerializer):
-    links = LinksField()
+    links = LinksField(required=False)
 
     def create(self, validated_data):
-        return LinkCategory.objects.get_or_create(**validated_data)
+        validated_data['table'] = TableLinksColl.objects.get(pk=int(validated_data['table']))
+        return LinkCategory.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)

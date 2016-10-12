@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
-from main.views import MainView, ScriptsView, ProjectsView, InitView, TablesView, CollsView
+from main.views import MainView, ScriptsView, ProjectsView, InitView, TablesView, CollsView, LinkCategoriesView
 
 urlpatterns = patterns('',
     url(r'^$', MainView.as_view(), name='main'),
@@ -12,4 +12,5 @@ urlpatterns = patterns('',
     url(r'^projects/$', login_required(csrf_exempt(ProjectsView.as_view())), name='projects'),
     url(r'^tables/$', login_required(csrf_exempt(TablesView.as_view())), name='tables'),
     url(r'^colls/$', login_required(csrf_exempt(CollsView.as_view())), name='colls'),
+    url(r'^link/categories/$', login_required(csrf_exempt(LinkCategoriesView.as_view())), name='link_categories'),
 )

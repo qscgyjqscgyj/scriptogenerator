@@ -9,7 +9,7 @@ from rest_framework.renderers import JSONRenderer
 import json
 
 from main.models import Script, Project, Table, TableLinksColl
-from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer
+from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer, LinkCategorySerializer
 
 
 class MainView(TemplateView):
@@ -151,6 +151,19 @@ class CollsView(View):
             })
         except ObjectDoesNotExist:
             return JSONResponse({'error': 'Object does not exist.'}, status=400)
+
+
+class LinkCategoriesView(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        coll = TableLinksColl.objects.get(pk=int(data['table']))
+        category = LinkCategorySerializer(data=data)
+        if category.is_valid():
+            category.create(data)
+            return JSONResponse({
+                'tables': TableSerializer(Table.objects.filter(script=coll.table.script), many=True).data
+            })
+        return JSONResponse(category.errors, status=400)
 
 
 class InitView(View):

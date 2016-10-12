@@ -6,6 +6,7 @@
         <meta charset="utf-8">
         <title></title>
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body
         {% if request.user.is_authenticated %}
@@ -17,6 +18,7 @@
         data-projects-url="{% url 'projects' %}"
         data-tables-url="{% url 'tables' %}"
         data-colls-url="{% url 'colls' %}"
+        data-link-categories-url="{% url 'link_categories' %}"
     >
         {% block content %}
             {% if request.user.is_authenticated %}

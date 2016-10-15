@@ -186,7 +186,8 @@ export class TableEdit extends React.Component {
                                                 {active_link ?
                                                     <div>
                                                         <h3>{active_link.name}</h3>
-                                                        <div dangerouslySetInnerHTML={{__html: active_link.text}}></div>
+                                                        <div>
+                                                        </div>
                                                     </div>
                                                     :
                                                     ''
@@ -239,7 +240,6 @@ export class TableEdit extends React.Component {
                                                                                 </div>
                                                                                 <div className="col-md-1">
                                                                                     <span className="glyphicon glyphicon-copy icon copy_icon" aria-hidden="true" data-link={
-                                                                                        get_host() + '/' +
                                                                                         '#/tables/' + this.props.params.script +
                                                                                         '/table/' + this.props.params.table +
                                                                                         '/link/' + link.id +
@@ -336,3 +336,4 @@ class EditableText extends React.Component {
         )
     }
 }
+                //<div dangerouslySetInnerHTML={{__html: active_link.text}}></div>

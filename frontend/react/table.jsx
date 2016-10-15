@@ -6,7 +6,6 @@ import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
-import ContentEditable from 'react-contenteditable';
 
 @observer
 export class Table extends React.Component {
@@ -50,18 +49,18 @@ export class Table extends React.Component {
     }
 
     updateLinkCategory(category) {
-        alert(category.name);
-        //$.ajax({
-        //    method: 'PUT',
-        //    url: document.body.getAttribute('data-link-categories-url'),
-        //    data: JSON.stringify(category),
-        //    success: (res) => {
-        //        tablesStore.tables = res.tables;
-        //    },
-        //    error: (res) => {
-        //        console.log(res);
-        //    }
-        //});
+        const {tablesStore} = this.props;
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-link-categories-url'),
+            data: JSON.stringify(category),
+            success: (res) => {
+                tablesStore.tables = res.tables;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
     }
 
     createLink(category) {
@@ -174,10 +173,15 @@ export class Table extends React.Component {
                                                         <div key={key} className={category.hidden ? 'hidden_links' : ''}>
                                                             <h3>
                                                                 <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
-                                                                <ContentEditable
-                                                                    html={category.name}
-                                                                    disabled={false}
-                                                                    onChange={()=>{this.updateLinkCategory(category)}}
+                                                                <EditableText
+                                                                    text={category.name}
+                                                                    field={'name'}
+                                                                    submitHandler={(category) => this.updateLinkCategory(category)}
+                                                                    object={category}
+                                                                    settings={{
+                                                                        placeholder: 'Имя категории',
+                                                                        name: 'name'
+                                                                    }}
                                                                 />
                                                             </h3>
                                                             <button className="btn btn-success" onClick={()=>{this.createLink(category)}}>+ ссылка</button>
@@ -221,6 +225,45 @@ export class SharedTable extends React.Component {
                     }
                       params={{active_link: link}}>{link.name}</Link>
             </li>
+        )
+    }
+}
+
+class EditableText extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {text: this.props.text, edit: false}
+    }
+    componentWillReceiveProps(props) {
+        this.setState({text: props.text, edit: false})
+    }
+    submitHandler(e) {
+        e.preventDefault();
+        let object = this.props.object;
+        object[this.props.field] = this.state.text;
+        this.setEdit(false);
+        return this.props.submitHandler(object);
+    }
+    setEdit(edit) {
+        this.setState(update(this.state, {edit: {$set: edit}}))
+    }
+    render() {
+        const {settings} = this.props;
+        return (
+            <div>
+                {!this.state.edit ?
+                    <span onDoubleClick={() => {this.setEdit(true)}}>{this.props.text}</span>
+                :
+                    <form onSubmit={this.submitHandler.bind(this)}>
+                        <input
+                            onChange={(e) => {this.setState(update(this.state, {text: {$set: e.target.value}}))}}
+                            placeholder={settings.placeholder}
+                            name={settings.name}
+                            value={this.state.text}
+                            type="text"/>
+                    </form>
+                }
+            </div>
         )
     }
 }

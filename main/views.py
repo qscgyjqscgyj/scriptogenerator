@@ -166,6 +166,17 @@ class LinkCategoriesView(View):
             })
         return JSONResponse(category.errors, status=400)
 
+    def put(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        coll = TableLinksColl.objects.get(pk=int(data['table']))
+        category = LinkCategorySerializer(data=data)
+        if category.is_valid():
+            category.update(LinkCategory.objects.get(pk=int(data['id'])), data)
+            return JSONResponse({
+                'tables': TableSerializer(Table.objects.filter(script=coll.table.script), many=True).data
+            })
+        return JSONResponse(category.errors, status=400)
+
     def delete(self, request, *args, **kwargs):
         data = json.loads(request.body)
         try:

@@ -105,7 +105,8 @@ export class Tables extends React.Component {
                                                 <td>
                                                     <Link to={
                                                         '/tables/' + this.props.params.script +
-                                                        '/table/' + table.id
+                                                        '/table/' + table.id +
+                                                        '/edit/'
                                                     }>{table.name}</Link>
                                                 </td>
                                                 <td className="text-right">

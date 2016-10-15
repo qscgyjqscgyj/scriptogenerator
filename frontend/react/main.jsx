@@ -6,7 +6,7 @@ import {createHashHistory} from 'history';
 import {ScriptsWrapper} from './scripts';
 import {ProjectsWrapper} from './projects';
 import {Tables} from './tables';
-import {Table, LinkRouteHandler} from './table';
+import {TableEdit, TableShare, LinkRouteHandler} from './table';
 import {AppWrapper} from './app';
 
 ReactDOM.render(
@@ -17,8 +17,11 @@ ReactDOM.render(
             <Route path="/scripts/user" component={ScriptsWrapper}/>
             <Route path="/scripts/available" component={ScriptsWrapper}/>
             <Route path="/tables/:script" component={Tables}/>
-            <Route path="/tables/:script/table/:table" component={Table}/>
-            <Route path="/tables/:script/table/:table/link/:link" component={Table} handler={LinkRouteHandler}/>
+            <Route path="/tables/:script/table/:table/edit" component={TableEdit}/>
+            <Route path="/tables/:script/table/:table/link/:link/edit" component={TableEdit} handler={LinkRouteHandler}/>
+
+            <Route path="/tables/:script/table/:table/share" component={TableShare}/>
+            <Route path="/tables/:script/table/:table/link/:link/share" component={TableShare} handler={LinkRouteHandler}/>
         </Route>
     </Router>,
     document.getElementById('content')

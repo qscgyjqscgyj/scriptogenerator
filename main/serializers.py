@@ -48,6 +48,7 @@ class LinkSerializer(serializers.ModelSerializer):
         return Link.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
+        validated_data['category'] = LinkCategory.objects.get(pk=int(validated_data['category']))
         instance.name = validated_data.get('name', instance.name)
         instance.text = validated_data.get('text', instance.text)
         instance.category = validated_data.get('category', instance.category)

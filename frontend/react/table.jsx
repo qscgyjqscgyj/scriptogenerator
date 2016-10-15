@@ -6,12 +6,27 @@ import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
+import Clipboard from 'clipboard';
+
+function get_host() {
+    var http = location.protocol;
+    var slashes = http.concat("//");
+    return slashes.concat(window.location.hostname);
+}
 
 @observer
-export class Table extends React.Component {
+export class TableEdit extends React.Component {
     componentWillMount() {
         const {tablesStore} = this.props;
         tablesStore.pullTables(this.props.params.script);
+    }
+
+    componentDidMount() {
+        new Clipboard('.copy_icon', {
+            text: function(trigger) {
+                return trigger.getAttribute('data-link');
+            }
+        });
     }
 
     createLinkCategory(coll) {
@@ -96,6 +111,21 @@ export class Table extends React.Component {
         }
     }
 
+    updateLink(link) {
+        const {tablesStore} = this.props;
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-links-url'),
+            data: JSON.stringify(link),
+            success: (res) => {
+                tablesStore.tables = res.tables;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
     sortedColls() {
         const {tablesStore} = this.props;
         let table = tablesStore.table(this.props.params.table);
@@ -172,25 +202,64 @@ export class Table extends React.Component {
                                                     return (
                                                         <div key={key} className={category.hidden ? 'hidden_links' : ''}>
                                                             <h3>
-                                                                <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
-                                                                <EditableText
-                                                                    text={category.name}
-                                                                    field={'name'}
-                                                                    submitHandler={(category) => this.updateLinkCategory(category)}
-                                                                    object={category}
-                                                                    settings={{
-                                                                        placeholder: 'Имя категории',
-                                                                        name: 'name'
-                                                                    }}
-                                                                />
+                                                                <div className="row">
+                                                                    <div className="col-md-10">
+                                                                            <EditableText
+                                                                                text={category.name}
+                                                                                field={'name'}
+                                                                                submitHandler={(category) => this.updateLinkCategory(category)}
+                                                                                object={category}
+                                                                                settings={{
+                                                                                    placeholder: 'Имя категории',
+                                                                                    name: 'name'
+                                                                                }}
+                                                                            />
+                                                                    </div>
+                                                                    <div className="col-md-2">
+                                                                        <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
+                                                                    </div>
+                                                                </div>
                                                             </h3>
                                                             <button className="btn btn-success" onClick={()=>{this.createLink(category)}}>+ ссылка</button>
                                                             <ul className="list-group">
                                                                 {category.links.map((link, key) => {
                                                                     return (
                                                                         <li key={key} className="list-group-item">
-                                                                            <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
-                                                                            {link.name}
+                                                                            <div className="row">
+                                                                                <div className="col-md-8">
+                                                                                    <EditableText
+                                                                                        text={link.name}
+                                                                                        field={'name'}
+                                                                                        submitHandler={(link) => this.updateLink(link)}
+                                                                                        object={link}
+                                                                                        settings={{
+                                                                                            placeholder: 'Имя ссылки',
+                                                                                            name: 'name'
+                                                                                        }}/>
+                                                                                </div>
+                                                                                <div className="col-md-1">
+                                                                                    <span className="glyphicon glyphicon-copy icon copy_icon" aria-hidden="true" data-link={
+                                                                                        get_host() + '/' +
+                                                                                        '#/tables/' + this.props.params.script +
+                                                                                        '/table/' + this.props.params.table +
+                                                                                        '/link/' + link.id +
+                                                                                        '/share/'
+                                                                                    }/>
+                                                                                </div>
+                                                                                <div className="col-md-1">
+                                                                                    <Link to={
+                                                                                            '/tables/' + this.props.params.script +
+                                                                                            '/table/' + this.props.params.table +
+                                                                                            '/link/' + link.id +
+                                                                                            '/edit/'
+                                                                                        }>
+                                                                                        <span className="glyphicon glyphicon-edit icon edit_icon" aria-hidden="true"/>
+                                                                                    </Link>
+                                                                                </div>
+                                                                                <div className="col-md-1">
+                                                                                    <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
+                                                                                </div>
+                                                                            </div>
                                                                         </li>
                                                                     )
                                                                 })}
@@ -214,16 +283,16 @@ export class Table extends React.Component {
 }
 
 @observer
-export class SharedTable extends React.Component {
+export class TableShare extends React.Component {
     render() {
         return (
             <li key={key} className="list-group-item">
                 <Link to={
                         '/tables/' + this.props.params.script +
                         '/table/' + this.props.params.table +
-                        '/link/' + link.id
-                    }
-                      params={{active_link: link}}>{link.name}</Link>
+                        '/link/' + link.id +
+                        '/share/'
+                    }>{link.name}</Link>
             </li>
         )
     }

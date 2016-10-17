@@ -10,7 +10,7 @@ import Clipboard from 'clipboard';
 import RichTextEditor from 'react-rte';
 
 @observer
-export class TableEdit extends React.Component {
+export class Table extends React.Component {
     componentWillMount() {
         const {tablesStore} = this.props;
         tablesStore.pullTables(this.props.params.script);
@@ -152,7 +152,10 @@ export class TableEdit extends React.Component {
             '/share/'
         )
     }
+}
 
+@observer
+export class TableEdit extends Table {
     render() {
         const {projectsStore, scriptsStore, tablesStore, modalStore} = this.props;
         let table = tablesStore.table(this.props.params.table);
@@ -163,6 +166,14 @@ export class TableEdit extends React.Component {
         if (table) {
             return (
                 <div className="col-md-12 scrollable_panel">
+                    <Link to={
+                            '/tables/' + this.props.params.script +
+                            '/table/' + this.props.params.table +
+                            (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
+                            '/share/'
+                        }>
+                        <button className="btn btn-success">Просмотр</button>
+                    </Link>
                     <table className="table table-bordered">
                         <tbody>
                             <tr className="scroll_header">
@@ -190,6 +201,7 @@ export class TableEdit extends React.Component {
                                                 {active_link ?
                                                     <div>
                                                         <h3>{active_link.name}</h3>
+                                                        <button className="btn btn-success" onClick={() => {this.updateLink(active_link)}}>Сохранить</button>
                                                         <div className="link_text_editor">
                                                             <Editor link={active_link} value={active_link.text} onChange={(value) => {active_link.text = value}} />
                                                         </div>
@@ -283,18 +295,100 @@ export class TableEdit extends React.Component {
 }
 
 @observer
-export class TableShare extends React.Component {
+export class TableShare extends Table {
     render() {
-        return (
-            <li key={key} className="list-group-item">
-                <Link to={
-                        '/tables/' + this.props.params.script +
-                        '/table/' + this.props.params.table +
-                        '/link/' + link.id +
-                        '/share/'
-                    }>{link.name}</Link>
-            </li>
-        )
+        const {projectsStore, scriptsStore, tablesStore, modalStore} = this.props;
+        let table = tablesStore.table(this.props.params.table);
+        let active_link = tablesStore.link(this.props.params.table, this.props.params.link);
+        let sorted_colls = this.sortedColls();
+        var coll_name, coll_size;
+
+        if (table) {
+            return (
+                <div className="col-md-12 scrollable_panel">
+                    <table className="table table-bordered">
+                        <tbody>
+                            <tr className="scroll_header">
+                                {sorted_colls.map((coll, key) => {
+                                    if (coll.text) {
+                                        coll_name = table.text_coll_name;
+                                        coll_size = table.text_coll_size;
+                                    }
+                                    else if (!coll.text) {
+                                        coll_name = coll.coll.name;
+                                        coll_size = coll.coll.size;
+                                    }
+                                    return (
+                                        <td key={key} style={{width: coll_size + '%'}}>
+                                            {coll_name}
+                                        </td>
+                                    )
+                                })}
+                            </tr>
+                            <tr className="scroll_block">
+                                {sorted_colls.map((coll, key) => {
+                                    if (coll.text) {
+                                        return (
+                                            <td key={key} style={{width: table.text_coll_size + '%'}}>
+                                                {active_link ?
+                                                    <div>
+                                                        <h3>{active_link.name}</h3>
+                                                        <div dangerouslySetInnerHTML={{__html: active_link.text}}></div>
+                                                    </div>
+                                                    :
+                                                    ''
+                                                }
+                                            </td>
+                                        )
+                                    } else if (!coll.text) {
+                                        coll = coll.coll;
+                                        return (
+                                            <td key={key} style={{width: coll.size + '%'}}>
+                                                {coll.categories.map((category, key) => {
+                                                    if(!category.hidden) {
+                                                        return (
+                                                            <div key={key} className={category.hidden ? 'hidden_links' : ''}>
+                                                                <h3>
+                                                                    <div className="row">
+                                                                        <div className="col-md-12">
+                                                                            {category.name}
+                                                                        </div>
+                                                                    </div>
+                                                                </h3>
+                                                                <ul className="list-group">
+                                                                    {category.links.map((link, key) => {
+                                                                        return (
+                                                                            <li key={key} className="list-group-item">
+                                                                                <div className="row">
+                                                                                    <div className="col-md-12">
+                                                                                        <Link to={
+                                                                                            '/tables/' + this.props.params.script +
+                                                                                            '/table/' + this.props.params.table +
+                                                                                            '/link/' + link.id +
+                                                                                            '/share/'
+                                                                                        }>{link.name}</Link>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        )
+                                                                    })}
+                                                                </ul>
+                                                                <hr/>
+                                                            </div>
+                                                        )
+                                                    }
+                                                })}
+                                            </td>
+                                        )
+                                    }
+                                })}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+        return <div></div>;
     }
 }
 
@@ -369,4 +463,4 @@ class Editor extends React.Component {
         );
     }
 }
-//<div dangerouslySetInnerHTML={{__html: active_link.text}}></div>
+

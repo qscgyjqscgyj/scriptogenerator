@@ -27,6 +27,8 @@
             {% else %}
                 <div class="container">
                     <h1>Необходимо авторизоваться</h1>
+                    <p><a href="{% url 'auth_login' %}">Вход</a></p>
+                    <p><a href="{% url 'registration_register' %}">Регистрация</a></p>
                 </div>
             {% endif %}
         {% endblock content %}

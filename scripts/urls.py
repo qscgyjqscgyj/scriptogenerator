@@ -10,7 +10,9 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('main.urls')),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^accounts/', include('users.urls')),
+    url(r'^accounts/', include('registration.backends.default.urls'))
 )
 
 if settings.DEBUG:

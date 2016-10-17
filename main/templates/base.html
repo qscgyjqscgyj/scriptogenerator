@@ -30,8 +30,17 @@
                 </div>
             {% endif %}
         {% endblock content %}
-
+>
         {% if request.user.is_authenticated %}
+            <script>
+                console.error = (function(_error) {
+                  return function(message) {
+                    if (typeof message !== 'string' || message.indexOf('component is `contentEditable`') === -1) {
+                      _error.apply(console, arguments);
+                    }
+                  };
+                })(console.error);
+            </script>
             <script src="{% static 'js/bundle.min.js' %}"></script>
         {% endif %}
     </body>

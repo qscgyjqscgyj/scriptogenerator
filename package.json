@@ -37,6 +37,7 @@
     "gulp-uglify": "^2.0.0",
     "jquery": "^1.12.4",
     "react-modal": "^1.4.0",
+    "react-rte": "^0.6.0",
     "vinyl-buffer": "^1.0.0"
   }
 }

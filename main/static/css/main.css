@@ -19,3 +19,6 @@
 .remove_icon {
     color: red;
 }
+.link_text_editor {
+    border: 1px solid #ddd;
+}

@@ -7,12 +7,7 @@ import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
 import Clipboard from 'clipboard';
-
-function get_host() {
-    var http = location.protocol;
-    var slashes = http.concat("//");
-    return slashes.concat(window.location.hostname);
-}
+import RichTextEditor from 'react-rte';
 
 @observer
 export class TableEdit extends React.Component {
@@ -149,6 +144,15 @@ export class TableEdit extends React.Component {
         }
     }
 
+    copyLink(link) {
+        return (
+            '/#/tables/' + this.props.params.script +
+            '/table/' + this.props.params.table +
+            '/link/' + link.id +
+            '/share/'
+        )
+    }
+
     render() {
         const {projectsStore, scriptsStore, tablesStore, modalStore} = this.props;
         let table = tablesStore.table(this.props.params.table);
@@ -186,7 +190,8 @@ export class TableEdit extends React.Component {
                                                 {active_link ?
                                                     <div>
                                                         <h3>{active_link.name}</h3>
-                                                        <div>
+                                                        <div className="link_text_editor">
+                                                            <Editor link={active_link} value={active_link.text} onChange={(value) => {active_link.text = value}} />
                                                         </div>
                                                     </div>
                                                     :
@@ -239,12 +244,7 @@ export class TableEdit extends React.Component {
                                                                                         }}/>
                                                                                 </div>
                                                                                 <div className="col-md-1">
-                                                                                    <span className="glyphicon glyphicon-copy icon copy_icon" aria-hidden="true" data-link={
-                                                                                        '#/tables/' + this.props.params.script +
-                                                                                        '/table/' + this.props.params.table +
-                                                                                        '/link/' + link.id +
-                                                                                        '/share/'
-                                                                                    }/>
+                                                                                    <span className="glyphicon glyphicon-copy icon copy_icon" aria-hidden="true" data-link={this.copyLink(link)}/>
                                                                                 </div>
                                                                                 <div className="col-md-1">
                                                                                     <Link to={
@@ -336,4 +336,37 @@ class EditableText extends React.Component {
         )
     }
 }
-                //<div dangerouslySetInnerHTML={{__html: active_link.text}}></div>
+
+class Editor extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            link: props.link,
+            value: props.value ? RichTextEditor.createValueFromString(props.value, 'html') : RichTextEditor.createEmptyValue()
+        }
+    }
+
+    componentWillReceiveProps(props) {
+        if(this.state.link.id !== props.link.id) {
+            this.setState(update(this.state, {
+                value: {$set: props.value ? RichTextEditor.createValueFromString(props.value, 'html') : RichTextEditor.createEmptyValue()},
+                link: {$set: props.link}
+            }));
+        }
+    }
+
+    onChange(value) {
+        this.setState(update(this.state, {value: {$set: value}}));
+        this.props.onChange(value.toString('html'));
+    };
+
+    render () {
+        return (
+            <RichTextEditor
+                value={this.state.value}
+                onChange={this.onChange.bind(this)}/>
+        );
+    }
+}
+//<div dangerouslySetInnerHTML={{__html: active_link.text}}></div>

@@ -211,10 +211,6 @@ export class CustomEditor extends React.Component {
                 <ColorControls
                     editorState={editorState}
                     onToggle={this.toggleColor}/>
-                <div style={{marginBottom: 10}}>
-                    Select some text, then use the buttons to add or remove links
-                    on the selected text.
-                </div>
                 <div style={styles.buttons}>
                     <button onMouseDown={this.promptForLink} style={{marginRight: 10}}>Add Link</button>
                     <button onMouseDown={this.removeLink}>Remove Link</button>

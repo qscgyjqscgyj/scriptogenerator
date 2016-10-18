@@ -58,7 +58,6 @@ export class AppWrapper extends React.Component {
                 modalStore: modalStore
             })
         );
-        console.log(this.props);
         return(
             <App modalStore={modalStore} scriptsStore={scriptsStore} projectsStore={projectsStore} tablesStore={tablesStore} children={childrenWithProps} location={this.props.location}/>
         )

@@ -8,7 +8,6 @@ import {Coll} from '../mobx/tablesStore';
 import {CustomEditor} from './editor';
 import {Link} from 'react-router';
 import Clipboard from 'clipboard';
-import RichTextEditor from 'react-rte';
 
 @observer
 export class Table extends React.Component {
@@ -397,37 +396,3 @@ class EditableText extends React.Component {
         )
     }
 }
-
-//class CustomEditor extends React.Component {
-//    constructor(props) {
-//        super(props);
-//
-//        this.state = {
-//            link: props.link,
-//            value: props.value ? RichTextEditor.createValueFromString(props.value, 'html') : RichTextEditor.createEmptyValue()
-//        }
-//    }
-//
-//    componentWillReceiveProps(props) {
-//        if(this.state.link.id !== props.link.id) {
-//            this.setState(update(this.state, {
-//                value: {$set: props.value ? RichTextEditor.createValueFromString(props.value, 'html') : RichTextEditor.createEmptyValue()},
-//                link: {$set: props.link}
-//            }));
-//        }
-//    }
-//
-//    onChange(value) {
-//        this.setState(update(this.state, {value: {$set: value}}));
-//        this.props.onChange(value.toString('html'));
-//    };
-//
-//    render () {
-//        return (
-//            <RichTextEditor
-//                value={this.state.value}
-//                onChange={this.onChange.bind(this)}/>
-//        );
-//    }
-//}
-//

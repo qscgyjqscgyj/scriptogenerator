@@ -7,6 +7,7 @@ import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
 import {Editor, EditorState, Modifier, RichUtils, ContentState, convertToRaw} from 'draft-js';
+import {stateToHTML} from 'draft-js-export-html';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 
 @observer
@@ -34,7 +35,7 @@ export class CustomEditor extends React.Component {
         this.focus = () => this.refs.editor.focus();
         this.onChange = (editorState) => {
             this.setState({editorState});
-            this.props.onChange(editorState.toString('html'));
+            this.props.onChange(stateToHTML(editorState.getCurrentContent()));
         };
 
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
@@ -109,7 +110,6 @@ export class CustomEditor extends React.Component {
 
     render() {
         const {editorState} = this.state;
-
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.
         let className = 'RichEditor-editor';

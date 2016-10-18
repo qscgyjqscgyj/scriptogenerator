@@ -29,9 +29,13 @@ export class App extends React.Component {
     render() {
         return(
             <div>
-                <Nav />
+                {!(this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share')) ?
+                    <Nav />
+                :
+                    ''
+                }
 
-                <div className="container">
+                <div className="container-fluid">
                     {this.props.children}
                 </div>
             </div>
@@ -54,8 +58,9 @@ export class AppWrapper extends React.Component {
                 modalStore: modalStore
             })
         );
+        console.log(this.props);
         return(
-            <App modalStore={modalStore} scriptsStore={scriptsStore} projectsStore={projectsStore} tablesStore={tablesStore} children={childrenWithProps}/>
+            <App modalStore={modalStore} scriptsStore={scriptsStore} projectsStore={projectsStore} tablesStore={tablesStore} children={childrenWithProps} location={this.props.location}/>
         )
     }
 }

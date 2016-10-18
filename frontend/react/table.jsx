@@ -5,6 +5,7 @@ import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
+import {CustomEditor} from './editor';
 import {Link} from 'react-router';
 import Clipboard from 'clipboard';
 import RichTextEditor from 'react-rte';
@@ -176,23 +177,6 @@ export class TableEdit extends Table {
                     </Link>
                     <table className="table table-bordered">
                         <tbody>
-                            <tr className="scroll_header">
-                                {sorted_colls.map((coll, key) => {
-                                    if (coll.text) {
-                                        coll_name = table.text_coll_name;
-                                        coll_size = table.text_coll_size;
-                                    }
-                                    else if (!coll.text) {
-                                        coll_name = coll.coll.name;
-                                        coll_size = coll.coll.size;
-                                    }
-                                    return (
-                                        <td key={key} style={{width: coll_size + '%'}}>
-                                            {coll_name}
-                                        </td>
-                                    )
-                                })}
-                            </tr>
                             <tr className="scroll_block">
                                 {sorted_colls.map((coll, key) => {
                                     if (coll.text) {
@@ -203,7 +187,7 @@ export class TableEdit extends Table {
                                                         <h3>{active_link.name}</h3>
                                                         <button className="btn btn-success" onClick={() => {this.updateLink(active_link)}}>Сохранить</button>
                                                         <div className="link_text_editor">
-                                                            <Editor link={active_link} value={active_link.text} onChange={(value) => {active_link.text = value}} />
+                                                            <CustomEditor objects={active_link} value={active_link.text} onChange={(value) => {active_link.text = value}} />
                                                         </div>
                                                     </div>
                                                     :
@@ -308,23 +292,6 @@ export class TableShare extends Table {
                 <div className="col-md-12 scrollable_panel">
                     <table className="table table-bordered">
                         <tbody>
-                            <tr className="scroll_header">
-                                {sorted_colls.map((coll, key) => {
-                                    if (coll.text) {
-                                        coll_name = table.text_coll_name;
-                                        coll_size = table.text_coll_size;
-                                    }
-                                    else if (!coll.text) {
-                                        coll_name = coll.coll.name;
-                                        coll_size = coll.coll.size;
-                                    }
-                                    return (
-                                        <td key={key} style={{width: coll_size + '%'}}>
-                                            {coll_name}
-                                        </td>
-                                    )
-                                })}
-                            </tr>
                             <tr className="scroll_block">
                                 {sorted_colls.map((coll, key) => {
                                     if (coll.text) {
@@ -431,36 +398,36 @@ class EditableText extends React.Component {
     }
 }
 
-class Editor extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            link: props.link,
-            value: props.value ? RichTextEditor.createValueFromString(props.value, 'html') : RichTextEditor.createEmptyValue()
-        }
-    }
-
-    componentWillReceiveProps(props) {
-        if(this.state.link.id !== props.link.id) {
-            this.setState(update(this.state, {
-                value: {$set: props.value ? RichTextEditor.createValueFromString(props.value, 'html') : RichTextEditor.createEmptyValue()},
-                link: {$set: props.link}
-            }));
-        }
-    }
-
-    onChange(value) {
-        this.setState(update(this.state, {value: {$set: value}}));
-        this.props.onChange(value.toString('html'));
-    };
-
-    render () {
-        return (
-            <RichTextEditor
-                value={this.state.value}
-                onChange={this.onChange.bind(this)}/>
-        );
-    }
-}
-
+//class CustomEditor extends React.Component {
+//    constructor(props) {
+//        super(props);
+//
+//        this.state = {
+//            link: props.link,
+//            value: props.value ? RichTextEditor.createValueFromString(props.value, 'html') : RichTextEditor.createEmptyValue()
+//        }
+//    }
+//
+//    componentWillReceiveProps(props) {
+//        if(this.state.link.id !== props.link.id) {
+//            this.setState(update(this.state, {
+//                value: {$set: props.value ? RichTextEditor.createValueFromString(props.value, 'html') : RichTextEditor.createEmptyValue()},
+//                link: {$set: props.link}
+//            }));
+//        }
+//    }
+//
+//    onChange(value) {
+//        this.setState(update(this.state, {value: {$set: value}}));
+//        this.props.onChange(value.toString('html'));
+//    };
+//
+//    render () {
+//        return (
+//            <RichTextEditor
+//                value={this.state.value}
+//                onChange={this.onChange.bind(this)}/>
+//        );
+//    }
+//}
+//

@@ -5,8 +5,7 @@ import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
-import {Link} from 'react-router';
-import {Editor, EditorState, Modifier, RichUtils, ContentState, convertToRaw} from 'draft-js';
+import {Editor, EditorState, CompositeDecorator, Modifier, RichUtils, ContentState, convertToRaw} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 
@@ -15,8 +14,14 @@ export class CustomEditor extends React.Component {
     constructor(props) {
         super(props);
 
-        let editorState;
+        const decorator = new CompositeDecorator([
+            {
+                strategy: findLinkEntities,
+                component: Link
+            }
+        ]);
 
+        let editorState;
         if(props.value) {
             const processedHTML = DraftPasteProcessor.processHTML(props.value);
             const contentState = ContentState.createFromBlockArray(processedHTML);
@@ -29,7 +34,9 @@ export class CustomEditor extends React.Component {
 
         this.state = {
             object: props.object,
-            editorState: editorState
+            editorState: editorState,
+            showURLInput: false,
+            urlValue: ''
         };
 
         this.focus = () => this.refs.editor.focus();
@@ -43,6 +50,11 @@ export class CustomEditor extends React.Component {
         this.toggleBlockType = (type) => this._toggleBlockType(type);
         this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
         this.toggleColor = (toggledColor) => this._toggleColor(toggledColor);
+        this.promptForLink = this._promptForLink.bind(this);
+        this.onURLChange = (e) => this.setState({urlValue: e.target.value});
+        this.confirmLink = this._confirmLink.bind(this);
+        this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
+        this.removeLink = this._removeLink.bind(this);
     }
 
     _handleKeyCommand(command) {
@@ -108,6 +120,58 @@ export class CustomEditor extends React.Component {
         this.onChange(nextEditorState);
     }
 
+    _promptForLink(e) {
+        e.preventDefault();
+        const {editorState} = this.state;
+        const selection = editorState.getSelection();
+        if (!selection.isCollapsed()) {
+            this.setState(update(this.state, {showURLInput: {$set: true}, urlValue: {$set: ''}}), () => {
+                setTimeout(() => this.refs.url.focus(), 0);
+            });
+        }
+    }
+
+    _confirmLink(e) {
+        e.preventDefault();
+        const {editorState, urlValue} = this.state;
+        const contentState = editorState.getCurrentContent();
+        const contentStateWithEntity = contentState.createEntity(
+            'LINK',
+            'MUTABLE',
+            {url: urlValue}
+        );
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+        const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
+        this.setState(update(this.state, {
+            editorState: {$set: RichUtils.toggleLink(
+                newEditorState,
+                newEditorState.getSelection(),
+                entityKey
+            )},
+            showURLInput: {$set: false},
+            urlValue: {$set: ''},
+        }), () => {
+            setTimeout(() => this.refs.editor.focus(), 0);
+        });
+    }
+
+    _onLinkInputKeyDown(e) {
+        if (e.which === 13) {
+            this._confirmLink(e);
+        }
+    }
+
+    _removeLink(e) {
+        e.preventDefault();
+        const {editorState} = this.state;
+        const selection = editorState.getSelection();
+        if (!selection.isCollapsed()) {
+            this.setState(update(this.state, {
+                editorState: {$set: RichUtils.toggleLink(editorState, selection, null)}
+            }));
+        }
+    }
+
     render() {
         const {editorState} = this.state;
         // If the user changes block type before entering any text, we can
@@ -120,6 +184,22 @@ export class CustomEditor extends React.Component {
             }
         }
 
+        let urlInput;
+        if (this.state.showURLInput) {
+            urlInput =
+                <div style={styles.urlInputContainer}>
+                    <input
+                        onChange={this.onURLChange}
+                        ref="url"
+                        style={styles.urlInput}
+                        type="text"
+                        value={this.state.urlValue}
+                        onKeyDown={this.onLinkInputKeyDown}/>
+                    <button onMouseDown={this.confirmLink}>Confirm</button>
+                </div>;
+        }
+
+
         return (
             <div className="RichEditor-root">
                 <BlockStyleControls
@@ -131,6 +211,15 @@ export class CustomEditor extends React.Component {
                 <ColorControls
                     editorState={editorState}
                     onToggle={this.toggleColor}/>
+                <div style={{marginBottom: 10}}>
+                    Select some text, then use the buttons to add or remove links
+                    on the selected text.
+                </div>
+                <div style={styles.buttons}>
+                    <button onMouseDown={this.promptForLink} style={{marginRight: 10}}>Add Link</button>
+                    <button onMouseDown={this.removeLink}>Remove Link</button>
+                </div>
+                {urlInput}
                 <div className={className} onClick={this.focus}>
                     <Editor
                         blockStyleFn={getBlockStyle}
@@ -276,6 +365,26 @@ const ColorControls = (props) => {
     );
 };
 
+function findLinkEntities(contentState, contentBlock, callback) {
+    contentBlock.findEntityRanges(
+        (character) => {
+            const entityKey = character.getEntity();
+            return (
+                entityKey !== null &&
+                contentState.getEntity(entityKey).getType() === 'LINK'
+            );
+        },
+        callback
+    );
+}
+
+const Link = (props) => {
+    const {url} = props.contentState.getEntity(props.entityKey).getData();
+    return (
+        <a href={url} style={styles.link}>{props.children}</a>
+    );
+};
+
 const styles = {
     root: {
         fontFamily: '\'Georgia\', serif',
@@ -289,7 +398,9 @@ const styles = {
         fontSize: 16,
         marginTop: 20,
         minHeight: 400,
-        paddingTop: 20
+        paddingTop: 20,
+        border: '1px solid #ccc',
+        padding: 10
     },
     controls: {
         fontFamily: '\'Helvetica\', sans-serif',
@@ -302,5 +413,24 @@ const styles = {
         cursor: 'pointer',
         marginRight: 16,
         padding: '2px 0'
+    },
+    buttons: {
+        marginBottom: 10
+    },
+    urlInputContainer: {
+        marginBottom: 10
+    },
+    urlInput: {
+        fontFamily: '\'Georgia\', serif',
+        marginRight: 10,
+        padding: 3
+    },
+    button: {
+        marginTop: 10,
+        textAlign: 'center'
+    },
+    link: {
+        color: '#3b5998',
+        textDecoration: 'underline'
     }
 };

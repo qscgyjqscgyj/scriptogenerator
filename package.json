@@ -35,11 +35,11 @@
     "clipboard": "^1.5.12",
     "draft-js": "^0.9.1",
     "draft-js-export-html": "^0.5.0",
+    "draft-js-utils": "^0.1.6",
     "gulp-if": "^2.0.1",
     "gulp-uglify": "^2.0.0",
     "jquery": "^1.12.4",
     "react-modal": "^1.4.0",
-    "react-rte": "^0.7.0",
     "vinyl-buffer": "^1.0.0"
   }
 }

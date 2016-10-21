@@ -5,8 +5,9 @@ import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
-import {Editor, EditorState, CompositeDecorator, Modifier, RichUtils, ContentState, convertToRaw} from 'draft-js';
+import {Editor, EditorState, CompositeDecorator, Modifier, RichUtils, ContentState, convertToRaw, Entity, convertFromHTML} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
+import {stateFromHTML} from 'draft-js-import-html';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 
 @observer
@@ -14,23 +15,14 @@ export class CustomEditor extends React.Component {
     constructor(props) {
         super(props);
 
-        const decorator = new CompositeDecorator([
+        this.decorator = new CompositeDecorator([
             {
                 strategy: findLinkEntities,
                 component: Link
             }
         ]);
 
-        let editorState;
-        if(props.value) {
-            const processedHTML = DraftPasteProcessor.processHTML(props.value);
-            const contentState = ContentState.createFromBlockArray(processedHTML);
-
-            editorState = EditorState.createWithContent(contentState);
-            editorState = EditorState.moveFocusToEnd(editorState);
-        } else {
-            editorState = EditorState.createEmptyValue();
-        }
+        let editorState = this.getEditorState(props);
 
         this.state = {
             object: props.object,
@@ -41,8 +33,9 @@ export class CustomEditor extends React.Component {
 
         this.focus = () => this.refs.editor.focus();
         this.onChange = (editorState) => {
-            this.setState({editorState});
-            this.props.onChange(stateToHTML(editorState.getCurrentContent()));
+            this.setState(update(this.state, {editorState: {$set: editorState}}), () => {
+                this.props.onChange(stateToHTML(editorState.getCurrentContent()));
+            });
         };
 
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
@@ -55,6 +48,25 @@ export class CustomEditor extends React.Component {
         this.confirmLink = this._confirmLink.bind(this);
         this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
         this.removeLink = this._removeLink.bind(this);
+    }
+
+    getEditorState(props) {
+        let editorState;
+        if(props.value) {
+            editorState = EditorState.createWithContent(stateFromHTML(props.value), this.decorator);
+            editorState = EditorState.moveFocusToEnd(editorState);
+        } else {
+            editorState = EditorState.createEmpty(this.decorator);
+        }
+        return editorState;
+    }
+
+    componentWillReceiveProps(props) {
+        if(this.state.object.id !== props.object.id) {
+            this.setState(update(this.state, {object: {$set: props.object}}), () => {
+                this.onChange(this.getEditorState(props));
+            });
+        }
     }
 
     _handleKeyCommand(command) {
@@ -94,7 +106,7 @@ export class CustomEditor extends React.Component {
 
         // Let's just allow one color at a time. Turn off all active colors.
         const nextContentState = Object.keys(styleMap).reduce((contentState, color) => {
-            return Modifier.removeInlineStyle(contentState, selection, color)
+            return Modifier.removeInlineStyle(contentState, selection, color);
         }, editorState.getCurrentContent());
 
         let nextEditorState = EditorState.push(
@@ -117,6 +129,8 @@ export class CustomEditor extends React.Component {
             nextEditorState = RichUtils.toggleInlineStyle(nextEditorState, toggledColor);
         }
 
+        //console.log(stateToHTML(nextEditorState.getCurrentContent()));
+
         this.onChange(nextEditorState);
     }
 
@@ -135,13 +149,13 @@ export class CustomEditor extends React.Component {
         e.preventDefault();
         const {editorState, urlValue} = this.state;
         const contentState = editorState.getCurrentContent();
-        const contentStateWithEntity = contentState.createEntity(
-            'LINK',
-            'MUTABLE',
-            {url: urlValue}
+        const entityKey = Entity.create('LINK', 'MUTABLE', {url: urlValue});
+        const contentStateWithEntity = Modifier.applyEntity(
+            contentState,
+            editorState.getSelection(),
+            entityKey
         );
-        const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-        const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
+        const newEditorState = EditorState.push(editorState, contentStateWithEntity, entityKey);
         this.setState(update(this.state, {
             editorState: {$set: RichUtils.toggleLink(
                 newEditorState,
@@ -149,7 +163,7 @@ export class CustomEditor extends React.Component {
                 entityKey
             )},
             showURLInput: {$set: false},
-            urlValue: {$set: ''},
+            urlValue: {$set: ''}
         }), () => {
             setTimeout(() => this.refs.editor.focus(), 0);
         });
@@ -233,21 +247,14 @@ export class CustomEditor extends React.Component {
     }
 }
 
-// Custom overrides for "code" style.
 const styleMap = {
-    CODE: {
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-        fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-        fontSize: 16,
-        padding: 2
-    },
     red: {color: 'rgba(255, 0, 0, 1.0)'},
     orange: {color: 'rgba(255, 127, 0, 1.0)'},
     yellow: {color: 'rgba(180, 180, 0, 1.0)'},
     green: {color: 'rgba(0, 180, 0, 1.0)'},
     blue: {color: 'rgba(0, 0, 255, 1.0)'},
     indigo: {color: 'rgba(75, 0, 130, 1.0)'},
-    violet: {color: 'rgba(127, 0, 255, 1.0)'}
+    violet: {color: 'rgba(127, 0, 255, 1.0)'},
 };
 
 function getBlockStyle(block) {
@@ -258,8 +265,9 @@ function getBlockStyle(block) {
 }
 
 class StyleButton extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
         this.onToggle = (e) => {
             e.preventDefault();
             this.props.onToggle(this.props.style);
@@ -290,7 +298,6 @@ const BLOCK_TYPES = [
     {label: 'Blockquote', style: 'blockquote'},
     {label: 'UL', style: 'unordered-list-item'},
     {label: 'OL', style: 'ordered-list-item'},
-    {label: 'Code Block', style: 'code-block'}
 ];
 
 const BlockStyleControls = (props) => {
@@ -316,7 +323,6 @@ var INLINE_STYLES = [
     {label: 'Bold', style: 'BOLD'},
     {label: 'Italic', style: 'ITALIC'},
     {label: 'Underline', style: 'UNDERLINE'},
-    {label: 'Monospace', style: 'CODE'}
 ];
 
 const InlineStyleControls = (props) => {
@@ -361,13 +367,11 @@ const ColorControls = (props) => {
     );
 };
 
-function findLinkEntities(contentState, contentBlock, callback) {
-    contentBlock.findEntityRanges(
-        (character) => {
+function findLinkEntities(contentBlock, callback) {
+    contentBlock.findEntityRanges((character) => {
             const entityKey = character.getEntity();
             return (
-                entityKey !== null &&
-                contentState.getEntity(entityKey).getType() === 'LINK'
+                entityKey !== null
             );
         },
         callback
@@ -375,7 +379,7 @@ function findLinkEntities(contentState, contentBlock, callback) {
 }
 
 const Link = (props) => {
-    const {url} = props.contentState.getEntity(props.entityKey).getData();
+    const {url} = props.decoratedText;
     return (
         <a href={url} style={styles.link}>{props.children}</a>
     );

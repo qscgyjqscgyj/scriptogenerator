@@ -186,7 +186,7 @@ export class TableEdit extends Table {
                                                         <h3>{active_link.name}</h3>
                                                         <button className="btn btn-success" onClick={() => {this.updateLink(active_link)}}>Сохранить</button>
                                                         <div className="link_text_editor">
-                                                            <CustomEditor objects={active_link} value={active_link.text} onChange={(value) => {active_link.text = value}} />
+                                                            <CustomEditor object={active_link} value={active_link.text} onChange={(value) => {active_link.text = value}} />
                                                         </div>
                                                     </div>
                                                     :

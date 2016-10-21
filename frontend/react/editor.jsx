@@ -34,6 +34,7 @@ export class CustomEditor extends React.Component {
         this.focus = () => this.refs.editor.focus();
         this.onChange = (editorState) => {
             this.setState(update(this.state, {editorState: {$set: editorState}}), () => {
+                //console.log(stateToHTML(editorState.getCurrentContent()));
                 this.props.onChange(stateToHTML(editorState.getCurrentContent()));
             });
         };
@@ -63,6 +64,7 @@ export class CustomEditor extends React.Component {
 
     componentWillReceiveProps(props) {
         if(this.state.object.id !== props.object.id) {
+            console.log(props);
             this.setState(update(this.state, {object: {$set: props.object}}), () => {
                 this.onChange(this.getEditorState(props));
             });
@@ -128,8 +130,6 @@ export class CustomEditor extends React.Component {
         if (!currentStyle.has(toggledColor)) {
             nextEditorState = RichUtils.toggleInlineStyle(nextEditorState, toggledColor);
         }
-
-        //console.log(stateToHTML(nextEditorState.getCurrentContent()));
 
         this.onChange(nextEditorState);
     }

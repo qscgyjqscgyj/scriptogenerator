@@ -64,7 +64,6 @@ export class CustomEditor extends React.Component {
 
     componentWillReceiveProps(props) {
         if(this.state.object.id !== props.object.id) {
-            console.log(props);
             this.setState(update(this.state, {object: {$set: props.object}}), () => {
                 this.onChange(this.getEditorState(props));
             });
@@ -368,10 +367,14 @@ const ColorControls = (props) => {
 };
 
 function findLinkEntities(contentBlock, callback) {
+    //const contentState = ContentState.createFromBlockArray(contentBlock);
+    //console.log(contentState);
     contentBlock.findEntityRanges((character) => {
             const entityKey = character.getEntity();
+            //console.log(contentState.getEntity(entityKey).getType());
             return (
                 entityKey !== null
+                //&& contentState.getEntity(entityKey).getType() === 'LINK'
             );
         },
         callback

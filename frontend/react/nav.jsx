@@ -7,12 +7,24 @@ export class Nav extends React.Component {
     render() {
         return(
             <nav className="navbar navbar-default">
-                <div className="container">
+                <div className="container-fluid">
                     <ul className="nav navbar-nav">
                         <li><Link to='/'>Главная</Link></li>
                         <li><Link to='/projects'>Мои проекты</Link></li>
                         <li><Link to='/scripts/user'>Мои скрипты</Link></li>
                         <li><Link to='/scripts/available'>Доступные мне</Link></li>
+                        {this.props.location.pathname.includes('edit') ?
+                            <li>
+                                <Link to={
+                                        '/tables/' + this.props.params.script +
+                                        '/table/' + this.props.params.table +
+                                        (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
+                                        '/share/'
+                                    }>Просмотр</Link>
+                            </li>
+                        :
+                            ''
+                        }
                     </ul>
                 </div>
             </nav>

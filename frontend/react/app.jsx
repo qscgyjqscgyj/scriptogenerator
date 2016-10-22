@@ -29,8 +29,8 @@ export class App extends React.Component {
     render() {
         return(
             <div>
-                {!(this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share')) ?
-                    <Nav />
+                {!(this.props.location.pathname.includes('share')) ?
+                    <Nav location={this.props.location} params={this.props.params}/>
                 :
                     ''
                 }
@@ -59,7 +59,14 @@ export class AppWrapper extends React.Component {
             })
         );
         return(
-            <App modalStore={modalStore} scriptsStore={scriptsStore} projectsStore={projectsStore} tablesStore={tablesStore} children={childrenWithProps} location={this.props.location}/>
+            <App
+                modalStore={modalStore}
+                scriptsStore={scriptsStore}
+                projectsStore={projectsStore}
+                tablesStore={tablesStore}
+                children={childrenWithProps}
+                location={this.props.location}
+                params={this.props.params}/>
         )
     }
 }

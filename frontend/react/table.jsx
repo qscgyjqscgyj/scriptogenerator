@@ -24,13 +24,12 @@ export class Table extends React.Component {
         });
     }
 
-    createLinkCategory(coll) {
+    createLinkCategory(coll, hidden) {
         const {tablesStore} = this.props;
-        var r = confirm("Вы хотите создать скрытый раздел?");
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-link-categories-url'),
-            data: JSON.stringify({name: 'Пустой раздел', table: coll.id, hidden: r}),
+            data: JSON.stringify({name: 'Пустой раздел', table: coll.id, hidden: hidden}),
             success: (res) => {
                 tablesStore.tables = res.tables;
             },
@@ -166,14 +165,6 @@ export class TableEdit extends Table {
         if (table) {
             return (
                 <div className="col-md-12 scrollable_panel">
-                    <Link to={
-                            '/tables/' + this.props.params.script +
-                            '/table/' + this.props.params.table +
-                            (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
-                            '/share/'
-                        }>
-                        <button className="btn btn-success">Просмотр</button>
-                    </Link>
                     <table className="table table-bordered">
                         <tbody>
                             <tr className="scroll_block">
@@ -183,8 +174,14 @@ export class TableEdit extends Table {
                                             <td key={key} style={{width: table.text_coll_size + '%'}}>
                                                 {active_link ?
                                                     <div>
-                                                        <h3>{active_link.name}</h3>
-                                                        <button className="btn btn-success" onClick={() => {this.updateLink(active_link)}}>Сохранить</button>
+                                                        <div className="row">
+                                                            <div className="col-md-11">
+                                                                <h4>{active_link.name}</h4>
+                                                            </div>
+                                                            <div className="col-md-1">
+                                                                <i className="icon add_icon glyphicon glyphicon-floppy-save icon_vertical_centre" onClick={() => {this.updateLink(active_link)}}/>
+                                                            </div>
+                                                        </div>
                                                         <div className="link_text_editor">
                                                             <CustomEditor object={active_link} value={active_link.text} onChange={(value) => {active_link.text = value}} />
                                                         </div>
@@ -198,34 +195,43 @@ export class TableEdit extends Table {
                                         coll = coll.coll;
                                         return (
                                             <td key={key} style={{width: coll.size + '%'}}>
-                                                <button onClick={() => {this.createLinkCategory(coll)}} className="btn btn-success">+ категория</button>
+                                                <div className="row">
+                                                    <div className="col-md-1">
+                                                        <i className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
+                                                    </div>
+                                                    <div className="col-md-1">
+                                                        <i className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
+                                                    </div>
+                                                </div>
                                                 {coll.categories.map((category, key) => {
                                                     return (
                                                         <div key={key} className={category.hidden ? 'hidden_links' : ''}>
-                                                            <h3>
-                                                                <div className="row">
-                                                                    <div className="col-md-10">
-                                                                            <EditableText
-                                                                                text={category.name}
-                                                                                field={'name'}
-                                                                                submitHandler={(category) => this.updateLinkCategory(category)}
-                                                                                object={category}
-                                                                                settings={{
-                                                                                    placeholder: 'Имя категории',
-                                                                                    name: 'name'
-                                                                                }}
-                                                                            />
-                                                                    </div>
-                                                                    <div className="col-md-2">
-                                                                        <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
-                                                                    </div>
+                                                            <div className="row">
+                                                                <div className="col-md-9">
+                                                                    <h4>
+                                                                        <EditableText
+                                                                            text={category.name}
+                                                                            field={'name'}
+                                                                            submitHandler={(category) => this.updateLinkCategory(category)}
+                                                                            object={category}
+                                                                            settings={{
+                                                                                placeholder: 'Имя категории',
+                                                                                name: 'name'
+                                                                            }}
+                                                                        />
+                                                                    </h4>
                                                                 </div>
-                                                            </h3>
-                                                            <button className="btn btn-success" onClick={()=>{this.createLink(category)}}>+ ссылка</button>
-                                                            <ul className="list-group">
+                                                                <div className="col-md-1">
+                                                                    <i className="icon add_icon icon_vertical_centre glyphicon glyphicon-plus" onClick={()=>{this.createLink(category)}}/>
+                                                                </div>
+                                                                <div className="col-md-1">
+                                                                    <i className="glyphicon glyphicon-remove icon icon_vertical_centre red_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
+                                                                </div>
+                                                            </div>
+                                                            <ul>
                                                                 {category.links.map((link, key) => {
                                                                     return (
-                                                                        <li key={key} className="list-group-item">
+                                                                        <li key={key}>
                                                                             <div className="row">
                                                                                 <div className="col-md-8">
                                                                                     <EditableText
@@ -252,7 +258,7 @@ export class TableEdit extends Table {
                                                                                     </Link>
                                                                                 </div>
                                                                                 <div className="col-md-1">
-                                                                                    <span className="glyphicon glyphicon-remove icon remove_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
+                                                                                    <span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
                                                                                 </div>
                                                                             </div>
                                                                         </li>
@@ -298,7 +304,7 @@ export class TableShare extends Table {
                                             <td key={key} style={{width: table.text_coll_size + '%'}}>
                                                 {active_link ?
                                                     <div>
-                                                        <h3>{active_link.name}</h3>
+                                                        <h4>{active_link.name}</h4>
                                                         <div dangerouslySetInnerHTML={{__html: active_link.text}}></div>
                                                     </div>
                                                     :
@@ -314,13 +320,13 @@ export class TableShare extends Table {
                                                     if(!category.hidden) {
                                                         return (
                                                             <div key={key} className={category.hidden ? 'hidden_links' : ''}>
-                                                                <h3>
+                                                                <h4>
                                                                     <div className="row">
                                                                         <div className="col-md-12">
                                                                             {category.name}
                                                                         </div>
                                                                     </div>
-                                                                </h3>
+                                                                </h4>
                                                                 <ul className="list-group">
                                                                     {category.links.map((link, key) => {
                                                                         return (

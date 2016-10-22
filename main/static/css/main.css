@@ -1,5 +1,5 @@
 .hidden_links {
-    color: red; !important;
+    color: #e98273; !important;
 }
 .scroll_header td {
     display: inline-block;
@@ -15,15 +15,34 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
-.icon {
-    font-size: 15px;
+.link_text_editor {
+    border: 1px solid #ddd;
 }
+/*SCROLL*/
+::-webkit-scrollbar {
+  width: 0.5em;
+  height: 0.5em;
+}
+::-webkit-scrollbar-thumb {
+  background: #5e5e5f;
+}
+::-webkit-scrollbar-track {
+  background: #cdcdcd;
+}
+/*ICONS*/
 .icon:hover {
     cursor: pointer;
+}
+.add_icon {
+    color: #92e96f;
+}
+.red_icon {
+    color: #e98273;
 }
 .remove_icon {
     color: red;
 }
-.link_text_editor {
-    border: 1px solid #ddd;
+.icon_vertical_centre {
+    position: relative;
+    top: 10px;
 }

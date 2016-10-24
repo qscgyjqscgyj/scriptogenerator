@@ -6,6 +6,13 @@
 .hidden_links {
     color: #e98273; !important;
 }
+.link_name {
+    font-size: 16px;
+}
+.link_name:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
 .scroll_header td {
     display: inline-block;
 }
@@ -25,6 +32,12 @@
 }
 .table_header_text {
     font-size: 16px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+}
+.table_header_text:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 /*SCROLL*/
 ::-webkit-scrollbar {

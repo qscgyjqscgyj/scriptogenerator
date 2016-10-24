@@ -51,6 +51,9 @@ class TableLinksColl(models.Model):
     def __unicode__(self):
         return self.table.__unicode__()
 
+    class Meta:
+        ordering = ('position',)
+
 
 class LinkCategory(models.Model):
     name = models.CharField(max_length=1024)
@@ -62,7 +65,7 @@ class LinkCategory(models.Model):
         return self.name
 
     class Meta:
-        ordering = ('order',)
+        ordering = ('-order',)
 
 
 class Link(models.Model):
@@ -75,4 +78,4 @@ class Link(models.Model):
         return self.name
 
     class Meta:
-        ordering = ('order',)
+        ordering = ('-order',)

@@ -33,6 +33,8 @@ export class TablesStore {
 
     @observable active_link = null;
 
+    @observable pressed_key = null;
+
     @action pullTables(script) {
         $.ajax({
             method: 'GET',

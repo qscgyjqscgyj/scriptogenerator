@@ -11,17 +11,48 @@ import Clipboard from 'clipboard';
 
 @observer
 export class Table extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            key: null
+        }
+    }
     componentWillMount() {
         const {tablesStore} = this.props;
         tablesStore.pullTables(this.props.params.script);
     }
 
     componentDidMount() {
+        const {tablesStore} = this.props;
         new Clipboard('.copy_icon', {
             text: function(trigger) {
-                return trigger.getAttribute('data-link');
+                if(tablesStore.pressed_key === 17) {
+                    return trigger.getAttribute('data-link');
+                } else {
+                    return '';
+                }
             }
         });
+        $(document.body).on('keydown', this.handleKeyDown.bind(this));
+        $(document.body).on('keyup', this.handleKeyUp.bind(this));
+    }
+
+    componentWillUnmount() {
+        $(document.body).off('keydown', this.handleKeyDown.bind(this));
+        $(document.body).off('keyup', this.handleKeyUp.bind(this));
+    }
+
+    handleKeyDown(e) {
+        const {tablesStore} = this.props;
+        if(e.keyCode === 17) {
+            tablesStore.pressed_key = e.keyCode;
+        }
+    }
+
+    handleKeyUp(e) {
+        const {tablesStore} = this.props;
+        tablesStore.pressed_key = null;
     }
 
     componentDidUpdate() {
@@ -134,21 +165,22 @@ export class Table extends React.Component {
         let table = tablesStore.table(this.props.params.table);
         if(table) {
             var sorted_colls = [];
+            sorted_colls.push({position: table.text_coll_position, text: true});
             table.colls.map(coll => {
                 sorted_colls.push({coll: coll, position: coll.position, text: false});
             });
-            sorted_colls.push({position: table.text_coll_position, text: true});
-            return sorted_colls.sort(
-                function (a, b) {
-                    if (a.position > b.position) {
-                        return 1;
-                    }
-                    if (a.position < b.position) {
-                        return -1;
-                    }
-                    return 0;
-                }
-            );
+            //return sorted_colls.sort(
+            //    function (a, b) {
+            //        if (a.position > b.position) {
+            //            return 1;
+            //        }
+            //        if (a.position < b.position) {
+            //            return -1;
+            //        }
+            //        return 0;
+            //    }
+            //);
+            return sorted_colls;
         }
     }
 
@@ -241,29 +273,26 @@ export class TableEdit extends Table {
                                                                 return (
                                                                     <div key={key}>
                                                                         <div className="row">
-                                                                            <div className="col-md-8">
+                                                                            <div className="col-md-10 link_name">
                                                                                 <EditableText
                                                                                     text={link.name}
                                                                                     field={'name'}
+                                                                                    onClick={(link, e) => {
+                                                                                        if(!tablesStore.pressed_key) {
+                                                                                            window.location = '/#/' +
+                                                                                                '/tables/' + this.props.params.script +
+                                                                                                '/table/' + this.props.params.table +
+                                                                                                '/link/' + link.id +
+                                                                                                '/edit/'
+                                                                                        }
+                                                                                    }}
+                                                                                    data_link={this.copyLink(link)}
                                                                                     submitHandler={(link) => this.updateLink(link)}
                                                                                     object={link}
                                                                                     settings={{
                                                                                         placeholder: 'Имя ссылки',
                                                                                         name: 'name'
                                                                                     }}/>
-                                                                            </div>
-                                                                            <div className="col-md-1">
-                                                                                <span className="glyphicon glyphicon-copy icon copy_icon" aria-hidden="true" data-link={this.copyLink(link)}/>
-                                                                            </div>
-                                                                            <div className="col-md-1">
-                                                                                <Link to={
-                                                                                        '/tables/' + this.props.params.script +
-                                                                                        '/table/' + this.props.params.table +
-                                                                                        '/link/' + link.id +
-                                                                                        '/edit/'
-                                                                                    }>
-                                                                                    <span className="glyphicon glyphicon-edit icon edit_icon" aria-hidden="true"/>
-                                                                                </Link>
                                                                             </div>
                                                                             <div className="col-md-1">
                                                                                 <span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
@@ -337,7 +366,7 @@ export class TableShare extends Table {
                                                                     return (
                                                                         <div key={key}>
                                                                             <div className="row">
-                                                                                <div className="col-md-12">
+                                                                                <div className="col-md-12 link_name">
                                                                                     <Link to={
                                                                                         '/tables/' + this.props.params.script +
                                                                                         '/table/' + this.props.params.table +
@@ -370,7 +399,11 @@ export class TableShare extends Table {
 class EditableText extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {text: this.props.text, edit: false}
+        this.state = {
+            text: this.props.text,
+            edit: false,
+            key: null
+        }
     }
     componentWillReceiveProps(props) {
         this.setState({text: props.text, edit: false})
@@ -390,7 +423,15 @@ class EditableText extends React.Component {
         return (
             <div>
                 {!this.state.edit ?
-                    <span onDoubleClick={() => {this.setEdit(true)}}>{this.props.text}</span>
+                    <span className="copy_icon"
+                        data-link={this.props.data_link}
+                        onClick={(e) => {
+                            if(this.props.onClick) {
+                                this.props.onClick(this.props.object, e)
+                            }
+                        }}
+                        onDoubleClick={() => {this.setEdit(true)}}
+                        >{this.props.text}</span>
                 :
                     <form onSubmit={this.submitHandler.bind(this)}>
                         <input

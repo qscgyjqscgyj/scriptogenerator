@@ -25,7 +25,7 @@ export class Nav extends React.Component {
                         :
                             ''
                         }
-                        {this.props.location.pathname.includes('edit') ?
+                        {this.props.location.pathname.includes('share') ?
                             <li>
                                 <Link to={
                                         '/tables/' + this.props.params.script +

@@ -174,7 +174,7 @@ export class TableEdit extends Table {
         if (table) {
             return (
                 <div className="col-md-12 scrollable_panel">
-                    <table className="table table-bordered">
+                    <table className="table table-bordered unmargin">
                         <tbody>
                             <tr className="scroll_block">
                                 {sorted_colls.map((coll, key) => {
@@ -301,7 +301,7 @@ export class TableShare extends Table {
         if (table) {
             return (
                 <div className="col-md-12 scrollable_panel">
-                    <table className="table table-bordered">
+                    <table className="table table-bordered unmargin">
                         <tbody>
                             <tr className="scroll_block">
                                 {sorted_colls.map((coll, key) => {

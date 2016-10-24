@@ -25,6 +25,18 @@ export class Nav extends React.Component {
                         :
                             ''
                         }
+                        {this.props.location.pathname.includes('edit') ?
+                            <li>
+                                <Link to={
+                                        '/tables/' + this.props.params.script +
+                                        '/table/' + this.props.params.table +
+                                        (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
+                                        '/edit/'
+                                    }>Редактирование</Link>
+                            </li>
+                        :
+                            ''
+                        }
                     </ul>
                 </div>
             </nav>

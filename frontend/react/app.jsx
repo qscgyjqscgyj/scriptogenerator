@@ -29,11 +29,7 @@ export class App extends React.Component {
     render() {
         return(
             <div>
-                {!(this.props.location.pathname.includes('share')) ?
-                    <Nav location={this.props.location} params={this.props.params}/>
-                :
-                    ''
-                }
+                <Nav location={this.props.location} params={this.props.params}/>
 
                 <div className="container-fluid" id="main_container">
                     {this.props.children}

@@ -24,6 +24,15 @@ export class Table extends React.Component {
         });
     }
 
+    componentDidUpdate() {
+        const content_height = screen.height - 200;
+        let scroll_links = [].slice.call(document.getElementsByClassName('scroll_links'));
+        scroll_links.map(el => {
+            $(el).css('min-height', content_height + 'px');
+            $(el).css('max-height', content_height + 'px');
+        });
+    }
+
     createLinkCategory(coll, hidden) {
         const {tablesStore} = this.props;
         $.ajax({
@@ -171,12 +180,12 @@ export class TableEdit extends Table {
                                 {sorted_colls.map((coll, key) => {
                                     if (coll.text) {
                                         return (
-                                            <td key={key} style={{width: table.text_coll_size + '%'}}>
+                                            <td className="scroll_links" key={key} style={{width: table.text_coll_size + '%'}}>
                                                 {active_link ?
                                                     <div>
                                                         <div className="row">
                                                             <div className="col-md-11">
-                                                                <h4>{active_link.name}</h4>
+                                                                <h4 className="table_header_text">{active_link.name}</h4>
                                                             </div>
                                                             <div className="col-md-1">
                                                                 <i className="icon add_icon glyphicon glyphicon-floppy-save icon_vertical_centre" onClick={() => {this.updateLink(active_link)}}/>
@@ -194,7 +203,7 @@ export class TableEdit extends Table {
                                     } else if (!coll.text) {
                                         coll = coll.coll;
                                         return (
-                                            <td key={key} style={{width: coll.size + '%'}}>
+                                            <td className="scroll_links" key={key} style={{width: coll.size + '%'}}>
                                                 <div className="row">
                                                     <div className="col-md-1">
                                                         <i className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
@@ -208,7 +217,7 @@ export class TableEdit extends Table {
                                                         <div key={key} className={category.hidden ? 'hidden_links' : ''}>
                                                             <div className="row">
                                                                 <div className="col-md-9">
-                                                                    <h4>
+                                                                    <h4 className="table_header_text">
                                                                         <EditableText
                                                                             text={category.name}
                                                                             field={'name'}
@@ -301,10 +310,10 @@ export class TableShare extends Table {
                                 {sorted_colls.map((coll, key) => {
                                     if (coll.text) {
                                         return (
-                                            <td key={key} style={{width: table.text_coll_size + '%'}}>
+                                            <td className="scroll_links" key={key} style={{width: table.text_coll_size + '%'}}>
                                                 {active_link ?
                                                     <div>
-                                                        <h4>{active_link.name}</h4>
+                                                        <h4 className="table_header_text">{active_link.name}</h4>
                                                         <div dangerouslySetInnerHTML={{__html: active_link.text}}></div>
                                                     </div>
                                                     :
@@ -315,12 +324,12 @@ export class TableShare extends Table {
                                     } else if (!coll.text) {
                                         coll = coll.coll;
                                         return (
-                                            <td key={key} style={{width: coll.size + '%'}}>
+                                            <td className="scroll_links" key={key} style={{width: coll.size + '%'}}>
                                                 {coll.categories.map((category, key) => {
                                                     if(!category.hidden) {
                                                         return (
                                                             <div key={key} className={category.hidden ? 'hidden_links' : ''}>
-                                                                <h4>
+                                                                <h4 className="table_header_text">
                                                                     <div className="row">
                                                                         <div className="col-md-12">
                                                                             {category.name}

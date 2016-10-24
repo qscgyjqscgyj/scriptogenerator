@@ -35,7 +35,7 @@ export class App extends React.Component {
                     ''
                 }
 
-                <div className="container-fluid">
+                <div className="container-fluid" id="main_container">
                     {this.props.children}
                 </div>
             </div>

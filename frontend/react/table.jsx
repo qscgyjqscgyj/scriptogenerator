@@ -239,7 +239,7 @@ export class TableEdit extends Table {
                                                             </div>
                                                             {category.links.map((link, key) => {
                                                                 return (
-                                                                    <p key={key}>
+                                                                    <div key={key}>
                                                                         <div className="row">
                                                                             <div className="col-md-8">
                                                                                 <EditableText
@@ -269,7 +269,7 @@ export class TableEdit extends Table {
                                                                                 <span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
                                                                             </div>
                                                                         </div>
-                                                                    </p>
+                                                                    </div>
                                                                 )
                                                             })}
                                                         </div>
@@ -335,7 +335,7 @@ export class TableShare extends Table {
                                                                 </h4>
                                                                 {category.links.map((link, key) => {
                                                                     return (
-                                                                        <p key={key}>
+                                                                        <div key={key}>
                                                                             <div className="row">
                                                                                 <div className="col-md-12">
                                                                                     <Link to={
@@ -346,7 +346,7 @@ export class TableShare extends Table {
                                                                                     }>{link.name}</Link>
                                                                                 </div>
                                                                             </div>
-                                                                        </p>
+                                                                        </div>
                                                                     )
                                                                 })}
                                                             </div>

@@ -5,9 +5,12 @@ import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
-import {CustomEditor} from './editor';
+import {CustomEditor, styleMap} from './editor';
 import {Link} from 'react-router';
 import Clipboard from 'clipboard';
+import {ContentState, convertFromRaw} from 'draft-js';
+import {stateToHTML} from 'draft-js-export-html';
+
 
 @observer
 export class Table extends React.Component {
@@ -338,12 +341,25 @@ export class TableShare extends Table {
                             <tr className="scroll_block">
                                 {sorted_colls.map((coll, key) => {
                                     if (coll.text) {
+                                        let text;
+                                        try {
+                                            let options = {
+                                                inlineStyles: {
+                                                    red: {style: styleMap.red},
+                                                    gray: {style: styleMap.gray},
+                                                },
+                                            };
+                                            text = stateToHTML(convertFromRaw(JSON.parse(active_link.text)), options);
+                                        } catch(err) {
+                                            console.log(err);
+                                            text = '';
+                                        }
                                         return (
                                             <td className="scroll_links" key={key} style={{width: table.text_coll_size + '%'}}>
                                                 {active_link ?
                                                     <div>
                                                         <h4 className="table_header_text">{active_link.name}</h4>
-                                                        <div dangerouslySetInnerHTML={{__html: active_link.text}}></div>
+                                                        <div dangerouslySetInnerHTML={{__html: text}}></div>
                                                     </div>
                                                     :
                                                     ''

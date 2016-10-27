@@ -251,7 +251,7 @@ export class CustomEditor extends React.Component {
     }
 }
 
-const styleMap = {
+export const styleMap = {
     red: {color: 'rgba(255, 0, 0, 1.0)'},
     gray: {color: 'rgba(128, 128, 128, 1.0)'}
 };

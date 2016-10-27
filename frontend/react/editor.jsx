@@ -5,7 +5,7 @@ import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
-import {Editor, EditorState, CompositeDecorator, Modifier, RichUtils, ContentState, convertToRaw, Entity, convertFromHTML} from 'draft-js';
+import {Editor, EditorState, CompositeDecorator, Modifier, RichUtils, ContentState, convertToRaw, convertFromRaw, Entity, convertFromHTML} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
@@ -32,28 +32,32 @@ export class CustomEditor extends React.Component {
         this.focus = () => this.refs.editor.focus();
         this.onChange = (editorState) => {
             this.setState(update(this.state, {editorState: {$set: editorState}}), () => {
-                console.log(stateToHTML(editorState.getCurrentContent()));
-                this.props.onChange(stateToHTML(editorState.getCurrentContent()));
+                this.props.onChange(JSON.stringify(convertToRaw(editorState.getCurrentContent())));
             });
         };
 
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.onTab = (e) => this._onTab(e);
-        this.toggleBlockType = (type) => this._toggleBlockType(type);
+        this.toggleBlockType = (type) => this._toggleBlockType(tycope);
         this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
-        this.toggleColor = (toggledColor) => this._toggleColor(toggledColor);
         this.promptForLink = this._promptForLink.bind(this);
         this.onURLChange = (e) => this.setState({urlValue: e.target.value});
         this.confirmLink = this._confirmLink.bind(this);
         this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
         this.removeLink = this._removeLink.bind(this);
+        this.toggleColor = (toggledColor) => this._toggleColor(toggledColor);
     }
 
     getEditorState(props) {
         let editorState;
         if(props.value) {
-            editorState = EditorState.createWithContent(stateFromHTML(props.value), this.decorator);
-            editorState = EditorState.moveFocusToEnd(editorState);
+            try {
+                editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(props.value)), this.decorator);
+                editorState = EditorState.moveFocusToEnd(editorState);
+            } catch (err) {
+                console.log(err);
+                editorState = EditorState.createEmpty(this.decorator);
+            }
         } else {
             editorState = EditorState.createEmpty(this.decorator);
         }
@@ -97,38 +101,6 @@ export class CustomEditor extends React.Component {
                 inlineStyle
             )
         );
-    }
-
-    _toggleColor(toggledColor) {
-        const {editorState} = this.state;
-        const selection = editorState.getSelection();
-
-        // Let's just allow one color at a time. Turn off all active colors.
-        const nextContentState = Object.keys(styleMap).reduce((contentState, color) => {
-            return Modifier.removeInlineStyle(contentState, selection, color);
-        }, editorState.getCurrentContent());
-
-        let nextEditorState = EditorState.push(
-            editorState,
-            nextContentState,
-            'change-inline-style'
-        );
-
-        const currentStyle = editorState.getCurrentInlineStyle();
-
-        // Unset style override for current color.
-        if (selection.isCollapsed()) {
-            nextEditorState = currentStyle.reduce((state, color) => {
-                return RichUtils.toggleInlineStyle(state, color);
-            }, nextEditorState);
-        }
-
-        // If the color is being toggled on, apply it.
-        if (!currentStyle.has(toggledColor)) {
-            nextEditorState = RichUtils.toggleInlineStyle(nextEditorState, toggledColor);
-        }
-
-        this.onChange(nextEditorState);
     }
 
     _promptForLink(e) {
@@ -183,6 +155,41 @@ export class CustomEditor extends React.Component {
         }
     }
 
+    _toggleColor(toggledColor) {
+        const {editorState} = this.state;
+        const selection = editorState.getSelection();
+
+        // Let's just allow one color at a time. Turn off all active colors.
+        const nextContentState = Object.keys(styleMap).reduce((contentState, color) => {
+                return Modifier.removeInlineStyle(contentState, selection, color)
+            }, editorState.getCurrentContent());
+
+        let nextEditorState = EditorState.push(
+            editorState,
+            nextContentState,
+            'change-inline-style'
+        );
+
+        const currentStyle = editorState.getCurrentInlineStyle();
+
+        // Unset style override for current color.
+        if (selection.isCollapsed()) {
+            nextEditorState = currentStyle.reduce((state, color) => {
+                return RichUtils.toggleInlineStyle(state, color);
+            }, nextEditorState);
+        }
+
+        // If the color is being toggled on, apply it.
+        if (!currentStyle.has(toggledColor)) {
+            nextEditorState = RichUtils.toggleInlineStyle(
+                nextEditorState,
+                toggledColor
+            );
+        }
+
+        this.onChange(nextEditorState);
+    }
+
     render() {
         const {editorState} = this.state;
         // If the user changes block type before entering any text, we can
@@ -216,12 +223,12 @@ export class CustomEditor extends React.Component {
                 <BlockStyleControls
                     editorState={editorState}
                     onToggle={this.toggleBlockType}/>
-                <InlineStyleControls
-                    editorState={editorState}
-                    onToggle={this.toggleInlineStyle}/>
                 <ColorControls
                     editorState={editorState}
                     onToggle={this.toggleColor}/>
+                <InlineStyleControls
+                    editorState={editorState}
+                    onToggle={this.toggleInlineStyle}/>
                 <div style={styles.buttons}>
                     <button onMouseDown={this.promptForLink} style={{marginRight: 10}}>Ссылка</button>
                     <button onMouseDown={this.removeLink}>Удалить ссылку</button>
@@ -245,14 +252,29 @@ export class CustomEditor extends React.Component {
 }
 
 const styleMap = {
-    'red': {color: 'rgba(255, 0, 0, 1.0)'},
-    'gray': {color: 'rgba(128, 128, 128, 1.0)'}
-    //orange: {color: 'rgba(255, 127, 0, 1.0)'},
-    //yellow: {color: 'rgba(180, 180, 0, 1.0)'},
-    //green: {color: 'rgba(0, 180, 0, 1.0)'},
-    //blue: {color: 'rgba(0, 0, 255, 1.0)'},
-    //indigo: {color: 'rgba(75, 0, 130, 1.0)'},
-    //violet: {color: 'rgba(127, 0, 255, 1.0)'}
+    red: {color: 'rgba(255, 0, 0, 1.0)'},
+    gray: {color: 'rgba(128, 128, 128, 1.0)'}
+};
+
+var COLORS = [
+    {label: 'Красный', style: 'red'},
+    {label: 'Серый', style: 'gray'}
+];
+
+const ColorControls = (props) => {
+    var currentStyle = props.editorState.getCurrentInlineStyle();
+    return (
+        <div style={styles.controls}>
+            {COLORS.map((type, key) =>
+                <StyleButton
+                    key={key}
+                    active={currentStyle.has(type.style)}
+                    label={type.label}
+                    onToggle={props.onToggle}
+                    style={type.style}/>
+            )}
+        </div>
+    );
 };
 
 function getBlockStyle(block) {
@@ -339,39 +361,10 @@ const InlineStyleControls = (props) => {
     );
 };
 
-var COLORS = [
-    {label: 'Красный', style: 'red'},
-    {label: 'Серый', style: 'gray'},
-    //{label: 'Orange', style: 'orange'},
-    //{label: 'Yellow', style: 'yellow'},
-    //{label: 'Green', style: 'green'},
-    //{label: 'Blue', style: 'blue'},
-    //{label: 'Indigo', style: 'indigo'},
-    //{label: 'Violet', style: 'violet'}
-];
-
-const ColorControls = (props) => {
-    var currentStyle = props.editorState.getCurrentInlineStyle();
-    return (
-        <div style={styles.controls}>
-            {COLORS.map((type, key) =>
-                <StyleButton
-                    key={key}
-                    active={currentStyle.has(type.style)}
-                    label={type.label}
-                    onToggle={props.onToggle}
-                    style={type.style}/>
-            )}
-        </div>
-    );
-};
 
 function findLinkEntities(contentBlock, callback) {
-    //const contentState = ContentState.createFromBlockArray(contentBlock);
-    //console.log(contentState);
     contentBlock.findEntityRanges((character) => {
             const entityKey = character.getEntity();
-            //console.log(contentState.getEntity(entityKey).getType());
             return (
                 entityKey !== null
                 //&& contentState.getEntity(entityKey).getType() === 'LINK'

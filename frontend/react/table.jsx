@@ -226,7 +226,6 @@ export class TableEdit extends Table {
                                                         </div>
                                                         <div className="link_text_editor">
                                                             <CustomEditor object={active_link} value={active_link.text} onChange={(value) => {
-                                                                console.log(value);
                                                                 active_link.text = value;
                                                             }} />
                                                         </div>

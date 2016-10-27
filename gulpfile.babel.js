@@ -18,7 +18,7 @@ gulp.task('build', () => {
         })
         .transform('babelify', {
             presets: ['es2015', 'react'],
-            plugins: ['transform-decorators-legacy', 'transform-class-properties']
+            plugins: ['transform-decorators-legacy', 'transform-class-properties', 'transform-object-rest-spread']
         })
         .bundle()
         .on('error', function(err){

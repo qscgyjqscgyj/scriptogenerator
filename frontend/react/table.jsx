@@ -152,6 +152,7 @@ export class Table extends React.Component {
             url: document.body.getAttribute('data-links-url'),
             data: JSON.stringify(link),
             success: (res) => {
+                alert('Данные сохранены');
                 tablesStore.tables = res.tables;
             },
             error: (res) => {
@@ -224,7 +225,10 @@ export class TableEdit extends Table {
                                                             </div>
                                                         </div>
                                                         <div className="link_text_editor">
-                                                            <CustomEditor object={active_link} value={active_link.text} onChange={(value) => {active_link.text = value}} />
+                                                            <CustomEditor object={active_link} value={active_link.text} onChange={(value) => {
+                                                                console.log(value);
+                                                                active_link.text = value;
+                                                            }} />
                                                         </div>
                                                     </div>
                                                     :

@@ -38,7 +38,7 @@ export class CustomEditor extends React.Component {
 
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.onTab = (e) => this._onTab(e);
-        this.toggleBlockType = (type) => this._toggleBlockType(tycope);
+        this.toggleBlockType = (type) => this._toggleBlockType(type);
         this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
         this.promptForLink = this._promptForLink.bind(this);
         this.onURLChange = (e) => this.setState({urlValue: e.target.value});

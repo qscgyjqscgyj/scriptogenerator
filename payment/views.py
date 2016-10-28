@@ -12,6 +12,7 @@ class PaymentView(View):
         return JSONResponse({'success': True})
 
 
+
 class GetPaymentView(View):
     def get(self, request, *args, **kwargs):
         payment = kwargs['pk']

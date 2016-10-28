@@ -6,6 +6,7 @@ import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
+import {SortableList} from './sort';
 
 @observer
 export class Tables extends React.Component {
@@ -71,6 +72,9 @@ export class Tables extends React.Component {
             }
         });
     }
+    sortHandler(list) {
+        console.log(list);
+    }
     render() {
         const {projectsStore, scriptsStore, tablesStore, modalStore} = this.props;
         let script = scriptsStore.script(this.props.params.script);
@@ -99,6 +103,14 @@ export class Tables extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td>
+                                            <SortableList data={{
+                                                sortHandler: this.sortHandler,
+                                                items: tablesStore.tables
+                                            }}/>
+                                        </td>
+                                    </tr>
                                     {tablesStore.tables.map((table, key)=>{
                                         return (
                                             <tr key={key}>

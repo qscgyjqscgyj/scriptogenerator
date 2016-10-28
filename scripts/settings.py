@@ -95,6 +95,7 @@ INSTALLED_APPS = (
 
 LOCAL_APPS = (
     'main',
+    'payment',
     'users'
 )
 

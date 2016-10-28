@@ -18,7 +18,7 @@ class GetPaymentView(View):
         test_mode = request.GET.get('mode')
         if test_mode and test_mode == 'test':
             return JSONResponse({'success': True, 'test': True, 'payment': payment})
-        return JSONResponse({'success': True})
+        return JSONResponse({'success': True, 'payment': payment})
 
 
 class PaymentSuccessView(View):

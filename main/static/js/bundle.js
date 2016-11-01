@@ -42453,7 +42453,8 @@
 	var _reactRouter = __webpack_require__(159);
 	var _clipboard = __webpack_require__(408);var _clipboard2 = _interopRequireDefault(_clipboard);
 	var _draftJs = __webpack_require__(249);
-	var _draftJsExportHtml = __webpack_require__(389);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _draftJsExportHtml = __webpack_require__(389);
+	var _sort = __webpack_require__(246);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	
@@ -42638,6 +42639,13 @@
 	                '/link/' + link.id +
 	                '/share/');
 	
+	        } }, { key: 'onCategorySort', value: function onCategorySort(
+	
+	        itemd) {
+	            console.log(items);
+	        } }, { key: 'onLinkSort', value: function onLinkSort(
+	        itemd) {
+	            console.log(items);
 	        } }]);return Table;}(React.Component)) || _class;var
 	
 	
@@ -42652,72 +42660,72 @@
 	
 	            if (table) {
 	                return (
-	                    React.createElement('div', { className: 'col-md-12 scrollable_panel' },
-	                        React.createElement('table', { className: 'table table-bordered unmargin' },
-	                            React.createElement('tbody', null,
-	                                React.createElement('tr', { className: 'scroll_block' },
-	                                    sorted_colls.map(function (coll, key) {
-	                                        if (coll.text) {
-	                                            return (
-	                                                React.createElement('td', { className: 'scroll_links', key: key, style: { width: table.text_coll_size + '%' } },
-	                                                    active_link ?
-	                                                    React.createElement('div', null,
-	                                                        React.createElement('div', { className: 'row' },
-	                                                            React.createElement('div', { className: 'col-md-11' },
-	                                                                React.createElement('h4', { className: 'table_header_text' }, active_link.name)),
+	                    React.createElement('div', { className: 'scrollable_panel' },
+	                        React.createElement('div', { className: 'scroll_block' },
+	                            sorted_colls.map(function (coll, key) {
+	                                if (coll.text) {
+	                                    return (
+	                                        React.createElement('div', { className: 'scroll_links', key: key, style: { width: table.text_coll_size + '%' } },
+	                                            active_link ?
+	                                            React.createElement('div', null,
+	                                                React.createElement('div', { className: 'row' },
+	                                                    React.createElement('div', { className: 'col-md-11' },
+	                                                        React.createElement('h4', { className: 'table_header_text' }, active_link.name)),
 	
-	                                                            React.createElement('div', { className: 'col-md-1' },
-	                                                                React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-floppy-save icon_vertical_centre', onClick: function onClick() {_this3.updateLink(active_link);} }))),
+	                                                    React.createElement('div', { className: 'col-md-1' },
+	                                                        React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-floppy-save icon_vertical_centre', onClick: function onClick() {_this3.updateLink(active_link);} }))),
 	
 	
-	                                                        React.createElement('div', { className: 'link_text_editor' },
-	                                                            React.createElement(_editor.CustomEditor, { object: active_link, value: active_link.text, onChange: function onChange(value) {
-	                                                                    active_link.text = value;
-	                                                                } }))) :
+	                                                React.createElement('div', { className: 'link_text_editor' },
+	                                                    React.createElement(_editor.CustomEditor, { object: active_link, value: active_link.text, onChange: function onChange(value) {
+	                                                            active_link.text = value;
+	                                                        } }))) :
 	
 	
 	
-	                                                    ''));
+	                                            ''));
 	
 	
 	
-	                                        } else if (!coll.text) {
-	                                            coll = coll.coll;
-	                                            return (
-	                                                React.createElement('td', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
-	                                                    React.createElement('div', { className: 'row' },
-	                                                        React.createElement('div', { className: 'col-md-1' },
-	                                                            React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLinkCategory(coll, false);} })),
+	                                } else if (!coll.text) {
+	                                    coll = coll.coll;
+	                                    return (
+	                                        React.createElement('div', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
+	                                            React.createElement('div', { className: 'row' },
+	                                                React.createElement('div', { className: 'col-md-1' },
+	                                                    React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLinkCategory(coll, false);} })),
 	
-	                                                        React.createElement('div', { className: 'col-md-1' },
-	                                                            React.createElement('i', { className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLinkCategory(coll, true);} }))),
-	
-	
-	                                                    coll.categories.map(function (category, key) {
-	                                                        return (
-	                                                            React.createElement('div', { key: key, className: category.hidden ? 'hidden_links' : '' },
-	                                                                React.createElement('div', { className: 'row' },
-	                                                                    React.createElement('div', { className: 'col-md-9' },
-	                                                                        React.createElement('h4', { className: 'table_header_text' },
-	                                                                            React.createElement(EditableText, {
-	                                                                                text: category.name,
-	                                                                                field: 'name',
-	                                                                                submitHandler: function submitHandler(category) {return _this3.updateLinkCategory(category);},
-	                                                                                object: category,
-	                                                                                settings: {
-	                                                                                    placeholder: 'Имя категории',
-	                                                                                    name: 'name' } }))),
+	                                                React.createElement('div', { className: 'col-md-1' },
+	                                                    React.createElement('i', { className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLinkCategory(coll, true);} }))),
 	
 	
+	                                            React.createElement(_sort.Sort, { onSort: _this3.onCategorySort.bind(_this3) },
+	                                                coll.categories.map(function (category, key) {
+	                                                    return (
+	                                                        React.createElement('div', { key: key, className: category.hidden ? 'hidden_links' : '' },
+	                                                            React.createElement('div', { className: 'row' },
+	                                                                React.createElement('div', { className: 'col-md-9' },
+	                                                                    React.createElement('h4', { className: 'table_header_text' },
+	                                                                        React.createElement(EditableText, {
+	                                                                            text: category.name,
+	                                                                            field: 'name',
+	                                                                            submitHandler: function submitHandler(category) {return _this3.updateLinkCategory(category);},
+	                                                                            object: category,
+	                                                                            settings: {
+	                                                                                placeholder: 'Имя категории',
+	                                                                                name: 'name' } }))),
 	
 	
-	                                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                                        React.createElement('i', { className: 'icon add_icon icon_vertical_centre glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLink(category);} })),
-	
-	                                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                                        React.createElement('i', { className: 'glyphicon glyphicon-remove icon icon_vertical_centre red_icon', 'aria-hidden': 'true', onClick: function onClick() {_this3.deleteLinkCategory(category);} }))),
 	
 	
+	                                                                React.createElement('div', { className: 'col-md-1' },
+	                                                                    React.createElement('i', { className: 'icon add_icon icon_vertical_centre glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLink(category);} })),
+	
+	                                                                React.createElement('div', { className: 'col-md-1' },
+	                                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove icon icon_vertical_centre red_icon', 'aria-hidden': 'true', onClick: function onClick() {_this3.deleteLinkCategory(category);} }))),
+	
+	
+	                                                            React.createElement(_sort.Sort, { onSort: _this3.onLinkSort.bind(_this3) },
 	                                                                category.links.map(function (link, key) {
 	                                                                    return (
 	                                                                        React.createElement('div', { key: key },
@@ -42749,16 +42757,16 @@
 	
 	
 	
-	                                                                })));
+	                                                                }))));
 	
 	
-	                                                    })));
+	
+	                                                }))));
 	
 	
-	                                        }
-	                                    }))))));
 	
-	
+	                                }
+	                            }))));
 	
 	
 	
@@ -42778,78 +42786,74 @@
 	
 	            if (table) {
 	                return (
-	                    React.createElement('div', { className: 'col-md-12 scrollable_panel' },
-	                        React.createElement('table', { className: 'table table-bordered unmargin' },
-	                            React.createElement('tbody', null,
-	                                React.createElement('tr', { className: 'scroll_block' },
-	                                    sorted_colls.map(function (coll, key) {
-	                                        if (coll.text) {
-	                                            var text = void 0;
-	                                            try {
-	                                                var options = {
-	                                                    inlineStyles: {
-	                                                        red: { style: _editor.styleMap.red },
-	                                                        gray: { style: _editor.styleMap.gray } } };
+	                    React.createElement('div', { className: 'scrollable_panel' },
+	                        React.createElement('div', { className: 'scroll_block' },
+	                            sorted_colls.map(function (coll, key) {
+	                                if (coll.text) {
+	                                    var text = void 0;
+	                                    try {
+	                                        var options = {
+	                                            inlineStyles: {
+	                                                red: { style: _editor.styleMap.red },
+	                                                gray: { style: _editor.styleMap.gray } } };
 	
 	
-	                                                text = (0, _draftJsExportHtml.stateToHTML)((0, _draftJs.convertFromRaw)(JSON.parse(active_link.text)), options);
-	                                            } catch (err) {
-	                                                console.log(err);
-	                                                text = '';
-	                                            }
-	                                            return (
-	                                                React.createElement('td', { className: 'scroll_links', key: key, style: { width: table.text_coll_size + '%' } },
-	                                                    active_link ?
-	                                                    React.createElement('div', null,
-	                                                        React.createElement('h4', { className: 'table_header_text' }, active_link.name),
-	                                                        React.createElement('div', { dangerouslySetInnerHTML: { __html: text } })) :
+	                                        text = (0, _draftJsExportHtml.stateToHTML)((0, _draftJs.convertFromRaw)(JSON.parse(active_link.text)), options);
+	                                    } catch (err) {
+	                                        console.log(err);
+	                                        text = '';
+	                                    }
+	                                    return (
+	                                        React.createElement('div', { className: 'scroll_links', key: key, style: { width: table.text_coll_size + '%' } },
+	                                            active_link ?
+	                                            React.createElement('div', null,
+	                                                React.createElement('h4', { className: 'table_header_text' }, active_link.name),
+	                                                React.createElement('div', { dangerouslySetInnerHTML: { __html: text } })) :
 	
 	
-	                                                    ''));
+	                                            ''));
 	
 	
 	
-	                                        } else if (!coll.text) {
-	                                            coll = coll.coll;
-	                                            return (
-	                                                React.createElement('td', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
-	                                                    coll.categories.map(function (category, key) {
-	                                                        if (!category.hidden) {
-	                                                            return (
-	                                                                React.createElement('div', { key: key, className: category.hidden ? 'hidden_links' : '' },
-	                                                                    React.createElement('h4', { className: 'table_header_text' },
+	                                } else if (!coll.text) {
+	                                    coll = coll.coll;
+	                                    return (
+	                                        React.createElement('div', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
+	                                            coll.categories.map(function (category, key) {
+	                                                if (!category.hidden) {
+	                                                    return (
+	                                                        React.createElement('div', { key: key, className: category.hidden ? 'hidden_links' : '' },
+	                                                            React.createElement('h4', { className: 'table_header_text' },
+	                                                                React.createElement('div', { className: 'row' },
+	                                                                    React.createElement('div', { className: 'col-md-12' },
+	                                                                        category.name))),
+	
+	
+	
+	                                                            category.links.map(function (link, key) {
+	                                                                return (
+	                                                                    React.createElement('div', { key: key },
 	                                                                        React.createElement('div', { className: 'row' },
-	                                                                            React.createElement('div', { className: 'col-md-12' },
-	                                                                                category.name))),
-	
-	
-	
-	                                                                    category.links.map(function (link, key) {
-	                                                                        return (
-	                                                                            React.createElement('div', { key: key },
-	                                                                                React.createElement('div', { className: 'row' },
-	                                                                                    React.createElement('div', { className: 'col-md-12 link_name' },
-	                                                                                        React.createElement(_reactRouter.Link, { to:
-	                                                                                                '/tables/' + _this5.props.params.script +
-	                                                                                                '/table/' + _this5.props.params.table +
-	                                                                                                '/link/' + link.id +
-	                                                                                                '/share/' },
-	                                                                                            link.name)))));
+	                                                                            React.createElement('div', { className: 'col-md-12 link_name' },
+	                                                                                React.createElement(_reactRouter.Link, { to:
+	                                                                                        '/tables/' + _this5.props.params.script +
+	                                                                                        '/table/' + _this5.props.params.table +
+	                                                                                        '/link/' + link.id +
+	                                                                                        '/share/' },
+	                                                                                    link.name)))));
 	
 	
 	
 	
-	                                                                    })));
+	                                                            })));
 	
 	
-	                                                        }
-	                                                    })));
+	                                                }
+	                                            })));
 	
 	
-	                                        }
-	                                    }))))));
-	
-	
+	                                }
+	                            }))));
 	
 	
 	

@@ -44,8 +44,11 @@
                   };
                 })(console.error);
             </script>
-{#            <script src="{% static 'js/bundle.min.js' %}"></script>#}
-            <script src="{% static 'js/bundle.js' %}"></script>
+            {% if DEBUG %}
+                <script src="{% static 'js/bundle.js' %}"></script>
+            {% else %}
+                <script src="{% static 'js/bundle.min.js' %}"></script>
+            {% endif %}
         {% endif %}
     </body>
 </html>

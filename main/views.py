@@ -11,10 +11,16 @@ import json
 from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link
 from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer, LinkCategorySerializer, \
     LinkSerializer
+from scripts.settings import DEBUG
 
 
 class MainView(TemplateView):
     template_name = 'base.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MainView, self).get_context_data(**kwargs)
+        context['DEBUG'] = DEBUG
+        return context
 
 
 class JSONResponse(HttpResponse):

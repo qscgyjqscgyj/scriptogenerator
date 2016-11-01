@@ -53,7 +53,6 @@ export class TablesStore {
         if(e) {
             e.preventDefault();
         }
-        console.log(this.editing);
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-tables-url'),

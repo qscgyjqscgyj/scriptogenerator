@@ -42322,7 +42322,6 @@
 	            if (e) {
 	                e.preventDefault();
 	            }
-	            console.log(this.editing);
 	            _jquery2.default.ajax({
 	                method: 'PUT',
 	                url: document.body.getAttribute('data-tables-url'),

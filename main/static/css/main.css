@@ -67,3 +67,11 @@
     position: relative;
     top: 10px;
 }
+/*SORT*/
+.sort_icons {
+    text-align: center;
+}
+.sort_icons i:hover {
+    color: #969696;
+    cursor: pointer;
+}

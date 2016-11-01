@@ -6,7 +6,7 @@ import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
-import {SortableList} from './sort';
+import {Sort} from './sort';
 
 @observer
 export class Tables extends React.Component {
@@ -55,26 +55,6 @@ export class Tables extends React.Component {
             });
         }
     }
-    updateTable(e) {
-        const {modalStore, tablesStore} = this.props;
-        e.preventDefault();
-        $.ajax({
-            method: 'PUT',
-            url: document.body.getAttribute('data-tables-url'),
-            data: JSON.stringify(tablesStore.editing),
-            success: (res) => {
-                tablesStore.tables = res.tables;
-                tablesStore.editing = null;
-                modalStore.modal = false;
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
-    }
-    sortHandler(list) {
-        console.log(list);
-    }
     render() {
         const {projectsStore, scriptsStore, tablesStore, modalStore} = this.props;
         let script = scriptsStore.script(this.props.params.script);
@@ -103,14 +83,6 @@ export class Tables extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <SortableList data={{
-                                                sortHandler: this.sortHandler,
-                                                items: tablesStore.tables
-                                            }}/>
-                                        </td>
-                                    </tr>
                                     {tablesStore.tables.map((table, key)=>{
                                         return (
                                             <tr key={key}>
@@ -138,7 +110,7 @@ export class Tables extends React.Component {
                             </table>
                         </div>
                     </div>
-                    <ModalWrapper scriptsStore={scriptsStore} tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createTable={this.createTable.bind(this)} updateTable={this.updateTable.bind(this)}/>
+                    <ModalWrapper scriptsStore={scriptsStore} tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createTable={this.createTable.bind(this)} updateTable={(e) => {tablesStore.updateTable(e, modalStore)}}/>
                 </div>
             );
         }
@@ -221,91 +193,126 @@ class CollsCreating extends React.Component {
             });
         }
     }
+    onSort(items) {
+        let {tablesStore} = this.props;
+        items.map((item, key) => {
+            if(item.props.text) {
+                if(tablesStore.editing) {
+                    tablesStore.editing.text_coll_position = key;
+                } else {
+                    tablesStore.creating_text_coll_position = key;
+                }
+            } else {
+                item.props.coll.position = key;
+            }
+        });
+        tablesStore.updateTable(null, false);
+    }
     render() {
         const {tablesStore} = this.props;
         let colls = tablesStore.editing ? tablesStore.editing.colls : tablesStore.creating_colls;
         let text_coll_name = tablesStore.editing ? tablesStore.editing.text_coll_name : tablesStore.creating_text_coll_name;
         let text_coll_size = tablesStore.editing ? tablesStore.editing.text_coll_size : tablesStore.creating_text_coll_size;
+        let text_coll_position = tablesStore.editing ? tablesStore.editing.text_coll_position : tablesStore.creating_text_coll_position;
+
+        let colls_inputs = colls.map((coll, key) => {
+            return(
+                <CollInput
+                    key={key}
+                    name={coll.name}
+                    size={coll.size}
+                    position={coll.position}
+                    index={key}
+                    text={false}
+                    coll={coll}
+                    colls={colls}
+                    deleteColl={this.deleteColl.bind(this)}
+                    onChangeSize={(e) => {coll.size = e.target.value}}
+                    onChangeName={(e) => {coll.name = e.target.value}}/>
+            )
+        });
+        colls_inputs.push(
+            <CollInput
+                key={colls_inputs.length}
+                name={text_coll_name}
+                size={text_coll_size}
+                position={text_coll_position}
+                text={true}
+                onChangeSize={(e) => {
+                    if(tablesStore.editing) {
+                        tablesStore.editing.text_coll_size = e.target.value;
+                    } else {
+                        tablesStore.creating_text_coll_size = e.target.value;
+                    }
+                }}
+                onChangeName={(e) => {
+                    if(tablesStore.editing) {
+                        tablesStore.editing.text_coll_name = e.target.value;
+                    } else {
+                        tablesStore.creating_text_coll_name = e.target.value;
+                    }
+                }}/>
+        );
+        colls_inputs = colls_inputs.sort((a, b) => {
+                if (a.props.position > b.props.position) {return 1}
+                if (a.props.position < b.props.position) {return -1}
+                return 0;
+            }
+        );
+
         return (
             <div className="col-md-12">
-                <table className="table">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Название столбца"
-                                    onChange={(e) => {
-                                        if(tablesStore.editing) {
-                                            tablesStore.editing.text_coll_name = e.target.value;
-                                        } else {
-                                            tablesStore.creating_text_coll_name = e.target.value;
-                                        }
-                                    }}
-                                    value={text_coll_name}
-                                />
-                            </td>
-                            <td>Текст</td>
-                            <td>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Размер столбца (в %)"
-                                    onChange={(e) => {
-                                        if(tablesStore.editing) {
-                                            tablesStore.editing.text_coll_size = e.target.value;
-                                        } else {
-                                            tablesStore.creating_text_coll_size = e.target.value;
-                                        }
-                                    }}
-                                    value={text_coll_size}
-                                />
-                            </td>
-                        </tr>
-                        {colls.map((coll, i) => {
-                            return (
-                                <tr key={i}>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Название столбца"
-                                            onChange={(e) => {coll.name = e.target.value}}
-                                            value={coll.name}
-                                        />
-                                    </td>
-                                    <td>Ссылки</td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Размер столбца (в %)"
-                                            onChange={(e) => {coll.size = e.target.value}}
-                                            value={coll.size}
-                                        />
-                                    </td>
-                                    <td className="text-right">
-                                        <button className="btn btn-danger" onClick={(e)=>{
-                                            e.preventDefault();
-                                            if(coll.id) {
-                                                this.deleteColl(colls, coll, i);
-                                            } else {
-                                                colls.splice(i, 1);
-                                            }
-                                        }}>Удалить</button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                        <tr>
-                            <td>
-                                <button className="btn btn-success" onClick={(e) => {e.preventDefault();colls.push(new Coll(tablesStore.editing))}}>+ Добавить столбец</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <Sort onSort={this.onSort.bind(this)}>
+                    {colls_inputs.map((coll, key) => {
+                        return coll;
+                    })}
+                </Sort>
+                <div className="form-group">
+                    <button className="btn btn-success" onClick={(e) => {e.preventDefault();colls.push(new Coll(tablesStore.editing))}}>+ Добавить столбец</button>
+                </div>
             </div>
         )
+    }
+}
+
+class CollInput extends React.Component {
+    render() {
+        return(
+            <div className="form-inline">
+                <div className="form-group">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Название столбца"
+                        onChange={this.props.onChangeName.bind(this)}
+                        value={this.props.name}/>
+                </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Размер столбца (в %)"
+                        onChange={this.props.onChangeSize.bind(this)}
+                        value={this.props.size}/>
+                </div>
+                {!this.props.text ?
+                    <div className="form-group">
+                        <i
+                            className="glyphicon glyphicon-remove icon red_icon"
+                            aria-hidden="true"
+                            onClick={(e)=>{
+                                e.preventDefault();
+                                if(this.props.coll.id) {
+                                    this.props.deleteColl(this.props.colls, this.props.coll, this.props.index);
+                                } else {
+                                    this.props.colls.splice(this.props.index, 1);
+                                }
+                            }}/>
+                    </div>
+                :
+                    ''
+                }
+            </div>
+       )
     }
 }

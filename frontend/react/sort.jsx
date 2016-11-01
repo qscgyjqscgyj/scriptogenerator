@@ -1,60 +1,60 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import $ from 'jquery';
+import React from 'react';
 import update from 'react-addons-update';
-import {observer} from 'mobx-react';
-import {ModalWrapper} from './modal';
-import {Coll} from '../mobx/tablesStore';
-import { sortable } from 'react-sortable';
 
-class ListItem extends React.Component {
-    constructor(props) {
-        super(props);
-        this.displayName = 'SortableListItem';
-    }
-    render() {
-        return (
-        <div {...this.props} className="list-item">{this.props.children}</div>
-        )
-    }
-}
-
-var SortableListItem = sortable(ListItem);
-
-export class SortableList extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            draggingIndex: null,
-            data: props.data
+function moveInArray(arr, old_index, new_index) {
+    if (new_index >= arr.length) {
+        var k = new_index - arr.length;
+        while ((k--) + 1) {
+            arr.push(undefined);
         }
     }
-    updateState(obj) {
-        this.setState(obj, () => {this.state.data.sortHandler(obj)});
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr;
+};
+
+export class Sort extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            items: props.children
+        }
     }
     componentWillReceiveProps(props) {
-        if(!this.state.draggingIndex) {
-            this.setState(update(this.state, {data: {$set: props.data}}));
-        }
+        this.setState(update(this.state, {items: {$set: props.children}}));
+    }
+    moveItem(index, new_index) {
+        let {items} = this.state;
+        items = moveInArray(items, index, new_index);
+        this.setState(update(this.state, {items: {$set: items}}), () => {
+            return this.props.onSort(items);
+        });
     }
     render() {
-        var childProps = { className: 'myClass1' };
-        var listItems = this.state.data.items.map(function(item, i) {
-            return (
-                <SortableListItem
-                    key={i}
-                    updateState={this.updateState.bind(this)}
-                    items={this.state.data.items}
-                    draggingIndex={this.state.draggingIndex}
-                    sortId={i}
-                    outline="list"
-                    childProps={childProps}>{item.name}</SortableListItem>
-            );
-        }, this);
-
-        return (
-            <div className="list">{listItems}</div>
-        )
+        let {items} = this.state;
+        return(
+            <div>
+                {items.map((item, key) => {
+                    return(
+                        <div key={key}>
+                            <div className="col-md-10">
+                                {item}
+                            </div>
+                            <div className="col-md-2 sort_icons">
+                                {key !== 0 ?
+                                    <i
+                                        className="glyphicon glyphicon-triangle-top"
+                                        aria-hidden="true"
+                                        onClick={() => {this.moveItem(key, key - 1)}}/> : ''}
+                                {(key + 1) !== this.props.children.length ?
+                                    <i
+                                        className="glyphicon glyphicon-triangle-bottom"
+                                        aria-hidden="true"
+                                        onClick={() => {this.moveItem(key, key + 1)}}/> : ''}
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        );
     }
 }

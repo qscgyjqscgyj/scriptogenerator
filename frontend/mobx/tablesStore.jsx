@@ -49,6 +49,28 @@ export class TablesStore {
         });
     }
 
+    @action updateTable(e, modalStore) {
+        if(e) {
+            e.preventDefault();
+        }
+        console.log(this.editing);
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-tables-url'),
+            data: JSON.stringify(this.editing),
+            success: (res) => {
+                this.tables = res.tables;
+                if(modalStore) {
+                    this.editing = null;
+                    modalStore.modal = false;
+                }
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
     @action setLink(table_id, link_id) {
         this.active_link = this.link(table_id, link_id);
     }

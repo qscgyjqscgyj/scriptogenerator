@@ -173,18 +173,17 @@ export class Table extends React.Component {
             table.colls.map(coll => {
                 sorted_colls.push({coll: coll, position: coll.position, text: false});
             });
-            //return sorted_colls.sort(
-            //    function (a, b) {
-            //        if (a.position > b.position) {
-            //            return 1;
-            //        }
-            //        if (a.position < b.position) {
-            //            return -1;
-            //        }
-            //        return 0;
-            //    }
-            //);
-            return sorted_colls;
+            return sorted_colls.sort(
+                function (a, b) {
+                    if (a.position > b.position) {
+                        return 1;
+                    }
+                    if (a.position < b.position) {
+                        return -1;
+                    }
+                    return 0;
+                }
+            );
         }
     }
 

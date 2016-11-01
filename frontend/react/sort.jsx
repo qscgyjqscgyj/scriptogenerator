@@ -35,7 +35,7 @@ export class Sort extends React.Component {
             <div>
                 {items.map((item, key) => {
                     return(
-                        <div key={key}>
+                        <div key={key} className="sort_block">
                             <div className="col-md-10">
                                 {item}
                             </div>

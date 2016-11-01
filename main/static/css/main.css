@@ -75,8 +75,12 @@
     top: 10px;
 }
 /*SORT*/
+.sort_block:hover .sort_icons {
+    display: inline;
+}
 .sort_icons {
     text-align: center;
+    display: none;
 }
 .sort_icons i:hover {
     color: #969696;

@@ -42415,7 +42415,7 @@
 	                _react2.default.createElement('div', null,
 	                    items.map(function (item, key) {
 	                        return (
-	                            _react2.default.createElement('div', { key: key },
+	                            _react2.default.createElement('div', { key: key, className: 'sort_block' },
 	                                _react2.default.createElement('div', { className: 'col-md-10' },
 	                                    item),
 	

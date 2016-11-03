@@ -68,6 +68,21 @@ export class Table extends React.Component {
         });
     }
 
+    updateTableLinksColl(coll) {
+        const {tablesStore} = this.props;
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-colls-url'),
+            data: JSON.stringify(coll),
+            success: (res) => {
+                tablesStore.tables = res.tables;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
     createLinkCategory(coll, hidden) {
         const {tablesStore} = this.props;
         $.ajax({
@@ -197,11 +212,17 @@ export class Table extends React.Component {
         )
     }
 
-    onCategorySort(itemd) {
-        console.log(items);
+    onCategorySort(items) {
+        items.map((item, key) => {
+            item.props.category.order = key;
+        });
+        return this.updateTableLinksColl(items[0].props.coll);
     }
-    onLinkSort(itemd) {
-        console.log(items);
+    onLinkSort(items) {
+        items.map((item, key) => {
+            item.props.link.order = key;
+        });
+        return this.updateLinkCategory(items[0].props.category);
     }
 }
 
@@ -258,7 +279,12 @@ export class TableEdit extends Table {
                                         <Sort onSort={this.onCategorySort.bind(this)}>
                                             {coll.categories.map((category, key) => {
                                                 return (
-                                                    <div key={key} className={category.hidden ? 'hidden_links' : ''}>
+                                                    <div
+                                                        key={key}
+                                                        category={category}
+                                                        coll={coll}
+                                                        className={category.hidden ? 'hidden_links' : ''}>
+
                                                         <div className="row">
                                                             <div className="col-md-9">
                                                                 <h4 className="table_header_text">
@@ -284,7 +310,7 @@ export class TableEdit extends Table {
                                                         <Sort onSort={this.onLinkSort.bind(this)}>
                                                             {category.links.map((link, key) => {
                                                                 return (
-                                                                    <div key={key}>
+                                                                    <div key={key} category={category} link={link}>
                                                                         <div className="row">
                                                                             <div className="col-md-10 link_name">
                                                                                 <EditableText

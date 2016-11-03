@@ -65,7 +65,7 @@ class LinkCategory(models.Model):
         return self.name
 
     class Meta:
-        ordering = ('-order',)
+        ordering = ('order',)
 
 
 class Link(models.Model):
@@ -78,4 +78,4 @@ class Link(models.Model):
         return self.name
 
     class Meta:
-        ordering = ('-order',)
+        ordering = ('order',)

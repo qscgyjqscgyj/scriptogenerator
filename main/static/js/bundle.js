@@ -42510,6 +42510,21 @@
 	                (0, _jquery2.default)(el).css('min-height', content_height + 'px');
 	                (0, _jquery2.default)(el).css('max-height', content_height + 'px');
 	            });
+	        } }, { key: 'updateTableLinksColl', value: function updateTableLinksColl(
+	
+	        coll) {var
+	            tablesStore = this.props.tablesStore;
+	            _jquery2.default.ajax({
+	                method: 'PUT',
+	                url: document.body.getAttribute('data-colls-url'),
+	                data: JSON.stringify(coll),
+	                success: function success(res) {
+	                    tablesStore.tables = res.tables;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
 	        } }, { key: 'createLinkCategory', value: function createLinkCategory(
 	
 	        coll, hidden) {var
@@ -42641,11 +42656,17 @@
 	
 	        } }, { key: 'onCategorySort', value: function onCategorySort(
 	
-	        itemd) {
-	            console.log(items);
+	        items) {
+	            items.map(function (item, key) {
+	                item.props.category.order = key;
+	            });
+	            return this.updateTableLinksColl(items[0].props.coll);
 	        } }, { key: 'onLinkSort', value: function onLinkSort(
-	        itemd) {
-	            console.log(items);
+	        items) {
+	            items.map(function (item, key) {
+	                item.props.link.order = key;
+	            });
+	            return this.updateLinkCategory(items[0].props.category);
 	        } }]);return Table;}(React.Component)) || _class;var
 	
 	
@@ -42702,7 +42723,12 @@
 	                                            React.createElement(_sort.Sort, { onSort: _this3.onCategorySort.bind(_this3) },
 	                                                coll.categories.map(function (category, key) {
 	                                                    return (
-	                                                        React.createElement('div', { key: key, className: category.hidden ? 'hidden_links' : '' },
+	                                                        React.createElement('div', {
+	                                                                key: key,
+	                                                                category: category,
+	                                                                coll: coll,
+	                                                                className: category.hidden ? 'hidden_links' : '' },
+	
 	                                                            React.createElement('div', { className: 'row' },
 	                                                                React.createElement('div', { className: 'col-md-9' },
 	                                                                    React.createElement('h4', { className: 'table_header_text' },
@@ -42728,7 +42754,7 @@
 	                                                            React.createElement(_sort.Sort, { onSort: _this3.onLinkSort.bind(_this3) },
 	                                                                category.links.map(function (link, key) {
 	                                                                    return (
-	                                                                        React.createElement('div', { key: key },
+	                                                                        React.createElement('div', { key: key, category: category, link: link },
 	                                                                            React.createElement('div', { className: 'row' },
 	                                                                                React.createElement('div', { className: 'col-md-10 link_name' },
 	                                                                                    React.createElement(EditableText, {

@@ -10,7 +10,7 @@ import json
 
 from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link
 from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer, LinkCategorySerializer, \
-    LinkSerializer
+    LinkSerializer, TableLinksCollSerializer
 from scripts.settings import DEBUG
 
 
@@ -147,6 +147,17 @@ class TablesView(View):
 
 
 class CollsView(View):
+    def put(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        coll = TableLinksCollSerializer(data=data)
+        coll_object = TableLinksColl.objects.get(pk=int(data['id']))
+        if coll.is_valid():
+            coll.update(coll_object, data)
+            return JSONResponse({
+                'tables': TableSerializer(Table.objects.filter(script=coll_object.table.script), many=True).data
+            })
+        return JSONResponse(coll.errors, status=400)
+
     def delete(self, request, *args, **kwargs):
         data = json.loads(request.body)
         try:

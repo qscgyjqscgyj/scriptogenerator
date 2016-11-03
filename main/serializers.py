@@ -69,26 +69,26 @@ class LinksField(serializers.Field):
         return links
 
     def to_internal_value(self, links):
-        # for l in links:
-        #     if not c.get('table'):
-        #         if self.root.initial_data.get('colls'):
-        #             del self.root.initial_data['colls']
-        #         try:
-        #             self.root.initial_data['script'] = Script.objects.get(pk=int(self.root.initial_data['script']))
-        #         except TypeError:
-        #             pass
-        #         table, created = Table.objects.get_or_create(**self.root.initial_data)
-        #         c['table'] = table
-        #     elif isinstance(c.get('table'), int):
-        #         c['table'] = Table.objects.get(pk=c.get('table'))
-        #     if c.get('id'):
-        #         coll = TableLinksColl.objects.get(pk=int(c.get('id')))
-        #         coll.name = c['name']
-        #         coll.position = c['position']
-        #         coll.size = c['size']
-        #         coll.save()
-        #     else:
-        #         TableLinksColl.objects.create(**c)
+        for l in links:
+            if not l.get('category'):
+                if self.root.initial_data.get('links'):
+                    del self.root.initial_data['links']
+                try:
+                    self.root.initial_data['table'] = Table.objects.get(pk=int(self.root.initial_data['table']))
+                except TypeError:
+                    pass
+                category, created = LinkCategory.objects.get_or_create(**self.root.initial_data)
+                l['category'] = category
+            elif isinstance(l.get('category'), int):
+                l['category'] = LinkCategory.objects.get(pk=int(l.get('category')))
+            if l.get('id'):
+                link = Link.objects.get(pk=int(l.get('id')))
+                link.name = l['name']
+                link.order = l['order']
+                link.text = l['text']
+                link.save()
+            else:
+                Link.objects.create(**l)
         return links
 
 
@@ -100,26 +100,25 @@ class LinkCategoriesField(serializers.Field):
         return categories
 
     def to_internal_value(self, categories):
-        # for l in links:
-        #     if not c.get('table'):
-        #         if self.root.initial_data.get('colls'):
-        #             del self.root.initial_data['colls']
-        #         try:
-        #             self.root.initial_data['script'] = Script.objects.get(pk=int(self.root.initial_data['script']))
-        #         except TypeError:
-        #             pass
-        #         table, created = Table.objects.get_or_create(**self.root.initial_data)
-        #         c['table'] = table
-        #     elif isinstance(c.get('table'), int):
-        #         c['table'] = Table.objects.get(pk=c.get('table'))
-        #     if c.get('id'):
-        #         coll = TableLinksColl.objects.get(pk=int(c.get('id')))
-        #         coll.name = c['name']
-        #         coll.position = c['position']
-        #         coll.size = c['size']
-        #         coll.save()
-        #     else:
-        #         TableLinksColl.objects.create(**c)
+        for c in categories:
+            if not c.get('table'):
+                if self.root.initial_data.get('categories'):
+                    del self.root.initial_data['categories']
+                try:
+                    self.root.initial_data['script'] = Script.objects.get(pk=int(self.root.initial_data['script']))
+                except TypeError:
+                    pass
+                coll, created = TableLinksColl.objects.get_or_create(**self.root.initial_data)
+                c['table'] = coll
+            elif isinstance(c.get('table'), int):
+                c['table'] = TableLinksColl.objects.get(pk=int(c.get('table')))
+            if c.get('id'):
+                category = LinkCategory.objects.get(pk=int(c.get('id')))
+                category.name = c['name']
+                category.order = c['order']
+                category.save()
+            else:
+                LinkCategory.objects.create(**c)
         return categories
 
 

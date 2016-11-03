@@ -42727,7 +42727,7 @@
 	                                                    React.createElement('i', { className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLinkCategory(coll, true);} }))),
 	
 	
-	                                            React.createElement(_sort.Sort, { onSort: _this3.onCategorySort.bind(_this3), left: true },
+	                                            React.createElement(_sort.Sort, { onSort: _this3.onCategorySort.bind(_this3), left: true, child: true },
 	                                                coll.categories.map(function (category, key) {
 	                                                    return (
 	                                                        React.createElement('div', { key: key, category: category, coll: coll, className: category.hidden ? 'hidden_links' : '' },
@@ -43271,20 +43271,30 @@
 	
 	            return (
 	                React.createElement('div', { className: 'RichEditor-root' },
-	                    React.createElement(BlockStyleControls, {
-	                        editorState: editorState,
-	                        onToggle: this.toggleBlockType }),
-	                    React.createElement(ColorControls, {
-	                        editorState: editorState,
-	                        onToggle: this.toggleColor }),
-	                    React.createElement(InlineStyleControls, {
-	                        editorState: editorState,
-	                        onToggle: this.toggleInlineStyle }),
-	                    React.createElement('div', { style: styles.buttons },
-	                        React.createElement('button', { onMouseDown: this.promptForLink, style: { marginRight: 10 } }, '\u0421\u0441\u044B\u043B\u043A\u0430'),
-	                        React.createElement('button', { onMouseDown: this.removeLink }, '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443')),
 	
-	                    urlInput,
+	
+	
+	
+	
+	                    React.createElement('div', { className: 'row' },
+	                        React.createElement('div', { className: 'col-md-2' },
+	                            React.createElement(ColorControls, {
+	                                editorState: editorState,
+	                                onToggle: this.toggleColor })),
+	
+	                        React.createElement('div', { className: 'col-md-3' },
+	                            React.createElement(InlineStyleControls, {
+	                                editorState: editorState,
+	                                onToggle: this.toggleInlineStyle })),
+	
+	                        React.createElement('div', { className: 'col-md-5' },
+	                            React.createElement('div', { style: styles.buttons },
+	                                React.createElement('button', { onMouseDown: this.promptForLink, style: { marginRight: 10 } }, '\u0421\u0441\u044B\u043B\u043A\u0430'),
+	                                React.createElement('button', { onMouseDown: this.removeLink }, '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443')),
+	
+	                            urlInput)),
+	
+	
 	                    React.createElement('div', { className: className, onClick: this.focus },
 	                        React.createElement(_draftJs.Editor, {
 	                            blockStyleFn: getBlockStyle,
@@ -43304,7 +43314,7 @@
 	
 	var styleMap = exports.styleMap = {
 	    red: { color: 'rgba(255, 0, 0, 1.0)' },
-	    gray: { color: 'rgba(128, 128, 128, 1.0)' } };
+	    gray: { color: 'rgba(160, 160, 160, 1.0)' } };
 	
 	
 	var COLORS = [
@@ -43321,6 +43331,7 @@
 	                        key: key,
 	                        active: currentStyle.has(type.style),
 	                        label: type.label,
+	                        color: styleMap[type.style].color,
 	                        onToggle: props.onToggle,
 	                        style: type.style }));})));
 	
@@ -43352,8 +43363,13 @@
 	            }
 	
 	            return (
-	                React.createElement('span', { className: className, onMouseDown: this.onToggle },
-	                    this.props.label));
+	                React.createElement('button', { onMouseDown: this.onToggle, style: { marginRight: 10, backgroundColor: this.props.color }, className:
+	                        'StyleButton ' + (
+	                        this.props.color ? 'color_button ' : '') + (
+	                        this.props.active ? 'active' : '') },
+	
+	                    this.props.icon ?
+	                    React.createElement('i', { className: this.props.icon, 'aria-hidden': 'true' }) : !this.props.color ? this.props.label : ''));
 	
 	
 	        } }]);return StyleButton;}(React.Component);
@@ -43377,7 +43393,7 @@
 	    var blockType = editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
 	
 	    return (
-	        React.createElement('div', { className: 'RichEditor-controls' },
+	        React.createElement('div', { style: styles.controls },
 	            BLOCK_TYPES.map(function (type) {return (
 	                    React.createElement(StyleButton, {
 	                        key: type.label,
@@ -43391,20 +43407,21 @@
 	};
 	
 	var INLINE_STYLES = [
-	{ label: 'Жирный', style: 'BOLD' },
-	{ label: 'Курсив', style: 'ITALIC' },
-	{ label: 'Подчеркивание', style: 'UNDERLINE' }];
+	{ label: 'Жирный', style: 'BOLD', icon: 'glyphicon glyphicon-bold' },
+	{ label: 'Курсив', style: 'ITALIC', icon: 'glyphicon glyphicon-italic' },
+	{ label: 'Подчеркивание', style: 'UNDERLINE', icon: 'glyphicon glyphicon-text-color' }];
 	
 	
 	var InlineStyleControls = function InlineStyleControls(props) {
 	    var currentStyle = props.editorState.getCurrentInlineStyle();
 	    return (
-	        React.createElement('div', { className: 'RichEditor-controls' },
+	        React.createElement('div', { style: styles.controls },
 	            INLINE_STYLES.map(function (type) {return (
 	                    React.createElement(StyleButton, {
 	                        key: type.label,
 	                        active: currentStyle.has(type.style),
 	                        label: type.label,
+	                        icon: type.icon,
 	                        onToggle: props.onToggle,
 	                        style: type.style }));})));
 	

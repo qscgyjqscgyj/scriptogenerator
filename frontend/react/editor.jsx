@@ -220,20 +220,30 @@ export class CustomEditor extends React.Component {
 
         return (
             <div className="RichEditor-root">
-                <BlockStyleControls
-                    editorState={editorState}
-                    onToggle={this.toggleBlockType}/>
-                <ColorControls
-                    editorState={editorState}
-                    onToggle={this.toggleColor}/>
-                <InlineStyleControls
-                    editorState={editorState}
-                    onToggle={this.toggleInlineStyle}/>
-                <div style={styles.buttons}>
-                    <button onMouseDown={this.promptForLink} style={{marginRight: 10}}>Ссылка</button>
-                    <button onMouseDown={this.removeLink}>Удалить ссылку</button>
+                {
+                    //<BlockStyleControls
+                    //    editorState={editorState}
+                    //    onToggle={this.toggleBlockType}/>
+                }
+                <div className="row">
+                    <div className="col-md-2">
+                        <ColorControls
+                            editorState={editorState}
+                            onToggle={this.toggleColor}/>
+                    </div>
+                    <div className="col-md-3">
+                        <InlineStyleControls
+                            editorState={editorState}
+                            onToggle={this.toggleInlineStyle}/>
+                    </div>
+                    <div className="col-md-5">
+                        <div style={styles.buttons}>
+                            <button onMouseDown={this.promptForLink} style={{marginRight: 10}}>Ссылка</button>
+                            <button onMouseDown={this.removeLink}>Удалить ссылку</button>
+                        </div>
+                        {urlInput}
+                    </div>
                 </div>
-                {urlInput}
                 <div className={className} onClick={this.focus}>
                     <Editor
                         blockStyleFn={getBlockStyle}
@@ -253,7 +263,7 @@ export class CustomEditor extends React.Component {
 
 export const styleMap = {
     red: {color: 'rgba(255, 0, 0, 1.0)'},
-    gray: {color: 'rgba(128, 128, 128, 1.0)'}
+    gray: {color: 'rgba(160, 160, 160, 1.0)'}
 };
 
 var COLORS = [
@@ -270,6 +280,7 @@ const ColorControls = (props) => {
                     key={key}
                     active={currentStyle.has(type.style)}
                     label={type.label}
+                    color={styleMap[type.style].color}
                     onToggle={props.onToggle}
                     style={type.style}/>
             )}
@@ -301,9 +312,14 @@ class StyleButton extends React.Component {
         }
 
         return (
-            <span className={className} onMouseDown={this.onToggle}>
-                {this.props.label}
-            </span>
+            <button onMouseDown={this.onToggle} style={{marginRight: 10, backgroundColor: this.props.color}} className={
+                'StyleButton ' +
+                (this.props.color ? 'color_button ' : '') +
+                (this.props.active ? 'active' : '')
+            }>
+                {this.props.icon ?
+                    <i className={this.props.icon} aria-hidden="true"/> : (!this.props.color ? this.props.label : '')}
+            </button>
         );
     }
 }
@@ -326,7 +342,7 @@ const BlockStyleControls = (props) => {
     const blockType = editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
 
     return (
-        <div className="RichEditor-controls">
+        <div style={styles.controls}>
             {BLOCK_TYPES.map((type) =>
                 <StyleButton
                     key={type.label}
@@ -340,20 +356,21 @@ const BlockStyleControls = (props) => {
 };
 
 var INLINE_STYLES = [
-    {label: 'Жирный', style: 'BOLD'},
-    {label: 'Курсив', style: 'ITALIC'},
-    {label: 'Подчеркивание', style: 'UNDERLINE'},
+    {label: 'Жирный', style: 'BOLD', icon: 'glyphicon glyphicon-bold'},
+    {label: 'Курсив', style: 'ITALIC', icon: 'glyphicon glyphicon-italic'},
+    {label: 'Подчеркивание', style: 'UNDERLINE', icon: 'glyphicon glyphicon-text-color'},
 ];
 
 const InlineStyleControls = (props) => {
     var currentStyle = props.editorState.getCurrentInlineStyle();
     return (
-        <div className="RichEditor-controls">
+        <div style={styles.controls}>
             {INLINE_STYLES.map(type =>
                 <StyleButton
                     key={type.label}
                     active={currentStyle.has(type.style)}
                     label={type.label}
+                    icon={type.icon}
                     onToggle={props.onToggle}
                     style={type.style}/>
             )}

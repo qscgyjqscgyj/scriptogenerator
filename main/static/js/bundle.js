@@ -42416,10 +42416,12 @@
 	                    items.map(function (item, key) {
 	                        return (
 	                            _react2.default.createElement('div', { key: key, className: 'sort_block' },
-	                                _react2.default.createElement('div', { className: 'col-md-10' },
-	                                    item),
+	                                !_this3.props.left ?
+	                                _react2.default.createElement('div', { className: 'sort_item' },
+	                                    item) :
+	                                '',
 	
-	                                _react2.default.createElement('div', { className: 'col-md-2 sort_icons' },
+	                                _react2.default.createElement('div', { className: 'sort_icons' },
 	                                    key !== 0 ?
 	                                    _react2.default.createElement('i', {
 	                                        className: 'glyphicon glyphicon-triangle-top',
@@ -42429,7 +42431,12 @@
 	                                    _react2.default.createElement('i', {
 	                                        className: 'glyphicon glyphicon-triangle-bottom',
 	                                        'aria-hidden': 'true',
-	                                        onClick: function onClick() {_this3.moveItem(key, key + 1);} }) : '')));
+	                                        onClick: function onClick() {_this3.moveItem(key, key + 1);} }) : ''),
+	
+	                                _this3.props.left ?
+	                                _react2.default.createElement('div', { className: 'sort_item' },
+	                                    item) :
+	                                ''));
 	
 	
 	
@@ -42720,15 +42727,10 @@
 	                                                    React.createElement('i', { className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLinkCategory(coll, true);} }))),
 	
 	
-	                                            React.createElement(_sort.Sort, { onSort: _this3.onCategorySort.bind(_this3) },
+	                                            React.createElement(_sort.Sort, { onSort: _this3.onCategorySort.bind(_this3), left: true },
 	                                                coll.categories.map(function (category, key) {
 	                                                    return (
-	                                                        React.createElement('div', {
-	                                                                key: key,
-	                                                                category: category,
-	                                                                coll: coll,
-	                                                                className: category.hidden ? 'hidden_links' : '' },
-	
+	                                                        React.createElement('div', { key: key, category: category, coll: coll, className: category.hidden ? 'hidden_links' : '' },
 	                                                            React.createElement('div', { className: 'row' },
 	                                                                React.createElement('div', { className: 'col-md-9' },
 	                                                                    React.createElement('h4', { className: 'table_header_text' },
@@ -42751,12 +42753,12 @@
 	                                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove icon icon_vertical_centre red_icon', 'aria-hidden': 'true', onClick: function onClick() {_this3.deleteLinkCategory(category);} }))),
 	
 	
-	                                                            React.createElement(_sort.Sort, { onSort: _this3.onLinkSort.bind(_this3) },
+	                                                            React.createElement(_sort.Sort, { onSort: _this3.onLinkSort.bind(_this3), left: true },
 	                                                                category.links.map(function (link, key) {
 	                                                                    return (
 	                                                                        React.createElement('div', { key: key, category: category, link: link },
 	                                                                            React.createElement('div', { className: 'row' },
-	                                                                                React.createElement('div', { className: 'col-md-10 link_name' },
+	                                                                                React.createElement('div', { className: 'col-md-9 link_name' },
 	                                                                                    React.createElement(EditableText, {
 	                                                                                        text: link.name,
 	                                                                                        field: 'name',
@@ -42777,6 +42779,7 @@
 	                                                                                            name: 'name' } })),
 	
 	
+	                                                                                React.createElement('div', { className: 'col-md-1' }),
 	                                                                                React.createElement('div', { className: 'col-md-1' },
 	                                                                                    React.createElement('span', { className: 'glyphicon glyphicon-remove icon red_icon', 'aria-hidden': 'true', onClick: function onClick() {_this3.deleteLink(link);} })))));
 	
@@ -42972,6 +42975,75 @@
 	//    }
 	//}
 	//
+	//                                        <Sort onSort={this.onCategorySort.bind(this)} left={true}>
+	//                                            {coll.categories.map((category, key) => {
+	//                                                return (
+	//                                                    <div
+	//                                                        key={key}
+	//                                                        category={category}
+	//                                                        coll={coll}
+	//                                                        className={category.hidden ? 'hidden_links' : ''}>
+	//
+	//                                                        <div className="row">
+	//                                                            <div className="col-md-9">
+	//                                                                <h4 className="table_header_text">
+	//                                                                    <EditableText
+	//                                                                        text={category.name}
+	//                                                                        field={'name'}
+	//                                                                        submitHandler={(category) => this.updateLinkCategory(category)}
+	//                                                                        object={category}
+	//                                                                        settings={{
+	//                                                                            placeholder: 'Имя категории',
+	//                                                                            name: 'name'
+	//                                                                        }}
+	//                                                                    />
+	//                                                                </h4>
+	//                                                            </div>
+	//                                                            <div className="col-md-1">
+	//                                                                <i className="icon add_icon icon_vertical_centre glyphicon glyphicon-plus" onClick={()=>{this.createLink(category)}}/>
+	//                                                            </div>
+	//                                                            <div className="col-md-1">
+	//                                                                <i className="glyphicon glyphicon-remove icon icon_vertical_centre red_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
+	//                                                            </div>
+	//                                                        </div>
+	//                                                        <Sort onSort={this.onLinkSort.bind(this)} left={true}>
+	//                                                            {category.links.map((link, key) => {
+	//                                                                return (
+	//                                                                    <div key={key} category={category} link={link}>
+	//                                                                        <div className="row">
+	//                                                                            <div className="col-md-10 link_name">
+	//                                                                                <EditableText
+	//                                                                                    text={link.name}
+	//                                                                                    field={'name'}
+	//                                                                                    onClick={(link, e) => {
+	//                                                                                        if(!tablesStore.pressed_key) {
+	//                                                                                            window.location = '/#/' +
+	//                                                                                                '/tables/' + this.props.params.script +
+	//                                                                                                '/table/' + this.props.params.table +
+	//                                                                                                '/link/' + link.id +
+	//                                                                                                '/edit/'
+	//                                                                                        }
+	//                                                                                    }}
+	//                                                                                    data_link={this.copyLink(link)}
+	//                                                                                    submitHandler={(link) => this.updateLink(link)}
+	//                                                                                    object={link}
+	//                                                                                    settings={{
+	//                                                                                        placeholder: 'Имя ссылки',
+	//                                                                                        name: 'name'
+	//                                                                                    }}/>
+	//                                                                            </div>
+	//                                                                            <div className="col-md-1">
+	//                                                                                <span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
+	//                                                                            </div>
+	//                                                                        </div>
+	//                                                                    </div>
+	//                                                                )
+	//                                                            })}
+	//                                                        </Sort>
+	//                                                    </div>
+	//                                                )
+	//                                            })}
+	//                                        </Sort>
 
 /***/ },
 /* 248 */

@@ -36,10 +36,12 @@ export class Sort extends React.Component {
                 {items.map((item, key) => {
                     return(
                         <div key={key} className="sort_block">
-                            <div className="col-md-10">
-                                {item}
-                            </div>
-                            <div className="col-md-2 sort_icons">
+                            {!this.props.left ?
+                                <div className="sort_item">
+                                    {item}
+                                </div> : ''
+                            }
+                            <div className="sort_icons">
                                 {key !== 0 ?
                                     <i
                                         className="glyphicon glyphicon-triangle-top"
@@ -51,6 +53,11 @@ export class Sort extends React.Component {
                                         aria-hidden="true"
                                         onClick={() => {this.moveItem(key, key + 1)}}/> : ''}
                             </div>
+                            {this.props.left ?
+                                <div className="sort_item">
+                                    {item}
+                                </div> : ''
+                            }
                         </div>
                     )
                 })}

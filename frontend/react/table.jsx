@@ -276,15 +276,10 @@ export class TableEdit extends Table {
                                                 <i className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
                                             </div>
                                         </div>
-                                        <Sort onSort={this.onCategorySort.bind(this)}>
+                                        <Sort onSort={this.onCategorySort.bind(this)} left={true} child={true}>
                                             {coll.categories.map((category, key) => {
                                                 return (
-                                                    <div
-                                                        key={key}
-                                                        category={category}
-                                                        coll={coll}
-                                                        className={category.hidden ? 'hidden_links' : ''}>
-
+                                                    <div key={key} category={category} coll={coll} className={category.hidden ? 'hidden_links' : ''}>
                                                         <div className="row">
                                                             <div className="col-md-9">
                                                                 <h4 className="table_header_text">
@@ -307,12 +302,12 @@ export class TableEdit extends Table {
                                                                 <i className="glyphicon glyphicon-remove icon icon_vertical_centre red_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
                                                             </div>
                                                         </div>
-                                                        <Sort onSort={this.onLinkSort.bind(this)}>
+                                                        <Sort onSort={this.onLinkSort.bind(this)} left={true}>
                                                             {category.links.map((link, key) => {
                                                                 return (
                                                                     <div key={key} category={category} link={link}>
                                                                         <div className="row">
-                                                                            <div className="col-md-10 link_name">
+                                                                            <div className="col-md-9 link_name">
                                                                                 <EditableText
                                                                                     text={link.name}
                                                                                     field={'name'}
@@ -333,6 +328,7 @@ export class TableEdit extends Table {
                                                                                         name: 'name'
                                                                                     }}/>
                                                                             </div>
+                                                                            <div className="col-md-1"></div>
                                                                             <div className="col-md-1">
                                                                                 <span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
                                                                             </div>
@@ -528,3 +524,72 @@ class EditableText extends React.Component {
 //    }
 //}
 //
+//                                        <Sort onSort={this.onCategorySort.bind(this)} left={true}>
+//                                            {coll.categories.map((category, key) => {
+//                                                return (
+//                                                    <div
+//                                                        key={key}
+//                                                        category={category}
+//                                                        coll={coll}
+//                                                        className={category.hidden ? 'hidden_links' : ''}>
+//
+//                                                        <div className="row">
+//                                                            <div className="col-md-9">
+//                                                                <h4 className="table_header_text">
+//                                                                    <EditableText
+//                                                                        text={category.name}
+//                                                                        field={'name'}
+//                                                                        submitHandler={(category) => this.updateLinkCategory(category)}
+//                                                                        object={category}
+//                                                                        settings={{
+//                                                                            placeholder: 'Имя категории',
+//                                                                            name: 'name'
+//                                                                        }}
+//                                                                    />
+//                                                                </h4>
+//                                                            </div>
+//                                                            <div className="col-md-1">
+//                                                                <i className="icon add_icon icon_vertical_centre glyphicon glyphicon-plus" onClick={()=>{this.createLink(category)}}/>
+//                                                            </div>
+//                                                            <div className="col-md-1">
+//                                                                <i className="glyphicon glyphicon-remove icon icon_vertical_centre red_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
+//                                                            </div>
+//                                                        </div>
+//                                                        <Sort onSort={this.onLinkSort.bind(this)} left={true}>
+//                                                            {category.links.map((link, key) => {
+//                                                                return (
+//                                                                    <div key={key} category={category} link={link}>
+//                                                                        <div className="row">
+//                                                                            <div className="col-md-10 link_name">
+//                                                                                <EditableText
+//                                                                                    text={link.name}
+//                                                                                    field={'name'}
+//                                                                                    onClick={(link, e) => {
+//                                                                                        if(!tablesStore.pressed_key) {
+//                                                                                            window.location = '/#/' +
+//                                                                                                '/tables/' + this.props.params.script +
+//                                                                                                '/table/' + this.props.params.table +
+//                                                                                                '/link/' + link.id +
+//                                                                                                '/edit/'
+//                                                                                        }
+//                                                                                    }}
+//                                                                                    data_link={this.copyLink(link)}
+//                                                                                    submitHandler={(link) => this.updateLink(link)}
+//                                                                                    object={link}
+//                                                                                    settings={{
+//                                                                                        placeholder: 'Имя ссылки',
+//                                                                                        name: 'name'
+//                                                                                    }}/>
+//                                                                            </div>
+//                                                                            <div className="col-md-1">
+//                                                                                <span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
+//                                                                            </div>
+//                                                                        </div>
+//                                                                    </div>
+//                                                                )
+//                                                            })}
+//                                                        </Sort>
+//                                                    </div>
+//                                                )
+//                                            })}
+//                                        </Sort>

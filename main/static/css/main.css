@@ -41,6 +41,7 @@
     font-size: 16px;
     margin-bottom: 8px;
     margin-top: 8px;
+    font-weight: 600;
 }
 .table_header_text:hover {
     cursor: pointer;
@@ -75,12 +76,20 @@
     top: 10px;
 }
 /*SORT*/
-.sort_block:hover .sort_icons {
-    display: inline;
+.sort_block {
+    width: 100%;
+}
+.sort_item {
+    width: 85%;
+    float: left;
 }
 .sort_icons {
+    float: left;
+    width: 15%;
     text-align: center;
-    display: none;
+    position: relative;
+    top: 10px;
+    font-size: 10px;
 }
 .sort_icons i:hover {
     color: #969696;

@@ -128,6 +128,19 @@ LOGGING = {
     }
 }
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'postmaster@scriptogenerator.ru'
+EMAIL_HOST_PASSWORD = '62ce8bc077161866c38ddd436e96ad3a'
+DEFAULT_FROM_EMAIL = 'postmaster@scriptogenerator.ru'
+SERVER_EMAIL = 'postmaster@scriptogenerator.ru'
+
+SEND_ACTIVATION_EMAIL = True
+ACCOUNT_ACTIVATION_DAYS = 10
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
 for item in LOCAL_APPS:
     INSTALLED_APPS+=(item,)
     TEMPLATE_DIRS+=(join(PROJECT_PATH, item,'templates'),)

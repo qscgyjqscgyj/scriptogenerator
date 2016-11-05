@@ -22,4 +22,4 @@ class CustomRegistrationView(RegistrationView):
         if 'next' in self.request.GET.keys():
             return self.request.GET['next']
         else:
-            return reverse('vibe_creation', current_app='main')
+            return reverse('main', current_app='main')

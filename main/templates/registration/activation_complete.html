@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block top_class %}
+    <div class="container-fluid top fill">
+{% endblock top_class %}
+
+{% block content %}
+    <div class="row-centered">
+        <div class="col-md-5 col-centered">
+            <div class="row row-centered">
+                <div class="col-md-12 col-centered">
+                    <p>{% trans "Your account is now activated." %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

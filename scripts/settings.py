@@ -140,6 +140,7 @@ SEND_ACTIVATION_EMAIL = True
 ACCOUNT_ACTIVATION_DAYS = 10
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+LOGIN_REDIRECT_URL = '/'
 
 for item in LOCAL_APPS:
     INSTALLED_APPS+=(item,)

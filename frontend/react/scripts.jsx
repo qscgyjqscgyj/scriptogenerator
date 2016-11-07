@@ -17,7 +17,7 @@ export class Scripts extends React.Component {
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-scripts-url'),
-            data: JSON.stringify({name: scriptsStore.creating_name, project: project, owner: project.owner}),
+            data: JSON.stringify({name: scriptsStore.creating_name, project: project, owner: project.owner, accesses: []}),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;
@@ -50,7 +50,7 @@ export class Scripts extends React.Component {
             $.ajax({
                 method: 'DELETE',
                 url: document.body.getAttribute('data-scripts-url'),
-                data: JSON.stringify({pk: script.id}),
+                data: JSON.stringify({id: script.id}),
                 success: (res) => {
                     scriptsStore.scripts = res.scripts;
                 },

@@ -24650,7 +24650,7 @@
 	            _jquery2.default.ajax({
 	                method: 'POST',
 	                url: document.body.getAttribute('data-scripts-url'),
-	                data: JSON.stringify({ name: scriptsStore.creating_name, project: project, owner: project.owner }),
+	                data: JSON.stringify({ name: scriptsStore.creating_name, project: project, owner: project.owner, accesses: [] }),
 	                success: function success(res) {
 	                    scriptsStore.scripts = res.scripts;
 	                    modalStore.modal = false;
@@ -24683,7 +24683,7 @@
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
 	                    url: document.body.getAttribute('data-scripts-url'),
-	                    data: JSON.stringify({ pk: script.id }),
+	                    data: JSON.stringify({ id: script.id }),
 	                    success: function success(res) {
 	                        scriptsStore.scripts = res.scripts;
 	                    },

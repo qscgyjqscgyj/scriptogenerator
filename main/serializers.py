@@ -27,8 +27,8 @@ class ScriptAccessField(serializers.Field):
     def to_representation(self, script):
         return ScriptAccessSerializer(ScriptAccess.objects.filter(script=script), many=True).data
 
-    def get_attribute(self, links):
-        return links
+    def get_attribute(self, accesses):
+        return accesses
 
     def to_internal_value(self, accesses):
         # for access in accesses:
@@ -57,7 +57,7 @@ class ScriptAccessField(serializers.Field):
 class ScriptSerializer(serializers.ModelSerializer):
     project = ProjectSerializer()
     owner = UserSerializer(read_only=True)
-    accesses = ScriptAccessField()
+    accesses = ScriptAccessField(required=False)
 
     def create(self, validated_data):
         project = validated_data.pop('project', None)

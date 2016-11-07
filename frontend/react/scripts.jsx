@@ -97,6 +97,7 @@ export class Scripts extends React.Component {
                                     <td>Название</td>
                                     <td>Проект</td>
                                     <td>Свойтсва</td>
+                                    <td>Владелец</td>
                                     <td>Скопировать</td>
                                     <td>Создано</td>
                                     <td>Изменено</td>
@@ -109,6 +110,7 @@ export class Scripts extends React.Component {
                                         <td><Link to={'/tables/' + script.id + ''}>{script.name}</Link></td>
                                         <td>{script.project.name}</td>
                                         <td>Свойтсва</td>
+                                        <td>{script.owner.email}</td>
                                         <td>Скопировать</td>
                                         <td>{script.date}</td>
                                         <td>{script.date_mod}</td>

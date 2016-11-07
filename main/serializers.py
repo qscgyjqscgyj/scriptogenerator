@@ -1,9 +1,16 @@
+from django.db.models.loading import get_model
 from rest_framework import serializers
 from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link
+from users.serializers import UserSerializer
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    owner = UserSerializer(read_only=True)
+
     def create(self, validated_data):
+        owner = self.initial_data.pop('owner', None)
+        owner = get_model('users', 'CustomUser').objects.get(**owner)
+        validated_data['owner'] = owner
         return Project.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -18,11 +25,17 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class ScriptSerializer(serializers.ModelSerializer):
     project = ProjectSerializer()
+    owner = UserSerializer(read_only=True)
 
     def create(self, validated_data):
         project = validated_data.pop('project', None)
         project = Project.objects.get(**project)
         validated_data['project'] = project
+
+        owner = self.initial_data.pop('owner', None)
+        owner = get_model('users', 'CustomUser').objects.get(**owner)
+        validated_data['owner'] = owner
+
         script = Script(**validated_data)
         script.save()
         return script

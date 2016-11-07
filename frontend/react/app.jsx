@@ -7,19 +7,22 @@ import ProjectsStore from '../mobx/projectsStore';
 import ModalStore from '../mobx/modalStore';
 import ScriptsStore from '../mobx/scriptsStore';
 import TablesStore from '../mobx/tablesStore';
+import UsersStore from '../mobx/usersStore';
 import {observer} from 'mobx-react';
 
 
 @observer
 export class App extends React.Component {
     componentWillMount() {
-        const {projectsStore, scriptsStore} = this.props;
+        const {projectsStore, scriptsStore, usersStore} = this.props;
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-init-url'),
             success: (res) => {
                 projectsStore.createProjects(res.projects);
                 scriptsStore.scripts = res.scripts;
+                usersStore.users = res.users;
+                usersStore.session_user = res.session_user;
             },
             error: (res) => {
                 console.log(res);
@@ -45,18 +48,21 @@ export class AppWrapper extends React.Component {
         let scriptsStore = ScriptsStore;
         let tablesStore = TablesStore;
         let modalStore = ModalStore;
+        let usersStore = UsersStore;
 
         const childrenWithProps = React.Children.map(this.props.children,
             (child) => React.cloneElement(child, {
                 projectsStore: projectsStore,
                 scriptsStore: scriptsStore,
                 tablesStore: tablesStore,
-                modalStore: modalStore
+                modalStore: modalStore,
+                usersStore: usersStore
             })
         );
         return(
             <App
                 modalStore={modalStore}
+                usersStore={usersStore}
                 scriptsStore={scriptsStore}
                 projectsStore={projectsStore}
                 tablesStore={tablesStore}

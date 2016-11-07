@@ -7,7 +7,7 @@
             <div class="row row-centered">
                 <div class="col-md-12 col-centered">
                     <p class="form_title bold">Registration</p>
-                    <div class="form_header">Already an account? Please <a href="{% url 'auth_login' %}?next={% url 'vibe_creation' %}">login</a> first!</div>
+                    <div class="form_header">Already an account? Please <a href="{% url 'auth_login' %}">login</a> first!</div>
                     <form id="vibe_form" class="form" method="POST" action=".">
                         {% csrf_token %}
                         <div class="form-group">

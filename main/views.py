@@ -12,6 +12,8 @@ from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Li
 from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer, LinkCategorySerializer, \
     LinkSerializer, TableLinksCollSerializer
 from scripts.settings import DEBUG
+from users.models import CustomUser
+from users.serializers import UserSerializer
 
 
 class MainView(TemplateView):
@@ -248,5 +250,7 @@ class InitView(View):
         return JSONResponse({
             'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
+            'users': UserSerializer(CustomUser.objects.all().exclude(pk=request.user.pk), many=True).data,
+            'session_user': UserSerializer(request.user).data
         }, status=201)
 

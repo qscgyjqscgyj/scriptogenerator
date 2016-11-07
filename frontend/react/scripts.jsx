@@ -6,6 +6,7 @@ import {observer} from 'mobx-react';
 import Modal from 'react-modal';
 import {ModalWrapper} from './modal';
 import {Link} from 'react-router';
+import Select from 'react-select';
 
 @observer
 export class Scripts extends React.Component {
@@ -60,7 +61,7 @@ export class Scripts extends React.Component {
         }
     }
     render() {
-        const {scriptsStore, modalStore, projectsStore} = this.props;
+        const {scriptsStore, modalStore, projectsStore, usersStore} = this.props;
         return(
             <div className="col-md-12">
                 <div className="col-md-2">
@@ -96,11 +97,13 @@ export class Scripts extends React.Component {
                                 <tr>
                                     <td>Название</td>
                                     <td>Проект</td>
-                                    <td>Свойтсва</td>
                                     <td>Владелец</td>
-                                    <td>Скопировать</td>
-                                    <td>Создано</td>
-                                    <td>Изменено</td>
+                                    <td>Доступы</td>
+                                    {
+                                        //<td>Скопировать</td>
+                                        //<td>Создано</td>
+                                        //<td>Изменено</td>
+                                    }
                                 </tr>
                             </thead>
                             <tbody>
@@ -109,11 +112,27 @@ export class Scripts extends React.Component {
                                     <tr key={key}>
                                         <td><Link to={'/tables/' + script.id + ''}>{script.name}</Link></td>
                                         <td>{script.project.name}</td>
-                                        <td>Свойтсва</td>
                                         <td>{script.owner.email}</td>
-                                        <td>Скопировать</td>
-                                        <td>{script.date}</td>
-                                        <td>{script.date_mod}</td>
+                                        <td>
+                                            <MultiSelectField
+                                                options={(() => {
+                                                    let options = script.accesses.map(access => {
+                                                        return {value: access.user.id, label: access.user.email, selected: true};
+                                                    });
+                                                    usersStore.users.map(user => {
+                                                        //if(options.length > 0 ? options.find(option => {return user.id !== option.value}) : true) {
+                                                            options.push({value: user.id, label: user.email});
+                                                        //}
+                                                    });
+                                                    return options;
+                                                })()}
+                                                onChange={(e) => {console.log(e)}}/>
+                                        </td>
+                                        {
+                                            //<td>Скопировать</td>
+                                            //<td>{script.date}</td>
+                                            //<td>{script.date_mod}</td>
+                                        }
                                         <td className="text-right">
                                             <button className="btn btn-default" onClick={()=>{
                                                 scriptsStore.editing = script;
@@ -209,10 +228,35 @@ class EditingScript extends React.Component {
     }
 }
 
-export class ScriptsWrapper extends React.Component {
-    render() {
-        return(
-            <Scripts modalStore={this.props.modalStore} scriptsStore={this.props.scriptsStore} projectsStore={this.props.projectsStore}/>
-        )
+
+class MultiSelectField extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.displayName = 'MultiSelect';
+        this.state = {
+			options: props.options,
+			value: props.options.filter(i => {return i.selected})
+		};
     }
+    componentWillReceiveProps(props) {
+        this.setState({
+			options: props.options,
+			value: props.options.filter(i => {return i.selected})
+		});
+    }
+	render() {
+		return (
+            <Select
+                multi
+                value={this.state.value}
+                placeholder="Дать доступ к скрипту"
+                options={this.state.options}
+                onChange={(e) => {
+                    this.setState(update(this.state, {value: {$set: e}}), () => {
+                        this.props.onChange(e);
+                    });
+                }} />
+		);
+	}
 }

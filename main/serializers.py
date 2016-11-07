@@ -1,6 +1,6 @@
 from django.db.models.loading import get_model
 from rest_framework import serializers
-from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link
+from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
 from users.serializers import UserSerializer
 
 
@@ -23,9 +23,41 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'owner')
 
 
+class ScriptAccessField(serializers.Field):
+    def to_representation(self, script):
+        return ScriptAccessSerializer(ScriptAccess.objects.filter(script=script), many=True).data
+
+    def get_attribute(self, links):
+        return links
+
+    def to_internal_value(self, accesses):
+        # for access in accesses:
+        #     if not access.get('category'):
+        #         if self.root.initial_data.get('links'):
+        #             del self.root.initial_data['links']
+        #         try:
+        #             self.root.initial_data['table'] = Table.objects.get(pk=int(self.root.initial_data['table']))
+        #         except TypeError:
+        #             pass
+        #         category, created = LinkCategory.objects.get_or_create(**self.root.initial_data)
+        #         l['category'] = category
+        #     elif isinstance(l.get('category'), int):
+        #         l['category'] = LinkCategory.objects.get(pk=int(l.get('category')))
+        #     if l.get('id'):
+        #         link = Link.objects.get(pk=int(l.get('id')))
+        #         link.name = l['name']
+        #         link.order = l['order']
+        #         link.text = l['text']
+        #         link.save()
+        #     else:
+        #         Link.objects.create(**l)
+        return accesses
+
+
 class ScriptSerializer(serializers.ModelSerializer):
     project = ProjectSerializer()
     owner = UserSerializer(read_only=True)
+    accesses = ScriptAccessField()
 
     def create(self, validated_data):
         project = validated_data.pop('project', None)
@@ -50,7 +82,16 @@ class ScriptSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Script
-        fields = ('id', 'name', 'owner', 'project', 'date', 'date_mod')
+        fields = ('id', 'name', 'owner', 'project', 'date', 'date_mod', 'accesses')
+
+
+class ScriptAccessSerializer(serializers.ModelSerializer):
+    script = ScriptSerializer(read_only=True)
+    owner = UserSerializer(read_only=True)
+
+    class Meta:
+        model = ScriptAccess
+        fields = ('id', 'script', 'user')
 
 
 class LinkSerializer(serializers.ModelSerializer):

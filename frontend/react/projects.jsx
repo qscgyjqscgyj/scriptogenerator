@@ -163,11 +163,3 @@ class EditingProject extends React.Component {
         return <div></div>;
     }
 }
-
-export class ProjectsWrapper extends React.Component {
-    render() {
-        return(
-            <Projects modalStore={this.props.modalStore} scriptsStore={this.props.scriptsStore} projectsStore={this.props.projectsStore}/>
-        )
-    }
-}

@@ -18,6 +18,14 @@ class Script(models.Model):
         ordering = ('-pk',)
 
 
+class ScriptAccess(models.Model):
+    script = models.ForeignKey('Script', related_name='script_access_script_script')
+    user = models.ForeignKey(CustomUser, related_name='script_access_user_custom_user')
+
+    def __unicode__(self):
+        return self.script.__unicode__()
+
+
 class Project(models.Model):
     name = models.CharField(max_length=1024)
     owner = models.ForeignKey(CustomUser, related_name='project_owner_custom_user')

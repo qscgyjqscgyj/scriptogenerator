@@ -11,13 +11,13 @@ import Select from 'react-select';
 @observer
 export class Scripts extends React.Component {
     createScript(e) {
-        const {projectsStore, scriptsStore, modalStore} = this.props;
+        const {projectsStore, scriptsStore, modalStore, usersStore} = this.props;
         let project = projectsStore.project(scriptsStore.creating_project);
         e.preventDefault();
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-scripts-url'),
-            data: JSON.stringify({name: scriptsStore.creating_name, project: project, owner: project.owner, accesses: []}),
+            data: JSON.stringify({name: scriptsStore.creating_name, project: project, owner: usersStore.session_user}),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;

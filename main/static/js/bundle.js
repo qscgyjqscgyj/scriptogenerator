@@ -24644,13 +24644,13 @@
 	
 	Scripts = exports.Scripts = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Scripts, _React$Component);function Scripts() {_classCallCheck(this, Scripts);return _possibleConstructorReturn(this, (Scripts.__proto__ || Object.getPrototypeOf(Scripts)).apply(this, arguments));}_createClass(Scripts, [{ key: 'createScript', value: function createScript(
 	        e) {var _props =
-	            this.props,projectsStore = _props.projectsStore,scriptsStore = _props.scriptsStore,modalStore = _props.modalStore;
+	            this.props,projectsStore = _props.projectsStore,scriptsStore = _props.scriptsStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
 	            var project = projectsStore.project(scriptsStore.creating_project);
 	            e.preventDefault();
 	            _jquery2.default.ajax({
 	                method: 'POST',
 	                url: document.body.getAttribute('data-scripts-url'),
-	                data: JSON.stringify({ name: scriptsStore.creating_name, project: project, owner: project.owner, accesses: [] }),
+	                data: JSON.stringify({ name: scriptsStore.creating_name, project: project, owner: usersStore.session_user }),
 	                success: function success(res) {
 	                    scriptsStore.scripts = res.scripts;
 	                    modalStore.modal = false;
@@ -44092,12 +44092,12 @@
 	
 	Projects = exports.Projects = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Projects, _React$Component);function Projects() {_classCallCheck(this, Projects);return _possibleConstructorReturn(this, (Projects.__proto__ || Object.getPrototypeOf(Projects)).apply(this, arguments));}_createClass(Projects, [{ key: 'createProject', value: function createProject(
 	        e) {var _props =
-	            this.props,projectsStore = _props.projectsStore,modalStore = _props.modalStore;
+	            this.props,projectsStore = _props.projectsStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
 	            e.preventDefault();
 	            _jquery2.default.ajax({
 	                method: 'POST',
 	                url: document.body.getAttribute('data-projects-url'),
-	                data: JSON.stringify({ name: projectsStore.creating_name, owner: projectsStore.owner }),
+	                data: JSON.stringify({ name: projectsStore.creating_name, owner: usersStore.session_user }),
 	                success: function success(res) {
 	                    projectsStore.createProjects(res.projects);
 	                    modalStore.modal = false;
@@ -44114,7 +44114,7 @@
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
 	                    url: document.body.getAttribute('data-projects-url'),
-	                    data: JSON.stringify({ pk: project.id }),
+	                    data: JSON.stringify({ id: project.id }),
 	                    success: function success(res) {
 	                        projectsStore.createProjects(res.projects);
 	                        scriptsStore.scripts = res.scripts;

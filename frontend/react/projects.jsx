@@ -9,12 +9,12 @@ import {ModalWrapper} from './modal';
 @observer
 export class Projects extends React.Component {
     createProject(e) {
-        const {projectsStore, modalStore} = this.props;
+        const {projectsStore, modalStore, usersStore} = this.props;
         e.preventDefault();
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-projects-url'),
-            data: JSON.stringify({name: projectsStore.creating_name, owner: projectsStore.owner}),
+            data: JSON.stringify({name: projectsStore.creating_name, owner: usersStore.session_user}),
             success: (res) => {
                 projectsStore.createProjects(res.projects);
                 modalStore.modal = false;
@@ -31,7 +31,7 @@ export class Projects extends React.Component {
             $.ajax({
                 method: 'DELETE',
                 url: document.body.getAttribute('data-projects-url'),
-                data: JSON.stringify({pk: project.id}),
+                data: JSON.stringify({id: project.id}),
                 success: (res) => {
                     projectsStore.createProjects(res.projects);
                     scriptsStore.scripts = res.scripts;

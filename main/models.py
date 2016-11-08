@@ -11,6 +11,9 @@ class Script(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     date_mod = models.DateTimeField(auto_now=True)
 
+    def accesses(self):
+        return ScriptAccess.objects.filter(script=self)
+
     def __unicode__(self):
         return self.name
 

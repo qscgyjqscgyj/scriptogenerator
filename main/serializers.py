@@ -86,12 +86,14 @@ class ScriptSerializer(serializers.ModelSerializer):
 
 
 class ScriptAccessSerializer(serializers.ModelSerializer):
-    script = ScriptSerializer(read_only=True)
-    owner = UserSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
+
+    def create(self, validated_data):
+        return ScriptAccess.objects.create(**validated_data)
 
     class Meta:
         model = ScriptAccess
-        fields = ('id', 'script', 'user')
+        fields = ('id', 'user')
 
 
 class LinkSerializer(serializers.ModelSerializer):

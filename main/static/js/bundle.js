@@ -24660,13 +24660,13 @@
 	                } });
 	
 	        } }, { key: 'updateScript', value: function updateScript(
-	        e) {var _props2 =
+	        e, script) {var _props2 =
 	            this.props,scriptsStore = _props2.scriptsStore,modalStore = _props2.modalStore;
-	            e.preventDefault();
+	            if (e) {e.preventDefault();}
 	            _jquery2.default.ajax({
 	                method: 'PUT',
 	                url: document.body.getAttribute('data-scripts-url'),
-	                data: JSON.stringify(scriptsStore.editing),
+	                data: JSON.stringify(script ? script : scriptsStore.editing),
 	                success: function success(res) {
 	                    scriptsStore.scripts = res.scripts;
 	                    modalStore.modal = false;
@@ -24692,6 +24692,20 @@
 	                    } });
 	
 	            }
+	        } }, { key: 'setAccesses', value: function setAccesses(
+	        accesses, script) {var
+	            scriptsStore = this.props.scriptsStore;
+	            _jquery2.default.ajax({
+	                method: 'POST',
+	                url: document.body.getAttribute('data-accesses-url'),
+	                data: JSON.stringify({ accesses: accesses, script: script }),
+	                success: function success(res) {
+	                    scriptsStore.scripts = res.scripts;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
 	        } }, { key: 'render', value: function render()
 	        {var _this2 = this;var _props4 =
 	            this.props,scriptsStore = _props4.scriptsStore,modalStore = _props4.modalStore,projectsStore = _props4.projectsStore,usersStore = _props4.usersStore;
@@ -24753,13 +24767,17 @@
 	                                                                return { value: access.user.id, label: access.user.email, selected: true };
 	                                                            });
 	                                                            usersStore.users.map(function (user) {
-	                                                                //if(options.length > 0 ? options.find(option => {return user.id !== option.value}) : true) {
-	                                                                options.push({ value: user.id, label: user.email });
-	                                                                //}
+	                                                                if (options.length > 0 ? options.find(function (option) {return user.id !== option.value;}) : true) {
+	                                                                    options.push({ value: user.id, label: user.email });
+	                                                                }
 	                                                            });
 	                                                            return options;
 	                                                        }(),
-	                                                        onChange: function onChange(e) {console.log(e);} })),
+	                                                        onChange: function onChange(selects) {
+	                                                            _this2.setAccesses(selects.map(function (select) {
+	                                                                return { script: script, user: usersStore.users.find(function (user) {return select.value === user.id;}) };
+	                                                            }), script);
+	                                                        } })),
 	
 	
 	

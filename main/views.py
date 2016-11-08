@@ -8,9 +8,9 @@ from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 import json
 
-from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link
+from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
 from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer, LinkCategorySerializer, \
-    LinkSerializer, TableLinksCollSerializer
+    LinkSerializer, TableLinksCollSerializer, ScriptAccessSerializer
 from scripts.settings import DEBUG
 from users.models import CustomUser
 from users.serializers import UserSerializer
@@ -243,6 +243,33 @@ class LinkView(View):
             })
         except ObjectDoesNotExist:
             return JSONResponse({'error': 'Object does not exist.'}, status=400)
+
+
+class ScriptAccessView(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        accesses = data['accesses']
+        script = Script.objects.get(pk=int(data['script']['id']))
+
+        def delete_accesses(accesses_for_deleting):
+            for access in accesses_for_deleting:
+                access.delete()
+
+        if accesses:
+            created_accesses = []
+            for access in accesses:
+                user = CustomUser.objects.get(pk=int(access['user']['id']))
+                try:
+                    created_accesses.append(ScriptAccess.objects.get(user=user, script=script).pk)
+                except ObjectDoesNotExist:
+                    created_accesses.append(ScriptAccess.objects.create(user=user, script=script).pk)
+                if created_accesses:
+                    delete_accesses(script.accesses().exclude(pk__in=created_accesses))
+        else:
+            delete_accesses(script.accesses())
+        return JSONResponse({
+            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+        })
 
 
 class InitView(View):

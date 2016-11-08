@@ -27,13 +27,13 @@ export class Scripts extends React.Component {
             }
         });
     }
-    updateScript(e) {
+    updateScript(e, script) {
         const {scriptsStore, modalStore} = this.props;
-        e.preventDefault();
+        if(e) {e.preventDefault()}
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-scripts-url'),
-            data: JSON.stringify(scriptsStore.editing),
+            data: JSON.stringify((script ? script : scriptsStore.editing)),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;
@@ -59,6 +59,20 @@ export class Scripts extends React.Component {
                 }
             });
         }
+    }
+    setAccesses(accesses, script) {
+        const {scriptsStore} = this.props;
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-accesses-url'),
+            data: JSON.stringify({accesses: accesses, script: script}),
+            success: (res) => {
+                scriptsStore.scripts = res.scripts;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
     }
     render() {
         const {scriptsStore, modalStore, projectsStore, usersStore} = this.props;
@@ -120,13 +134,17 @@ export class Scripts extends React.Component {
                                                         return {value: access.user.id, label: access.user.email, selected: true};
                                                     });
                                                     usersStore.users.map(user => {
-                                                        //if(options.length > 0 ? options.find(option => {return user.id !== option.value}) : true) {
+                                                        if(options.length > 0 ? options.find(option => {return user.id !== option.value}) : true) {
                                                             options.push({value: user.id, label: user.email});
-                                                        //}
+                                                        }
                                                     });
                                                     return options;
                                                 })()}
-                                                onChange={(e) => {console.log(e)}}/>
+                                                onChange={(selects) => {
+                                                    this.setAccesses(selects.map(select => {
+                                                        return {script: script, user: usersStore.users.find(user => {return select.value === user.id})}
+                                                    }), script);
+                                                }}/>
                                         </td>
                                         {
                                             //<td>Скопировать</td>

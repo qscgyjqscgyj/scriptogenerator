@@ -23,6 +23,7 @@
         data-colls-url="{% url 'colls' %}"
         data-link-categories-url="{% url 'link_categories' %}"
         data-links-url="{% url 'links' %}"
+        data-logout-url="{% url 'auth_logout' %}"
     >
         {% block content %}
             {% if request.user.is_authenticated %}

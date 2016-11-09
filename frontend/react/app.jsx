@@ -30,9 +30,10 @@ export class App extends React.Component {
         });
     }
     render() {
+        const {usersStore} = this.props;
         return(
             <div>
-                <Nav location={this.props.location} params={this.props.params}/>
+                <Nav location={this.props.location} params={this.props.params} usersStore={usersStore}/>
 
                 <div className="container-fluid" id="main_container">
                     {this.props.children}

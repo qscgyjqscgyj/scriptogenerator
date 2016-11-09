@@ -7,16 +7,14 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class CustomRegistrationForm(RegistrationForm):
-    web_site = forms.URLField(label=_('Web site'), required=False)
 
     class Meta:
         model = CustomUser
-        fields = (UsernameField(), 'email', 'web_site')
+        fields = (UsernameField(), 'email')
 
 
 class UserProfileForm(forms.ModelForm):
-    web_site = forms.URLField(label=_('Web site'), required=False)
 
     class Meta:
         model = CustomUser
-        fields = ('web_site', )
+        fields = ()

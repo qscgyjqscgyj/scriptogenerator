@@ -75,7 +75,7 @@ export class Scripts extends React.Component {
         });
     }
     render() {
-        const {scriptsStore, modalStore, projectsStore, usersStore} = this.props;
+        const {scriptsStore, modalStore, projectsStore, usersStore, tablesStore} = this.props;
         return(
             <div className="col-md-12">
                 <div className="col-md-2">
@@ -128,23 +128,10 @@ export class Scripts extends React.Component {
                                         <td>{script.project.name}</td>
                                         <td>{script.owner.email}</td>
                                         <td>
-                                            <MultiSelectField
-                                                options={(() => {
-                                                    let options = script.accesses.map(access => {
-                                                        return {value: access.user.id, label: access.user.email, selected: true};
-                                                    });
-                                                    usersStore.users.map(user => {
-                                                        if(options.length > 0 ? options.find(option => {return user.id !== option.value}) : true) {
-                                                            options.push({value: user.id, label: user.email});
-                                                        }
-                                                    });
-                                                    return options;
-                                                })()}
-                                                onChange={(selects) => {
-                                                    this.setAccesses(selects.map(select => {
-                                                        return {script: script, user: usersStore.users.find(user => {return select.value === user.id})}
-                                                    }), script);
-                                                }}/>
+                                            <button onClick={() => {
+                                                modalStore.modal = true;
+                                                modalStore.component = React.createElement(Accesses, {script: script, usersStore: usersStore});
+                                            }} className="btn btn-default">Права</button>
                                         </td>
                                         {
                                             //<td>Скопировать</td>
@@ -168,7 +155,7 @@ export class Scripts extends React.Component {
                         </table>
                     </div>
                 </div>
-                <ModalWrapper scriptsStore={scriptsStore} projectsStore={projectsStore} modalStore={modalStore} createScript={this.createScript.bind(this)} updateScript={this.updateScript.bind(this)}/>
+                <ModalWrapper scriptsStore={scriptsStore} tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createScript={this.createScript.bind(this)} updateScript={this.updateScript.bind(this)}/>
             </div>
         );
     }
@@ -246,6 +233,54 @@ class EditingScript extends React.Component {
     }
 }
 
+class Accesses extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selected: this.getSelected(props.script)
+        }
+    }
+    componentWillReceiveProps(props) {
+        this.setState(update(this.state, {selected: {$set: this.getSelected(props.script)}}))
+    }
+    getSelected(script) {
+        return script.accesses.map(access => {
+            return {value: access.user.id, label: access.user.email, selected: true};
+        });
+    }
+    getOptions(edit) {
+        const {usersStore} = this.props;
+        let options = this.state.selected;
+        usersStore.users.map(user => {
+            if(options.length > 0 ? options.find(option => {return user.id !== option.value}) : true) {
+                options.push({value: user.id, label: user.email});
+            }
+        });
+        return options;
+    }
+    onSelect(selects, edit) {
+        const {usersStore, script} = this.props;
+        this.setAccesses(selects.map(select => {
+            return {script: script, user: usersStore.users.find(user => {return select.value === user.id}), edit: edit}
+        }), script);
+    }
+    render() {
+        const {usersStore, script} = this.props;
+        return(
+            <div className="col-md-12">
+                <div className="col-md-6">
+                    <MultiSelectField
+                        options={(() => {
+                            let {options} = this.state;
+                            return options;
+                        })()}
+                        onChange={(selects) => {this.onSelect(selects, true)}}/>
+                </div>
+            </div>
+        )
+    }
+}
 
 class MultiSelectField extends React.Component {
     constructor(props) {

@@ -1,4 +1,17 @@
 /*HACKS*/
+
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    /*text-align:left;*/
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
 .navbar.unmargin{
     margin-bottom: 0px !important;
 }
@@ -110,3 +123,9 @@
     color: #969696;
     cursor: pointer;
 }
+
+/*BOOTSTRAP*/
+.dropdown:hover .dropdown-menu {
+    display: block !important;
+    margin-top: 0 !important;
+ }

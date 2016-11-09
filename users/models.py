@@ -5,7 +5,6 @@ from registration.signals import user_registered
 
 
 class CustomUser(AbstractUser):
-    web_site = models.URLField(max_length=1024)
 
     objects = BaseUserManager()
 

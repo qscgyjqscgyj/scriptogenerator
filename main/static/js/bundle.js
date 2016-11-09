@@ -24708,7 +24708,7 @@
 	
 	        } }, { key: 'render', value: function render()
 	        {var _this2 = this;var _props4 =
-	            this.props,scriptsStore = _props4.scriptsStore,modalStore = _props4.modalStore,projectsStore = _props4.projectsStore,usersStore = _props4.usersStore;
+	            this.props,scriptsStore = _props4.scriptsStore,modalStore = _props4.modalStore,projectsStore = _props4.projectsStore,usersStore = _props4.usersStore,tablesStore = _props4.tablesStore;
 	            return (
 	                React.createElement('div', { className: 'col-md-12' },
 	                    React.createElement('div', { className: 'col-md-2' },
@@ -24761,23 +24761,10 @@
 	                                                React.createElement('td', null, script.project.name),
 	                                                React.createElement('td', null, script.owner.email),
 	                                                React.createElement('td', null,
-	                                                    React.createElement(MultiSelectField, {
-	                                                        options: function () {
-	                                                            var options = script.accesses.map(function (access) {
-	                                                                return { value: access.user.id, label: access.user.email, selected: true };
-	                                                            });
-	                                                            usersStore.users.map(function (user) {
-	                                                                if (options.length > 0 ? options.find(function (option) {return user.id !== option.value;}) : true) {
-	                                                                    options.push({ value: user.id, label: user.email });
-	                                                                }
-	                                                            });
-	                                                            return options;
-	                                                        }(),
-	                                                        onChange: function onChange(selects) {
-	                                                            _this2.setAccesses(selects.map(function (select) {
-	                                                                return { script: script, user: usersStore.users.find(function (user) {return select.value === user.id;}) };
-	                                                            }), script);
-	                                                        } })),
+	                                                    React.createElement('button', { onClick: function onClick() {
+	                                                                modalStore.modal = true;
+	                                                                modalStore.component = React.createElement(Accesses, { script: script, usersStore: usersStore });
+	                                                            }, className: 'btn btn-default' }, '\u041F\u0440\u0430\u0432\u0430')),
 	
 	
 	
@@ -24801,7 +24788,7 @@
 	
 	
 	
-	                    React.createElement(_modal.ModalWrapper, { scriptsStore: scriptsStore, projectsStore: projectsStore, modalStore: modalStore, createScript: this.createScript.bind(this), updateScript: this.updateScript.bind(this) })));
+	                    React.createElement(_modal.ModalWrapper, { scriptsStore: scriptsStore, tablesStore: tablesStore, projectsStore: projectsStore, modalStore: modalStore, createScript: this.createScript.bind(this), updateScript: this.updateScript.bind(this) })));
 	
 	
 	        } }]);return Scripts;}(React.Component)) || _class;var
@@ -24879,15 +24866,63 @@
 	        } }]);return EditingScript;}(React.Component)) || _class3;var
 	
 	
-	
-	MultiSelectField = function (_React$Component4) {_inherits(MultiSelectField, _React$Component4);
-	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this7 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
+	Accesses = function (_React$Component4) {_inherits(Accesses, _React$Component4);
+	    function Accesses(props) {_classCallCheck(this, Accesses);var _this7 = _possibleConstructorReturn(this, (Accesses.__proto__ || Object.getPrototypeOf(Accesses)).call(this,
 	        props));
 	
-	        _this7.displayName = 'MultiSelect';
 	        _this7.state = {
+	            selected: _this7.getSelected(props.script) };return _this7;
+	
+	    }_createClass(Accesses, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
+	        props) {
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { selected: { $set: this.getSelected(props.script) } }));
+	        } }, { key: 'getSelected', value: function getSelected(
+	        script) {
+	            return script.accesses.map(function (access) {
+	                return { value: access.user.id, label: access.user.email, selected: true };
+	            });
+	        } }, { key: 'getOptions', value: function getOptions(
+	        edit) {var
+	            usersStore = this.props.usersStore;
+	            var options = this.state.selected;
+	            usersStore.users.map(function (user) {
+	                if (options.length > 0 ? options.find(function (option) {return user.id !== option.value;}) : true) {
+	                    options.push({ value: user.id, label: user.email });
+	                }
+	            });
+	            return options;
+	        } }, { key: 'onSelect', value: function onSelect(
+	        selects, edit) {var _props7 =
+	            this.props,usersStore = _props7.usersStore,script = _props7.script;
+	            this.setAccesses(selects.map(function (select) {
+	                return { script: script, user: usersStore.users.find(function (user) {return select.value === user.id;}), edit: edit };
+	            }), script);
+	        } }, { key: 'render', value: function render()
+	        {var _this8 = this;var _props8 =
+	            this.props,usersStore = _props8.usersStore,script = _props8.script;
+	            return (
+	                React.createElement('div', { className: 'col-md-12' },
+	                    React.createElement('div', { className: 'col-md-6' },
+	                        React.createElement(MultiSelectField, {
+	                            options: function () {var
+	                                options = _this8.state.options;
+	                                return options;
+	                            }(),
+	                            onChange: function onChange(selects) {_this8.onSelect(selects, true);} }))));
+	
+	
+	
+	        } }]);return Accesses;}(React.Component);var
+	
+	
+	MultiSelectField = function (_React$Component5) {_inherits(MultiSelectField, _React$Component5);
+	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this9 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
+	        props));
+	
+	        _this9.displayName = 'MultiSelect';
+	        _this9.state = {
 	            options: props.options,
-	            value: props.options.filter(function (i) {return i.selected;}) };return _this7;
+	            value: props.options.filter(function (i) {return i.selected;}) };return _this9;
 	
 	    }_createClass(MultiSelectField, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -24896,7 +24931,7 @@
 	                value: props.options.filter(function (i) {return i.selected;}) });
 	
 	        } }, { key: 'render', value: function render()
-	        {var _this8 = this;
+	        {var _this10 = this;
 	            return (
 	                React.createElement(_reactSelect2.default, {
 	                    multi: true,
@@ -24904,8 +24939,8 @@
 	                    placeholder: '\u0414\u0430\u0442\u044C \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
 	                    options: this.state.options,
 	                    onChange: function onChange(e) {
-	                        _this8.setState((0, _reactAddonsUpdate2.default)(_this8.state, { value: { $set: e } }), function () {
-	                            _this8.props.onChange(e);
+	                        _this10.setState((0, _reactAddonsUpdate2.default)(_this10.state, { value: { $set: e } }), function () {
+	                            _this10.props.onChange(e);
 	                        });
 	                    } }));
 	
@@ -41753,9 +41788,14 @@
 	        right: 'auto',
 	        bottom: 'auto',
 	        marginRight: '-50%',
-	        transform: 'translate(-50%, -50%)' } };var
+	        transform: 'translate(-50%, -50%)' } };
 	
 	
+	
+	function isFunction(functionToCheck) {
+	    var getType = {};
+	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	}var
 	
 	
 	ModalWrapper = exports.ModalWrapper = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(ModalWrapper, _React$Component);function ModalWrapper() {_classCallCheck(this, ModalWrapper);return _possibleConstructorReturn(this, (ModalWrapper.__proto__ || Object.getPrototypeOf(ModalWrapper)).apply(this, arguments));}_createClass(ModalWrapper, [{ key: 'render', value: function render()
@@ -41776,13 +41816,14 @@
 	                            scriptsStore.resetCreating();
 	                            tablesStore.resetCreating();
 	                        } },
-	
+	                    isFunction(modalStore.component) ?
 	                    modalStore.component ?
 	                    React.createElement(
 	                    modalStore.component,
 	                    this.props) :
 	
-	                    ''));
+	                    '' :
+	                    modalStore.component));
 	
 	
 	
@@ -71720,10 +71761,11 @@
 	                } });
 	
 	        } }, { key: 'render', value: function render()
-	        {
+	        {var
+	            usersStore = this.props.usersStore;
 	            return (
 	                React.createElement('div', null,
-	                    React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params }),
+	                    React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params, usersStore: usersStore }),
 	
 	                    React.createElement('div', { className: 'container-fluid', id: 'main_container' },
 	                        this.props.children)));
@@ -71767,13 +71809,16 @@
 /* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Nav = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Nav = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(158);var ReactDOM = _interopRequireWildcard(_reactDom);
-	var _reactRouter = __webpack_require__(159);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _reactRouter = __webpack_require__(159);
+	var _mobxReact = __webpack_require__(218);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
-	Nav = exports.Nav = function (_React$Component) {_inherits(Nav, _React$Component);function Nav() {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));}_createClass(Nav, [{ key: 'render', value: function render()
-	        {
+	
+	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);function Nav() {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));}_createClass(Nav, [{ key: 'render', value: function render()
+	        {var
+	            usersStore = this.props.usersStore;
 	            return (
 	                React.createElement('nav', { className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
 	                    React.createElement('div', { className: 'container-fluid' },
@@ -71804,13 +71849,23 @@
 	
 	
 	
-	                            ''))));
+	                            ''),
+	
+	
+	                        usersStore.session_user ?
+	                        React.createElement('ul', { className: 'nav navbar-nav navbar-right' },
+	                            React.createElement('li', { className: 'dropdown' },
+	                                React.createElement('a', { href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, usersStore.session_user.username, ' ', React.createElement('span', { className: 'caret' })),
+	                                React.createElement('ul', { className: 'dropdown-menu' },
+	                                    React.createElement('li', null, React.createElement('a', { href: document.body.getAttribute('data-logout-url') }, '\u0412\u044B\u0445\u043E\u0434'))))) :
 	
 	
 	
+	                        '')));
 	
 	
-	        } }]);return Nav;}(React.Component);
+	
+	        } }]);return Nav;}(React.Component)) || _class;
 
 /***/ },
 /* 430 */
@@ -71862,8 +71917,8 @@
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(219);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
-	UsersStore = exports.UsersStore = (_class = function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'session_users', _descriptor2, this);}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
-	            []);} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'session_users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
+	UsersStore = exports.UsersStore = (_class = function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'session_user', _descriptor2, this);}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
+	            []);} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
 	            null);} })), _class);exports.default =
 	
 	

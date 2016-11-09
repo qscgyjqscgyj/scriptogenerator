@@ -93,7 +93,7 @@ class ScriptAccessSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ScriptAccess
-        fields = ('id', 'user')
+        fields = ('id', 'user', 'edit')
 
 
 class LinkSerializer(serializers.ModelSerializer):

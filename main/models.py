@@ -24,6 +24,7 @@ class Script(models.Model):
 class ScriptAccess(models.Model):
     script = models.ForeignKey('Script', related_name='script_access_script_script')
     user = models.ForeignKey(CustomUser, related_name='script_access_user_custom_user')
+    edit = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.script.__unicode__()

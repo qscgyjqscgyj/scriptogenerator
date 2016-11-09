@@ -15,6 +15,11 @@ const customModalStyles = {
   }
 };
 
+function isFunction(functionToCheck) {
+    var getType = {};
+    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+}
+
 @observer
 export class ModalWrapper extends React.Component {
     render() {
@@ -34,13 +39,14 @@ export class ModalWrapper extends React.Component {
                     scriptsStore.resetCreating();
                     tablesStore.resetCreating();
                 }}>
-                {
+                {isFunction(modalStore.component) ?
                     modalStore.component ?
                         React.createElement(
                             modalStore.component,
                             this.props
                         )
                         : ''
+                    : modalStore.component
                 }
             </Modal>
         )

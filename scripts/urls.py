@@ -12,8 +12,8 @@ urlpatterns = patterns('',
     url(r'^', include('main.urls')),
     url(r'^payment/', include('payment.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^accounts/', include('users.urls')),
-    url(r'^accounts/', include('registration.backends.default.urls'))
+    url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/', include('users.urls'))
 )
 
 if settings.DEBUG:

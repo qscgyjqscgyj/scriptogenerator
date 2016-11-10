@@ -288,17 +288,21 @@ class Accesses extends React.Component {
     render() {
         return(
             <div className="col-md-12">
-                <div className="col-md-6">
-                    <p>Модераторы</p>
-                    <MultiSelectField
-                        options={this.getOptions(true)}
-                        onChange={(selects) => {this.onSelect(selects, true)}}/>
+                <div className="row">
+                    <div className="col-md-12">
+                        <p>Модераторы</p>
+                        <MultiSelectField
+                            options={this.getOptions(true)}
+                            onChange={(selects) => {this.onSelect(selects, true)}}/>
+                    </div>
                 </div>
-                <div className="col-md-6">
-                    <p>Операторы</p>
-                    <MultiSelectField
-                        options={this.getOptions(false)}
-                        onChange={(selects) => {this.onSelect(selects, false)}}/>
+                <div className="row">
+                    <div className="col-md-12">
+                        <p>Операторы</p>
+                        <MultiSelectField
+                            options={this.getOptions(false)}
+                            onChange={(selects) => {this.onSelect(selects, false)}}/>
+                    </div>
                 </div>
             </div>
         )

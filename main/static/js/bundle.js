@@ -24921,17 +24921,21 @@
 	        {var _this9 = this;
 	            return (
 	                React.createElement('div', { className: 'col-md-12' },
-	                    React.createElement('div', { className: 'col-md-6' },
-	                        React.createElement('p', null, '\u041C\u043E\u0434\u0435\u0440\u0430\u0442\u043E\u0440\u044B'),
-	                        React.createElement(MultiSelectField, {
-	                            options: this.getOptions(true),
-	                            onChange: function onChange(selects) {_this9.onSelect(selects, true);} })),
+	                    React.createElement('div', { className: 'row' },
+	                        React.createElement('div', { className: 'col-md-12' },
+	                            React.createElement('p', null, '\u041C\u043E\u0434\u0435\u0440\u0430\u0442\u043E\u0440\u044B'),
+	                            React.createElement(MultiSelectField, {
+	                                options: this.getOptions(true),
+	                                onChange: function onChange(selects) {_this9.onSelect(selects, true);} }))),
 	
-	                    React.createElement('div', { className: 'col-md-6' },
-	                        React.createElement('p', null, '\u041E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u044B'),
-	                        React.createElement(MultiSelectField, {
-	                            options: this.getOptions(false),
-	                            onChange: function onChange(selects) {_this9.onSelect(selects, false);} }))));
+	
+	                    React.createElement('div', { className: 'row' },
+	                        React.createElement('div', { className: 'col-md-12' },
+	                            React.createElement('p', null, '\u041E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u044B'),
+	                            React.createElement(MultiSelectField, {
+	                                options: this.getOptions(false),
+	                                onChange: function onChange(selects) {_this9.onSelect(selects, false);} })))));
+	
 	
 	
 	

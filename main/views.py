@@ -258,11 +258,14 @@ class ScriptAccessView(View):
         if accesses:
             created_accesses = []
             for access in accesses:
-                user = CustomUser.objects.get(pk=int(access['user']['id']))
+                user = CustomUser.objects.get(pk=int(access['user_id']))
                 try:
-                    created_accesses.append(ScriptAccess.objects.get(user=user, script=script).pk)
+                    created_access = ScriptAccess.objects.get(user=user, script=script)
+                    created_access.edit = access['edit']
                 except ObjectDoesNotExist:
-                    created_accesses.append(ScriptAccess.objects.create(user=user, script=script).pk)
+                    created_access = ScriptAccess.objects.create(user=user, script=script, edit=access['edit'])
+                created_access.save()
+                created_accesses.append(created_access.pk)
                 if created_accesses:
                     delete_accesses(script.accesses().exclude(pk__in=created_accesses))
         else:

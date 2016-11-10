@@ -171,7 +171,6 @@ export class Table extends React.Component {
             url: document.body.getAttribute('data-links-url'),
             data: JSON.stringify(link),
             success: (res) => {
-                alert('Данные сохранены');
                 tablesStore.tables = res.tables;
             },
             error: (res) => {

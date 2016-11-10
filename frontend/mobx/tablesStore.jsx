@@ -50,9 +50,7 @@ export class TablesStore {
     }
 
     @action updateTable(e, modalStore) {
-        if(e) {
-            e.preventDefault();
-        }
+        if(e) {e.preventDefault()}
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-tables-url'),

@@ -130,7 +130,7 @@ export class Scripts extends React.Component {
                                         <td>
                                             <button onClick={() => {
                                                 modalStore.modal = true;
-                                                modalStore.component = React.createElement(Accesses, {script: script, usersStore: usersStore});
+                                                modalStore.component = React.createElement(Accesses, {script: script, usersStore: usersStore, setAccesses: this.setAccesses.bind(this)});
                                             }} className="btn btn-default">Права</button>
                                         </td>
                                         {
@@ -233,49 +233,72 @@ class EditingScript extends React.Component {
     }
 }
 
+@observer
 class Accesses extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            selected: this.getSelected(props.script)
+            accesses: this.formatAccesses(props.script.accesses)
         }
     }
     componentWillReceiveProps(props) {
-        this.setState(update(this.state, {selected: {$set: this.getSelected(props.script)}}))
+        this.setState(update(this.state, {
+            accesses: {$set: this.formatAccesses(props.script.accesses)}
+        }));
     }
-    getSelected(script) {
-        return script.accesses.map(access => {
-            return {value: access.user.id, label: access.user.email, selected: true};
+    formatAccesses(accesses) {
+        return accesses.map(access => {
+            return {value: access.user.id, label: access.user.email, selected: true, edit: access.edit}
         });
+    }
+    onSelect(selects, edit) {
+        const {script} = this.props;
+        let {accesses} = this.state;
+        let new_accesses = accesses.filter(access => {return access.edit !== edit});
+        selects.map(select => {
+            new_accesses.push(
+                {value: select.value, label: select.label, selected: true, edit: edit}
+            )
+        });
+        this.setState(update(this.state, {accesses: {$set: new_accesses}}), () => {
+            this.props.setAccesses(new_accesses.map(access => {
+                return {user_id: access.value, edit: access.edit}
+            }), script);
+        });
+    }
+    getSelected(edit) {
+        return this.state.accesses.filter(access => {return access.edit === edit});
     }
     getOptions(edit) {
         const {usersStore} = this.props;
-        let options = this.state.selected;
+        let edit_selects = this.getSelected(true);
+        let no_edit_selects = this.getSelected(false);
+        let options = (edit ? edit_selects : no_edit_selects);
+        let all_options = edit_selects.concat(no_edit_selects);
         usersStore.users.map(user => {
-            if(options.length > 0 ? options.find(option => {return user.id !== option.value}) : true) {
-                options.push({value: user.id, label: user.email});
+            if((all_options.length > 0 ? !(all_options.find(option => {return option.value === user.id})) : true)) {
+                options.push(
+                    {value: user.id, label: user.email}
+                );
             }
         });
         return options;
     }
-    onSelect(selects, edit) {
-        const {usersStore, script} = this.props;
-        this.setAccesses(selects.map(select => {
-            return {script: script, user: usersStore.users.find(user => {return select.value === user.id}), edit: edit}
-        }), script);
-    }
     render() {
-        const {usersStore, script} = this.props;
         return(
             <div className="col-md-12">
                 <div className="col-md-6">
+                    <p>Модераторы</p>
                     <MultiSelectField
-                        options={(() => {
-                            let {options} = this.state;
-                            return options;
-                        })()}
+                        options={this.getOptions(true)}
                         onChange={(selects) => {this.onSelect(selects, true)}}/>
+                </div>
+                <div className="col-md-6">
+                    <p>Операторы</p>
+                    <MultiSelectField
+                        options={this.getOptions(false)}
+                        onChange={(selects) => {this.onSelect(selects, false)}}/>
                 </div>
             </div>
         )

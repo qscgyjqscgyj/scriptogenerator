@@ -24631,7 +24631,7 @@
 /* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Scripts = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Scripts = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3, _class4;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(158);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(214);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactAddonsUpdate = __webpack_require__(216);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
@@ -24763,7 +24763,7 @@
 	                                                React.createElement('td', null,
 	                                                    React.createElement('button', { onClick: function onClick() {
 	                                                                modalStore.modal = true;
-	                                                                modalStore.component = React.createElement(Accesses, { script: script, usersStore: usersStore });
+	                                                                modalStore.component = React.createElement(Accesses, { script: script, usersStore: usersStore, setAccesses: _this2.setAccesses.bind(_this2) });
 	                                                            }, className: 'btn btn-default' }, '\u041F\u0440\u0430\u0432\u0430')),
 	
 	
@@ -24866,63 +24866,86 @@
 	        } }]);return EditingScript;}(React.Component)) || _class3;var
 	
 	
-	Accesses = function (_React$Component4) {_inherits(Accesses, _React$Component4);
+	
+	Accesses = (0, _mobxReact.observer)(_class4 = function (_React$Component4) {_inherits(Accesses, _React$Component4);
 	    function Accesses(props) {_classCallCheck(this, Accesses);var _this7 = _possibleConstructorReturn(this, (Accesses.__proto__ || Object.getPrototypeOf(Accesses)).call(this,
 	        props));
 	
 	        _this7.state = {
-	            selected: _this7.getSelected(props.script) };return _this7;
+	            accesses: _this7.formatAccesses(props.script.accesses) };return _this7;
 	
 	    }_createClass(Accesses, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { selected: { $set: this.getSelected(props.script) } }));
-	        } }, { key: 'getSelected', value: function getSelected(
-	        script) {
-	            return script.accesses.map(function (access) {
-	                return { value: access.user.id, label: access.user.email, selected: true };
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, {
+	                accesses: { $set: this.formatAccesses(props.script.accesses) } }));
+	
+	        } }, { key: 'formatAccesses', value: function formatAccesses(
+	        accesses) {
+	            return accesses.map(function (access) {
+	                return { value: access.user.id, label: access.user.email, selected: true, edit: access.edit };
 	            });
+	        } }, { key: 'onSelect', value: function onSelect(
+	        selects, edit) {var _this8 = this;var
+	            script = this.props.script;var
+	            accesses = this.state.accesses;
+	            var new_accesses = accesses.filter(function (access) {return access.edit !== edit;});
+	            selects.map(function (select) {
+	                new_accesses.push(
+	                { value: select.value, label: select.label, selected: true, edit: edit });
+	
+	            });
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { accesses: { $set: new_accesses } }), function () {
+	                _this8.props.setAccesses(new_accesses.map(function (access) {
+	                    return { user_id: access.value, edit: access.edit };
+	                }), script);
+	            });
+	        } }, { key: 'getSelected', value: function getSelected(
+	        edit) {
+	            return this.state.accesses.filter(function (access) {return access.edit === edit;});
 	        } }, { key: 'getOptions', value: function getOptions(
 	        edit) {var
 	            usersStore = this.props.usersStore;
-	            var options = this.state.selected;
+	            var edit_selects = this.getSelected(true);
+	            var no_edit_selects = this.getSelected(false);
+	            var options = edit ? edit_selects : no_edit_selects;
+	            var all_options = edit_selects.concat(no_edit_selects);
 	            usersStore.users.map(function (user) {
-	                if (options.length > 0 ? options.find(function (option) {return user.id !== option.value;}) : true) {
-	                    options.push({ value: user.id, label: user.email });
+	                if (all_options.length > 0 ? !all_options.find(function (option) {return option.value === user.id;}) : true) {
+	                    options.push(
+	                    { value: user.id, label: user.email });
+	
 	                }
 	            });
 	            return options;
-	        } }, { key: 'onSelect', value: function onSelect(
-	        selects, edit) {var _props7 =
-	            this.props,usersStore = _props7.usersStore,script = _props7.script;
-	            this.setAccesses(selects.map(function (select) {
-	                return { script: script, user: usersStore.users.find(function (user) {return select.value === user.id;}), edit: edit };
-	            }), script);
 	        } }, { key: 'render', value: function render()
-	        {var _this8 = this;var _props8 =
-	            this.props,usersStore = _props8.usersStore,script = _props8.script;
+	        {var _this9 = this;
 	            return (
 	                React.createElement('div', { className: 'col-md-12' },
 	                    React.createElement('div', { className: 'col-md-6' },
+	                        React.createElement('p', null, '\u041C\u043E\u0434\u0435\u0440\u0430\u0442\u043E\u0440\u044B'),
 	                        React.createElement(MultiSelectField, {
-	                            options: function () {var
-	                                options = _this8.state.options;
-	                                return options;
-	                            }(),
-	                            onChange: function onChange(selects) {_this8.onSelect(selects, true);} }))));
+	                            options: this.getOptions(true),
+	                            onChange: function onChange(selects) {_this9.onSelect(selects, true);} })),
+	
+	                    React.createElement('div', { className: 'col-md-6' },
+	                        React.createElement('p', null, '\u041E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u044B'),
+	                        React.createElement(MultiSelectField, {
+	                            options: this.getOptions(false),
+	                            onChange: function onChange(selects) {_this9.onSelect(selects, false);} }))));
 	
 	
 	
-	        } }]);return Accesses;}(React.Component);var
+	        } }]);return Accesses;}(React.Component)) || _class4;var
 	
 	
 	MultiSelectField = function (_React$Component5) {_inherits(MultiSelectField, _React$Component5);
-	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this9 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
+	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this10 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
 	        props));
 	
-	        _this9.displayName = 'MultiSelect';
-	        _this9.state = {
+	        _this10.displayName = 'MultiSelect';
+	        _this10.state = {
 	            options: props.options,
-	            value: props.options.filter(function (i) {return i.selected;}) };return _this9;
+	            value: props.options.filter(function (i) {return i.selected;}) };return _this10;
 	
 	    }_createClass(MultiSelectField, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -24931,7 +24954,7 @@
 	                value: props.options.filter(function (i) {return i.selected;}) });
 	
 	        } }, { key: 'render', value: function render()
-	        {var _this10 = this;
+	        {var _this11 = this;
 	            return (
 	                React.createElement(_reactSelect2.default, {
 	                    multi: true,
@@ -24939,8 +24962,8 @@
 	                    placeholder: '\u0414\u0430\u0442\u044C \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
 	                    options: this.state.options,
 	                    onChange: function onChange(e) {
-	                        _this10.setState((0, _reactAddonsUpdate2.default)(_this10.state, { value: { $set: e } }), function () {
-	                            _this10.props.onChange(e);
+	                        _this11.setState((0, _reactAddonsUpdate2.default)(_this11.state, { value: { $set: e } }), function () {
+	                            _this11.props.onChange(e);
 	                        });
 	                    } }));
 	
@@ -44723,9 +44746,7 @@
 	        } }, { key: 'updateTable', value: function updateTable(
 	
 	        e, modalStore) {var _this2 = this;
-	            if (e) {
-	                e.preventDefault();
-	            }
+	            if (e) {e.preventDefault();}
 	            _jquery2.default.ajax({
 	                method: 'PUT',
 	                url: document.body.getAttribute('data-tables-url'),
@@ -45026,7 +45047,6 @@
 	                url: document.body.getAttribute('data-links-url'),
 	                data: JSON.stringify(link),
 	                success: function success(res) {
-	                    alert('Данные сохранены');
 	                    tablesStore.tables = res.tables;
 	                },
 	                error: function error(res) {

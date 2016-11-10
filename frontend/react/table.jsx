@@ -11,10 +11,11 @@ import Clipboard from 'clipboard';
 import {ContentState, convertFromRaw} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
 import {Sort} from './sort';
+import {AccessableComponent} from './access';
 
 
 @observer
-export class Table extends React.Component {
+export class Table extends AccessableComponent {
     constructor(props) {
         super(props);
 
@@ -228,214 +229,223 @@ export class Table extends React.Component {
 @observer
 export class TableEdit extends Table {
     render() {
-        const {projectsStore, scriptsStore, tablesStore, modalStore} = this.props;
+        const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
         let table = tablesStore.table(this.props.params.table);
         let active_link = tablesStore.link(this.props.params.table, this.props.params.link);
         let sorted_colls = this.sortedColls();
         var coll_name, coll_size;
 
-        if (table) {
-            return (
-                <div className="scrollable_panel">
-                    <div className="scroll_block">
-                        {sorted_colls.map((coll, key) => {
-                            if (coll.text) {
-                                return (
-                                    <div className="scroll_links" key={key} style={{width: table.text_coll_size + '%'}}>
-                                        {active_link ?
-                                            <div>
-                                                <div className="row">
-                                                    <div className="col-md-11">
-                                                        <h4 className="table_header_text">{active_link.name}</h4>
-                                                    </div>
-                                                    <div className="col-md-1">
-                                                        <i className="icon add_icon glyphicon glyphicon-floppy-save icon_vertical_centre" onClick={() => {this.updateLink(active_link)}}/>
-                                                    </div>
-                                                </div>
-                                                <div className="link_text_editor">
-                                                    <CustomEditor object={active_link} value={active_link.text} onChange={(value) => {
-                                                        active_link.text = value;
-                                                    }} />
-                                                </div>
-                                            </div>
-                                            :
-                                            ''
-                                        }
-                                    </div>
-                                )
-                            } else if (!coll.text) {
-                                coll = coll.coll;
-                                return (
-                                    <div className="scroll_links" key={key} style={{width: coll.size + '%'}}>
-                                        <div className="row">
-                                            <div className="col-md-1">
-                                                <i className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
-                                            </div>
-                                            <div className="col-md-1">
-                                                <i className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
-                                            </div>
-                                        </div>
-                                        <Sort onSort={this.onCategorySort.bind(this)} left={true} child={true}>
-                                            {coll.categories.map((category, key) => {
-                                                return (
-                                                    <div key={key} category={category} coll={coll} className={category.hidden ? 'hidden_links' : ''}>
-                                                        <div className="row">
-                                                            <div className="col-md-9">
-                                                                <h4 className="table_header_text">
-                                                                    <EditableText
-                                                                        text={category.name}
-                                                                        field={'name'}
-                                                                        submitHandler={(category) => this.updateLinkCategory(category)}
-                                                                        object={category}
-                                                                        settings={{
-                                                                            placeholder: 'Имя категории',
-                                                                            name: 'name'
-                                                                        }}
-                                                                    />
-                                                                </h4>
-                                                            </div>
-                                                            <div className="col-md-1">
-                                                                <i className="icon add_icon icon_vertical_centre glyphicon glyphicon-plus" onClick={()=>{this.createLink(category)}}/>
-                                                            </div>
-                                                            <div className="col-md-1">
-                                                                <i className="glyphicon glyphicon-remove icon icon_vertical_centre red_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
-                                                            </div>
+        if(usersStore.session_user) {
+            let script = scriptsStore.script(this.props.params.script);
+            let access = this.access(usersStore, script);
+            if (table && access.edit) {
+                return (
+                    <div className="scrollable_panel">
+                        <div className="scroll_block">
+                            {sorted_colls.map((coll, key) => {
+                                if (coll.text) {
+                                    return (
+                                        <div className="scroll_links" key={key} style={{width: table.text_coll_size + '%'}}>
+                                            {active_link ?
+                                                <div>
+                                                    <div className="row">
+                                                        <div className="col-md-11">
+                                                            <h4 className="table_header_text">{active_link.name}</h4>
                                                         </div>
-                                                        <Sort onSort={this.onLinkSort.bind(this)} left={true}>
-                                                            {category.links.map((link, key) => {
-                                                                return (
-                                                                    <div key={key} category={category} link={link}>
-                                                                        <div className="row">
-                                                                            <div className="col-md-9 link_name">
-                                                                                <EditableText
-                                                                                    text={link.name}
-                                                                                    field={'name'}
-                                                                                    onClick={(link, e) => {
-                                                                                        if(!tablesStore.pressed_key) {
-                                                                                            window.location = '/#/' +
-                                                                                                '/tables/' + this.props.params.script +
-                                                                                                '/table/' + this.props.params.table +
-                                                                                                '/link/' + link.id +
-                                                                                                '/edit/'
-                                                                                        }
-                                                                                    }}
-                                                                                    data_link={this.copyLink(link)}
-                                                                                    submitHandler={(link) => this.updateLink(link)}
-                                                                                    object={link}
-                                                                                    settings={{
-                                                                                        placeholder: 'Имя ссылки',
-                                                                                        name: 'name'
-                                                                                    }}/>
-                                                                            </div>
-                                                                            <div className="col-md-1"></div>
-                                                                            <div className="col-md-1">
-                                                                                <span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
+                                                        <div className="col-md-1">
+                                                            <i className="icon add_icon glyphicon glyphicon-floppy-save icon_vertical_centre" onClick={() => {this.updateLink(active_link)}}/>
+                                                        </div>
+                                                    </div>
+                                                    <div className="link_text_editor">
+                                                        <CustomEditor object={active_link} value={active_link.text} onChange={(value) => {
+                                                            active_link.text = value;
+                                                        }} />
+                                                    </div>
+                                                </div>
+                                                :
+                                                ''
+                                            }
+                                        </div>
+                                    )
+                                } else if (!coll.text) {
+                                    coll = coll.coll;
+                                    return (
+                                        <div className="scroll_links" key={key} style={{width: coll.size + '%'}}>
+                                            <div className="row">
+                                                <div className="col-md-1">
+                                                    <i className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
+                                                </div>
+                                                <div className="col-md-1">
+                                                    <i className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
+                                                </div>
+                                            </div>
+                                            <Sort onSort={this.onCategorySort.bind(this)} left={true} child={true}>
+                                                {coll.categories.map((category, key) => {
+                                                    return (
+                                                        <div key={key} category={category} coll={coll} className={category.hidden ? 'hidden_links' : ''}>
+                                                            <div className="row">
+                                                                <div className="col-md-9">
+                                                                    <h4 className="table_header_text">
+                                                                        <EditableText
+                                                                            text={category.name}
+                                                                            field={'name'}
+                                                                            submitHandler={(category) => this.updateLinkCategory(category)}
+                                                                            object={category}
+                                                                            settings={{
+                                                                                placeholder: 'Имя категории',
+                                                                                name: 'name'
+                                                                            }}
+                                                                        />
+                                                                    </h4>
+                                                                </div>
+                                                                <div className="col-md-1">
+                                                                    <i className="icon add_icon icon_vertical_centre glyphicon glyphicon-plus" onClick={()=>{this.createLink(category)}}/>
+                                                                </div>
+                                                                <div className="col-md-1">
+                                                                    <i className="glyphicon glyphicon-remove icon icon_vertical_centre red_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
+                                                                </div>
+                                                            </div>
+                                                            <Sort onSort={this.onLinkSort.bind(this)} left={true}>
+                                                                {category.links.map((link, key) => {
+                                                                    return (
+                                                                        <div key={key} category={category} link={link}>
+                                                                            <div className="row">
+                                                                                <div className="col-md-9 link_name">
+                                                                                    <EditableText
+                                                                                        text={link.name}
+                                                                                        field={'name'}
+                                                                                        onClick={(link, e) => {
+                                                                                            if(!tablesStore.pressed_key) {
+                                                                                                window.location = '/#/' +
+                                                                                                    '/tables/' + this.props.params.script +
+                                                                                                    '/table/' + this.props.params.table +
+                                                                                                    '/link/' + link.id +
+                                                                                                    '/edit/'
+                                                                                            }
+                                                                                        }}
+                                                                                        data_link={this.copyLink(link)}
+                                                                                        submitHandler={(link) => this.updateLink(link)}
+                                                                                        object={link}
+                                                                                        settings={{
+                                                                                            placeholder: 'Имя ссылки',
+                                                                                            name: 'name'
+                                                                                        }}/>
+                                                                                </div>
+                                                                                <div className="col-md-1"></div>
+                                                                                <div className="col-md-1">
+                                                                                    <span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                )
-                                                            })}
-                                                        </Sort>
-                                                    </div>
-                                                )
-                                            })}
-                                        </Sort>
-                                    </div>
-                                )
-                            }
-                        })}
+                                                                    )
+                                                                })}
+                                                            </Sort>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </Sort>
+                                        </div>
+                                    )
+                                }
+                            })}
+                        </div>
                     </div>
-                </div>
-            );
+                );
+            }
+            return null;
         }
-        return <div></div>;
+        return null;
     }
 }
 
 @observer
 export class TableShare extends Table {
     render() {
-        const {projectsStore, scriptsStore, tablesStore, modalStore} = this.props;
+        const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
         let table = tablesStore.table(this.props.params.table);
         let active_link = tablesStore.link(this.props.params.table, this.props.params.link);
         let sorted_colls = this.sortedColls();
         var coll_name, coll_size;
-
-        if (table) {
-            return (
-                <div className="scrollable_panel">
-                    <div className="scroll_block">
-                        {sorted_colls.map((coll, key) => {
-                            if (coll.text) {
-                                let text;
-                                try {
-                                    let options = {
-                                        inlineStyles: {
-                                            red: {style: styleMap.red},
-                                            gray: {style: styleMap.gray},
-                                        },
-                                    };
-                                    text = stateToHTML(convertFromRaw(JSON.parse(active_link.text)), options);
-                                } catch(err) {
-                                    console.log(err);
-                                    text = '';
-                                }
-                                return (
-                                    <div className="scroll_links" key={key} style={{width: table.text_coll_size + '%'}}>
-                                        {active_link ?
-                                            <div>
-                                                <h4 className="table_header_text">{active_link.name}</h4>
-                                                <div dangerouslySetInnerHTML={{__html: text}}></div>
-                                            </div>
-                                            :
-                                            ''
-                                        }
-                                    </div>
-                                )
-                            } else if (!coll.text) {
-                                coll = coll.coll;
-                                return (
-                                    <div className="scroll_links" key={key} style={{width: coll.size + '%'}}>
-                                        {coll.categories.map((category, key) => {
-                                            if(!category.hidden) {
-                                                return (
-                                                    <div key={key} className={category.hidden ? 'hidden_links' : ''}>
-                                                        <h4 className="table_header_text">
-                                                            <div className="row">
-                                                                <div className="col-md-12">
-                                                                    {category.name}
-                                                                </div>
-                                                            </div>
-                                                        </h4>
-                                                        {category.links.map((link, key) => {
-                                                            return (
-                                                                <div key={key}>
-                                                                    <div className="row">
-                                                                        <div className="col-md-12 link_name">
-                                                                            <Link to={
-                                                                                '/tables/' + this.props.params.script +
-                                                                                '/table/' + this.props.params.table +
-                                                                                '/link/' + link.id +
-                                                                                '/share/'
-                                                                            }>{link.name}</Link>
-                                                                        </div>
+        if(usersStore.session_user) {
+            let script = scriptsStore.script(this.props.params.script);
+            let access = this.access(usersStore, script);
+            if (table && access) {
+                return (
+                    <div className="scrollable_panel">
+                        <div className="scroll_block">
+                            {sorted_colls.map((coll, key) => {
+                                if (coll.text) {
+                                    let text;
+                                    try {
+                                        let options = {
+                                            inlineStyles: {
+                                                red: {style: styleMap.red},
+                                                gray: {style: styleMap.gray},
+                                            },
+                                        };
+                                        text = stateToHTML(convertFromRaw(JSON.parse(active_link.text)), options);
+                                    } catch(err) {
+                                        console.log(err);
+                                        text = '';
+                                    }
+                                    return (
+                                        <div className="scroll_links" key={key} style={{width: table.text_coll_size + '%'}}>
+                                            {active_link ?
+                                                <div>
+                                                    <h4 className="table_header_text">{active_link.name}</h4>
+                                                    <div dangerouslySetInnerHTML={{__html: text}}></div>
+                                                </div>
+                                                :
+                                                ''
+                                            }
+                                        </div>
+                                    )
+                                } else if (!coll.text) {
+                                    coll = coll.coll;
+                                    return (
+                                        <div className="scroll_links" key={key} style={{width: coll.size + '%'}}>
+                                            {coll.categories.map((category, key) => {
+                                                if(!category.hidden) {
+                                                    return (
+                                                        <div key={key} className={category.hidden ? 'hidden_links' : ''}>
+                                                            <h4 className="table_header_text">
+                                                                <div className="row">
+                                                                    <div className="col-md-12">
+                                                                        {category.name}
                                                                     </div>
                                                                 </div>
-                                                            )
-                                                        })}
-                                                    </div>
-                                                )
-                                            }
-                                        })}
-                                    </div>
-                                )
-                            }
-                        })}
+                                                            </h4>
+                                                            {category.links.map((link, key) => {
+                                                                return (
+                                                                    <div key={key}>
+                                                                        <div className="row">
+                                                                            <div className="col-md-12 link_name">
+                                                                                <Link to={
+                                                                                    '/tables/' + this.props.params.script +
+                                                                                    '/table/' + this.props.params.table +
+                                                                                    '/link/' + link.id +
+                                                                                    '/share/'
+                                                                                }>{link.name}</Link>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                    )
+                                                }
+                                            })}
+                                        </div>
+                                    )
+                                }
+                            })}
+                        </div>
                     </div>
-                </div>
-            );
+                );
+            }
+            return null;
         }
-        return <div></div>;
+        return null;
     }
 }
 
@@ -489,106 +499,3 @@ class EditableText extends React.Component {
         )
     }
 }
-
-//class CustomEditor extends React.Component {
-//    constructor(props) {
-//        super(props);
-//
-//        this.state = {
-//            link: props.link,
-//            value: props.value ? RichTextEditor.createValueFromString(props.value, 'html') : RichTextEditor.createEmptyValue()
-//        }
-//    }
-//
-//    componentWillReceiveProps(props) {
-//        if(this.state.link.id !== props.link.id) {
-//            this.setState(update(this.state, {
-//                value: {$set: props.value ? RichTextEditor.createValueFromString(props.value, 'html') : RichTextEditor.createEmptyValue()},
-//                link: {$set: props.link}
-//            }));
-//        }
-//    }
-//
-//    onChange(value) {
-//        this.setState(update(this.state, {value: {$set: value}}));
-//        this.props.onChange(value.toString('html'));
-//    };
-//
-//    render () {
-//        return (
-//            <RichTextEditor
-//                value={this.state.value}
-//                onChange={this.onChange.bind(this)}/>
-//        );
-//    }
-//}
-//
-//                                        <Sort onSort={this.onCategorySort.bind(this)} left={true}>
-//                                            {coll.categories.map((category, key) => {
-//                                                return (
-//                                                    <div
-//                                                        key={key}
-//                                                        category={category}
-//                                                        coll={coll}
-//                                                        className={category.hidden ? 'hidden_links' : ''}>
-//
-//                                                        <div className="row">
-//                                                            <div className="col-md-9">
-//                                                                <h4 className="table_header_text">
-//                                                                    <EditableText
-//                                                                        text={category.name}
-//                                                                        field={'name'}
-//                                                                        submitHandler={(category) => this.updateLinkCategory(category)}
-//                                                                        object={category}
-//                                                                        settings={{
-//                                                                            placeholder: 'Имя категории',
-//                                                                            name: 'name'
-//                                                                        }}
-//                                                                    />
-//                                                                </h4>
-//                                                            </div>
-//                                                            <div className="col-md-1">
-//                                                                <i className="icon add_icon icon_vertical_centre glyphicon glyphicon-plus" onClick={()=>{this.createLink(category)}}/>
-//                                                            </div>
-//                                                            <div className="col-md-1">
-//                                                                <i className="glyphicon glyphicon-remove icon icon_vertical_centre red_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
-//                                                            </div>
-//                                                        </div>
-//                                                        <Sort onSort={this.onLinkSort.bind(this)} left={true}>
-//                                                            {category.links.map((link, key) => {
-//                                                                return (
-//                                                                    <div key={key} category={category} link={link}>
-//                                                                        <div className="row">
-//                                                                            <div className="col-md-10 link_name">
-//                                                                                <EditableText
-//                                                                                    text={link.name}
-//                                                                                    field={'name'}
-//                                                                                    onClick={(link, e) => {
-//                                                                                        if(!tablesStore.pressed_key) {
-//                                                                                            window.location = '/#/' +
-//                                                                                                '/tables/' + this.props.params.script +
-//                                                                                                '/table/' + this.props.params.table +
-//                                                                                                '/link/' + link.id +
-//                                                                                                '/edit/'
-//                                                                                        }
-//                                                                                    }}
-//                                                                                    data_link={this.copyLink(link)}
-//                                                                                    submitHandler={(link) => this.updateLink(link)}
-//                                                                                    object={link}
-//                                                                                    settings={{
-//                                                                                        placeholder: 'Имя ссылки',
-//                                                                                        name: 'name'
-//                                                                                    }}/>
-//                                                                            </div>
-//                                                                            <div className="col-md-1">
-//                                                                                <span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>
-//                                                                            </div>
-//                                                                        </div>
-//                                                                    </div>
-//                                                                )
-//                                                            })}
-//                                                        </Sort>
-//                                                    </div>
-//                                                )
-//                                            })}
-//                                        </Sort>

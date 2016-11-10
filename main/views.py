@@ -277,9 +277,13 @@ class ScriptAccessView(View):
 
 class InitView(View):
     def get(self, request, *args, **kwargs):
+        access_scripts_ids = []
+        for access in ScriptAccess.objects.filter(user=request.user):
+            access_scripts_ids.append(access.script.pk)
         return JSONResponse({
             'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
+            'available_scripts': ScriptSerializer(Script.objects.filter(pk__in=access_scripts_ids), many=True).data,
             'users': UserSerializer(CustomUser.objects.all().exclude(pk=request.user.pk), many=True).data,
             'session_user': UserSerializer(request.user).data
         }, status=201)

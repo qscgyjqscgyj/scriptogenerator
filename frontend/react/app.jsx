@@ -21,6 +21,7 @@ export class App extends React.Component {
             success: (res) => {
                 projectsStore.createProjects(res.projects);
                 scriptsStore.scripts = res.scripts;
+                scriptsStore.available_scripts = res.available_scripts;
                 usersStore.users = res.users;
                 usersStore.session_user = res.session_user;
             },

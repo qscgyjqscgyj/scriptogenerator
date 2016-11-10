@@ -7,9 +7,10 @@ import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
 import {Sort} from './sort';
+import {AccessableComponent} from './access';
 
 @observer
-export class Tables extends React.Component {
+export class Tables extends AccessableComponent {
     componentWillMount() {
         const {tablesStore} = this.props;
         tablesStore.pullTables(this.props.params.script);
@@ -56,65 +57,73 @@ export class Tables extends React.Component {
         }
     }
     render() {
-        const {projectsStore, scriptsStore, tablesStore, modalStore} = this.props;
-        let script = scriptsStore.script(this.props.params.script);
-        if(script) {
-            return(
-                <div className="col-md-12">
-                    <div className="col-md-2">
-                        <button onClick={() => {
-                            modalStore.modal = true;
-                            modalStore.component = CreatingTable
-                        }} className="btn btn-success">+ Создать таблицу</button>
-                    </div>
-                    <div className="col-md-3 pull-right">
-                        <button className="btn btn-success">Заказать разработку скрипта</button>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <table className="table">
-                                <thead>
-                                    <tr>
-                                        <td>Название таблицы</td>
-                                        <td>Свойства</td>
-                                        <td>Скопировать</td>
-                                        <td>Создано</td>
-                                        <td>Изменено</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {tablesStore.tables.map((table, key)=>{
-                                        return (
-                                            <tr key={key}>
-                                                <td>
-                                                    <Link to={
-                                                        '/tables/' + this.props.params.script +
-                                                        '/table/' + table.id +
-                                                        '/edit/'
-                                                    }>{table.name}</Link>
-                                                </td>
-                                                <td className="text-right">
-                                                    <button className="btn btn-default" onClick={()=>{
-                                                        tablesStore.editing = table;
-                                                        modalStore.modal = true;
-                                                        modalStore.component = EditingTable
-                                                    }}>Ред.</button>
-                                                </td>
-                                                <td className="text-right">
-                                                    <button className="btn btn-danger" onClick={()=>{this.deleteTable(table)}}>Удалить</button>
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
+        const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
+        if(usersStore.session_user) {
+            let script = scriptsStore.script(this.props.params.script);
+            let access = this.access(usersStore, script);
+            if(script && access) {
+                return(
+                    <div className="col-md-12">
+                        {access.edit ?
+                            <div>
+                                <div className="col-md-2">
+                                    <button onClick={() => {
+                                        modalStore.modal = true;
+                                        modalStore.component = CreatingTable
+                                    }} className="btn btn-success">+ Создать таблицу</button>
+                                </div>
+                                <div className="col-md-3 pull-right">
+                                    <button className="btn btn-success">Заказать разработку скрипта</button>
+                                </div>
+                            </div>
+                        : null}
+                        <div className="row">
+                            <div className="col-md-12">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <td>Название таблицы</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {tablesStore.tables.map((table, key)=>{
+                                            return (
+                                                <tr key={key}>
+                                                    <td>
+                                                        <Link to={
+                                                            '/tables/' + this.props.params.script +
+                                                            '/table/' + table.id +
+                                                            (access.edit ? '/edit' : '/share/')
+                                                        }>{table.name}</Link>
+                                                    </td>
+                                                    <td className="text-right">
+                                                        {access.edit ?
+                                                            <button className="btn btn-default" onClick={()=>{
+                                                                tablesStore.editing = table;
+                                                                modalStore.modal = true;
+                                                                modalStore.component = EditingTable
+                                                            }}>Ред.</button>
+                                                        : null}
+                                                    </td>
+                                                    <td className="text-right">
+                                                        {access.edit ?
+                                                            <button className="btn btn-danger" onClick={()=>{this.deleteTable(table)}}>Удалить</button>
+                                                        : null}
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+                        <ModalWrapper scriptsStore={scriptsStore} tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createTable={this.createTable.bind(this)} updateTable={(e) => {tablesStore.updateTable(e, modalStore)}}/>
                     </div>
-                    <ModalWrapper scriptsStore={scriptsStore} tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createTable={this.createTable.bind(this)} updateTable={(e) => {tablesStore.updateTable(e, modalStore)}}/>
-                </div>
-            );
+                );
+            }
+            return null;
         }
-        return <div></div>;
+        return null;
     }
 }
 
@@ -314,5 +323,11 @@ class CollInput extends React.Component {
                 }
             </div>
        )
+    }
+}
+
+export class AvailableTables extends React.Component {
+    render() {
+        return React.cloneElement(React.createElement(Tables, this.props), {available: true});
     }
 }

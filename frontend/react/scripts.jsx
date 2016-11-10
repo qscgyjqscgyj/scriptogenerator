@@ -75,89 +75,102 @@ export class Scripts extends React.Component {
         });
     }
     render() {
-        const {scriptsStore, modalStore, projectsStore, usersStore, tablesStore} = this.props;
-        return(
-            <div className="col-md-12">
-                <div className="col-md-2">
-                    <button onClick={() => {
-                        modalStore.modal = true;
-                        modalStore.component = CreatingScript;
-                    }} className="btn btn-success">+ Создать скрипт</button>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <input onChange={(e) => scriptsStore.filter_by_name = e.target.value} className="form-control" type="text" placeholder="Поиск по названию"/>
-                    </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <select onChange={(e) => scriptsStore.filter_by_project = (e.target.value ? parseInt(e.target.value) : null)} className="form-control">
-                            <option value="">-- Выберите проект --</option>
-                            {projectsStore.projects.map((project, key)=>{
-                                return(
-                                    <option key={key} value={project.id}>{project.name}</option>
-                                )
-                            })}
-                        </select>
-                    </div>
-                </div>
-                <div className="col-md-3 pull-right">
-                    <button className="btn btn-success">Заказать разработку скрипта</button>
-                </div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <td>Название</td>
-                                    <td>Проект</td>
-                                    <td>Владелец</td>
-                                    <td>Доступы</td>
-                                    {
-                                        //<td>Скопировать</td>
-                                        //<td>Создано</td>
-                                        //<td>Изменено</td>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {scriptsStore.filteredScripts.map((script, key)=>{
-                                return (
-                                    <tr key={key}>
-                                        <td><Link to={'/tables/' + script.id + ''}>{script.name}</Link></td>
-                                        <td>{script.project.name}</td>
-                                        <td>{script.owner.email}</td>
-                                        <td>
-                                            <button onClick={() => {
-                                                modalStore.modal = true;
-                                                modalStore.component = React.createElement(Accesses, {script: script, usersStore: usersStore, setAccesses: this.setAccesses.bind(this)});
-                                            }} className="btn btn-default">Права</button>
-                                        </td>
-                                        {
-                                            //<td>Скопировать</td>
-                                            //<td>{script.date}</td>
-                                            //<td>{script.date_mod}</td>
+        const {scriptsStore, modalStore, projectsStore, usersStore, tablesStore, available} = this.props;
+        if(usersStore.session_user) {
+            return(
+                <div className="col-md-12">
+                    {!available ?
+                        <div>
+                            <div className="col-md-2">
+                                <button onClick={() => {
+                                    modalStore.modal = true;
+                                    modalStore.component = CreatingScript;
+                                }} className="btn btn-success">+ Создать скрипт</button>
+                            </div>
+                            <div className="col-md-3">
+                                <div className="form-group">
+                                    <input onChange={(e) => scriptsStore.filter_by_name = e.target.value} className="form-control" type="text" placeholder="Поиск по названию"/>
+                                </div>
+                            </div>
+                            <div className="col-md-3">
+                                <div className="form-group">
+                                    <select onChange={(e) => scriptsStore.filter_by_project = (e.target.value ? parseInt(e.target.value) : null)} className="form-control">
+                                        <option value="">-- Выберите проект --</option>
+                                        {projectsStore.projects.map((project, key) => {
+                                            return(
+                                                <option key={key} value={project.id}>{project.name}</option>
+                                            )
+                                        })}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="col-md-3 pull-right">
+                                <button className="btn btn-success">Заказать разработку скрипта</button>
+                            </div>
+                        </div>
+                    : null}
+                    <div className="row">
+                        <div className="col-md-12">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <td>Название</td>
+                                        <td>Проект</td>
+                                        <td>Владелец</td>
+                                        {!available ?
+                                            <td>Доступы</td>
+                                        :
+                                            <td>Права</td>
                                         }
-                                        <td className="text-right">
-                                            <button className="btn btn-default" onClick={()=>{
-                                                scriptsStore.editing = script;
-                                                modalStore.modal = true;
-                                                modalStore.component = EditingScript
-                                            }}>Ред.</button>
-                                        </td>
-                                        <td className="text-right">
-                                            <button className="btn btn-danger" onClick={()=>{this.deleteScript(script)}}>Удалить</button>
-                                        </td>
                                     </tr>
-                                )
-                            })}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                {scriptsStore.filteredScripts(available).map((script, key)=>{
+                                    let access = (available ? script.accesses.find(access => {return access.user.id === usersStore.session_user.id}) : null);
+                                    return (
+                                        <tr key={key}>
+                                            <td><Link to={'/tables/' + script.id + ''}>{script.name}</Link></td>
+                                            <td>{script.project.name}</td>
+                                            <td>{script.owner.email}</td>
+                                            {!available ?
+                                                <td>
+                                                    <button onClick={() => {
+                                                        modalStore.modal = true;
+                                                        modalStore.component = React.createElement(Accesses, {script: script, usersStore: usersStore, setAccesses: this.setAccesses.bind(this)});
+                                                    }} className="btn btn-default">Права</button>
+                                                </td>
+                                            :
+                                                <td>
+                                                    {access.edit ? 'Редактирование' : 'Просмотр'}
+                                                </td>
+                                            }
+
+                                            <td className="text-right">
+                                                {(available ? access.edit : true) ?
+                                                    <button className="btn btn-default" onClick={()=>{
+                                                        scriptsStore.editing = script;
+                                                        modalStore.modal = true;
+                                                        modalStore.component = EditingScript
+                                                    }}>Ред.</button>
+                                                : null}
+                                            </td>
+                                            {!available ?
+                                                <td className="text-right">
+                                                    <button className="btn btn-danger" onClick={()=>{this.deleteScript(script)}}>Удалить</button>
+                                                </td>
+                                            : null}
+                                        </tr>
+                                    )
+                                })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                    <ModalWrapper scriptsStore={scriptsStore} tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createScript={this.createScript.bind(this)} updateScript={this.updateScript.bind(this)} available={available}/>
                 </div>
-                <ModalWrapper scriptsStore={scriptsStore} tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createScript={this.createScript.bind(this)} updateScript={this.updateScript.bind(this)}/>
-            </div>
-        );
+            );
+        }
+        return null;
     }
 }
 
@@ -199,7 +212,7 @@ class CreatingScript extends React.Component {
 @observer
 class EditingScript extends React.Component {
     render() {
-        const {projectsStore, scriptsStore} = this.props;
+        const {projectsStore, scriptsStore, available} = this.props;
         if(scriptsStore.editing) {
             return (
                 <div className="row">
@@ -209,17 +222,19 @@ class EditingScript extends React.Component {
                                 <input className="form-control" onChange={(e) => scriptsStore.editing.name = e.target.value} value={scriptsStore.editing.name} type="text" name="name" placeholder="Имя скрипта"/>
                             </div>
                         </div>
-                        <div className="col-md-12">
-                            <div className="form-group">
-                                <select onChange={(e) => scriptsStore.editing.project = (e.target.value ? projectsStore.project(parseInt(e.target.value)) : null)} value={scriptsStore.editing.project.id} name="project" className="form-control">
-                                    {projectsStore.projects.map((project, key)=>{
-                                        return(
-                                            <option key={key} value={project.id}>{project.name}</option>
-                                        )
-                                    })}
-                                </select>
+                        {!available ?
+                            <div className="col-md-12">
+                                <div className="form-group">
+                                    <select onChange={(e) => scriptsStore.editing.project = (e.target.value ? projectsStore.project(parseInt(e.target.value)) : null)} value={scriptsStore.editing.project.id} name="project" className="form-control">
+                                        {projectsStore.projects.map((project, key)=>{
+                                            return(
+                                                <option key={key} value={project.id}>{project.name}</option>
+                                            )
+                                        })}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        : null}
                         <div className="col-md-12">
                             <div className="form-group">
                                 <button className="btn btn-success" type="submit">Сохранить</button>
@@ -339,4 +354,11 @@ class MultiSelectField extends React.Component {
                 }} />
 		);
 	}
+}
+
+@observer
+export class AvailableScripts extends React.Component {
+    render() {
+        return React.cloneElement(React.createElement(Scripts, this.props), {available: true});
+    }
 }

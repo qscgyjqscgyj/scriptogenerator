@@ -12,7 +12,7 @@ export class Nav extends React.Component {
             <nav className={"navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '')}>
                 <div className="container-fluid">
                     <ul className="nav navbar-nav">
-                        <li><Link to='/'>Главная</Link></li>
+                        <li><a href="/">Главная</a></li>
                         <li><Link to='/projects'>Мои проекты</Link></li>
                         <li><Link to='/scripts/user'>Мои скрипты</Link></li>
                         <li><Link to='/scripts/available'>Доступные мне</Link></li>

@@ -2,7 +2,7 @@
 {% trans "Активация аккаунта на " %} {{ site.name }}:
 
 {% block reset_link %}
-    {{ request.protocol }}://{{ site.domain }}{% url 'registration_activate' activation_key %}
+    http://{{ site.domain }}{% url 'registration_activate' activation_key %}
 {% endblock %}
 
 {% blocktrans %}Ссылка активна в течении {{ expiration_days }} д.{% endblocktrans %}

@@ -225,7 +225,7 @@ export class CustomEditor extends React.Component {
                     //    editorState={editorState}
                     //    onToggle={this.toggleBlockType}/>
                 }
-                <div className="row">
+                <div className="row editor_tools">
                     <div className="col-md-2">
                         <ColorControls
                             editorState={editorState}

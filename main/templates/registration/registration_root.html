@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <div class="row-centered">
+        <div class="col-md-5 col-centered">
+            {% block errors %}
+                <div class="row row-centered">
+                    <div class="col-md-12 col-centered">
+                        {% for field in form %}
+                            <div class="fieldWrapper">
+                                {{ field.errors }}
+{#                                {{ field.label_tag }} {{ field }}#}
+{#                                {% if field.help_text %}#}
+{#                                    <p class="help">{{ field.help_text|safe }}</p>#}
+{#                                {% endif %}#}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endblock errors %}
+
+            {% block inserts %}
+            {% endblock inserts %}
+        </div>
+    </div>
+{% endblock content %}

@@ -1,39 +1,35 @@
-{% extends "base.html" %}
+{% extends "registration/registration_root.html" %}
 {% load i18n %}
 
-{% block content %}
-    <div class="row-centered">
-        <div class="col-md-5 col-centered">
-            <div class="row row-centered">
-                <div class="col-md-12 col-centered">
-                    <p class="form_title bold">Регистрация</p>
-                    <div class="form_header">У вас уже есть аккаунт? Пожалуйста <a href="{% url 'auth_login' %}">войдите</a>!</div>
-                    <form id="vibe_form" class="form" method="POST" action=".">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <div class="row"></div>
+{% block inserts %}
+    <div class="row row-centered">
+        <div class="col-md-12 col-centered">
+            <p class="form_title bold">Регистрация</p>
+            <div class="form_header">У вас уже есть аккаунт? Пожалуйста <a href="{% url 'auth_login' %}">войдите</a>!</div>
+            <form id="vibe_form" class="form" method="POST" action=".">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="row"></div>
 {#                            <label>Username: </label>#}
-                            <input type="text" placeholder="Имя пользователя" class="form-control field" name="username" id="id_username" />
-                        </div>
-                        <div class="form-group">
-                            <div class="row"></div>
-{#                            <label>Username: </label>#}
-                            <input type="text" placeholder="Email" class="form-control field" name="email" id="id_email" />
-                        </div>
-                        <div class="form-group">
-{#                            <label>Password: </label>#}
-                            <input type="password" placeholder="Пароль" class="form-control field" name="password1" id="id_password1" />
-                        </div>
-                        <div class="form-group">
-{#                            <label>Password confirmation: </label>#}
-                            <input type="password" placeholder="Повторите пароль" class="form-control field" name="password2" id="id_password2" />
-                        </div>
-                        <div class="form-group form_button_block col-centered">
-                            <button type="submit" class="bold">Регистрация</button>
-                        </div>
-                    </form>
+                    <input type="text" placeholder="Имя пользователя" class="form-control field" name="username" id="id_username" />
                 </div>
-            </div>
+                <div class="form-group">
+                    <div class="row"></div>
+{#                            <label>Username: </label>#}
+                    <input type="text" placeholder="Email" class="form-control field" name="email" id="id_email" />
+                </div>
+                <div class="form-group">
+{#                            <label>Password: </label>#}
+                    <input type="password" placeholder="Пароль" class="form-control field" name="password1" id="id_password1" />
+                </div>
+                <div class="form-group">
+{#                            <label>Password confirmation: </label>#}
+                    <input type="password" placeholder="Повторите пароль" class="form-control field" name="password2" id="id_password2" />
+                </div>
+                <div class="form-group form_button_block col-centered">
+                    <button type="submit" class="bold">Регистрация</button>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}

@@ -1,14 +1,12 @@
-{% extends "base.html" %}
+{% extends "registration/registration_root.html" %}
 {% load i18n %}
 
-{% block content %}
-    <div class="row-centered">
-        <div class="col-md-5 col-centered">
-            <div class="row row-centered">
-                <div class="col-md-12 col-centered">
-                    <p>{% trans "Регистрация закрыта." %}</p>
-                </div>
-            </div>
+{% block errors %}{% endblock %}
+
+{% block inserts %}
+    <div class="row row-centered">
+        <div class="col-md-12 col-centered">
+            <p>{% trans "Регистрация закрыта." %}</p>
         </div>
     </div>
 {% endblock %}

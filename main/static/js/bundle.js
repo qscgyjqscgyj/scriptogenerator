@@ -71798,7 +71798,7 @@
 	                            React.createElement('li', null, React.createElement('a', { href: '/' }, '\u0413\u043B\u0430\u0432\u043D\u0430\u044F')),
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/projects' }, '\u041C\u043E\u0438 \u043F\u0440\u043E\u0435\u043A\u0442\u044B')),
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/user' }, '\u041C\u043E\u0438 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
-	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/available' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u043C\u043D\u0435')),
+	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/available' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
 	                            this.props.location.pathname.includes('edit') ?
 	                            React.createElement('li', null,
 	                                React.createElement(_reactRouter.Link, { to:

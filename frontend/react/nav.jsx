@@ -15,7 +15,7 @@ export class Nav extends React.Component {
                         <li><a href="/">Главная</a></li>
                         <li><Link to='/projects'>Мои проекты</Link></li>
                         <li><Link to='/scripts/user'>Мои скрипты</Link></li>
-                        <li><Link to='/scripts/available'>Доступные мне</Link></li>
+                        <li><Link to='/scripts/available'>Доступные скрипты</Link></li>
                         {this.props.location.pathname.includes('edit') ?
                             <li>
                                 <Link to={

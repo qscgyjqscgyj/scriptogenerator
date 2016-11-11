@@ -1,37 +1,29 @@
-{% extends "base.html" %}
+{% extends "registration/registration_root.html" %}
 {% load i18n %}
 
-{% block top_class %}
-    <div class="container-fluid top fill">
-{% endblock top_class %}
-
-{% block content %}
-    <div class="row-centered">
-        <div class="col-md-5 col-centered">
-            <div class="row row-centered">
-                <div class="col-md-12 col-centered">
-                    <p class="form_title bold">Вход в систему</p>
-                    <form id="vibe_form" class="form" method="POST" action=".">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <div class="row"></div>
+{% block inserts %}
+    <div class="row row-centered">
+        <div class="col-md-12 col-centered">
+            <p class="form_title bold">Вход в систему</p>
+            <form id="vibe_form" class="form" method="POST" action=".">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="row"></div>
 {#                            <label>Username: </label>#}
-                            <input type="text" placeholder="Имя пользователя" class="form-control field" name="username" id="id_username" />
-                        </div>
-                        <div class="form-group">
+                    <input type="text" placeholder="Имя пользователя" class="form-control field" name="username" id="id_username" />
+                </div>
+                <div class="form-group">
 {#                            <label>Password: </label>#}
-                            <input type="password" placeholder="Пароль" class="form-control field" name="password" id="id_password" />
-                        </div>
-                        <div class="form-group form_button_block col-centered">
-                            <button type="submit" class="bold" >Вход</button>
-                        </div>
-                    </form>
+                    <input type="password" placeholder="Пароль" class="form-control field" name="password" id="id_password" />
                 </div>
-                <div class="from_footer_block">
-                    <div class="form_total_donation">{% trans "Забыли пароль" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Восстановить" %}</a>!</div>
-                    <div class="form_total_donation">{% trans "Нет учетной записи" %}? <a href="{% url 'registration_register' %}">{% trans "Регистрация" %}</a>!</div>
+                <div class="form-group form_button_block col-centered">
+                    <button type="submit" class="bold" >Вход</button>
                 </div>
-            </div>
+            </form>
+        </div>
+        <div class="from_footer_block">
+            <div class="form_total_donation">{% trans "Забыли пароль" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Восстановить" %}</a>!</div>
+            <div class="form_total_donation">{% trans "Нет учетной записи" %}? <a href="{% url 'registration_register' %}">{% trans "Регистрация" %}</a>!</div>
         </div>
     </div>
 {% endblock %}

@@ -50,7 +50,7 @@
     float: left;
 }
 .link_text_editor {
-    border: 1px solid #ddd;
+    /*border: 1px solid #ddd;*/
 }
 .table_header_text {
     font-size: 16px;

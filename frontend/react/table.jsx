@@ -12,6 +12,7 @@ import {ContentState, convertFromRaw} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
 import {Sort} from './sort';
 import {AccessableComponent} from './access';
+import confirm from './confirm';
 
 
 @observer
@@ -101,20 +102,24 @@ export class Table extends AccessableComponent {
 
     deleteLinkCategory(category) {
         const {tablesStore} = this.props;
-        var r = confirm("Вы действительно хотите удалить категорию: " + category.name);
-        if (r == true) {
-            $.ajax({
-                method: 'DELETE',
-                url: document.body.getAttribute('data-link-categories-url'),
-                data: JSON.stringify({category: category.id, table: this.props.params.table}),
-                success: (res) => {
-                    tablesStore.tables = res.tables;
-                },
-                error: (res) => {
-                    console.log(res);
-                }
-            });
-        }
+        confirm("Вы действительно хотите удалить категорию: " + category.name).then(
+            (result) => {
+                $.ajax({
+                    method: 'DELETE',
+                    url: document.body.getAttribute('data-link-categories-url'),
+                    data: JSON.stringify({category: category.id, table: this.props.params.table}),
+                    success: (res) => {
+                        tablesStore.tables = res.tables;
+                    },
+                    error: (res) => {
+                        console.log(res);
+                    }
+                });
+            },
+            (result) => {
+                console.log('cancel called');
+            }
+        )
     }
 
     updateLinkCategory(category) {
@@ -149,20 +154,24 @@ export class Table extends AccessableComponent {
 
     deleteLink(link) {
         const {tablesStore} = this.props;
-        var r = confirm("Вы действительно хотите удалить ссылку: " + link.name);
-        if (r) {
-            $.ajax({
-                method: 'DELETE',
-                url: document.body.getAttribute('data-links-url'),
-                data: JSON.stringify({link: link.id, table: this.props.params.table}),
-                success: (res) => {
-                    tablesStore.tables = res.tables;
-                },
-                error: (res) => {
-                    console.log(res);
-                }
-            });
-        }
+        confirm("Вы действительно хотите удалить ссылку: " + link.name).then(
+            (result) => {
+                $.ajax({
+                    method: 'DELETE',
+                    url: document.body.getAttribute('data-links-url'),
+                    data: JSON.stringify({link: link.id, table: this.props.params.table}),
+                    success: (res) => {
+                        tablesStore.tables = res.tables;
+                    },
+                    error: (res) => {
+                        console.log(res);
+                    }
+                });
+            },
+            (result) => {
+                console.log('cancel called');
+            }
+        )
     }
 
     updateLink(link) {

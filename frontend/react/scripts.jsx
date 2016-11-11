@@ -46,34 +46,24 @@ export class Scripts extends React.Component {
     }
     deleteScript(script) {
         const {scriptsStore, modalStore} = this.props;
-        var r = confirm("Вы действительно хотите удалить скрипт: " + script.name);
-
-
-        confirm('Are you sure').then(
+        confirm("Вы действительно хотите удалить скрипт: " + script.name).then(
             (result) => {
-                console.log('proceed called');
-                console.log(result);
+                $.ajax({
+                    method: 'DELETE',
+                    url: document.body.getAttribute('data-scripts-url'),
+                    data: JSON.stringify({id: script.id}),
+                    success: (res) => {
+                        scriptsStore.scripts = res.scripts;
+                    },
+                    error: (res) => {
+                        console.log(res);
+                    }
+                });
             },
             (result) => {
                 console.log('cancel called');
-                console.log(result)
             }
-        );
-
-
-        if (r == true) {
-            $.ajax({
-                method: 'DELETE',
-                url: document.body.getAttribute('data-scripts-url'),
-                data: JSON.stringify({id: script.id}),
-                success: (res) => {
-                    scriptsStore.scripts = res.scripts;
-                },
-                error: (res) => {
-                    console.log(res);
-                }
-            });
-        }
+        )
     }
     setAccesses(accesses, script) {
         const {scriptsStore} = this.props;

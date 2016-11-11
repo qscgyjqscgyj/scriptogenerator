@@ -8,9 +8,19 @@ const Dialog = ({show, proceed, dismiss, cancel, confirmation, options}) => {
             isOpen={show}
             style={customModalStyles}
             onRequestClose={dismiss}>
-                {confirmation}
-                <button onClick={() => cancel('arguments will be passed to the callback')}>CANCEL</button>
-                <button onClick={() => proceed('same as cancel')}>OK</button>
+                <div className="row row-centered">
+                    <div className="col-md-12 col-centered">
+                        {confirmation}
+                    </div>
+                    <div className="col-md-12 col-centered">
+                        <div className="col-md-2 col-centered">
+                            <button className="btn btn-danger" onClick={() => cancel('arguments will be passed to the callback')}>Отмена</button>
+                        </div>
+                        <div className="col-md-2 col-centered">
+                            <button className="btn btn-success" onClick={() => proceed('same as cancel')}>Принять</button>
+                        </div>
+                    </div>
+                </div>
         </Modal>
     )
 };

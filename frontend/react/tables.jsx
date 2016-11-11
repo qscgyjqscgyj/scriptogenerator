@@ -8,6 +8,7 @@ import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
 import {Sort} from './sort';
 import {AccessableComponent} from './access';
+import confirm from './confirm';
 
 @observer
 export class Tables extends AccessableComponent {
@@ -40,21 +41,25 @@ export class Tables extends AccessableComponent {
         });
     }
     deleteTable(table) {
-        var r = confirm("Вы действительно хотите удалить таблицу: " + table.name);
         const {tablesStore} = this.props;
-        if (r == true) {
-            $.ajax({
-                method: 'DELETE',
-                url: document.body.getAttribute('data-tables-url'),
-                data: JSON.stringify(table),
-                success: (res) => {
-                    tablesStore.tables = res.tables;
-                },
-                error: (res) => {
-                    console.log(res);
-                }
-            });
-        }
+        confirm("Вы действительно хотите удалить таблицу: " + table.name).then(
+            (result) => {
+                $.ajax({
+                    method: 'DELETE',
+                    url: document.body.getAttribute('data-tables-url'),
+                    data: JSON.stringify(table),
+                    success: (res) => {
+                        tablesStore.tables = res.tables;
+                    },
+                    error: (res) => {
+                        console.log(res);
+                    }
+                });
+            },
+            (result) => {
+                console.log('cancel called');
+            }
+        )
     }
     render() {
         const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
@@ -185,22 +190,26 @@ class EditingTable extends React.Component {
 @observer
 class CollsCreating extends React.Component {
     deleteColl(colls, coll, i) {
-        var r = confirm("Вы действительно хотите удалить столбец: " + coll.name);
         const {tablesStore} = this.props;
-        if (r == true) {
-            $.ajax({
-                method: 'DELETE',
-                url: document.body.getAttribute('data-colls-url'),
-                data: JSON.stringify(coll),
-                success: (res) => {
-                    tablesStore.tables = res.tables;
-                    colls.splice(i, 1);
-                },
-                error: (res) => {
-                    console.log(res);
-                }
-            });
-        }
+        confirm("Вы действительно хотите удалить столбец: " + coll.name).then(
+            (result) => {
+                $.ajax({
+                    method: 'DELETE',
+                    url: document.body.getAttribute('data-colls-url'),
+                    data: JSON.stringify(coll),
+                    success: (res) => {
+                        tablesStore.tables = res.tables;
+                        colls.splice(i, 1);
+                    },
+                    error: (res) => {
+                        console.log(res);
+                    }
+                });
+            },
+            (result) => {
+                console.log('cancel called');
+            }
+        );
     }
     onSort(items) {
         let {tablesStore} = this.props;

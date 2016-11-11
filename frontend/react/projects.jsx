@@ -5,6 +5,7 @@ import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import ProjectsStore from '../mobx/projectsStore';
 import {ModalWrapper} from './modal';
+import confirm from './confirm';
 
 @observer
 export class Projects extends React.Component {
@@ -26,21 +27,25 @@ export class Projects extends React.Component {
     }
     deleteProject(project) {
         const {projectsStore, scriptsStore} = this.props;
-        var r = confirm("Вы действительно хотите удалить проект: " + project.name);
-        if (r == true) {
-            $.ajax({
-                method: 'DELETE',
-                url: document.body.getAttribute('data-projects-url'),
-                data: JSON.stringify({id: project.id}),
-                success: (res) => {
-                    projectsStore.createProjects(res.projects);
-                    scriptsStore.scripts = res.scripts;
-                },
-                error: (res) => {
-                    console.log(res);
-                }
-            });
-        }
+        confirm("Вы действительно хотите удалить проект: " + project.name).then(
+            (result) => {
+                $.ajax({
+                    method: 'DELETE',
+                    url: document.body.getAttribute('data-projects-url'),
+                    data: JSON.stringify({id: project.id}),
+                    success: (res) => {
+                        projectsStore.createProjects(res.projects);
+                        scriptsStore.scripts = res.scripts;
+                    },
+                    error: (res) => {
+                        console.log(res);
+                    }
+                });
+            },
+            (result) => {
+                console.log('cancel called');
+            }
+        )
     }
     updateProject(e) {
         const {scriptsStore, projectsStore, modalStore} = this.props;

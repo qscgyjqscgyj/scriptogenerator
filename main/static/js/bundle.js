@@ -24683,22 +24683,8 @@
 	        } }, { key: 'deleteScript', value: function deleteScript(
 	        script) {var _props3 =
 	            this.props,scriptsStore = _props3.scriptsStore,modalStore = _props3.modalStore;
-	            var r = (0, _confirm2.default)("Вы действительно хотите удалить скрипт: " + script.name);
-	
-	
-	            (0, _confirm2.default)('Are you sure').then(
+	            (0, _confirm2.default)("Вы действительно хотите удалить скрипт: " + script.name).then(
 	            function (result) {
-	                console.log('proceed called');
-	                console.log(result);
-	            },
-	            function (result) {
-	                console.log('cancel called');
-	                console.log(result);
-	            });
-	
-	
-	
-	            if (r == true) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
 	                    url: document.body.getAttribute('data-scripts-url'),
@@ -24710,7 +24696,11 @@
 	                        console.log(res);
 	                    } });
 	
-	            }
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	            });
+	
 	        } }, { key: 'setAccesses', value: function setAccesses(
 	        accesses, script) {var
 	            scriptsStore = this.props.scriptsStore;
@@ -41856,7 +41846,8 @@
 	        right: 'auto',
 	        bottom: 'auto',
 	        marginRight: '-50%',
-	        transform: 'translate(-50%, -50%)' } };
+	        transform: 'translate(-50%, -50%)',
+	        maxWidth: '50%' } };
 	
 	
 	
@@ -44214,7 +44205,8 @@
 	var _reactAddonsUpdate = __webpack_require__(216);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	var _mobxReact = __webpack_require__(218);
 	var _projectsStore = __webpack_require__(255);var _projectsStore2 = _interopRequireDefault(_projectsStore);
-	var _modal = __webpack_require__(241);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _modal = __webpack_require__(241);
+	var _confirm = __webpack_require__(434);var _confirm2 = _interopRequireDefault(_confirm);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	Projects = exports.Projects = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Projects, _React$Component);function Projects() {_classCallCheck(this, Projects);return _possibleConstructorReturn(this, (Projects.__proto__ || Object.getPrototypeOf(Projects)).apply(this, arguments));}_createClass(Projects, [{ key: 'createProject', value: function createProject(
@@ -44236,8 +44228,8 @@
 	        } }, { key: 'deleteProject', value: function deleteProject(
 	        project) {var _props2 =
 	            this.props,projectsStore = _props2.projectsStore,scriptsStore = _props2.scriptsStore;
-	            var r = confirm("Вы действительно хотите удалить проект: " + project.name);
-	            if (r == true) {
+	            (0, _confirm2.default)("Вы действительно хотите удалить проект: " + project.name).then(
+	            function (result) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
 	                    url: document.body.getAttribute('data-projects-url'),
@@ -44250,7 +44242,11 @@
 	                        console.log(res);
 	                    } });
 	
-	            }
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	            });
+	
 	        } }, { key: 'updateProject', value: function updateProject(
 	        e) {var _props3 =
 	            this.props,scriptsStore = _props3.scriptsStore,projectsStore = _props3.projectsStore,modalStore = _props3.modalStore;
@@ -44426,7 +44422,8 @@
 	var _tablesStore = __webpack_require__(257);
 	var _reactRouter = __webpack_require__(159);
 	var _sort = __webpack_require__(258);
-	var _access = __webpack_require__(259);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _access = __webpack_require__(259);
+	var _confirm = __webpack_require__(434);var _confirm2 = _interopRequireDefault(_confirm);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	Tables = exports.Tables = (0, _mobxReact.observer)(_class = function (_AccessableComponent) {_inherits(Tables, _AccessableComponent);function Tables() {_classCallCheck(this, Tables);return _possibleConstructorReturn(this, (Tables.__proto__ || Object.getPrototypeOf(Tables)).apply(this, arguments));}_createClass(Tables, [{ key: 'componentWillMount', value: function componentWillMount()
@@ -44458,10 +44455,10 @@
 	                } });
 	
 	        } }, { key: 'deleteTable', value: function deleteTable(
-	        table) {
-	            var r = confirm("Вы действительно хотите удалить таблицу: " + table.name);var
+	        table) {var
 	            tablesStore = this.props.tablesStore;
-	            if (r == true) {
+	            (0, _confirm2.default)("Вы действительно хотите удалить таблицу: " + table.name).then(
+	            function (result) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
 	                    url: document.body.getAttribute('data-tables-url'),
@@ -44473,7 +44470,11 @@
 	                        console.log(res);
 	                    } });
 	
-	            }
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	            });
+	
 	        } }, { key: 'render', value: function render()
 	        {var _this2 = this;var _props2 =
 	            this.props,projectsStore = _props2.projectsStore,scriptsStore = _props2.scriptsStore,tablesStore = _props2.tablesStore,modalStore = _props2.modalStore,usersStore = _props2.usersStore;
@@ -44603,10 +44604,10 @@
 	
 	
 	CollsCreating = (0, _mobxReact.observer)(_class4 = function (_React$Component3) {_inherits(CollsCreating, _React$Component3);function CollsCreating() {_classCallCheck(this, CollsCreating);return _possibleConstructorReturn(this, (CollsCreating.__proto__ || Object.getPrototypeOf(CollsCreating)).apply(this, arguments));}_createClass(CollsCreating, [{ key: 'deleteColl', value: function deleteColl(
-	        colls, coll, i) {
-	            var r = confirm("Вы действительно хотите удалить столбец: " + coll.name);var
+	        colls, coll, i) {var
 	            tablesStore = this.props.tablesStore;
-	            if (r == true) {
+	            (0, _confirm2.default)("Вы действительно хотите удалить столбец: " + coll.name).then(
+	            function (result) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
 	                    url: document.body.getAttribute('data-colls-url'),
@@ -44619,7 +44620,11 @@
 	                        console.log(res);
 	                    } });
 	
-	            }
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	            });
+	
 	        } }, { key: 'onSort', value: function onSort(
 	        items) {var
 	            tablesStore = this.props.tablesStore;
@@ -44977,7 +44982,8 @@
 	var _draftJs = __webpack_require__(262);
 	var _draftJsExportHtml = __webpack_require__(402);
 	var _sort = __webpack_require__(258);
-	var _access = __webpack_require__(259);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _access = __webpack_require__(259);
+	var _confirm = __webpack_require__(434);var _confirm2 = _interopRequireDefault(_confirm);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	
@@ -45065,14 +45071,14 @@
 	
 	        } }, { key: 'deleteLinkCategory', value: function deleteLinkCategory(
 	
-	        category) {var
+	        category) {var _this2 = this;var
 	            tablesStore = this.props.tablesStore;
-	            var r = confirm("Вы действительно хотите удалить категорию: " + category.name);
-	            if (r == true) {
+	            (0, _confirm2.default)("Вы действительно хотите удалить категорию: " + category.name).then(
+	            function (result) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
 	                    url: document.body.getAttribute('data-link-categories-url'),
-	                    data: JSON.stringify({ category: category.id, table: this.props.params.table }),
+	                    data: JSON.stringify({ category: category.id, table: _this2.props.params.table }),
 	                    success: function success(res) {
 	                        tablesStore.tables = res.tables;
 	                    },
@@ -45080,7 +45086,11 @@
 	                        console.log(res);
 	                    } });
 	
-	            }
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	            });
+	
 	        } }, { key: 'updateLinkCategory', value: function updateLinkCategory(
 	
 	        category) {var
@@ -45113,14 +45123,14 @@
 	
 	        } }, { key: 'deleteLink', value: function deleteLink(
 	
-	        link) {var
+	        link) {var _this3 = this;var
 	            tablesStore = this.props.tablesStore;
-	            var r = confirm("Вы действительно хотите удалить ссылку: " + link.name);
-	            if (r) {
+	            (0, _confirm2.default)("Вы действительно хотите удалить ссылку: " + link.name).then(
+	            function (result) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
 	                    url: document.body.getAttribute('data-links-url'),
-	                    data: JSON.stringify({ link: link.id, table: this.props.params.table }),
+	                    data: JSON.stringify({ link: link.id, table: _this3.props.params.table }),
 	                    success: function success(res) {
 	                        tablesStore.tables = res.tables;
 	                    },
@@ -45128,7 +45138,11 @@
 	                        console.log(res);
 	                    } });
 	
-	            }
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	            });
+	
 	        } }, { key: 'updateLink', value: function updateLink(
 	
 	        link) {var
@@ -45194,7 +45208,7 @@
 	
 	
 	TableEdit = exports.TableEdit = (0, _mobxReact.observer)(_class2 = function (_Table) {_inherits(TableEdit, _Table);function TableEdit() {_classCallCheck(this, TableEdit);return _possibleConstructorReturn(this, (TableEdit.__proto__ || Object.getPrototypeOf(TableEdit)).apply(this, arguments));}_createClass(TableEdit, [{ key: 'render', value: function render()
-	        {var _this3 = this;var _props =
+	        {var _this5 = this;var _props =
 	            this.props,projectsStore = _props.projectsStore,scriptsStore = _props.scriptsStore,tablesStore = _props.tablesStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
 	            var table = tablesStore.table(this.props.params.table);
 	            var active_link = tablesStore.link(this.props.params.table, this.props.params.link);
@@ -45219,7 +45233,7 @@
 	                                                            React.createElement('h4', { className: 'table_header_text' }, active_link.name)),
 	
 	                                                        React.createElement('div', { className: 'col-md-1' },
-	                                                            React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-floppy-save icon_vertical_centre', onClick: function onClick() {_this3.updateLink(active_link);} }))),
+	                                                            React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-floppy-save icon_vertical_centre', onClick: function onClick() {_this5.updateLink(active_link);} }))),
 	
 	
 	                                                    React.createElement('div', { className: 'link_text_editor' },
@@ -45239,13 +45253,13 @@
 	                                            React.createElement('div', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
 	                                                React.createElement('div', { className: 'row' },
 	                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                        React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLinkCategory(coll, false);} })),
+	                                                        React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, false);} })),
 	
 	                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                        React.createElement('i', { className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLinkCategory(coll, true);} }))),
+	                                                        React.createElement('i', { className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, true);} }))),
 	
 	
-	                                                React.createElement(_sort.Sort, { onSort: _this3.onCategorySort.bind(_this3), left: true, child: true },
+	                                                React.createElement(_sort.Sort, { onSort: _this5.onCategorySort.bind(_this5), left: true, child: true },
 	                                                    coll.categories.map(function (category, key) {
 	                                                        return (
 	                                                            React.createElement('div', { key: key, category: category, coll: coll, className: category.hidden ? 'hidden_links' : '' },
@@ -45255,7 +45269,7 @@
 	                                                                            React.createElement(EditableText, {
 	                                                                                text: category.name,
 	                                                                                field: 'name',
-	                                                                                submitHandler: function submitHandler(category) {return _this3.updateLinkCategory(category);},
+	                                                                                submitHandler: function submitHandler(category) {return _this5.updateLinkCategory(category);},
 	                                                                                object: category,
 	                                                                                settings: {
 	                                                                                    placeholder: 'Имя категории',
@@ -45265,13 +45279,13 @@
 	
 	
 	                                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                                        React.createElement('i', { className: 'icon add_icon icon_vertical_centre glyphicon glyphicon-plus', onClick: function onClick() {_this3.createLink(category);} })),
+	                                                                        React.createElement('i', { className: 'icon add_icon icon_vertical_centre glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLink(category);} })),
 	
 	                                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                                        React.createElement('i', { className: 'glyphicon glyphicon-remove icon icon_vertical_centre red_icon', 'aria-hidden': 'true', onClick: function onClick() {_this3.deleteLinkCategory(category);} }))),
+	                                                                        React.createElement('i', { className: 'glyphicon glyphicon-remove icon icon_vertical_centre red_icon', 'aria-hidden': 'true', onClick: function onClick() {_this5.deleteLinkCategory(category);} }))),
 	
 	
-	                                                                React.createElement(_sort.Sort, { onSort: _this3.onLinkSort.bind(_this3), left: true },
+	                                                                React.createElement(_sort.Sort, { onSort: _this5.onLinkSort.bind(_this5), left: true },
 	                                                                    category.links.map(function (link, key) {
 	                                                                        return (
 	                                                                            React.createElement('div', { key: key, category: category, link: link },
@@ -45283,14 +45297,14 @@
 	                                                                                            onClick: function onClick(link, e) {
 	                                                                                                if (!tablesStore.pressed_key) {
 	                                                                                                    window.location = '/#/' +
-	                                                                                                    '/tables/' + _this3.props.params.script +
-	                                                                                                    '/table/' + _this3.props.params.table +
+	                                                                                                    '/tables/' + _this5.props.params.script +
+	                                                                                                    '/table/' + _this5.props.params.table +
 	                                                                                                    '/link/' + link.id +
 	                                                                                                    '/edit/';
 	                                                                                                }
 	                                                                                            },
-	                                                                                            data_link: _this3.copyLink(link),
-	                                                                                            submitHandler: function submitHandler(link) {return _this3.updateLink(link);},
+	                                                                                            data_link: _this5.copyLink(link),
+	                                                                                            submitHandler: function submitHandler(link) {return _this5.updateLink(link);},
 	                                                                                            object: link,
 	                                                                                            settings: {
 	                                                                                                placeholder: 'Имя ссылки',
@@ -45299,7 +45313,7 @@
 	
 	                                                                                    React.createElement('div', { className: 'col-md-1' }),
 	                                                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                                                        React.createElement('span', { className: 'glyphicon glyphicon-remove icon red_icon', 'aria-hidden': 'true', onClick: function onClick() {_this3.deleteLink(link);} })))));
+	                                                                                        React.createElement('span', { className: 'glyphicon glyphicon-remove icon red_icon', 'aria-hidden': 'true', onClick: function onClick() {_this5.deleteLink(link);} })))));
 	
 	
 	
@@ -45326,7 +45340,7 @@
 	
 	
 	TableShare = exports.TableShare = (0, _mobxReact.observer)(_class3 = function (_Table2) {_inherits(TableShare, _Table2);function TableShare() {_classCallCheck(this, TableShare);return _possibleConstructorReturn(this, (TableShare.__proto__ || Object.getPrototypeOf(TableShare)).apply(this, arguments));}_createClass(TableShare, [{ key: 'render', value: function render()
-	        {var _this5 = this;var _props2 =
+	        {var _this7 = this;var _props2 =
 	            this.props,projectsStore = _props2.projectsStore,scriptsStore = _props2.scriptsStore,tablesStore = _props2.tablesStore,modalStore = _props2.modalStore,usersStore = _props2.usersStore;
 	            var table = tablesStore.table(this.props.params.table);
 	            var active_link = tablesStore.link(this.props.params.table, this.props.params.link);
@@ -45387,8 +45401,8 @@
 	                                                                            React.createElement('div', { className: 'row' },
 	                                                                                React.createElement('div', { className: 'col-md-12 link_name' },
 	                                                                                    React.createElement(_reactRouter.Link, { to:
-	                                                                                            '/tables/' + _this5.props.params.script +
-	                                                                                            '/table/' + _this5.props.params.table +
+	                                                                                            '/tables/' + _this7.props.params.script +
+	                                                                                            '/table/' + _this7.props.params.table +
 	                                                                                            '/link/' + link.id +
 	                                                                                            '/share/' },
 	                                                                                        link.name)))));
@@ -45416,12 +45430,12 @@
 	
 	
 	EditableText = function (_React$Component) {_inherits(EditableText, _React$Component);
-	    function EditableText(props) {_classCallCheck(this, EditableText);var _this6 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
+	    function EditableText(props) {_classCallCheck(this, EditableText);var _this8 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
 	        props));
-	        _this6.state = {
-	            text: _this6.props.text,
+	        _this8.state = {
+	            text: _this8.props.text,
 	            edit: false,
-	            key: null };return _this6;
+	            key: null };return _this8;
 	
 	    }_createClass(EditableText, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -45437,7 +45451,7 @@
 	        edit) {
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { edit: { $set: edit } }));
 	        } }, { key: 'render', value: function render()
-	        {var _this7 = this;var
+	        {var _this9 = this;var
 	            settings = this.props.settings;
 	            return (
 	                React.createElement('div', null,
@@ -45445,16 +45459,16 @@
 	                    React.createElement('span', { className: 'copy_icon',
 	                            'data-link': this.props.data_link,
 	                            onClick: function onClick(e) {
-	                                if (_this7.props.onClick) {
-	                                    _this7.props.onClick(_this7.props.object, e);
+	                                if (_this9.props.onClick) {
+	                                    _this9.props.onClick(_this9.props.object, e);
 	                                }
 	                            },
-	                            onDoubleClick: function onDoubleClick() {_this7.setEdit(true);} },
+	                            onDoubleClick: function onDoubleClick() {_this9.setEdit(true);} },
 	                        this.props.text) :
 	
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
-	                            onChange: function onChange(e) {_this7.setState((0, _reactAddonsUpdate2.default)(_this7.state, { text: { $set: e.target.value } }));},
+	                            onChange: function onChange(e) {_this9.setState((0, _reactAddonsUpdate2.default)(_this9.state, { text: { $set: e.target.value } }));},
 	                            placeholder: settings.placeholder,
 	                            name: settings.name,
 	                            value: this.state.text,
@@ -45696,7 +45710,7 @@
 	
 	
 	
-	                    React.createElement('div', { className: 'row' },
+	                    React.createElement('div', { className: 'row editor_tools' },
 	                        React.createElement('div', { className: 'col-md-2' },
 	                            React.createElement(ColorControls, {
 	                                editorState: editorState,
@@ -71976,10 +71990,20 @@
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	function (confirmation) {var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	    // You can pass whatever you want to the component. These arguments will be your Component's props
 	    return confirm({ confirmation: confirmation, options: options });
-	};var _react = __webpack_require__(1);var _react2 = _interopRequireDefault(_react);var _reactConfirm = __webpack_require__(435);var _reactModal = __webpack_require__(220);var _reactModal2 = _interopRequireDefault(_reactModal);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var Dialog = function Dialog(_ref) {var show = _ref.show,proceed = _ref.proceed,dismiss = _ref.dismiss,cancel = _ref.cancel,confirmation = _ref.confirmation,options = _ref.options;return _react2.default.createElement(_reactModal2.default, { isOpen: show, style: _reactModal.customModalStyles, onRequestClose: dismiss }, confirmation, _react2.default.createElement('button', { onClick: function onClick() {return cancel('arguments will be passed to the callback');} }, 'CANCEL'), _react2.default.createElement('button', { onClick: function onClick() {return proceed('same as cancel');} }, 'OK'));};Dialog.propTypes = { show: _react.PropTypes.bool, // from confirmable. indicates if the dialog is shown or not.
+	};var _react = __webpack_require__(1);var _react2 = _interopRequireDefault(_react);var _reactConfirm = __webpack_require__(435);var _reactModal = __webpack_require__(220);var _reactModal2 = _interopRequireDefault(_reactModal);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var Dialog = function Dialog(_ref) {var show = _ref.show,proceed = _ref.proceed,dismiss = _ref.dismiss,cancel = _ref.cancel,confirmation = _ref.confirmation,options = _ref.options;return _react2.default.createElement(_reactModal2.default, { isOpen: show, style: _reactModal.customModalStyles, onRequestClose: dismiss }, _react2.default.createElement('div', { className: 'row row-centered' }, _react2.default.createElement('div', { className: 'col-md-12 col-centered' }, confirmation), _react2.default.createElement('div', { className: 'col-md-12 col-centered' }, _react2.default.createElement('div', { className: 'col-md-2 col-centered' }, _react2.default.createElement('button', { className: 'btn btn-danger', onClick: function onClick() {return cancel('arguments will be passed to the callback');} }, '\u041E\u0442\u043C\u0435\u043D\u0430')), _react2.default.createElement('div', { className: 'col-md-2 col-centered' }, _react2.default.createElement('button', { className: 'btn btn-success', onClick: function onClick() {return proceed('same as cancel');} }, '\u041F\u0440\u0438\u043D\u044F\u0442\u044C')))));};Dialog.propTypes = { show: _react.PropTypes.bool, // from confirmable. indicates if the dialog is shown or not.
 	    proceed: _react.PropTypes.func, // from confirmable. call to close the dialog with promise resolved.
 	    cancel: _react.PropTypes.func, // from confirmable. call to close the dialog with promise rejected.
 	    dismiss: _react.PropTypes.func, // from confirmable. call to only close the dialog.

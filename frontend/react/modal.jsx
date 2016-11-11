@@ -4,7 +4,7 @@ import $ from 'jquery';
 import Modal from 'react-modal';
 import {observer} from 'mobx-react';
 
-const customModalStyles = {
+export const customModalStyles = {
   content : {
     top                   : '50%',
     left                  : '50%',

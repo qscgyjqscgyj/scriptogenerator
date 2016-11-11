@@ -129,3 +129,7 @@
     display: block !important;
     margin-top: 0 !important;
  }
+
+.table_header_text p {
+    margin: 0 0 0 !important;
+}

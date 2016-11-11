@@ -7,6 +7,7 @@ import Modal from 'react-modal';
 import {ModalWrapper} from './modal';
 import {Link} from 'react-router';
 import Select from 'react-select';
+import confirm from './confirm';
 
 @observer
 export class Scripts extends React.Component {
@@ -46,6 +47,20 @@ export class Scripts extends React.Component {
     deleteScript(script) {
         const {scriptsStore, modalStore} = this.props;
         var r = confirm("Вы действительно хотите удалить скрипт: " + script.name);
+
+
+        confirm('Are you sure').then(
+            (result) => {
+                console.log('proceed called');
+                console.log(result);
+            },
+            (result) => {
+                console.log('cancel called');
+                console.log(result)
+            }
+        );
+
+
         if (r == true) {
             $.ajax({
                 method: 'DELETE',

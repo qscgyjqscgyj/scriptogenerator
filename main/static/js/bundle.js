@@ -24643,7 +24643,8 @@
 	var _reactModal = __webpack_require__(220);var _reactModal2 = _interopRequireDefault(_reactModal);
 	var _modal = __webpack_require__(241);
 	var _reactRouter = __webpack_require__(159);
-	var _reactSelect = __webpack_require__(242);var _reactSelect2 = _interopRequireDefault(_reactSelect);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _reactSelect = __webpack_require__(242);var _reactSelect2 = _interopRequireDefault(_reactSelect);
+	var _confirm = __webpack_require__(434);var _confirm2 = _interopRequireDefault(_confirm);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	Scripts = exports.Scripts = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Scripts, _React$Component);function Scripts() {_classCallCheck(this, Scripts);return _possibleConstructorReturn(this, (Scripts.__proto__ || Object.getPrototypeOf(Scripts)).apply(this, arguments));}_createClass(Scripts, [{ key: 'createScript', value: function createScript(
@@ -24682,7 +24683,21 @@
 	        } }, { key: 'deleteScript', value: function deleteScript(
 	        script) {var _props3 =
 	            this.props,scriptsStore = _props3.scriptsStore,modalStore = _props3.modalStore;
-	            var r = confirm("Вы действительно хотите удалить скрипт: " + script.name);
+	            var r = (0, _confirm2.default)("Вы действительно хотите удалить скрипт: " + script.name);
+	
+	
+	            (0, _confirm2.default)('Are you sure').then(
+	            function (result) {
+	                console.log('proceed called');
+	                console.log(result);
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	                console.log(result);
+	            });
+	
+	
+	
 	            if (r == true) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
@@ -41828,13 +41843,13 @@
 /* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ModalWrapper = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ModalWrapper = exports.customModalStyles = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(158);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(214);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactModal = __webpack_require__(220);var _reactModal2 = _interopRequireDefault(_reactModal);
 	var _mobxReact = __webpack_require__(218);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
 	
-	var customModalStyles = {
+	var customModalStyles = exports.customModalStyles = {
 	    content: {
 	        top: '50%',
 	        left: '50%',
@@ -71926,6 +71941,223 @@
 	
 	
 	new UsersStore();
+
+/***/ },
+/* 434 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.default =
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	function (confirmation) {var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	    // You can pass whatever you want to the component. These arguments will be your Component's props
+	    return confirm({ confirmation: confirmation, options: options });
+	};var _react = __webpack_require__(1);var _react2 = _interopRequireDefault(_react);var _reactConfirm = __webpack_require__(435);var _reactModal = __webpack_require__(220);var _reactModal2 = _interopRequireDefault(_reactModal);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var Dialog = function Dialog(_ref) {var show = _ref.show,proceed = _ref.proceed,dismiss = _ref.dismiss,cancel = _ref.cancel,confirmation = _ref.confirmation,options = _ref.options;return _react2.default.createElement(_reactModal2.default, { isOpen: show, style: _reactModal.customModalStyles, onRequestClose: dismiss }, confirmation, _react2.default.createElement('button', { onClick: function onClick() {return cancel('arguments will be passed to the callback');} }, 'CANCEL'), _react2.default.createElement('button', { onClick: function onClick() {return proceed('same as cancel');} }, 'OK'));};Dialog.propTypes = { show: _react.PropTypes.bool, // from confirmable. indicates if the dialog is shown or not.
+	    proceed: _react.PropTypes.func, // from confirmable. call to close the dialog with promise resolved.
+	    cancel: _react.PropTypes.func, // from confirmable. call to close the dialog with promise rejected.
+	    dismiss: _react.PropTypes.func, // from confirmable. call to only close the dialog.
+	    confirmation: _react.PropTypes.string, // arguments of your confirm function
+	    options: _react.PropTypes.object // arguments of your confirm function
+	}; // create confirm function
+	var confirm = (0, _reactConfirm.createConfirmation)((0, _reactConfirm.confirmable)(Dialog)); // This is optional. But I recommend to define your confirm function easy to call.
+
+/***/ },
+/* 435 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	exports.createConfirmation = exports.confirmable = undefined;
+	
+	var _confirmable = __webpack_require__(436);
+	
+	var _confirmable2 = _interopRequireDefault(_confirmable);
+	
+	var _createConfirmation = __webpack_require__(437);
+	
+	var _createConfirmation2 = _interopRequireDefault(_createConfirmation);
+	
+	function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+	
+	exports.confirmable = _confirmable2.default;
+	exports.createConfirmation = _createConfirmation2.default;
+
+/***/ },
+/* 436 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	
+	var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};
+	
+	var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+	
+	function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
+	
+	function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;}
+	
+	function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
+	
+	var confirmable = function confirmable(Component) {
+	  return function (_React$Component) {
+	    _inherits(_class, _React$Component);
+	
+	    function _class(props) {
+	      _classCallCheck(this, _class);
+	
+	      var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(_class).call(this, props));
+	
+	      _this.state = {
+	        show: true };
+	
+	      return _this;
+	    }
+	
+	    _createClass(_class, [{
+	      key: 'dismiss',
+	      value: function dismiss() {
+	        var _this2 = this;
+	
+	        this.setState({
+	          show: false },
+	        function () {
+	          _this2.props.dispose();
+	        });
+	      } },
+	    {
+	      key: 'cancel',
+	      value: function cancel(value) {
+	        var _this3 = this;
+	
+	        this.setState({
+	          show: false },
+	        function () {
+	          _this3.props.reject(value);
+	        });
+	      } },
+	    {
+	      key: 'proceed',
+	      value: function proceed(value) {
+	        var _this4 = this;
+	
+	        this.setState({
+	          show: false },
+	        function () {
+	          _this4.props.resolve(value);
+	        });
+	      } },
+	    {
+	      key: 'render',
+	      value: function render() {
+	        return _react2.default.createElement(Component, _extends({ proceed: this.proceed.bind(this), cancel: this.cancel.bind(this), dismiss: this.dismiss.bind(this), show: this.state.show }, this.props));
+	      } }]);
+	
+	
+	    return _class;
+	  }(_react2.default.Component);
+	};
+	
+	exports.default = confirmable;
+
+/***/ },
+/* 437 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	
+	var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(158);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+	
+	var createConfirmation = function createConfirmation(Component) {
+	  return function (props) {
+	    var wrapper = document.body.appendChild(document.createElement('div'));
+	
+	    var promise = new Promise(function (resolve, reject) {
+	      try {
+	        _reactDom2.default.render(_react2.default.createElement(Component, _extends({
+	          reject: reject,
+	          resolve: resolve,
+	          dispose: dispose },
+	        props)), wrapper);
+	      } catch (e) {
+	        console.error(e);
+	        throw e;
+	      }
+	    });
+	
+	    function dispose() {
+	      setTimeout(function () {
+	        _reactDom2.default.unmountComponentAtNode(wrapper);
+	        setTimeout(function () {
+	          return wrapper.remove();
+	        });
+	      }, 1000);
+	    }
+	
+	    return promise.then(function (result) {
+	      dispose();
+	      return result;
+	    }, function (result) {
+	      dispose();
+	      return Promise.reject(result);
+	    });
+	  };
+	};
+	
+	exports.default = createConfirmation;
 
 /***/ }
 /******/ ]);

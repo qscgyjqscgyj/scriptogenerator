@@ -64,6 +64,7 @@
     "gulp-uglify": "^2.0.0",
     "jquery": "^1.12.4",
     "mobx-react-devtools": "^4.2.0",
+    "react-confirm": "^0.1.14",
     "react-modal": "^1.4.0",
     "react-rte": "^0.10.1",
     "react-select": "^1.0.0-rc.2",

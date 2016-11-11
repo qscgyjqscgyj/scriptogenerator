@@ -28,7 +28,10 @@ export class Table extends AccessableComponent {
         const {tablesStore} = this.props;
         tablesStore.pullTables(this.props.params.script);
     }
-
+    componentWillReceiveProps(props) {
+        const {tablesStore} = props;
+        tablesStore.pullTables(props.params.script);
+    }
     componentDidMount() {
         const {tablesStore} = this.props;
         new Clipboard('.copy_icon', {

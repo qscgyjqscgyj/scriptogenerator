@@ -44509,14 +44509,17 @@
 	                        return { v:
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                access.edit ?
-	                                React.createElement('div', null,
-	                                    React.createElement('div', { className: 'col-md-2' },
+	                                React.createElement('div', { className: 'row row-centered' },
+	                                    React.createElement('div', { className: 'col-md-2 col-centered' },
 	                                        React.createElement('button', { onClick: function onClick() {
 	                                                    modalStore.modal = true;
 	                                                    modalStore.component = CreatingTable;
 	                                                }, className: 'btn btn-success' }, '+ \u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0442\u0430\u0431\u043B\u0438\u0446\u0443')),
 	
-	                                    React.createElement('div', { className: 'col-md-3 pull-right' },
+	                                    React.createElement('div', { className: 'col-md-7 col-centered' },
+	                                        React.createElement('h4', null, script.name)),
+	
+	                                    React.createElement('div', { className: 'col-md-3 col-centered' },
 	                                        React.createElement('button', { className: 'btn btn-success' }, '\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u043A\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430'))) :
 	
 	

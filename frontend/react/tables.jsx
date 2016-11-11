@@ -70,14 +70,17 @@ export class Tables extends AccessableComponent {
                 return(
                     <div className="col-md-12">
                         {access.edit ?
-                            <div>
-                                <div className="col-md-2">
+                            <div className="row row-centered">
+                                <div className="col-md-2 col-centered">
                                     <button onClick={() => {
                                         modalStore.modal = true;
                                         modalStore.component = CreatingTable
                                     }} className="btn btn-success">+ Создать таблицу</button>
                                 </div>
-                                <div className="col-md-3 pull-right">
+                                <div className="col-md-7 col-centered">
+                                    <h4>{script.name}</h4>
+                                </div>
+                                <div className="col-md-3 col-centered">
                                     <button className="btn btn-success">Заказать разработку скрипта</button>
                                 </div>
                             </div>

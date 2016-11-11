@@ -90,4 +90,4 @@ class Link(models.Model):
         return self.name
 
     class Meta:
-        ordering = ('order',)
+        ordering = ('order', 'pk')

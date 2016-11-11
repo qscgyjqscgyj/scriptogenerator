@@ -32,12 +32,16 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name):
         except ObjectDoesNotExist:
             cloneObject = None
     relations = type(mainObject)._meta.get_all_related_objects_with_model()
+    print(relations)
     for relate in relations:
-        for relatedObject in relate[0].field.model.objects.filter(**{relate[0].field.name: mainObject}):
-            currentRelatedObject = relatedObject.__class__.objects.get(pk=relatedObject.pk)
-            cloneRelatedObject = relatedObject
-            cloneRelatedObject.id = None
-            setattr(cloneRelatedObject, relate[0].field.name, cloneObject)
-            cloneRelatedObject.save()
-            if type(currentRelatedObject)._meta.get_all_related_objects_with_model():
-                cloneTreeRelations(currentRelatedObject.pk, cloneRelatedObject.pk, type(currentRelatedObject)._meta.app_label, currentRelatedObject.__class__.__name__)
+        if relate[0].field.model == get_model('main', 'ScriptAccess'):
+            continue
+        else:
+            for relatedObject in relate[0].field.model.objects.filter(**{relate[0].field.name: mainObject}):
+                currentRelatedObject = relatedObject.__class__.objects.get(pk=relatedObject.pk)
+                cloneRelatedObject = relatedObject
+                cloneRelatedObject.id = None
+                setattr(cloneRelatedObject, relate[0].field.name, cloneObject)
+                cloneRelatedObject.save()
+                if type(currentRelatedObject)._meta.get_all_related_objects_with_model():
+                    cloneTreeRelations(currentRelatedObject.pk, cloneRelatedObject.pk, type(currentRelatedObject)._meta.app_label, currentRelatedObject.__class__.__name__)

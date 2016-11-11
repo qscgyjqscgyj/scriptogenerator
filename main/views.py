@@ -12,6 +12,7 @@ from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Li
 from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer, LinkCategorySerializer, \
     LinkSerializer, TableLinksCollSerializer, ScriptAccessSerializer
 from scripts.settings import DEBUG
+from scripts.utils import cloneTreeRelations
 from users.models import CustomUser
 from users.serializers import UserSerializer
 
@@ -270,6 +271,20 @@ class ScriptAccessView(View):
                     delete_accesses(script.accesses().exclude(pk__in=created_accesses))
         else:
             delete_accesses(script.accesses())
+        return JSONResponse({
+            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+        })
+
+
+class CloneScriptView(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        currentScript = Script.objects.get(pk=int(data['id']))
+        script = Script.objects.get(pk=int(data['id']))
+        script.pk = None
+        script.name += u' (копия)'
+        script.save()
+        cloneTreeRelations(currentScript.pk, script.pk, 'main', 'Script')
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
         })

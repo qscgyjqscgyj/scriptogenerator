@@ -79,6 +79,20 @@ export class Scripts extends React.Component {
             }
         });
     }
+    cloneScript(script) {
+        const {scriptsStore} = this.props;
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-clone-script-url'),
+            data: JSON.stringify(script),
+            success: (res) => {
+                scriptsStore.scripts = res.scripts;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
     render() {
         const {scriptsStore, modalStore, projectsStore, usersStore, tablesStore, available} = this.props;
         if(usersStore.session_user) {
@@ -123,6 +137,9 @@ export class Scripts extends React.Component {
                                         <td>Проект</td>
                                         <td>Владелец</td>
                                         {!available ?
+                                            <td>Скопировать</td>
+                                        : null}
+                                        {!available ?
                                             <td>Доступы</td>
                                         :
                                             <td>Права</td>
@@ -137,6 +154,13 @@ export class Scripts extends React.Component {
                                             <td><Link to={'/tables/' + script.id + ''}>{script.name}</Link></td>
                                             <td>{script.project.name}</td>
                                             <td>{script.owner.email}</td>
+                                            {!available ?
+                                                <td>
+                                                    <button className="btn btn-default" onClick={() => {this.cloneScript(script)}}>
+                                                        Скопировать
+                                                    </button>
+                                                </td>
+                                            : null}
                                             {!available ?
                                                 <td>
                                                     <button onClick={() => {

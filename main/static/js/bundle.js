@@ -24715,6 +24715,20 @@
 	                    console.log(res);
 	                } });
 	
+	        } }, { key: 'cloneScript', value: function cloneScript(
+	        script) {var
+	            scriptsStore = this.props.scriptsStore;
+	            _jquery2.default.ajax({
+	                method: 'POST',
+	                url: document.body.getAttribute('data-clone-script-url'),
+	                data: JSON.stringify(script),
+	                success: function success(res) {
+	                    scriptsStore.scripts = res.scripts;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
 	        } }, { key: 'render', value: function render()
 	        {var _this2 = this;var _props4 =
 	            this.props,scriptsStore = _props4.scriptsStore,modalStore = _props4.modalStore,projectsStore = _props4.projectsStore,usersStore = _props4.usersStore,tablesStore = _props4.tablesStore,available = _props4.available;
@@ -24760,6 +24774,9 @@
 	                                            React.createElement('td', null, '\u041F\u0440\u043E\u0435\u043A\u0442'),
 	                                            React.createElement('td', null, '\u0412\u043B\u0430\u0434\u0435\u043B\u0435\u0446'),
 	                                            !available ?
+	                                            React.createElement('td', null, '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C') :
+	                                            null,
+	                                            !available ?
 	                                            React.createElement('td', null, '\u0414\u043E\u0441\u0442\u0443\u043F\u044B') :
 	
 	                                            React.createElement('td', null, '\u041F\u0440\u0430\u0432\u0430'))),
@@ -24774,6 +24791,13 @@
 	                                                    React.createElement('td', null, React.createElement(_reactRouter.Link, { to: '/tables/' + script.id + '' }, script.name)),
 	                                                    React.createElement('td', null, script.project.name),
 	                                                    React.createElement('td', null, script.owner.email),
+	                                                    !available ?
+	                                                    React.createElement('td', null,
+	                                                        React.createElement('button', { className: 'btn btn-default', onClick: function onClick() {_this2.cloneScript(script);} }, '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C')) :
+	
+	
+	
+	                                                    null,
 	                                                    !available ?
 	                                                    React.createElement('td', null,
 	                                                        React.createElement('button', { onClick: function onClick() {

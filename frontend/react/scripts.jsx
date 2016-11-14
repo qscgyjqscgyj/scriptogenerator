@@ -11,6 +11,12 @@ import confirm from './confirm';
 
 @observer
 export class Scripts extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            cloning: null
+        }
+    }
     createScript(e) {
         const {projectsStore, scriptsStore, modalStore, usersStore} = this.props;
         let project = projectsStore.project(scriptsStore.creating_project);
@@ -81,16 +87,19 @@ export class Scripts extends React.Component {
     }
     cloneScript(script) {
         const {scriptsStore} = this.props;
-        $.ajax({
-            method: 'POST',
-            url: document.body.getAttribute('data-clone-script-url'),
-            data: JSON.stringify(script),
-            success: (res) => {
-                scriptsStore.scripts = res.scripts;
-            },
-            error: (res) => {
-                console.log(res);
-            }
+        this.setState(update(this.state, {cloning: {$set: script}}), () => {
+            $.ajax({
+                method: 'POST',
+                url: document.body.getAttribute('data-clone-script-url'),
+                data: JSON.stringify(script),
+                success: (res) => {
+                    scriptsStore.scripts = res.scripts;
+                    this.setState(update(this.state, {cloning: {$set: null}}));
+                },
+                error: (res) => {
+                    console.log(res);
+                }
+            });
         });
     }
     render() {
@@ -156,9 +165,13 @@ export class Scripts extends React.Component {
                                             <td>{script.owner.email}</td>
                                             {!available ?
                                                 <td>
-                                                    <button className="btn btn-default" onClick={() => {this.cloneScript(script)}}>
-                                                        Скопировать
-                                                    </button>
+                                                    {this.state.cloning !== script ?
+                                                        <button className="btn btn-default" onClick={() => {this.cloneScript(script)}}>
+                                                            Скопировать
+                                                        </button>
+                                                    :
+                                                        <span>Копирование...</span>
+                                                    }
                                                 </td>
                                             : null}
                                             {!available ?

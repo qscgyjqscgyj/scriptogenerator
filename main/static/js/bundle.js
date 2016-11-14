@@ -24802,12 +24802,16 @@
 	                                                    React.createElement('td', null, script.owner.email),
 	                                                    !available ?
 	                                                    React.createElement('td', null,
-	                                                        _this3.state.cloning !== script ?
-	                                                        React.createElement('button', { className: 'btn btn-default', onClick: function onClick() {_this3.cloneScript(script);} }, '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C') :
+	                                                        _this3.state.cloning ?
+	                                                        React.createElement('span', null,
+	                                                            _this3.state.cloning === script ?
+	                                                            React.createElement('span', null, '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435...') :
+	                                                            null) :
 	
 	
+	                                                        React.createElement('button', { className: 'btn btn-default', onClick: function onClick() {_this3.cloneScript(script);} }, '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C')) :
 	
-	                                                        React.createElement('span', null, '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435...')) :
+	
 	
 	
 	                                                    null,

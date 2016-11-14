@@ -165,12 +165,16 @@ export class Scripts extends React.Component {
                                             <td>{script.owner.email}</td>
                                             {!available ?
                                                 <td>
-                                                    {this.state.cloning !== script ?
+                                                    {this.state.cloning ?
+                                                        <span>
+                                                            {this.state.cloning === script ?
+                                                                <span>Копирование...</span>
+                                                            : null}
+                                                        </span>
+                                                    :
                                                         <button className="btn btn-default" onClick={() => {this.cloneScript(script)}}>
                                                             Скопировать
                                                         </button>
-                                                    :
-                                                        <span>Копирование...</span>
                                                     }
                                                 </td>
                                             : null}

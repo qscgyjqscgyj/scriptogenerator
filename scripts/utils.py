@@ -31,8 +31,16 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name):
             cloneObject = model.objects.get(pk=cloneObject_pk)
         except ObjectDoesNotExist:
             cloneObject = None
+
+    if hasattr(cloneObject, 'parent'):
+        cloneObject.parent = mainObject
+        cloneObject.save()
+
     relations = type(mainObject)._meta.get_all_related_objects_with_model()
-    print(relations)
+    for k, relate in enumerate(relations):
+        if relate[0].field.name == 'parent':
+            del relations[k]
+
     for relate in relations:
         if relate[0].field.model == get_model('main', 'ScriptAccess'):
             continue

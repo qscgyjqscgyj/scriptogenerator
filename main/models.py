@@ -6,6 +6,7 @@ from users.models import CustomUser
 
 class Script(models.Model):
     name = models.CharField(max_length=1024)
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='script_parent_script', blank=True, null=True)
     owner = models.ForeignKey(CustomUser, related_name='script_owner_custom_user')
     project = models.ForeignKey('Project', related_name='script_project_project')
     date = models.DateTimeField(auto_now_add=True)
@@ -13,6 +14,13 @@ class Script(models.Model):
 
     def accesses(self):
         return ScriptAccess.objects.filter(script=self)
+
+    def tables(self):
+        return Table.objects.filter(script=self)
+
+    def links(self):
+        tables = [table.pk for table in self.tables()]
+        return Link.objects.filter(category__table__table__pk__in=tables)
 
     def __unicode__(self):
         return self.name
@@ -43,12 +51,17 @@ class Project(models.Model):
 
 class Table(models.Model):
     name = models.CharField(max_length=1024)
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='table_parent_table', blank=True, null=True)
     script = models.ForeignKey('Script', related_name='table_script_script')
     text_coll_name = models.CharField(max_length=1024, default='Текстовое поле')
     text_coll_size = models.IntegerField()
     text_coll_position = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
     date_mod = models.DateTimeField(auto_now=True)
+
+    def links(self):
+        colls = [coll.pk for coll in TableLinksColl.objects.filter(table=self)]
+        return Link.objects.filter(category__table__pk__in=colls)
 
     def __unicode__(self):
         return self.name
@@ -82,12 +95,35 @@ class LinkCategory(models.Model):
 
 class Link(models.Model):
     name = models.CharField(max_length=1024)
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='link_parent_link', blank=True, null=True)
     category = models.ForeignKey('LinkCategory', related_name='link_category_link_category')
     text = models.TextField()
     order = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
         return self.name
+
+    def get_address(self):
+        return '/tables/%(script)s/table/%(table)s/link/%(link)s' % dict(
+            script=self.category.table.table.script.pk,
+            table=self.category.table.table.pk,
+            link=self.pk
+        )
+
+    def get_parent_address(self):
+        if self.parent:
+            return '/tables/%(script)s/table/%(table)s/link/%(link)s' % dict(
+                script=self.category.table.table.script.parent.pk,
+                table=self.category.table.table.parent.pk,
+                link=self.parent.pk
+            )
+        return None
+
+    def clone_save(self):
+        for table in self.category.table.table.script.tables():
+            for link in table.links():
+                self.text = self.text.replace(link.get_parent_address(), link.get_address())
+        return self.save()
 
     class Meta:
         ordering = ('order', 'pk')

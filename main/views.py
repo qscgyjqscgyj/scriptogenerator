@@ -285,6 +285,10 @@ class CloneScriptView(View):
         script.name += u' (копия)'
         script.save()
         cloneTreeRelations(currentScript.pk, script.pk, 'main', 'Script')
+
+        for link in script.links():
+            link.clone_save()
+
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
         })

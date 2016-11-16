@@ -47,6 +47,15 @@
   margin: 16px 0;
   padding: 10px 20px;
 }
+.RichEditor-align-center div {
+  text-align: center !important;
+}
+.RichEditor-align-left div {
+  text-align: left !important;
+}
+.RichEditor-align-right div {
+  text-align: right !important;
+}
 
 .RichEditor-editor .public-DraftStyleDefault-pre {
   background-color: rgba(0, 0, 0, 0.05);

@@ -138,3 +138,13 @@
 .RichEditor-root {
     border: none !important;
 }
+/*EDITOR STYLES*/
+.RichEditor-align-center {
+    text-align: center !important;
+}
+.RichEditor-align-left {
+    text-align: left !important;
+}
+.RichEditor-align-right {
+    text-align: right !important;
+}

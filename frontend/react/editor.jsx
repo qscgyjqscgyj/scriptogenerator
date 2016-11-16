@@ -9,6 +9,7 @@ import {Editor, EditorState, CompositeDecorator, Modifier, RichUtils, ContentSta
 import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
+import Immutable from 'immutable';
 
 @observer
 export class CustomEditor extends React.Component {
@@ -217,24 +218,23 @@ export class CustomEditor extends React.Component {
                 </div>;
         }
 
-
         return (
             <div className="RichEditor-root">
-                {
-                    //<BlockStyleControls
-                    //    editorState={editorState}
-                    //    onToggle={this.toggleBlockType}/>
-                }
                 <div className="row editor_tools">
                     <div className="col-md-2">
                         <ColorControls
                             editorState={editorState}
                             onToggle={this.toggleColor}/>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-2">
                         <InlineStyleControls
                             editorState={editorState}
                             onToggle={this.toggleInlineStyle}/>
+                    </div>
+                    <div className="col-md-2">
+                    <BlockStyleControls
+                        editorState={editorState}
+                        onToggle={this.toggleBlockType}/>
                     </div>
                     <div className="col-md-5">
                         <div style={styles.buttons}>
@@ -244,10 +244,12 @@ export class CustomEditor extends React.Component {
                         {urlInput}
                     </div>
                 </div>
+
                 <div className={className} onClick={this.focus}>
                     <Editor
                         blockStyleFn={getBlockStyle}
                         customStyleMap={styleMap}
+                        blockRenderMap={blockRenderMap}
                         editorState={editorState}
                         handleKeyCommand={this.handleKeyCommand}
                         onChange={this.onChange}
@@ -256,6 +258,11 @@ export class CustomEditor extends React.Component {
                         ref="editor"
                         spellCheck={true}/>
                 </div>
+                {
+                    //<BlockStyleControls
+                    //    editorState={editorState}
+                    //    onToggle={this.toggleBlockType}/>
+                }
             </div>
         );
     }
@@ -290,7 +297,9 @@ const ColorControls = (props) => {
 
 function getBlockStyle(block) {
     switch (block.getType()) {
-        case 'blockquote': return 'RichEditor-blockquote';
+        case 'center': return 'RichEditor-align-center';
+        case 'right': return 'RichEditor-align-right';
+        case 'left': return 'RichEditor-align-left';
         default: return null;
     }
 }
@@ -324,16 +333,27 @@ class StyleButton extends React.Component {
     }
 }
 
+const blockRenderMap = Immutable.Map({
+    'center': {
+        element: 'div'
+    },
+    'left': {
+        element: 'div'
+    },
+    'right': {
+        element: 'div'
+    },
+    unstyled: {
+        element: 'span'
+    }
+
+});
+
 const BLOCK_TYPES = [
-    {label: 'H1', style: 'header-one'},
-    {label: 'H2', style: 'header-two'},
-    {label: 'H3', style: 'header-three'},
-    {label: 'H4', style: 'header-four'},
-    {label: 'H5', style: 'header-five'},
-    {label: 'H6', style: 'header-six'},
-    {label: 'Blockquote', style: 'blockquote'},
-    {label: 'Список', style: 'unordered-list-item'},
-    {label: 'Нумерованный список', style: 'ordered-list-item'},
+    {label: 'Center', style: 'center'},
+    {label: 'Right', style: 'right'},
+    {label: 'Left', style: 'left'}
+
 ];
 
 const BlockStyleControls = (props) => {

@@ -327,9 +327,13 @@ class CollInput extends React.Component {
                         onChange={this.props.onChangeSize.bind(this)}
                         value={this.props.size}/>
                 </div>
-                <div className="form-group">
-                    {'Ссылки: ' + links.length}
-                </div>
+                
+                {!this.props.text ?
+                    <div className="form-group">
+                        {'Ссылки: ' + links.length}
+                    </div>
+                : null}
+
                 {!this.props.text ?
                     <div className="form-group">
                         <i
@@ -344,9 +348,7 @@ class CollInput extends React.Component {
                                 }
                             }}/>
                     </div>
-                :
-                    null
-                }
+                : null}
             </div>
        )
     }

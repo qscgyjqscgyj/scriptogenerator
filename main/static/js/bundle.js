@@ -45010,8 +45010,12 @@
 	                            onChange: this.props.onChangeSize.bind(this),
 	                            value: this.props.size })),
 	
+	
+	                    !this.props.text ?
 	                    React.createElement('div', { className: 'form-group' },
-	                        'Ссылок в столбце: ' + links.length),
+	                        'Ссылки: ' + links.length) :
+	
+	                    null,
 	
 	                    !this.props.text ?
 	                    React.createElement('div', { className: 'form-group' },
@@ -45027,9 +45031,7 @@
 	                                }
 	                            } })) :
 	
-	
 	                    null));
-	
 	
 	
 	        } }]);return CollInput;}(React.Component);var

@@ -172,3 +172,7 @@
 .colored_button.active {
     border: 3px solid #000;
 }
+/*MODAL*/
+.modal_block .modal_header {
+    margin-bottom: 20px;
+}

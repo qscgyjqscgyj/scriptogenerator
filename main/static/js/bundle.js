@@ -45122,6 +45122,10 @@
 
 	        id) {
 	            return this.tables.find(function (table) {return parseInt(table.id) === parseInt(id);});
+	        } }, { key: 'script_tables', value: function script_tables(
+
+	        script_id) {
+	            return this.tables.filter(function (table) {return parseInt(table.script) === parseInt(script_id);});
 	        } }, { key: 'link', value: function link(
 
 	        table_id, link_id) {
@@ -72134,11 +72138,11 @@
 	                } });
 
 	        } }, { key: 'render', value: function render()
-	        {var
-	            usersStore = this.props.usersStore;
+	        {var _props2 =
+	            this.props,usersStore = _props2.usersStore,tablesStore = _props2.tablesStore;
 	            return (
 	                React.createElement('div', null,
-	                    React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params, usersStore: usersStore }),
+	                    React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params, usersStore: usersStore, tablesStore: tablesStore }),
 
 	                    React.createElement('div', { className: 'container-fluid', id: 'main_container' },
 	                        this.props.children)));
@@ -72190,8 +72194,11 @@
 
 
 	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);function Nav() {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));}_createClass(Nav, [{ key: 'render', value: function render()
-	        {var
-	            usersStore = this.props.usersStore;
+	        {var _this2 = this;var _props =
+	            this.props,usersStore = _props.usersStore,tablesStore = _props.tablesStore;
+	            var script_id = parseInt(this.props.params.script);
+	            var script_tables = tablesStore.script_tables(script_id);
+	            var edit = this.props.location.pathname.includes('edit');
 	            return (
 	                React.createElement('nav', { className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
 	                    React.createElement('div', { className: 'container-fluid' },
@@ -72200,6 +72207,28 @@
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/projects' }, '\u041C\u043E\u0438 \u043F\u0440\u043E\u0435\u043A\u0442\u044B')),
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/user' }, '\u041C\u043E\u0438 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/available' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
+
+	                            script_tables.length > 0 ?
+	                            React.createElement('li', { className: 'dropdown' },
+	                                React.createElement('a', { href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
+	                                    React.createElement('span', { className: 'caret' })),
+
+	                                React.createElement('ul', { className: 'dropdown-menu' },
+	                                    script_tables.map(function (table, key) {
+	                                        return (
+	                                            React.createElement('li', { key: key, className: table.id === parseInt(_this2.props.params.table) ? 'active' : null },
+	                                                React.createElement(_reactRouter.Link, { to:
+	                                                        '/tables/' + _this2.props.params.script +
+	                                                        '/table/' + table.id + (
+	                                                        edit ? '/edit/' : '/share/') },
+	                                                    table.name)));
+
+
+	                                    }))) :
+
+
+	                            null,
+
 	                            this.props.location.pathname.includes('edit') ?
 	                            React.createElement('li', null,
 	                                React.createElement(_reactRouter.Link, { to:
@@ -72209,9 +72238,7 @@
 	                                        '/share/' }, '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440')) :
 
 
-
-	                            '',
-
+	                            null,
 	                            this.props.location.pathname.includes('share') ?
 	                            React.createElement('li', null,
 	                                React.createElement(_reactRouter.Link, { to:
@@ -72221,9 +72248,7 @@
 	                                        '/edit/' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435')) :
 
 
-
-	                            ''),
-
+	                            null),
 
 	                        usersStore.session_user ?
 	                        React.createElement('ul', { className: 'nav navbar-nav navbar-right' },

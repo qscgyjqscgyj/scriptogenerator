@@ -76,6 +76,10 @@ export class TablesStore {
         return this.tables.find(table => parseInt(table.id) === parseInt(id));
     }
 
+    script_tables(script_id) {
+        return this.tables.filter(table => parseInt(table.script) === parseInt(script_id));
+    }
+
     link(table_id, link_id) {
         let table = this.table(table_id);
         let all_links = [];

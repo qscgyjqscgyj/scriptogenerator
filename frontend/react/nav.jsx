@@ -7,7 +7,10 @@ import {observer} from 'mobx-react';
 @observer
 export class Nav extends React.Component {
     render() {
-        const {usersStore} = this.props;
+        const {usersStore, tablesStore} = this.props;
+        let script_id = parseInt(this.props.params.script);
+        let script_tables = tablesStore.script_tables(script_id);
+        let edit = this.props.location.pathname.includes('edit');
         return(
             <nav className={"navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '')}>
                 <div className="container-fluid">
@@ -16,6 +19,28 @@ export class Nav extends React.Component {
                         <li><Link to='/projects'>Мои проекты</Link></li>
                         <li><Link to='/scripts/user'>Мои скрипты</Link></li>
                         <li><Link to='/scripts/available'>Доступные скрипты</Link></li>
+
+                        {script_tables.length > 0 ?
+                            <li className="dropdown">
+                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    Таблицы <span className="caret"/>
+                                </a>
+                                <ul className="dropdown-menu">
+                                    {script_tables.map((table, key) => {
+                                        return(
+                                            <li key={key} className={table.id === parseInt(this.props.params.table) ? 'active' : null}>
+                                                <Link to={
+                                                        '/tables/' + this.props.params.script +
+                                                        '/table/' + table.id +
+                                                        (edit ? '/edit/' : '/share/')
+                                                    }>{table.name}</Link>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                            </li>
+                        : null}
+
                         {this.props.location.pathname.includes('edit') ?
                             <li>
                                 <Link to={
@@ -25,9 +50,7 @@ export class Nav extends React.Component {
                                         '/share/'
                                     }>Просмотр</Link>
                             </li>
-                        :
-                            ''
-                        }
+                        : null}
                         {this.props.location.pathname.includes('share') ?
                             <li>
                                 <Link to={
@@ -37,9 +60,7 @@ export class Nav extends React.Component {
                                         '/edit/'
                                     }>Редактирование</Link>
                             </li>
-                        :
-                            ''
-                        }
+                        : null}
                     </ul>
                     {usersStore.session_user ?
                         <ul className="nav navbar-nav navbar-right">

@@ -45440,7 +45440,7 @@
 
 	        } }, { key: 'updateLink', value: function updateLink(
 
-	        link) {var
+	        link, onSave) {var
 	            tablesStore = this.props.tablesStore;
 	            _jquery2.default.ajax({
 	                method: 'PUT',
@@ -45448,6 +45448,7 @@
 	                data: JSON.stringify(link),
 	                success: function success(res) {
 	                    tablesStore.tables = res.tables;
+	                    return onSave(false);
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -45502,7 +45503,20 @@
 
 
 
-	TableEdit = exports.TableEdit = (0, _mobxReact.observer)(_class2 = function (_Table) {_inherits(TableEdit, _Table);function TableEdit() {_classCallCheck(this, TableEdit);return _possibleConstructorReturn(this, (TableEdit.__proto__ || Object.getPrototypeOf(TableEdit)).apply(this, arguments));}_createClass(TableEdit, [{ key: 'render', value: function render()
+	TableEdit = (0, _mobxReact.observer)(_class2 = function (_Table) {_inherits(TableEdit, _Table);
+	    function TableEdit(props) {_classCallCheck(this, TableEdit);var _this4 = _possibleConstructorReturn(this, (TableEdit.__proto__ || Object.getPrototypeOf(TableEdit)).call(this,
+	        props));
+
+	        _this4.state = {
+	            changed: false };return _this4;
+
+	    }
+	    //componentWillReceiveProps(props) {
+	    //    this.setState(update(this.state, {changed: {$set: props.changed}}))
+	    //}
+	    _createClass(TableEdit, [{ key: 'changed', value: function changed(_changed) {
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { changed: { $set: _changed } }));
+	        } }, { key: 'render', value: function render()
 	        {var _this5 = this;var _props =
 	            this.props,projectsStore = _props.projectsStore,scriptsStore = _props.scriptsStore,tablesStore = _props.tablesStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
 	            var table = tablesStore.table(this.props.params.table);
@@ -45528,13 +45542,21 @@
 	                                                            React.createElement('h4', { className: 'table_header_text' }, active_link.name)),
 
 	                                                        React.createElement('div', { className: 'col-md-4 pull-right' },
-	                                                            React.createElement('button', { className: 'btn btn-success', onClick: function onClick() {_this5.updateLink(active_link);} }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))),
+	                                                            React.createElement('button', { className: 'btn ' + (_this5.state.changed ? 'btn-success' : 'btn-default'), onClick: function onClick() {_this5.updateLink(active_link, _this5.changed.bind(_this5));} }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))),
+
+
 
 
 	                                                    React.createElement('div', { className: 'link_text_editor' },
-	                                                        React.createElement(_editor.CustomEditor, { object: active_link, value: active_link.text, onChange: function onChange(value) {
+	                                                        React.createElement(_editor.CustomEditor, { object: active_link, value: active_link.text,
+	                                                            onChange: function onChange(value) {
+	                                                                _this5.changed(true);
 	                                                                active_link.text = value;
-	                                                                _this5.updateLink(active_link);
+	                                                            },
+	                                                            onBlur: function onBlur(value) {
+	                                                                _this5.changed(true);
+	                                                                active_link.text = value;
+	                                                                _this5.updateLink(active_link, _this5.changed.bind(_this5));
 	                                                            } }))) :
 
 
@@ -45631,7 +45653,7 @@
 	                return null;
 	            }
 	            return null;
-	        } }]);return TableEdit;}(Table)) || _class2;var
+	        } }]);return TableEdit;}(Table)) || _class2;exports.TableEdit = TableEdit;var
 
 
 
@@ -45818,10 +45840,6 @@
 	            });
 	        };
 
-	        _this.onBlur = function (e) {
-	            return _this.onChange(_this.state.editorState);
-	        };
-
 	        _this.handleKeyCommand = function (command) {return _this._handleKeyCommand(command);};
 	        _this.onTab = function (e) {return _this._onTab(e);};
 	        _this.toggleBlockType = function (type) {return _this._toggleBlockType(type);};
@@ -45985,7 +46003,7 @@
 	            this.onChange(nextEditorState);
 	        } }, { key: 'render', value: function render()
 
-	        {var
+	        {var _this5 = this;var
 	            editorState = this.state.editorState;
 	            // If the user changes block type before entering any text, we can
 	            // either style the placeholder or hide it. Let's just hide it now.
@@ -46034,13 +46052,11 @@
 	                                        onToggle: this.toggleBlockType })),
 
 	                                React.createElement('div', { className: 'btn-group', role: 'group', 'aria-label': '...' },
-	                                    React.createElement('button', { onMouseDown: this.promptForLink, style: { marginRight: 10 }, className: 'btn btn-default' },
+	                                    React.createElement('button', { onMouseDown: this.promptForLink, style: { marginRight: 10 }, className: 'btn btn-info' },
 	                                        React.createElement('i', { className: 'glyphicon glyphicon-link' })),
 
-	                                    React.createElement('button', { onMouseDown: this.removeLink, className: 'btn btn-default strikethrough' },
-	                                        React.createElement('strike', null,
-	                                            React.createElement('i', { className: 'glyphicon glyphicon-link' })))))),
-
+	                                    React.createElement('button', { onMouseDown: this.removeLink, className: 'btn btn-danger' },
+	                                        React.createElement('i', { className: 'glyphicon glyphicon-link' }))))),
 
 
 
@@ -46059,7 +46075,7 @@
 	                            handleKeyCommand: this.handleKeyCommand,
 	                            onChange: this.onChange,
 	                            onTab: this.onTab,
-	                            onBlur: this.onBlur,
+	                            onBlur: function onBlur() {_this5.props.onBlur(JSON.stringify((0, _draftJs.convertToRaw)(editorState.getCurrentContent())));},
 	                            placeholder: 'Tell a story...',
 	                            ref: 'editor',
 	                            spellCheck: true }))));
@@ -46113,13 +46129,13 @@
 	}var
 
 	StyleButton = function (_React$Component2) {_inherits(StyleButton, _React$Component2);
-	    function StyleButton(props) {_classCallCheck(this, StyleButton);var _this5 = _possibleConstructorReturn(this, (StyleButton.__proto__ || Object.getPrototypeOf(StyleButton)).call(this,
+	    function StyleButton(props) {_classCallCheck(this, StyleButton);var _this6 = _possibleConstructorReturn(this, (StyleButton.__proto__ || Object.getPrototypeOf(StyleButton)).call(this,
 	        props));
 
-	        _this5.onToggle = function (e) {
+	        _this6.onToggle = function (e) {
 	            e.preventDefault();
-	            _this5.props.onToggle(_this5.props.style);
-	        };return _this5;
+	            _this6.props.onToggle(_this6.props.style);
+	        };return _this6;
 	    }_createClass(StyleButton, [{ key: 'render', value: function render()
 
 	        {

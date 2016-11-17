@@ -37,10 +37,6 @@ export class CustomEditor extends React.Component {
             });
         };
 
-        this.onBlur = (e) => {
-            return this.onChange(this.state.editorState);
-        };
-
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.onTab = (e) => this._onTab(e);
         this.toggleBlockType = (type) => this._toggleBlockType(type);
@@ -253,13 +249,11 @@ export class CustomEditor extends React.Component {
                                     onToggle={this.toggleBlockType}/>
                             </div>
                             <div className="btn-group" role="group" aria-label="...">
-                                <button onMouseDown={this.promptForLink} style={{marginRight: 10}} className="btn btn-default">
+                                <button onMouseDown={this.promptForLink} style={{marginRight: 10}} className="btn btn-info">
                                     <i className="glyphicon glyphicon-link"/>
                                 </button>
-                                <button onMouseDown={this.removeLink} className="btn btn-default strikethrough">
-                                    <strike>
-                                        <i className="glyphicon glyphicon-link"/>
-                                    </strike>
+                                <button onMouseDown={this.removeLink} className="btn btn-danger">
+                                    <i className="glyphicon glyphicon-link"/>
                                 </button>
                             </div>
                         </div>
@@ -278,7 +272,7 @@ export class CustomEditor extends React.Component {
                         handleKeyCommand={this.handleKeyCommand}
                         onChange={this.onChange}
                         onTab={this.onTab}
-                        onBlur={this.onBlur}
+                        onBlur={() => {this.props.onBlur(JSON.stringify(convertToRaw(editorState.getCurrentContent())))}}
                         placeholder="Tell a story..."
                         ref="editor"
                         spellCheck={true}/>

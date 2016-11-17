@@ -177,7 +177,7 @@ export class Table extends AccessableComponent {
         )
     }
 
-    updateLink(link) {
+    updateLink(link, onSave) {
         const {tablesStore} = this.props;
         $.ajax({
             method: 'PUT',
@@ -185,6 +185,7 @@ export class Table extends AccessableComponent {
             data: JSON.stringify(link),
             success: (res) => {
                 tablesStore.tables = res.tables;
+                return onSave(false);
             },
             error: (res) => {
                 console.log(res);
@@ -240,6 +241,19 @@ export class Table extends AccessableComponent {
 
 @observer
 export class TableEdit extends Table {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            changed: false
+        }
+    }
+    //componentWillReceiveProps(props) {
+    //    this.setState(update(this.state, {changed: {$set: props.changed}}))
+    //}
+    changed(changed) {
+        this.setState(update(this.state, {changed: {$set: changed}}))
+    }
     render() {
         const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
         let table = tablesStore.table(this.props.params.table);
@@ -265,14 +279,22 @@ export class TableEdit extends Table {
                                                             <h4 className="table_header_text">{active_link.name}</h4>
                                                         </div>
                                                         <div className="col-md-4 pull-right">
-                                                            <button className="btn btn-success" onClick={() => {this.updateLink(active_link)}}>Сохранить</button>
+                                                            <button className={'btn ' + (this.state.changed ? 'btn-success' : 'btn-default')} onClick={() => {this.updateLink(active_link, this.changed.bind(this))}}>
+                                                                Сохранить
+                                                            </button>
                                                         </div>
                                                     </div>
                                                     <div className="link_text_editor">
-                                                        <CustomEditor object={active_link} value={active_link.text} onChange={(value) => {
-                                                            active_link.text = value;
-                                                            this.updateLink(active_link);
-                                                        }} />
+                                                        <CustomEditor object={active_link} value={active_link.text}
+                                                            onChange={(value) => {
+                                                                this.changed(true);
+                                                                active_link.text = value;
+                                                            }}
+                                                            onBlur={(value) => {
+                                                                this.changed(true);
+                                                                active_link.text = value;
+                                                                this.updateLink(active_link, this.changed.bind(this));
+                                                            }}/>
                                                     </div>
                                                 </div>
                                                 :

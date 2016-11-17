@@ -300,7 +300,7 @@ class CollInput extends React.Component {
     render() {
         const {coll} = this.props;
         let links = [];
-        if(coll && coll.categories.length > 0) {
+        if(coll && coll.categories && coll.categories.length > 0) {
             coll.categories.map(category => {
                 if(category.links.length > 0) {
                     category.links.map(link => {
@@ -327,7 +327,7 @@ class CollInput extends React.Component {
                         onChange={this.props.onChangeSize.bind(this)}
                         value={this.props.size}/>
                 </div>
-                
+
                 {!this.props.text ?
                     <div className="form-group">
                         {'Ссылки: ' + links.length}

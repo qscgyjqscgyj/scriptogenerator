@@ -44983,7 +44983,7 @@
 	        {var _this10 = this;var
 	            coll = this.props.coll;
 	            var links = [];
-	            if (coll && coll.categories.length > 0) {
+	            if (coll && coll.categories && coll.categories.length > 0) {
 	                coll.categories.map(function (category) {
 	                    if (category.links.length > 0) {
 	                        category.links.map(function (link) {

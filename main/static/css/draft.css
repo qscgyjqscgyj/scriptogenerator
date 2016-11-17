@@ -56,6 +56,9 @@
 .RichEditor-align-right div {
   text-align: right !important;
 }
+.RichEditor-align-justify div {
+  text-align: justify !important;
+}
 
 .RichEditor-editor .public-DraftStyleDefault-pre {
   background-color: rgba(0, 0, 0, 0.05);

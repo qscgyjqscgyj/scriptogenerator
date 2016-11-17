@@ -300,6 +300,7 @@ function getBlockStyle(block) {
         case 'center': return 'RichEditor-align-center';
         case 'right': return 'RichEditor-align-right';
         case 'left': return 'RichEditor-align-left';
+        case 'justify': return 'RichEditor-align-justify';
         default: return null;
     }
 }
@@ -343,6 +344,9 @@ const blockRenderMap = Immutable.Map({
     'right': {
         element: 'div'
     },
+    'justify': {
+        element: 'div'
+    },
     unstyled: {
         element: 'span'
     }
@@ -350,10 +354,10 @@ const blockRenderMap = Immutable.Map({
 });
 
 const BLOCK_TYPES = [
-    {label: 'Center', style: 'center'},
-    {label: 'Right', style: 'right'},
-    {label: 'Left', style: 'left'}
-
+    {label: 'Left', style: 'left', icon: 'glyphicon glyphicon-align-left'},
+    {label: 'Justify', style: 'justify', icon: 'glyphicon glyphicon-align-justify'},
+    //{label: 'Center', style: 'center'},
+    //{label: 'Right', style: 'right'},
 ];
 
 const BlockStyleControls = (props) => {
@@ -368,6 +372,7 @@ const BlockStyleControls = (props) => {
                     key={type.label}
                     active={type.style === blockType}
                     label={type.label}
+                    icon={type.icon}
                     onToggle={props.onToggle}
                     style={type.style}/>
             )}

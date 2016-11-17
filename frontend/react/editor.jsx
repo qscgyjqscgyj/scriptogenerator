@@ -44,6 +44,7 @@ export class CustomEditor extends React.Component {
         this.promptForLink = this._promptForLink.bind(this);
         this.onURLChange = (e) => this.setState({urlValue: e.target.value});
         this.confirmLink = this._confirmLink.bind(this);
+        this.cancelLink = this._cancelLink.bind(this);
         this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
         this.removeLink = this._removeLink.bind(this);
         this.toggleColor = (toggledColor) => this._toggleColor(toggledColor);
@@ -139,6 +140,14 @@ export class CustomEditor extends React.Component {
         });
     }
 
+    _cancelLink(e) {
+        e.preventDefault();
+        this.setState(update(this.state, {
+            showURLInput: {$set: false},
+            urlValue: {$set: ''}
+        }));
+    }
+
     _onLinkInputKeyDown(e) {
         if (e.which === 13) {
             this._confirmLink(e);
@@ -214,33 +223,44 @@ export class CustomEditor extends React.Component {
                         type="text"
                         value={this.state.urlValue}
                         onKeyDown={this.onLinkInputKeyDown}/>
-                    <button onMouseDown={this.confirmLink}>Confirm</button>
+                    <button onMouseDown={this.confirmLink}>Подтвердить</button>
+                    <button onMouseDown={this.cancelLink}>Отмена</button>
                 </div>;
         }
 
         return (
             <div className="RichEditor-root">
                 <div className="row editor_tools">
-                    <div className="col-md-2">
-                        <ColorControls
-                            editorState={editorState}
-                            onToggle={this.toggleColor}/>
-                    </div>
-                    <div className="col-md-2">
-                        <InlineStyleControls
-                            editorState={editorState}
-                            onToggle={this.toggleInlineStyle}/>
-                    </div>
-                    <div className="col-md-2">
-                    <BlockStyleControls
-                        editorState={editorState}
-                        onToggle={this.toggleBlockType}/>
-                    </div>
-                    <div className="col-md-5">
-                        <div style={styles.buttons}>
-                            <button onMouseDown={this.promptForLink} style={{marginRight: 10}}>Ссылка</button>
-                            <button onMouseDown={this.removeLink}>Удалить ссылку</button>
+                    <div className="col-md-12">
+                        <div className="btn-toolbar" role="toolbar" aria-label="...">
+                            <div className="btn-group" role="group" aria-label="...">
+                                <ColorControls
+                                    editorState={editorState}
+                                    onToggle={this.toggleColor}/>
+                            </div>
+                            <div className="btn-group" role="group" aria-label="...">
+                                <InlineStyleControls
+                                    editorState={editorState}
+                                    onToggle={this.toggleInlineStyle}/>
+                            </div>
+                            <div className="btn-group" role="group" aria-label="...">
+                                <BlockStyleControls
+                                    editorState={editorState}
+                                    onToggle={this.toggleBlockType}/>
+                            </div>
+                            <div className="btn-group" role="group" aria-label="...">
+                                <button onMouseDown={this.promptForLink} style={{marginRight: 10}} className="btn btn-default">
+                                    <i className="glyphicon glyphicon-link"/>
+                                </button>
+                                <button onMouseDown={this.removeLink} className="btn btn-default strikethrough">
+                                    <strike>
+                                        <i className="glyphicon glyphicon-link"/>
+                                    </strike>
+                                </button>
+                            </div>
                         </div>
+                    </div>
+                    <div className="col-md-12">
                         {urlInput}
                     </div>
                 </div>
@@ -274,19 +294,20 @@ export const styleMap = {
 };
 
 var COLORS = [
-    {label: 'Красный', style: 'red'},
-    {label: 'Серый', style: 'gray'}
+    {label: 'Красный', style: 'red', icon: 'glyphicon glyphicon-stop'},
+    {label: 'Серый', style: 'gray', icon: 'glyphicon glyphicon-stop'}
 ];
 
 const ColorControls = (props) => {
     var currentStyle = props.editorState.getCurrentInlineStyle();
     return (
-        <div style={styles.controls}>
+        <div>
             {COLORS.map((type, key) =>
                 <StyleButton
                     key={key}
                     active={currentStyle.has(type.style)}
                     label={type.label}
+                    icon={type.icon}
                     color={styleMap[type.style].color}
                     onToggle={props.onToggle}
                     style={type.style}/>
@@ -323,12 +344,17 @@ class StyleButton extends React.Component {
 
         return (
             <button onMouseDown={this.onToggle} style={{marginRight: 10, backgroundColor: this.props.color}} className={
-                'StyleButton ' +
-                (this.props.color ? 'color_button ' : '') +
+                'btn btn-default ' +
+                (this.props.color ? 'colored_button ' : '') +
                 (this.props.active ? 'active' : '')
             }>
                 {this.props.icon ?
-                    <i className={this.props.icon} aria-hidden="true"/> : (!this.props.color ? this.props.label : '')}
+                    (this.props.color ?
+                        <i className={this.props.icon} style={{color: this.props.color}} aria-hidden="true"/>
+                    :
+                        <i className={this.props.icon} aria-hidden="true"/>)
+                :
+                    this.props.label}
             </button>
         );
     }
@@ -366,7 +392,7 @@ const BlockStyleControls = (props) => {
     const blockType = editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
 
     return (
-        <div style={styles.controls}>
+        <div>
             {BLOCK_TYPES.map((type) =>
                 <StyleButton
                     key={type.label}
@@ -383,13 +409,13 @@ const BlockStyleControls = (props) => {
 var INLINE_STYLES = [
     {label: 'Жирный', style: 'BOLD', icon: 'glyphicon glyphicon-bold'},
     {label: 'Курсив', style: 'ITALIC', icon: 'glyphicon glyphicon-italic'},
-    {label: 'Подчеркивание', style: 'UNDERLINE', icon: 'glyphicon glyphicon-text-color'},
+    {label: 'Подчеркивание', style: 'UNDERLINE', icon: 'glyphicon glyphicon-text-color'}
 ];
 
 const InlineStyleControls = (props) => {
     var currentStyle = props.editorState.getCurrentInlineStyle();
     return (
-        <div style={styles.controls}>
+        <div>
             {INLINE_STYLES.map(type =>
                 <StyleButton
                     key={type.label}
@@ -440,12 +466,6 @@ const styles = {
         border: '1px solid #ccc',
         padding: 10
     },
-    controls: {
-        fontFamily: '\'Helvetica\', sans-serif',
-        fontSize: 14,
-        marginBottom: 10,
-        userSelect: 'none'
-    },
     styleButton: {
         color: '#999',
         cursor: 'pointer',
@@ -456,7 +476,8 @@ const styles = {
         marginBottom: 10
     },
     urlInputContainer: {
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop: 10
     },
     urlInput: {
         fontFamily: '\'Georgia\', serif',

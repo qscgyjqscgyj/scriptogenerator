@@ -45803,6 +45803,7 @@
 	        _this.promptForLink = _this._promptForLink.bind(_this);
 	        _this.onURLChange = function (e) {return _this.setState({ urlValue: e.target.value });};
 	        _this.confirmLink = _this._confirmLink.bind(_this);
+	        _this.cancelLink = _this._cancelLink.bind(_this);
 	        _this.onLinkInputKeyDown = _this._onLinkInputKeyDown.bind(_this);
 	        _this.removeLink = _this._removeLink.bind(_this);
 	        _this.toggleColor = function (toggledColor) {return _this._toggleColor(toggledColor);};return _this;
@@ -45896,6 +45897,14 @@
 	            function () {
 	                setTimeout(function () {return _this4.refs.editor.focus();}, 0);
 	            });
+	        } }, { key: '_cancelLink', value: function _cancelLink(
+	
+	        e) {
+	            e.preventDefault();
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, {
+	                showURLInput: { $set: false },
+	                urlValue: { $set: '' } }));
+	
 	        } }, { key: '_onLinkInputKeyDown', value: function _onLinkInputKeyDown(
 	
 	        e) {
@@ -45973,33 +45982,44 @@
 	                        type: 'text',
 	                        value: this.state.urlValue,
 	                        onKeyDown: this.onLinkInputKeyDown }),
-	                    React.createElement('button', { onMouseDown: this.confirmLink }, 'Confirm'));
+	                    React.createElement('button', { onMouseDown: this.confirmLink }, '\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044C'),
+	                    React.createElement('button', { onMouseDown: this.cancelLink }, '\u041E\u0442\u043C\u0435\u043D\u0430'));
 	
 	            }
 	
 	            return (
 	                React.createElement('div', { className: 'RichEditor-root' },
 	                    React.createElement('div', { className: 'row editor_tools' },
-	                        React.createElement('div', { className: 'col-md-2' },
-	                            React.createElement(ColorControls, {
-	                                editorState: editorState,
-	                                onToggle: this.toggleColor })),
+	                        React.createElement('div', { className: 'col-md-12' },
+	                            React.createElement('div', { className: 'btn-toolbar', role: 'toolbar', 'aria-label': '...' },
+	                                React.createElement('div', { className: 'btn-group', role: 'group', 'aria-label': '...' },
+	                                    React.createElement(ColorControls, {
+	                                        editorState: editorState,
+	                                        onToggle: this.toggleColor })),
 	
-	                        React.createElement('div', { className: 'col-md-2' },
-	                            React.createElement(InlineStyleControls, {
-	                                editorState: editorState,
-	                                onToggle: this.toggleInlineStyle })),
+	                                React.createElement('div', { className: 'btn-group', role: 'group', 'aria-label': '...' },
+	                                    React.createElement(InlineStyleControls, {
+	                                        editorState: editorState,
+	                                        onToggle: this.toggleInlineStyle })),
 	
-	                        React.createElement('div', { className: 'col-md-2' },
-	                            React.createElement(BlockStyleControls, {
-	                                editorState: editorState,
-	                                onToggle: this.toggleBlockType })),
+	                                React.createElement('div', { className: 'btn-group', role: 'group', 'aria-label': '...' },
+	                                    React.createElement(BlockStyleControls, {
+	                                        editorState: editorState,
+	                                        onToggle: this.toggleBlockType })),
 	
-	                        React.createElement('div', { className: 'col-md-5' },
-	                            React.createElement('div', { style: styles.buttons },
-	                                React.createElement('button', { onMouseDown: this.promptForLink, style: { marginRight: 10 } }, '\u0421\u0441\u044B\u043B\u043A\u0430'),
-	                                React.createElement('button', { onMouseDown: this.removeLink }, '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443')),
+	                                React.createElement('div', { className: 'btn-group', role: 'group', 'aria-label': '...' },
+	                                    React.createElement('button', { onMouseDown: this.promptForLink, style: { marginRight: 10 }, className: 'btn btn-default' },
+	                                        React.createElement('i', { className: 'glyphicon glyphicon-link' })),
 	
+	                                    React.createElement('button', { onMouseDown: this.removeLink, className: 'btn btn-default strikethrough' },
+	                                        React.createElement('strike', null,
+	                                            React.createElement('i', { className: 'glyphicon glyphicon-link' })))))),
+	
+	
+	
+	
+	
+	                        React.createElement('div', { className: 'col-md-12' },
 	                            urlInput)),
 	
 	
@@ -46033,19 +46053,20 @@
 	
 	
 	var COLORS = [
-	{ label: 'Красный', style: 'red' },
-	{ label: 'Серый', style: 'gray' }];
+	{ label: 'Красный', style: 'red', icon: 'glyphicon glyphicon-stop' },
+	{ label: 'Серый', style: 'gray', icon: 'glyphicon glyphicon-stop' }];
 	
 	
 	var ColorControls = function ColorControls(props) {
 	    var currentStyle = props.editorState.getCurrentInlineStyle();
 	    return (
-	        React.createElement('div', { style: styles.controls },
+	        React.createElement('div', null,
 	            COLORS.map(function (type, key) {return (
 	                    React.createElement(StyleButton, {
 	                        key: key,
 	                        active: currentStyle.has(type.style),
 	                        label: type.label,
+	                        icon: type.icon,
 	                        color: styleMap[type.style].color,
 	                        onToggle: props.onToggle,
 	                        style: type.style }));})));
@@ -46082,12 +46103,17 @@
 	
 	            return (
 	                React.createElement('button', { onMouseDown: this.onToggle, style: { marginRight: 10, backgroundColor: this.props.color }, className:
-	                        'StyleButton ' + (
-	                        this.props.color ? 'color_button ' : '') + (
+	                        'btn btn-default ' + (
+	                        this.props.color ? 'colored_button ' : '') + (
 	                        this.props.active ? 'active' : '') },
 	
 	                    this.props.icon ?
-	                    React.createElement('i', { className: this.props.icon, 'aria-hidden': 'true' }) : !this.props.color ? this.props.label : ''));
+	                    this.props.color ?
+	                    React.createElement('i', { className: this.props.icon, style: { color: this.props.color }, 'aria-hidden': 'true' }) :
+	
+	                    React.createElement('i', { className: this.props.icon, 'aria-hidden': 'true' }) :
+	
+	                    this.props.label));
 	
 	
 	        } }]);return StyleButton;}(React.Component);
@@ -46125,7 +46151,7 @@
 	    var blockType = editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
 	
 	    return (
-	        React.createElement('div', { style: styles.controls },
+	        React.createElement('div', null,
 	            BLOCK_TYPES.map(function (type) {return (
 	                    React.createElement(StyleButton, {
 	                        key: type.label,
@@ -46148,7 +46174,7 @@
 	var InlineStyleControls = function InlineStyleControls(props) {
 	    var currentStyle = props.editorState.getCurrentInlineStyle();
 	    return (
-	        React.createElement('div', { style: styles.controls },
+	        React.createElement('div', null,
 	            INLINE_STYLES.map(function (type) {return (
 	                    React.createElement(StyleButton, {
 	                        key: type.label,
@@ -46199,12 +46225,6 @@
 	        border: '1px solid #ccc',
 	        padding: 10 },
 	
-	    controls: {
-	        fontFamily: '\'Helvetica\', sans-serif',
-	        fontSize: 14,
-	        marginBottom: 10,
-	        userSelect: 'none' },
-	
 	    styleButton: {
 	        color: '#999',
 	        cursor: 'pointer',
@@ -46215,7 +46235,8 @@
 	        marginBottom: 10 },
 	
 	    urlInputContainer: {
-	        marginBottom: 10 },
+	        marginBottom: 10,
+	        marginTop: 10 },
 	
 	    urlInput: {
 	        fontFamily: '\'Georgia\', serif',

@@ -37,6 +37,10 @@ export class CustomEditor extends React.Component {
             });
         };
 
+        this.onBlur = (e) => {
+            return this.onChange(this.state.editorState);
+        };
+
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.onTab = (e) => this._onTab(e);
         this.toggleBlockType = (type) => this._toggleBlockType(type);
@@ -274,6 +278,7 @@ export class CustomEditor extends React.Component {
                         handleKeyCommand={this.handleKeyCommand}
                         onChange={this.onChange}
                         onTab={this.onTab}
+                        onBlur={this.onBlur}
                         placeholder="Tell a story..."
                         ref="editor"
                         spellCheck={true}/>

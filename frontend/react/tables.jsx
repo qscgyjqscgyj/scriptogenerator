@@ -186,7 +186,7 @@ class EditingTable extends React.Component {
                 </div>
             )
         }
-        return <div></div>;
+        return null;
     }
 }
 
@@ -298,8 +298,19 @@ class CollsCreating extends React.Component {
 
 class CollInput extends React.Component {
     render() {
+        const {coll} = this.props;
+        let links = [];
+        if(coll && coll.categories.length > 0) {
+            coll.categories.map(category => {
+                if(category.links.length > 0) {
+                    category.links.map(link => {
+                        links.push(link);
+                    });
+                }
+            });
+        }
         return(
-            <div className="form-inline">
+            <div className="form-inline coll_form">
                 <div className="form-group">
                     <input
                         type="text"
@@ -316,6 +327,9 @@ class CollInput extends React.Component {
                         onChange={this.props.onChangeSize.bind(this)}
                         value={this.props.size}/>
                 </div>
+                <div className="form-group">
+                    {'Ссылки: ' + links.length}
+                </div>
                 {!this.props.text ?
                     <div className="form-group">
                         <i
@@ -331,7 +345,7 @@ class CollInput extends React.Component {
                             }}/>
                     </div>
                 :
-                    ''
+                    null
                 }
             </div>
        )

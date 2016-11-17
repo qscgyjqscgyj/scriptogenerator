@@ -127,6 +127,9 @@
 }
 
 /*BOOTSTRAP*/
+.coll_form .form-group{
+    margin: 5px;
+}
 .dropdown:hover .dropdown-menu {
     display: block !important;
     margin-top: 0 !important;

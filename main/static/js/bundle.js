@@ -44869,7 +44869,7 @@
 	
 	
 	            }
-	            return React.createElement('div', null);
+	            return null;
 	        } }]);return EditingTable;}(React.Component)) || _class3;var
 	
 	
@@ -44980,9 +44980,20 @@
 	
 	
 	CollInput = function (_React$Component4) {_inherits(CollInput, _React$Component4);function CollInput() {_classCallCheck(this, CollInput);return _possibleConstructorReturn(this, (CollInput.__proto__ || Object.getPrototypeOf(CollInput)).apply(this, arguments));}_createClass(CollInput, [{ key: 'render', value: function render()
-	        {var _this10 = this;
+	        {var _this10 = this;var
+	            coll = this.props.coll;
+	            var links = [];
+	            if (coll && coll.categories.length > 0) {
+	                coll.categories.map(function (category) {
+	                    if (category.links.length > 0) {
+	                        category.links.map(function (link) {
+	                            links.push(link);
+	                        });
+	                    }
+	                });
+	            }
 	            return (
-	                React.createElement('div', { className: 'form-inline' },
+	                React.createElement('div', { className: 'form-inline coll_form' },
 	                    React.createElement('div', { className: 'form-group' },
 	                        React.createElement('input', {
 	                            type: 'text',
@@ -44999,6 +45010,9 @@
 	                            onChange: this.props.onChangeSize.bind(this),
 	                            value: this.props.size })),
 	
+	                    React.createElement('div', { className: 'form-group' },
+	                        'Ссылок в столбце: ' + links.length),
+	
 	                    !this.props.text ?
 	                    React.createElement('div', { className: 'form-group' },
 	                        React.createElement('i', {
@@ -45014,7 +45028,7 @@
 	                            } })) :
 	
 	
-	                    ''));
+	                    null));
 	
 	
 	
@@ -45503,11 +45517,13 @@
 	                                                active_link ?
 	                                                React.createElement('div', null,
 	                                                    React.createElement('div', { className: 'row' },
-	                                                        React.createElement('div', { className: 'col-md-11' },
+	                                                        React.createElement('div', { className: 'col-md-6' },
 	                                                            React.createElement('h4', { className: 'table_header_text' }, active_link.name)),
 	
-	                                                        React.createElement('div', { className: 'col-md-1' },
-	                                                            React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-floppy-save icon_vertical_centre', onClick: function onClick() {_this5.updateLink(active_link);} }))),
+	                                                        React.createElement('div', { className: 'col-md-4 pull-right' },
+	                                                            React.createElement('button', { className: 'btn btn-success', onClick: function onClick() {_this5.updateLink(active_link);} }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C \u0438\u0437\u043C\u0435\u043D\u0435\u043D\u0438\u044F'))),
+	
+	
 	
 	
 	                                                    React.createElement('div', { className: 'link_text_editor' },

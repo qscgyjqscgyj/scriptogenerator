@@ -261,11 +261,13 @@ export class TableEdit extends Table {
                                             {active_link ?
                                                 <div>
                                                     <div className="row">
-                                                        <div className="col-md-11">
+                                                        <div className="col-md-6">
                                                             <h4 className="table_header_text">{active_link.name}</h4>
                                                         </div>
-                                                        <div className="col-md-1">
-                                                            <i className="icon add_icon glyphicon glyphicon-floppy-save icon_vertical_centre" onClick={() => {this.updateLink(active_link)}}/>
+                                                        <div className="col-md-4 pull-right">
+                                                            <button className="btn btn-success" onClick={() => {this.updateLink(active_link)}}>
+                                                                Сохранить изменения
+                                                            </button>
                                                         </div>
                                                     </div>
                                                     <div className="link_text_editor">

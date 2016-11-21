@@ -96,6 +96,7 @@ class LinkCategory(models.Model):
 class Link(models.Model):
     name = models.CharField(max_length=1024)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='link_parent_link', blank=True, null=True)
+    to_link = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='link_to_link', blank=True, null=True)
     category = models.ForeignKey('LinkCategory', related_name='link_category_link_category')
     text = models.TextField(blank=True, null=True)
     order = models.IntegerField(blank=True, null=True)

@@ -95,11 +95,46 @@ class ScriptAccessSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'edit')
 
 
+class ToLinkField(serializers.Field):
+    def to_representation(self, link):
+        result = LinkSerializer(link).data
+        result['href'] = link.get_address()
+        return result
+
+    def get_attribute(self, link):
+        return link.to_link
+
+    def to_internal_value(self, link):
+        # for l in links:
+        #     if not l.get('category'):
+        #         if self.root.initial_data.get('links'):
+        #             del self.root.initial_data['links']
+        #         try:
+        #             self.root.initial_data['table'] = Table.objects.get(pk=int(self.root.initial_data['table']))
+        #         except TypeError:
+        #             pass
+        #         category, created = LinkCategory.objects.get_or_create(**self.root.initial_data)
+        #         l['category'] = category
+        #     elif isinstance(l.get('category'), int):
+        #         l['category'] = LinkCategory.objects.get(pk=int(l.get('category')))
+        #     if l.get('id'):
+        #         link = Link.objects.get(pk=int(l.get('id')))
+        #         link.name = l['name']
+        #         link.order = l['order']
+        #         link.text = l['text']
+        #         link.save()
+        #     else:
+        #         Link.objects.create(**l)
+        return link
+
+
 class LinkSerializer(serializers.ModelSerializer):
     category = LinkCategory()
+    to_link = ToLinkField(allow_null=True)
 
     def create(self, validated_data):
         validated_data['category'] = LinkCategory.objects.get(pk=int(validated_data['category']))
+        validated_data['to_link'] = Link.objects.get(pk=int(validated_data['to_link'])) if validated_data.get('to_link') else None
         return Link.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -113,7 +148,7 @@ class LinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Link
-        fields = ('id', 'name', 'category', 'text', 'order')
+        fields = ('id', 'name', 'category', 'text', 'order', 'to_link')
 
 
 class LinksField(serializers.Field):

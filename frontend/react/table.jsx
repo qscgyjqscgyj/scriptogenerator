@@ -13,7 +13,7 @@ import {stateToHTML} from 'draft-js-export-html';
 import {Sort} from './sort';
 import {AccessableComponent} from './access';
 import confirm from './confirm';
-
+import Select from 'react-select';
 
 @observer
 export class Table extends AccessableComponent {
@@ -140,12 +140,17 @@ export class Table extends AccessableComponent {
         });
     }
 
-    createLink(category) {
+    createLink(category, to_link) {
         const {tablesStore} = this.props;
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-links-url'),
-            data: JSON.stringify({name: 'Ссылка', category: category.id, text: 'Текст ссылки'}),
+            data: JSON.stringify({
+                name: to_link ? to_link.name : 'Ссылка',
+                category: category.id,
+                text: to_link ? to_link.text : 'Текст ссылки',
+                to_link: to_link ? to_link.id : null
+            }),
             success: (res) => {
                 tablesStore.tables = res.tables;
             },
@@ -237,6 +242,10 @@ export class Table extends AccessableComponent {
         });
         return this.updateLinkCategory(items[0].props.category);
     }
+    createToLink(category, link, cb) {
+        this.createLink(category, link);
+        return cb();
+    }
 }
 
 @observer
@@ -319,7 +328,7 @@ export class TableEdit extends Table {
                                                     return (
                                                         <div key={key} category={category} coll={coll} className={category.hidden ? 'hidden_links' : ''}>
                                                             <div className="row">
-                                                                <div className="col-md-9">
+                                                                <div className="col-md-8">
                                                                     <h4 className="table_header_text">
                                                                         <EditableText
                                                                             text={category.name}
@@ -337,6 +346,18 @@ export class TableEdit extends Table {
                                                                     <i className="icon add_icon icon_vertical_centre glyphicon glyphicon-plus" onClick={()=>{this.createLink(category)}}/>
                                                                 </div>
                                                                 <div className="col-md-1">
+                                                                    <i className="icon add_icon_blue icon_vertical_centre glyphicon glyphicon-plus"
+                                                                        onClick={() => {
+                                                                            modalStore.modal = true;
+                                                                            modalStore.component = React.createElement(ToLink, {
+                                                                                category: category,
+                                                                                tablesStore: tablesStore,
+                                                                                createToLink: this.createToLink.bind(this),
+                                                                                modalStore: modalStore
+                                                                            });
+                                                                        }}/>
+                                                                </div>
+                                                                <div className="col-md-1">
                                                                     <i className="glyphicon glyphicon-remove icon icon_vertical_centre red_icon" aria-hidden="true" onClick={()=>{this.deleteLinkCategory(category)}}/>
                                                                 </div>
                                                             </div>
@@ -351,11 +372,14 @@ export class TableEdit extends Table {
                                                                                         field={'name'}
                                                                                         onClick={(link, e) => {
                                                                                             if(!tablesStore.pressed_key) {
-                                                                                                window.location = '/#/' +
+                                                                                                window.location = (!link.to_link ?
                                                                                                     '/tables/' + this.props.params.script +
                                                                                                     '/table/' + this.props.params.table +
                                                                                                     '/link/' + link.id +
                                                                                                     '/edit/'
+                                                                                                :
+                                                                                                    '/#' + link.to_link.href + '/edit/'
+                                                                                                )
                                                                                             }
                                                                                         }}
                                                                                         data_link={this.copyLink(link)}
@@ -384,6 +408,11 @@ export class TableEdit extends Table {
                                 }
                             })}
                         </div>
+                        <ModalWrapper
+                            scriptsStore={scriptsStore}
+                            tablesStore={tablesStore}
+                            projectsStore={projectsStore}
+                            modalStore={modalStore}/>
                     </div>
                 );
             }
@@ -455,11 +484,14 @@ export class TableShare extends Table {
                                                                     <div key={key}>
                                                                         <div className="row">
                                                                             <div className="col-md-12 link_name">
-                                                                                <Link to={
-                                                                                    '/tables/' + this.props.params.script +
-                                                                                    '/table/' + this.props.params.table +
-                                                                                    '/link/' + link.id +
-                                                                                    '/share/'
+                                                                                <Link to={(!link.to_link ?
+                                                                                        '/tables/' + this.props.params.script +
+                                                                                        '/table/' + this.props.params.table +
+                                                                                        '/link/' + link.id +
+                                                                                        '/share/'
+                                                                                    :
+                                                                                        link.to_link.href + '/share/'
+                                                                                    )
                                                                                 }>{link.name}</Link>
                                                                             </div>
                                                                         </div>
@@ -481,6 +513,120 @@ export class TableShare extends Table {
             return null;
         }
         return null;
+    }
+}
+
+class ToLink extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            table: null,
+            category: null,
+            link: null
+        }
+    }
+    onChange(select) {
+        const {tablesStore} = this.props;
+        const {table, category, link} = this.state;
+        let value;
+        if(select.selector === 'table') {
+            value = tablesStore.table(select.value);
+        } else if(select.selector === 'category') {
+            if(table) {
+                let categories = [];
+                table.colls.map(coll => {
+                    coll.categories.map(category => {
+                        categories.push(category);
+                    });
+                });
+                value = categories.find(category => {return category.id === select.value});
+            }
+        } else if(select.selector === 'link') {
+            if(category)
+                value = category.links.find(link => {return link.id === select.value});
+        }
+        this.setState(update(this.state, {[select.selector]: {$set: value}}));
+    }
+    tablesOptions() {
+        const {tablesStore} = this.props;
+        return tablesStore.tables.map(table => {
+            return {value: table.id, label: table.name, selector: 'table'}
+        });
+    }
+    categoriesOptions() {
+        const {table} = this.state;
+        let result = [];
+        if(table) {
+            table.colls.map(coll => {
+                coll.categories.map(category => {
+                    result.push({value: category.id, label: category.name, selector: 'category'});
+                });
+            })
+        }
+        return result;
+    }
+    linksOptions() {
+        const {table} = this.state;
+        let result = [];
+        if(table) {
+            table.colls.map(coll => {
+                coll.categories.map(category => {
+                    category.links.map(link => {
+                        result.push({value: link.id, label: link.name, selector: 'link'});
+                    });
+                });
+            })
+        }
+        return result;
+    }
+    render() {
+        const {modalStore} = this.props;
+        const {table, category, link} = this.state;
+        return(
+            <div className="row row-centered">
+                <div className="col-md-12 col-centered">
+                    <Select
+                        name="table"
+                        placeholder="Выберите таблицу"
+                        value={table ? table.id : null}
+                        options={this.tablesOptions()}
+                        onChange={this.onChange.bind(this)}/>
+                </div>
+                <div className="col-md-12 col-centered">
+                    <Select
+                        name="category"
+                        placeholder="Выберите категорию"
+                        value={category ? category.id : null}
+                        options={this.categoriesOptions()}
+                        onChange={this.onChange.bind(this)}
+                        disabled={!table}/>
+                </div>
+                <div className="col-md-12 col-centered">
+                    <Select
+                        name="link"
+                        placeholder="Выберите ссылку"
+                        value={link ? link.id : null}
+                        options={this.linksOptions()}
+                        onChange={this.onChange.bind(this)}
+                        disabled={!table || !category}/>
+                </div>
+                <div className="col-md-12 col-centered">
+                    <button
+                        className={'btn btn-success ' + (!link ? 'disabled' : null)}
+                        onClick={() => {
+                            const {link} = this.state;
+                            if(link) {
+                                return this.props.createToLink(this.props.category, link, () => {
+                                    modalStore.modal = false;
+                                });
+                            }
+                        }}>
+                        Добавить
+                    </button>
+                </div>
+            </div>
+        )
     }
 }
 

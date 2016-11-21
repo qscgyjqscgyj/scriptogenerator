@@ -41,5 +41,5 @@ module.exports = {
       'window.Tether': 'tether',
     }),
   ],
-  //devtool: 'source-map',
+  devtool: 'source-map',
 };

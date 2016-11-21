@@ -373,7 +373,7 @@ export class TableEdit extends Table {
                                                                                         onClick={(link, e) => {
                                                                                             if(!tablesStore.pressed_key) {
                                                                                                 window.location = (!link.to_link ?
-                                                                                                    '/tables/' + this.props.params.script +
+                                                                                                    '/#/tables/' + this.props.params.script +
                                                                                                     '/table/' + this.props.params.table +
                                                                                                     '/link/' + link.id +
                                                                                                     '/edit/'

@@ -45636,7 +45636,7 @@
 	                                                                                            onClick: function onClick(link, e) {
 	                                                                                                if (!tablesStore.pressed_key) {
 	                                                                                                    window.location = !link.to_link ?
-	                                                                                                    '/tables/' + _this5.props.params.script +
+	                                                                                                    '/#/tables/' + _this5.props.params.script +
 	                                                                                                    '/table/' + _this5.props.params.table +
 	                                                                                                    '/link/' + link.id +
 	                                                                                                    '/edit/' :

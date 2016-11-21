@@ -45276,7 +45276,7 @@
 	var _sort = __webpack_require__(262);
 	var _access = __webpack_require__(263);
 	var _confirm = __webpack_require__(254);var _confirm2 = _interopRequireDefault(_confirm);
-	var _reactSelect = __webpack_require__(242);var _reactSelect2 = _interopRequireDefault(_reactSelect);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _reactSelect = __webpack_require__(242);var _reactSelect2 = _interopRequireDefault(_reactSelect);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	Table = exports.Table = (0, _mobxReact.observer)(_class = function (_AccessableComponent) {_inherits(Table, _AccessableComponent);
@@ -45789,32 +45789,50 @@
 	            link: null };return _this8;
 	
 	    }_createClass(ToLink, [{ key: 'onChange', value: function onChange(
-	        select) {var
+	        select, selector) {var
 	            tablesStore = this.props.tablesStore;var _state =
 	            this.state,table = _state.table,category = _state.category,link = _state.link;
-	            var value = void 0;
-	            if (select.selector === 'table') {
-	                value = tablesStore.table(select.value);
-	            } else if (select.selector === 'category') {
-	                if (table) {(function () {
-	                        var categories = [];
-	                        table.colls.map(function (coll) {
-	                            coll.categories.map(function (category) {
-	                                categories.push(category);
+	            var selected_table = void 0,selected_category = void 0,selected_link = void 0;
+	
+	            if (selector === 'table') {
+	                selected_table = null;
+	                if (select)
+	                selected_table = tablesStore.table(select.value);
+	                selected_category = null;
+	                selected_link = null;
+	            } else if (selector === 'category') {
+	                if (table) {
+	                    selected_table = table;
+	                    selected_link = null;
+	                    selected_category = null;
+	                    if (select) {(function () {
+	                            var categories = [];
+	                            table.colls.map(function (coll) {
+	                                coll.categories.map(function (category) {
+	                                    categories.push(category);
+	                                });
 	                            });
-	                        });
-	                        value = categories.find(function (category) {return category.id === select.value;});})();
+	                            selected_category = categories.find(function (category) {return category.id === select.value;});})();
+	                    }
 	                }
-	            } else if (select.selector === 'link') {
+	            } else if (selector === 'link') {
 	                if (category)
-	                value = category.links.find(function (link) {return link.id === select.value;});
+	                selected_table = table;
+	                selected_category = category;
+	                selected_link = null;
+	                if (select)
+	                selected_link = category.links.find(function (link) {return link.id === select.value;});
 	            }
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, _defineProperty({}, select.selector, { $set: value })));
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, {
+	                table: { $set: selected_table },
+	                category: { $set: selected_category },
+	                link: { $set: selected_link } }));
+	
 	        } }, { key: 'tablesOptions', value: function tablesOptions()
 	        {var
 	            tablesStore = this.props.tablesStore;
 	            return tablesStore.tables.map(function (table) {
-	                return { value: table.id, label: table.name, selector: 'table' };
+	                return { value: table.id, label: table.name };
 	            });
 	        } }, { key: 'categoriesOptions', value: function categoriesOptions()
 	        {var
@@ -45823,22 +45841,18 @@
 	            if (table) {
 	                table.colls.map(function (coll) {
 	                    coll.categories.map(function (category) {
-	                        result.push({ value: category.id, label: category.name, selector: 'category' });
+	                        result.push({ value: category.id, label: category.name });
 	                    });
 	                });
 	            }
 	            return result;
 	        } }, { key: 'linksOptions', value: function linksOptions()
 	        {var
-	            table = this.state.table;
+	            category = this.state.category;
 	            var result = [];
-	            if (table) {
-	                table.colls.map(function (coll) {
-	                    coll.categories.map(function (category) {
-	                        category.links.map(function (link) {
-	                            result.push({ value: link.id, label: link.name, selector: 'link' });
-	                        });
-	                    });
+	            if (category) {
+	                category.links.map(function (link) {
+	                    result.push({ value: link.id, label: link.name });
 	                });
 	            }
 	            return result;
@@ -45854,7 +45868,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0442\u0430\u0431\u043B\u0438\u0446\u0443',
 	                            value: table ? table.id : null,
 	                            options: this.tablesOptions(),
-	                            onChange: this.onChange.bind(this) })),
+	                            onChange: function onChange(select) {_this9.onChange(select, 'table');} })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
 	                        React.createElement(_reactSelect2.default, {
@@ -45862,7 +45876,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044E',
 	                            value: category ? category.id : null,
 	                            options: this.categoriesOptions(),
-	                            onChange: this.onChange.bind(this),
+	                            onChange: function onChange(select) {_this9.onChange(select, 'category');},
 	                            disabled: !table })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
@@ -45871,7 +45885,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0441\u044B\u043B\u043A\u0443',
 	                            value: link ? link.id : null,
 	                            options: this.linksOptions(),
-	                            onChange: this.onChange.bind(this),
+	                            onChange: function onChange(select) {_this9.onChange(select, 'link');},
 	                            disabled: !table || !category })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },

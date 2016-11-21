@@ -526,32 +526,50 @@ class ToLink extends React.Component {
             link: null
         }
     }
-    onChange(select) {
+    onChange(select, selector) {
         const {tablesStore} = this.props;
         const {table, category, link} = this.state;
-        let value;
-        if(select.selector === 'table') {
-            value = tablesStore.table(select.value);
-        } else if(select.selector === 'category') {
+        let selected_table, selected_category, selected_link;
+
+        if(selector === 'table') {
+            selected_table = null;
+            if(select)
+                selected_table = tablesStore.table(select.value);
+            selected_category = null;
+            selected_link = null;
+        } else if(selector === 'category') {
             if(table) {
-                let categories = [];
-                table.colls.map(coll => {
-                    coll.categories.map(category => {
-                        categories.push(category);
+                selected_table = table;
+                selected_link = null;
+                selected_category = null;
+                if(select) {
+                    let categories = [];
+                    table.colls.map(coll => {
+                        coll.categories.map(category => {
+                            categories.push(category);
+                        });
                     });
-                });
-                value = categories.find(category => {return category.id === select.value});
+                    selected_category = categories.find(category => {return category.id === select.value});
+                }
             }
-        } else if(select.selector === 'link') {
+        } else if(selector === 'link') {
             if(category)
-                value = category.links.find(link => {return link.id === select.value});
+                selected_table = table;
+                selected_category = category;
+                selected_link = null;
+                if(select)
+                    selected_link = category.links.find(link => {return link.id === select.value});
         }
-        this.setState(update(this.state, {[select.selector]: {$set: value}}));
+        this.setState(update(this.state, {
+            table: {$set: selected_table},
+            category: {$set: selected_category},
+            link: {$set: selected_link}
+        }));
     }
     tablesOptions() {
         const {tablesStore} = this.props;
         return tablesStore.tables.map(table => {
-            return {value: table.id, label: table.name, selector: 'table'}
+            return {value: table.id, label: table.name}
         });
     }
     categoriesOptions() {
@@ -560,23 +578,19 @@ class ToLink extends React.Component {
         if(table) {
             table.colls.map(coll => {
                 coll.categories.map(category => {
-                    result.push({value: category.id, label: category.name, selector: 'category'});
+                    result.push({value: category.id, label: category.name});
                 });
             })
         }
         return result;
     }
     linksOptions() {
-        const {table} = this.state;
+        const {category} = this.state;
         let result = [];
-        if(table) {
-            table.colls.map(coll => {
-                coll.categories.map(category => {
-                    category.links.map(link => {
-                        result.push({value: link.id, label: link.name, selector: 'link'});
-                    });
-                });
-            })
+        if(category) {
+            category.links.map(link => {
+                result.push({value: link.id, label: link.name});
+            });
         }
         return result;
     }
@@ -591,7 +605,7 @@ class ToLink extends React.Component {
                         placeholder="Выберите таблицу"
                         value={table ? table.id : null}
                         options={this.tablesOptions()}
-                        onChange={this.onChange.bind(this)}/>
+                        onChange={(select) => {this.onChange(select, 'table')}}/>
                 </div>
                 <div className="col-md-12 col-centered">
                     <Select
@@ -599,7 +613,7 @@ class ToLink extends React.Component {
                         placeholder="Выберите категорию"
                         value={category ? category.id : null}
                         options={this.categoriesOptions()}
-                        onChange={this.onChange.bind(this)}
+                        onChange={(select) => {this.onChange(select, 'category')}}
                         disabled={!table}/>
                 </div>
                 <div className="col-md-12 col-centered">
@@ -608,7 +622,7 @@ class ToLink extends React.Component {
                         placeholder="Выберите ссылку"
                         value={link ? link.id : null}
                         options={this.linksOptions()}
-                        onChange={this.onChange.bind(this)}
+                        onChange={(select) => {this.onChange(select, 'link')}}
                         disabled={!table || !category}/>
                 </div>
                 <div className="col-md-12 col-centered">

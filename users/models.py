@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
 
 def user_created(sender, user, request, **kwargs):
     login(request, authenticate(
-        username=request.POST['username'],
+        username=user.username,
         password=request.POST['password1']
     ))
 

@@ -1,3 +1,7 @@
 from django.contrib import admin
+from payment.models import *
 
-# Register your models here.
+admin.site.register(Package)
+admin.site.register(UserPackage)
+admin.site.register(UserPackageAccess)
+admin.site.register(UserPayment)

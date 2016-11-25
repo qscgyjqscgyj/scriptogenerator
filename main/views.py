@@ -9,8 +9,10 @@ from rest_framework.renderers import JSONRenderer
 import json
 
 from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
-from main.serializers import ScriptSerializer, ProjectSerializer, TableSerializer, LinkCategorySerializer, \
-    LinkSerializer, TableLinksCollSerializer, ScriptAccessSerializer
+from main.serializers.link import LinkCategorySerializer, LinkSerializer
+from main.serializers.project import ProjectSerializer
+from main.serializers.script import ScriptSerializer
+from main.serializers.table import TableSerializer, TableLinksCollSerializer
 from scripts.settings import DEBUG
 from scripts.utils import cloneTreeRelations
 from users.models import CustomUser

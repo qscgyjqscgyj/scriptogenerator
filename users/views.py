@@ -9,6 +9,7 @@ from registration.backends.default.views import RegistrationView
 from registration.models import RegistrationProfile
 from registration.users import UserModel
 
+from scripts.settings import DEBUG
 from users.forms import UserProfileForm
 from users.models import CustomUser
 
@@ -21,6 +22,11 @@ class UserProfileView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileView, self).get_context_data(**kwargs)
+        context['DEBUG'] = DEBUG
+        return context
 
 
 class CustomRegistrationView(RegistrationView):

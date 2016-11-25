@@ -129,12 +129,12 @@ LOGGING = {
 }
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.mailgun.org'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'postmaster@scriptogenerator.ru'
-EMAIL_HOST_PASSWORD = '62ce8bc077161866c38ddd436e96ad3a'
-DEFAULT_FROM_EMAIL = 'postmaster@scriptogenerator.ru'
-SERVER_EMAIL = 'postmaster@scriptogenerator.ru'
+EMAIL_HOST = 'smtp-pulse.com '
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = 'skyliffer@yandex.ru'
+EMAIL_HOST_PASSWORD = 'GDSdMfoLtKB'
+DEFAULT_FROM_EMAIL = 'info@scriptogenerator.ru'
+SERVER_EMAIL = 'info@scriptogenerator.ru'
 
 SEND_ACTIVATION_EMAIL = True
 ACCOUNT_ACTIVATION_DAYS = 10

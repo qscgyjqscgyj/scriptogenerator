@@ -25,10 +25,12 @@
         data-link-categories-url="{% url 'link_categories' %}"
         data-links-url="{% url 'links' %}"
         data-logout-url="{% url 'auth_logout' %}"
+        data-main-url="{% url 'main' %}"
+        data-profile-url="{% url 'profile' %}"
     >
         {% block content %}
             {% if request.user.is_authenticated %}
-                <div id="content_scripts"></div>
+                <div id="content"></div>
             {% else %}
                 <div class="container-fluid">
                     <h1>Необходимо авторизоваться</h1>

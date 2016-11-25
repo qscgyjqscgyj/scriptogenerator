@@ -129,7 +129,7 @@ LOGGING = {
 }
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp-pulse.com '
+EMAIL_HOST = 'smtp-pulse.com'
 EMAIL_PORT = 2525
 EMAIL_HOST_USER = 'skyliffer@yandex.ru'
 EMAIL_HOST_PASSWORD = 'GDSdMfoLtKB'

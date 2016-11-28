@@ -5,7 +5,7 @@ from users.models import CustomUser
 
 
 class UserSerializer(serializers.ModelSerializer):
-    packages = UserPackagesField(read_only=True, allow_null=True)
+    # packages = UserPackagesField(read_only=True, allow_null=True)
 
     def create(self, validated_data):
         return CustomUser.objects.get(**validated_data)
@@ -15,4 +15,4 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email', 'packages')
+        fields = ('id', 'username', 'email')

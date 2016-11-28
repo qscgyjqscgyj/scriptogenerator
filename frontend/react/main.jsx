@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Router, Route, IndexRoute} from 'react-router'
+import {Router, Route, IndexRoute, browserHistory} from 'react-router'
 import {createHashHistory} from 'history';
 
 import {Scripts, AvailableScripts} from './scripts';
@@ -22,7 +22,7 @@ console.log(URLS);
 switch(window.location.pathname) {
     case URLS.profile:
         ReactDOM.render(
-            <Router history={createHashHistory({queryKey: false})}>
+            <Router history={browserHistory}>
                 <Route path="/" component={AppWrapper}>
                     <IndexRoute component={Profile}/>
                 </Route>
@@ -32,7 +32,7 @@ switch(window.location.pathname) {
         break;
     case URLS.main:
         ReactDOM.render(
-            <Router history={createHashHistory({queryKey: false})}>
+            <Router history={browserHistory}>
                 <Route path="/" component={AppWrapper}>
                     <IndexRoute component={Scripts}/>
                     <Route path="/projects" component={Projects}/>

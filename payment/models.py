@@ -33,6 +33,8 @@ class UserPayment(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     sum = models.FloatField(default=0)
     payed = models.BooleanField(default=False)
+    additional_users = models.IntegerField(default=0)
+    additional_months = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.package.__unicode__()

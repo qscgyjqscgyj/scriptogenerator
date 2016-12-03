@@ -14,7 +14,7 @@ from main.serializers.project import ProjectSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
 from scripts.settings import DEBUG
-from scripts.utils import cloneTreeRelations
+from scripts.tasks import cloneTreeRelations
 from users.models import CustomUser
 from users.serializers import UserSerializer
 
@@ -286,7 +286,7 @@ class CloneScriptView(View):
         script.pk = None
         script.name += u' (копия)'
         script.save()
-        cloneTreeRelations(currentScript.pk, script.pk, 'main', 'Script')
+        cloneTreeRelations.delay(currentScript.pk, script.pk, 'main', 'Script')
 
         for link in script.links():
             link.clone_save()

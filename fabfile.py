@@ -25,7 +25,7 @@ def deploy():
             run('python ./manage.py migrate')
             run('python ./manage.py collectstatic --noinput')
             sudo('service nginx restart')
-            sudo('supervisorctl restart scripts')
+            sudo('supervisorctl restart scripts scripts.celery')
 
 
 def manage(command='help'):

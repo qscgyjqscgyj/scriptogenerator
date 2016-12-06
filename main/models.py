@@ -10,6 +10,7 @@ class Script(models.Model):
     owner = models.ForeignKey(CustomUser, related_name='script_owner_custom_user')
     project = models.ForeignKey('Project', related_name='script_project_project')
     date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
     date_mod = models.DateTimeField(auto_now=True)
 
     def accesses(self):

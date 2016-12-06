@@ -132,9 +132,6 @@ export class Scripts extends React.Component {
                                     </select>
                                 </div>
                             </div>
-                            <div className="col-md-3 pull-right">
-                                <button className="btn btn-success">Заказать разработку скрипта</button>
-                            </div>
                         </div>
                     : null}
                     <div className="row">
@@ -165,7 +162,7 @@ export class Scripts extends React.Component {
                                             <td>{script.owner.email}</td>
                                             {!available ?
                                                 <td>
-                                                    {this.state.cloning ?
+                                                    {(this.state.cloning || !script.active) ?
                                                         <span>
                                                             {this.state.cloning === script ?
                                                                 <span>Копирование...</span>

@@ -81,9 +81,6 @@ export class Projects extends React.Component {
                         <input onChange={(e) => projectsStore.filter_by_name = e.target.value} className="form-control" type="text" placeholder="Поиск по названию"/>
                     </div>
                 </div>
-                <div className="col-md-3 pull-right">
-                    <button className="btn btn-success">Заказать разработку скрипта</button>
-                </div>
                 <div className="row">
                     <div className="col-md-12">
                         <table className="table">

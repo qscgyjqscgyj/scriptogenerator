@@ -80,9 +80,6 @@ export class Tables extends AccessableComponent {
                                 <div className="col-md-7 col-centered">
                                     <h4>{script.name}</h4>
                                 </div>
-                                <div className="col-md-3 col-centered">
-                                    <button className="btn btn-success">Заказать разработку скрипта</button>
-                                </div>
                             </div>
                         : null}
                         <div className="row">

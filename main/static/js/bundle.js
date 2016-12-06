@@ -26444,12 +26444,9 @@
 	                                            return (
 	                                                React.createElement('option', { key: key, value: project.id }, project.name));
 	
-	                                        })))),
+	                                        }))))) :
 	
 	
-	
-	                            React.createElement('div', { className: 'col-md-3 pull-right' },
-	                                React.createElement('button', { className: 'btn btn-success' }, '\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u043A\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430'))) :
 	
 	
 	                        null,
@@ -26481,7 +26478,7 @@
 	                                                    React.createElement('td', null, script.owner.email),
 	                                                    !available ?
 	                                                    React.createElement('td', null,
-	                                                        _this3.state.cloning ?
+	                                                        _this3.state.cloning || !script.active ?
 	                                                        React.createElement('span', null,
 	                                                            _this3.state.cloning === script ?
 	                                                            React.createElement('span', null, '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435...') :
@@ -46349,9 +46346,6 @@
 	                            React.createElement('input', { onChange: function onChange(e) {return projectsStore.filter_by_name = e.target.value;}, className: 'form-control', type: 'text', placeholder: '\u041F\u043E\u0438\u0441\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E' }))),
 	
 	
-	                    React.createElement('div', { className: 'col-md-3 pull-right' },
-	                        React.createElement('button', { className: 'btn btn-success' }, '\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u043A\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430')),
-	
 	                    React.createElement('div', { className: 'row' },
 	                        React.createElement('div', { className: 'col-md-12' },
 	                            React.createElement('table', { className: 'table' },
@@ -46560,10 +46554,7 @@
 	                                                }, className: 'btn btn-success' }, '+ \u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0442\u0430\u0431\u043B\u0438\u0446\u0443')),
 	
 	                                    React.createElement('div', { className: 'col-md-7 col-centered' },
-	                                        React.createElement('h4', null, script.name)),
-	
-	                                    React.createElement('div', { className: 'col-md-3 col-centered' },
-	                                        React.createElement('button', { className: 'btn btn-success' }, '\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u043A\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430'))) :
+	                                        React.createElement('h4', null, script.name))) :
 	
 	
 	                                null,

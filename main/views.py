@@ -285,6 +285,7 @@ class CloneScriptView(View):
         script = Script.objects.get(pk=int(data['id']))
         script.pk = None
         script.name += u' (копия)'
+        script.active = False
         script.save()
         cloneTreeRelations.delay(currentScript.pk, script.pk, 'main', 'Script')
 

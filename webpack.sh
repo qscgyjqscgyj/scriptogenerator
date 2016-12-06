@@ -1,0 +1,1 @@
+eval webpack --colors --watch --progress

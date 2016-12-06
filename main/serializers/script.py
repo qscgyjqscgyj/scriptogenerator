@@ -43,7 +43,7 @@ class ScriptSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Script
-        fields = ('id', 'name', 'owner', 'project', 'date', 'date_mod', 'accesses')
+        fields = ('id', 'name', 'owner', 'project', 'date', 'date_mod', 'accesses', 'active')
 
 
 class ScriptAccessSerializer(serializers.ModelSerializer):

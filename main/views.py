@@ -281,16 +281,28 @@ class ScriptAccessView(View):
 class CloneScriptView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        currentScript = Script.objects.get(pk=int(data['id']))
-        script = Script.objects.get(pk=int(data['id']))
-        script.pk = None
-        script.name += u' (копия)'
-        script.active = False
-        script.save()
-        cloneTreeRelations.delay(currentScript.pk, script.pk, 'main', 'Script')
+        current_script = Script.objects.get(pk=int(data['id']))
+        current_links = current_script.links()
 
-        for link in script.links():
+        clone_script = Script.objects.get(pk=int(data['id']))
+        clone_script.pk = None
+        clone_script.name += u' (копия)'
+        clone_script.active = False
+        clone_script.save()
+        cloneTreeRelations.delay(current_script.pk, clone_script.pk, 'main', 'Script')
+
+        clone_links = clone_script.links(parent=True)
+        while len(current_links) > len(clone_links):
+            clone_links = clone_script.links(parent=True)
+            print(len(current_links))
+            print(len(clone_links))
+            print('-----------------------')
+
+        for link in clone_links:
             link.clone_save()
+
+        clone_script.active = True
+        clone_script.save()
 
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data

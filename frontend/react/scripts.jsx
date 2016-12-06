@@ -157,7 +157,13 @@ export class Scripts extends React.Component {
                                     let access = (available ? script.accesses.find(access => {return access.user.id === usersStore.session_user.id}) : null);
                                     return (
                                         <tr key={key}>
-                                            <td><Link to={'/tables/' + script.id + ''}>{script.name}</Link></td>
+                                            <td>
+                                                {script.active ?
+                                                    <Link to={'/tables/' + script.id + ''}>{script.name}</Link>
+                                                :
+                                                    <span>{script.name}</span>
+                                                }
+                                            </td>
                                             <td>{script.project.name}</td>
                                             <td>{script.owner.email}</td>
                                             {!available ?

@@ -16,8 +16,8 @@ const URLS = {
     profile: document.body.getAttribute('data-profile-url')
 };
 
-console.log(window.location.pathname);
-console.log(URLS);
+// console.log(window.location.pathname);
+// console.log(URLS);
 
 switch(window.location.pathname) {
     case URLS.profile:

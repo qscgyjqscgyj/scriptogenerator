@@ -62,8 +62,8 @@
 	    profile: document.body.getAttribute('data-profile-url') };
 	
 	
-	console.log(window.location.pathname);
-	console.log(URLS);
+	// console.log(window.location.pathname);
+	// console.log(URLS);
 	
 	switch (window.location.pathname) {
 	    case URLS.profile:
@@ -26473,7 +26473,13 @@
 	                                            var access = available ? script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;}) : null;
 	                                            return (
 	                                                React.createElement('tr', { key: key },
-	                                                    React.createElement('td', null, React.createElement(_reactRouter.Link, { to: '/tables/' + script.id + '' }, script.name)),
+	                                                    React.createElement('td', null,
+	                                                        script.active ?
+	                                                        React.createElement(_reactRouter.Link, { to: '/tables/' + script.id + '' }, script.name) :
+	
+	                                                        React.createElement('span', null, script.name)),
+	
+	
 	                                                    React.createElement('td', null, script.project.name),
 	                                                    React.createElement('td', null, script.owner.email),
 	                                                    !available ?

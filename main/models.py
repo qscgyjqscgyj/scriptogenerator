@@ -19,9 +19,12 @@ class Script(models.Model):
     def tables(self):
         return Table.objects.filter(script=self)
 
-    def links(self):
+    def links(self, parent=False):
         tables = [table.pk for table in self.tables()]
-        return Link.objects.filter(category__table__table__pk__in=tables)
+        if not parent:
+            return Link.objects.filter(category__table__table__pk__in=tables)
+        else:
+            return Link.objects.filter(category__table__table__pk__in=tables, parent__isnull=False)
 
     def __unicode__(self):
         return self.name
@@ -122,9 +125,12 @@ class Link(models.Model):
         return None
 
     def clone_save(self):
-        for table in self.category.table.table.script.tables():
-            for link in table.links():
-                self.text = self.text.replace(link.get_parent_address(), link.get_address())
+        self.save()
+        for link in self.category.table.table.script.links():
+            print(link.get_parent_address())
+            print(link.get_address())
+            print('-----------------')
+            self.text = self.text.replace(link.get_parent_address(), link.get_address())
         return self.save()
 
     class Meta:

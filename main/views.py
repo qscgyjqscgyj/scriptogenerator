@@ -294,9 +294,6 @@ class CloneScriptView(View):
         clone_links = clone_script.links(parent=True)
         while len(current_links) > len(clone_links):
             clone_links = clone_script.links(parent=True)
-            print(len(current_links))
-            print(len(clone_links))
-            print('-----------------------')
 
         for link in clone_links:
             link.clone_save()

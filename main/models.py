@@ -127,9 +127,6 @@ class Link(models.Model):
     def clone_save(self):
         self.save()
         for link in self.category.table.table.script.links():
-            print(link.get_parent_address())
-            print(link.get_address())
-            print('-----------------')
             self.text = self.text.replace(link.get_parent_address(), link.get_address())
         return self.save()
 

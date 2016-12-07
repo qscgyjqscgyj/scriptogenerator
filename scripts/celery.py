@@ -8,7 +8,7 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'scripts.settings')
 from django.conf import settings
 
-app = Celery('scripts')
+app = Celery('scripts', backend='amqp')
 
 # Using a string here means the worker will not have to
 # pickle the object when using Windows.

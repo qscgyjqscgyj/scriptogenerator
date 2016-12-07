@@ -14,9 +14,10 @@ from main.serializers.project import ProjectSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
 from scripts.settings import DEBUG
-from scripts.tasks import cloneTreeRelations
+from scripts.tasks import cloneTreeRelations, clone_save_links
 from users.models import CustomUser
 from users.serializers import UserSerializer
+from celery.result import AsyncResult
 
 
 class MainView(TemplateView):
@@ -295,11 +296,7 @@ class CloneScriptView(View):
         while len(current_links) > len(clone_links):
             clone_links = clone_script.links(parent=True)
 
-        for link in clone_links:
-            link.clone_save()
-
-        clone_script.active = True
-        clone_script.save()
+        clone_save_links.delay(clone_links.values('pk'), clone_script.pk)
 
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data

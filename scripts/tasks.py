@@ -2,6 +2,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.loading import get_model
 
+from main.models import Link, Script
 from scripts.celery import app
 
 EXCLUDE_RELATION_FIELDS = ['parent', 'to_link']
@@ -52,3 +53,13 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name):
                     cloneRelatedObject.save()
                     if type(currentRelatedObject)._meta.get_all_related_objects_with_model():
                         cloneTreeRelations.delay(currentRelatedObject.pk, cloneRelatedObject.pk, type(currentRelatedObject)._meta.app_label, currentRelatedObject.__class__.__name__)
+
+
+@app.task
+def clone_save_links(links, script_pk):
+    script = Script.objects.get(pk=script_pk)
+    for link in links:
+        link = Link.objects.get(pk=link['pk'])
+        link.clone_save()
+    script.active = True
+    return script.save()

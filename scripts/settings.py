@@ -99,7 +99,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'registration',
     'djcelery',
-    'constance'
+    'constance.backends.database'
 )
 
 LOCAL_APPS = (

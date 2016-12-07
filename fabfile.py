@@ -26,7 +26,18 @@ def deploy():
             run('python ./manage.py migrate')
             run('python ./manage.py collectstatic --noinput')
             sudo('service nginx restart')
-            sudo('supervisorctl restart scripts scripts.celery')
+            sudo('supervisorctl restart scripts')
+
+
+def restart_celery():
+    with server_prefix:
+        sudo('supervisorctl restart scripts.celery')
+
+
+def kill_celery():
+    with server_prefix:
+        sudo("ps auxww | grep celeryd | awk '{print $2}' | xargs kill -9")
+        sudo('supervisorctl restart scripts.celery')
 
 
 def manage(command='help'):

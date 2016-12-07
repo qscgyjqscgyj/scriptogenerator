@@ -8,16 +8,33 @@ from main.views import MainView, ScriptsView, ProjectsView, InitView, TablesView
 
 urlpatterns = patterns('',
     url(r'^$', MainView.as_view(), name='main'),
-    url(r'^init/$', login_required(csrf_exempt(InitView.as_view())), name='init'),
 
-    url(r'^scripts/$', login_required(csrf_exempt(ScriptsView.as_view())), name='scripts'),
-    url(r'^scripts/clone$', login_required(csrf_exempt(CloneScriptView.as_view())), name='clone_script'),
-    url(r'^projects/$', login_required(csrf_exempt(ProjectsView.as_view())), name='projects'),
-    url(r'^accesses/$', login_required(csrf_exempt(ScriptAccessView.as_view())), name='accesses'),
+    # API
+    url(r'^api/init/$', login_required(csrf_exempt(InitView.as_view())), name='init'),
 
-    url(r'^tables/$', login_required(csrf_exempt(TablesView.as_view())), name='tables'),
-    url(r'^colls/$', login_required(csrf_exempt(CollsView.as_view())), name='colls'),
+    url(r'^api/scripts/$', login_required(csrf_exempt(ScriptsView.as_view())), name='scripts'),
+    url(r'^api/scripts/clone$', login_required(csrf_exempt(CloneScriptView.as_view())), name='clone_script'),
+    url(r'^api/projects/$', login_required(csrf_exempt(ProjectsView.as_view())), name='projects'),
+    url(r'^api/accesses/$', login_required(csrf_exempt(ScriptAccessView.as_view())), name='accesses'),
 
-    url(r'^links/$', login_required(csrf_exempt(LinkView.as_view())), name='links'),
-    url(r'^links/categories/$', login_required(csrf_exempt(LinkCategoriesView.as_view())), name='link_categories'),
+    url(r'^api/tables/$', login_required(csrf_exempt(TablesView.as_view())), name='tables'),
+    url(r'^api/colls/$', login_required(csrf_exempt(CollsView.as_view())), name='colls'),
+
+    url(r'^api/links/$', login_required(csrf_exempt(LinkView.as_view())), name='links'),
+    url(r'^api/links/categories/$', login_required(csrf_exempt(LinkCategoriesView.as_view())), name='link_categories'),
+
+    # REACT ROUTES
+    url(r'^projects/$', MainView.as_view(), name='react__projects'),
+    url(r'^scripts/user/$', MainView.as_view(), name='react__user_scripts'),
+    url(r'^scripts/available/$', MainView.as_view(), name='react__available_scripts'),
+    url(r'^tables/(?P<script>\d+)/$', MainView.as_view(), name='react__script'),
+    url(r'^tables/(?P<script>\d+)/available/$', MainView.as_view(), name='react__available_script'),
+
+    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/edit/$', MainView.as_view(), name='react__table__edit'),
+    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/share/$', MainView.as_view(), name='react__table__share'),
+
+    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/link/(?P<link>\d+)/edit/$', MainView.as_view(), name='react__link__edit'),
+    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/link/(?P<link>\d+)/share/$', MainView.as_view(), name='react__link__edit'),
+
+    url(r'^profile/$', MainView.as_view(), name='react__profile'),
 )

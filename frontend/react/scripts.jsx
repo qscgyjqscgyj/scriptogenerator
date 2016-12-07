@@ -159,7 +159,7 @@ export class Scripts extends React.Component {
                                         <tr key={key}>
                                             <td>
                                                 {script.active ?
-                                                    <Link to={'/tables/' + script.id + ''}>{script.name}</Link>
+                                                    <Link to={'/tables/' + script.id + '/'}>{script.name}</Link>
                                                 :
                                                     <span>{script.name}</span>
                                                 }

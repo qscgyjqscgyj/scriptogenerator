@@ -6,9 +6,6 @@ import {observer} from 'mobx-react';
 
 @observer
 export class Profile extends React.Component {
-    componentDidMount() {
-        window.location = '/';
-    }
     render() {
         return(
             <div className="row">

@@ -5,19 +5,21 @@ from fabric.operations import local
 from scripts.settings import LOCAL_APPS
 
 env.hosts = ['root@alpateks.ru:22']
-main_prefix = prefix('source /home/Env/scripts/bin/activate')
+# local_prefix = prefix('source /home/aliestarten/Env/scripts/bin/activate')
+server_prefix = prefix('source /home/Env/scripts/bin/activate')
 
 
 def deploy():
     with cd('/home/Django/scripts'):
         try:
             # local('gulp build --production')
+            local('pip freeze > requirements/development.pip')
             local('git add .')
             local('git commit -a -m "deploy: %s"' % datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             local('git push origin master')
         except Exception as e:
             print(e)
-        with main_prefix:
+        with server_prefix:
             run('git pull')
             run('pip install -r requirements/development.pip')
             run('python ./manage.py syncdb')

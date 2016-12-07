@@ -8,7 +8,9 @@ Django==1.8.6
 django-appconf==1.0.2
 django-celery==3.1.17
 django-compressor==2.0
+django-constance==1.2
 django-kombu==0.9.4
+django-picklefield==0.3.2
 django-registration-redux==1.4
 django-require==1.0.8
 django-secretballot==0.5.0

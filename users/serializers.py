@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-from payment.serializers import UserPackagesField
 from users.models import CustomUser
 
 
@@ -15,4 +14,4 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email')
+        fields = ('id', 'username', 'email', 'free')

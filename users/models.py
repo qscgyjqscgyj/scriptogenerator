@@ -5,6 +5,7 @@ from registration.signals import user_registered
 
 
 class CustomUser(AbstractUser):
+    free = models.BooleanField(default=False)
 
     objects = UserManager()
 
@@ -22,3 +23,13 @@ def user_created(sender, user, request, **kwargs):
     ))
 
 user_registered.connect(user_created)
+
+
+class UserAccess(models.Model):
+    owner = models.ForeignKey(CustomUser, related_name='user_access_owner_custom_user')
+    user = models.ForeignKey(CustomUser, related_name='user_access_user_custom_user')
+    active = models.BooleanField(default=True)
+    payed = models.DateTimeField(blank=True, null=True)
+
+    def __unicode__(self):
+        return self.owner.__unicode__()

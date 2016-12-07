@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'registration',
     'djcelery',
+    'constance'
 )
 
 LOCAL_APPS = (
@@ -149,8 +150,16 @@ ACCOUNT_ACTIVATION_DAYS = 10
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 REGISTRATION_FORM = 'users.forms.CustomRegistrationForm'
-
 # LOGIN_REDIRECT_URL = '/'
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+CONSTANCE_IGNORE_ADMIN_VERSION_CHECK = True
+CONSTANCE_CONFIG = {
+    'PAYMENT_PER_DAY': (33.0, u'Абонентская плата за день', float),
+    'PAYMENT_PER_USER': (11.0, u'Абонентская плата за КАЖДОГО дополнительного пользователя', float),
+    'START_USERS_COUNT': (3, u'Количество пользователей, доступных за минимальную плату', int),
+
+}
 
 for item in LOCAL_APPS:
     INSTALLED_APPS+=(item,)

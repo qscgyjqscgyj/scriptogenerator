@@ -49502,7 +49502,9 @@
 	                data: JSON.stringify(link),
 	                success: function success(res) {
 	                    tablesStore.tables = res.tables;
-	                    return onSave(false);
+	                    if (onSave) {
+	                        return onSave(false);
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -49969,12 +49971,18 @@
 	            edit: false,
 	            key: null,
 	
-	            click_timer: 0,
+	            click_timer: null,
 	            prevent: false };return _this10;
 	
 	    }_createClass(EditableText, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
 	            this.setState({ text: props.text, edit: false });
+	        } }, { key: 'clearTimer', value: function clearTimer()
+	        {
+	            var timer = this.state.timer;
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { timer: { $set: null } }), function () {
+	                clearTimeout(timer);
+	            });
 	        } }, { key: 'submitHandler', value: function submitHandler(
 	        e) {
 	            e.preventDefault();
@@ -49987,16 +49995,20 @@
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { edit: { $set: edit } }));
 	        } }, { key: 'doClickAction', value: function doClickAction()
 	        {
+	            this.clearTimer();
 	            if (this.props.onClick) {
 	                this.props.onClick(this.props.object);
 	            }
 	        } }, { key: 'doDoubleClickAction', value: function doDoubleClickAction()
-	        {
-	            return this.setEdit(true);
+	        {var _this11 = this;
+	            this.clearTimer();
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { prevent: { $set: false } }), function () {
+	                return _this11.setEdit(true);
+	            });
 	        } }, { key: 'handleClick', value: function handleClick()
 	        {
 	            var self = this;
-	            clearTimeout(this.state.timer);
+	            this.clearTimer();
 	
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, {
 	                timer: {
@@ -50009,15 +50021,15 @@
 	
 	
 	        } }, { key: 'handleDoubleClick', value: function handleDoubleClick()
-	        {var _this11 = this;
-	            clearTimeout(this.state.timer);
+	        {var _this12 = this;
+	            this.clearTimer();
 	
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { prevent: { $set: true } }), function () {
-	                return _this11.doDoubleClickAction();
+	                return _this12.doDoubleClickAction();
 	            });
 	        } }, { key: 'render', value: function render()
 	
-	        {var _this12 = this;var
+	        {var _this13 = this;var
 	            settings = this.props.settings;
 	            return (
 	                React.createElement('div', null,
@@ -50030,7 +50042,7 @@
 	
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
-	                            onChange: function onChange(e) {_this12.setState((0, _reactAddonsUpdate2.default)(_this12.state, { text: { $set: e.target.value } }));},
+	                            onChange: function onChange(e) {_this13.setState((0, _reactAddonsUpdate2.default)(_this13.state, { text: { $set: e.target.value } }));},
 	                            placeholder: settings.placeholder,
 	                            name: settings.name,
 	                            value: this.state.text,

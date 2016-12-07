@@ -190,7 +190,9 @@ export class Table extends AccessableComponent {
             data: JSON.stringify(link),
             success: (res) => {
                 tablesStore.tables = res.tables;
-                return onSave(false);
+                if(onSave) {
+                    return onSave(false);
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -657,12 +659,18 @@ class EditableText extends React.Component {
             edit: false,
             key: null,
 
-            click_timer: 0,
+            click_timer: null,
             prevent: false
         }
     }
     componentWillReceiveProps(props) {
         this.setState({text: props.text, edit: false})
+    }
+    clearTimer() {
+        let timer = this.state.timer;
+        this.setState(update(this.state, {timer: {$set: null}}), () => {
+            clearTimeout(timer);
+        });
     }
     submitHandler(e) {
         e.preventDefault();
@@ -675,16 +683,20 @@ class EditableText extends React.Component {
         this.setState(update(this.state, {edit: {$set: edit}}))
     }
     doClickAction() {
+        this.clearTimer();
         if(this.props.onClick) {
             this.props.onClick(this.props.object)
         }
     }
     doDoubleClickAction() {
-        return this.setEdit(true)
+        this.clearTimer();
+        this.setState(update(this.state, {prevent: {$set: false}}), () => {
+            return this.setEdit(true)
+        });
     }
     handleClick() {
         let self = this;
-        clearTimeout(this.state.timer);
+        this.clearTimer();
 
         this.setState(update(this.state, {
             timer: {
@@ -698,7 +710,7 @@ class EditableText extends React.Component {
         }))
     }
     handleDoubleClick() {
-        clearTimeout(this.state.timer);
+        this.clearTimer();
 
         this.setState(update(this.state, {prevent: {$set: true}}), () => {
             return this.doDoubleClickAction();

@@ -13,7 +13,6 @@ def deploy():
     with cd('/home/Django/scripts'):
         try:
             # local('gulp build --production')
-            local('pip freeze > requirements/development.pip')
             local('git add .')
             local('git commit -a -m "deploy: %s"' % datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             local('git push origin master')

@@ -49682,15 +49682,17 @@
 	                                                                                        React.createElement(EditableText, {
 	                                                                                            text: link.name,
 	                                                                                            field: 'name',
-	                                                                                            onClick: function onClick(link, e) {
+	                                                                                            onClick: function onClick(link) {
 	                                                                                                if (!tablesStore.pressed_key) {
-	                                                                                                    window.location = !link.to_link ?
+	                                                                                                    _this5.props.router.push(
+	                                                                                                    !link.to_link ?
 	                                                                                                    '/tables/' + _this5.props.params.script +
 	                                                                                                    '/table/' + _this5.props.params.table +
 	                                                                                                    '/link/' + link.id +
 	                                                                                                    '/edit/' :
 	
-	                                                                                                    link.to_link.href + '/edit/';
+	                                                                                                    link.to_link.href + '/edit/');
+	
 	
 	                                                                                                }
 	                                                                                            },
@@ -49959,10 +49961,16 @@
 	EditableText = function (_React$Component2) {_inherits(EditableText, _React$Component2);
 	    function EditableText(props) {_classCallCheck(this, EditableText);var _this10 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
 	        props));
+	
+	        _this10.delay = 50;
+	
 	        _this10.state = {
 	            text: _this10.props.text,
 	            edit: false,
-	            key: null };return _this10;
+	            key: null,
+	
+	            click_timer: 0,
+	            prevent: false };return _this10;
 	
 	    }_createClass(EditableText, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -49977,25 +49985,52 @@
 	        } }, { key: 'setEdit', value: function setEdit(
 	        edit) {
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { edit: { $set: edit } }));
+	        } }, { key: 'doClickAction', value: function doClickAction()
+	        {
+	            if (this.props.onClick) {
+	                this.props.onClick(this.props.object);
+	            }
+	        } }, { key: 'doDoubleClickAction', value: function doDoubleClickAction()
+	        {
+	            return this.setEdit(true);
+	        } }, { key: 'handleClick', value: function handleClick()
+	        {
+	            var self = this;
+	            clearTimeout(this.state.timer);
+	
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, {
+	                timer: {
+	                    $set: setTimeout(function () {
+	                        if (!self.state.prevent) {
+	                            self.doClickAction();
+	                        }
+	                        self.setState((0, _reactAddonsUpdate2.default)(self.state, { prevent: { $set: false } }));
+	                    }, this.delay) } }));
+	
+	
+	        } }, { key: 'handleDoubleClick', value: function handleDoubleClick()
+	        {var _this11 = this;
+	            clearTimeout(this.state.timer);
+	
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { prevent: { $set: true } }), function () {
+	                return _this11.doDoubleClickAction();
+	            });
 	        } }, { key: 'render', value: function render()
-	        {var _this11 = this;var
+	
+	        {var _this12 = this;var
 	            settings = this.props.settings;
 	            return (
 	                React.createElement('div', null,
 	                    !this.state.edit ?
 	                    React.createElement('span', { className: 'copy_icon',
 	                            'data-link': this.props.data_link,
-	                            onClick: function onClick(e) {
-	                                if (_this11.props.onClick) {
-	                                    _this11.props.onClick(_this11.props.object, e);
-	                                }
-	                            },
-	                            onDoubleClick: function onDoubleClick() {_this11.setEdit(true);} },
+	                            onClick: this.handleClick.bind(this),
+	                            onDoubleClick: this.handleDoubleClick.bind(this) },
 	                        this.props.text) :
 	
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
-	                            onChange: function onChange(e) {_this11.setState((0, _reactAddonsUpdate2.default)(_this11.state, { text: { $set: e.target.value } }));},
+	                            onChange: function onChange(e) {_this12.setState((0, _reactAddonsUpdate2.default)(_this12.state, { text: { $set: e.target.value } }));},
 	                            placeholder: settings.placeholder,
 	                            name: settings.name,
 	                            value: this.state.text,

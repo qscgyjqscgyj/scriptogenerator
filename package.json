@@ -59,6 +59,7 @@
     "history": "^1.17.0",
     "immutable": "^3.8.1",
     "jquery": "^1.12.4",
+    "lodash": "^4.17.2",
     "mobx-react-devtools": "^4.2.0",
     "react": "^15.4.1",
     "react-addons-update": "^15.4.1",

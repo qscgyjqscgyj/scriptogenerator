@@ -370,16 +370,18 @@ export class TableEdit extends Table {
                                                                                     <EditableText
                                                                                         text={link.name}
                                                                                         field={'name'}
-                                                                                        onClick={(link, e) => {
+                                                                                        onClick={(link) => {
                                                                                             if(!tablesStore.pressed_key) {
-                                                                                                window.location = (!link.to_link ?
-                                                                                                    '/tables/' + this.props.params.script +
-                                                                                                    '/table/' + this.props.params.table +
-                                                                                                    '/link/' + link.id +
-                                                                                                    '/edit/'
-                                                                                                :
-                                                                                                    link.to_link.href + '/edit/'
-                                                                                                )
+                                                                                                this.props.router.push(
+                                                                                                    (!link.to_link ?
+                                                                                                        '/tables/' + this.props.params.script +
+                                                                                                        '/table/' + this.props.params.table +
+                                                                                                        '/link/' + link.id +
+                                                                                                        '/edit/'
+                                                                                                    :
+                                                                                                        link.to_link.href + '/edit/'
+                                                                                                    )
+                                                                                                );
                                                                                             }
                                                                                         }}
                                                                                         data_link={this.copyLink(link)}
@@ -647,10 +649,16 @@ class ToLink extends React.Component {
 class EditableText extends React.Component {
     constructor(props) {
         super(props);
+
+        this.delay = 50;
+
         this.state = {
             text: this.props.text,
             edit: false,
-            key: null
+            key: null,
+
+            click_timer: 0,
+            prevent: false
         }
     }
     componentWillReceiveProps(props) {
@@ -666,6 +674,37 @@ class EditableText extends React.Component {
     setEdit(edit) {
         this.setState(update(this.state, {edit: {$set: edit}}))
     }
+    doClickAction() {
+        if(this.props.onClick) {
+            this.props.onClick(this.props.object)
+        }
+    }
+    doDoubleClickAction() {
+        return this.setEdit(true)
+    }
+    handleClick() {
+        let self = this;
+        clearTimeout(this.state.timer);
+
+        this.setState(update(this.state, {
+            timer: {
+                $set: setTimeout(function() {
+                    if (!self.state.prevent) {
+                        self.doClickAction();
+                    }
+                    self.setState(update(self.state, {prevent: {$set: false}}));
+                }, this.delay)
+            }
+        }))
+    }
+    handleDoubleClick() {
+        clearTimeout(this.state.timer);
+
+        this.setState(update(this.state, {prevent: {$set: true}}), () => {
+            return this.doDoubleClickAction();
+        });
+    }
+
     render() {
         const {settings} = this.props;
         return (
@@ -673,12 +712,8 @@ class EditableText extends React.Component {
                 {!this.state.edit ?
                     <span className="copy_icon"
                         data-link={this.props.data_link}
-                        onClick={(e) => {
-                            if(this.props.onClick) {
-                                this.props.onClick(this.props.object, e)
-                            }
-                        }}
-                        onDoubleClick={() => {this.setEdit(true)}}
+                        onClick={this.handleClick.bind(this)}
+                        onDoubleClick={this.handleDoubleClick.bind(this)}
                         >{this.props.text}</span>
                 :
                     <form onSubmit={this.submitHandler.bind(this)}>

@@ -14,7 +14,25 @@ export class Scripts extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cloning: null
+            cloning: null,
+            interval: null
+        }
+    }
+    componentDidUpdate() {
+        const {scriptsStore} = this.props;
+        const {interval} = this.state;
+        let inactive_scripts = scriptsStore.scripts.filter((script) => {
+            return !script.active;
+        });
+        if(inactive_scripts.length > 0 && !interval) {
+            this.setState(update(this.state, {interval: {
+                $set: setInterval(function() {
+                    scriptsStore.updateScripts();
+                }, 2000)
+            }}));
+        } else if(inactive_scripts.length === 0 && interval){
+            clearInterval(interval);
+            this.setState(update(this.state, {interval: {$set: null}}));
         }
     }
     createScript(e) {
@@ -95,8 +113,6 @@ export class Scripts extends React.Component {
                 success: (res) => {
                     scriptsStore.scripts = res.scripts;
                     this.setState(update(this.state, {cloning: {$set: null}}));
-                    //TODO: Looks like a shit, I know. Fix this later
-                    location.reload();
                 },
                 error: (res) => {
                     console.log(res);
@@ -174,7 +190,10 @@ export class Scripts extends React.Component {
                                                         <span>
                                                             {this.state.cloning === script ?
                                                                 <span>Копирование...</span>
-                                                            : null}
+                                                            : (!script.active ?
+                                                                    <span>Подождите, идет конвертация ссылок...</span>
+                                                                : null)
+                                                            }
                                                         </span>
                                                     :
                                                         <button className="btn btn-default" onClick={() => {this.cloneScript(script)}}>

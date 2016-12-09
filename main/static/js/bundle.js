@@ -28587,9 +28587,27 @@
 	    function Scripts(props) {_classCallCheck(this, Scripts);var _this = _possibleConstructorReturn(this, (Scripts.__proto__ || Object.getPrototypeOf(Scripts)).call(this,
 	        props));
 	        _this.state = {
-	            cloning: null };return _this;
+	            cloning: null,
+	            interval: null };return _this;
 	
-	    }_createClass(Scripts, [{ key: 'createScript', value: function createScript(
+	    }_createClass(Scripts, [{ key: 'componentDidUpdate', value: function componentDidUpdate()
+	        {var
+	            scriptsStore = this.props.scriptsStore;var
+	            interval = this.state.interval;
+	            var inactive_scripts = scriptsStore.scripts.filter(function (script) {
+	                return !script.active;
+	            });
+	            if (inactive_scripts.length > 0 && !interval) {
+	                this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: {
+	                        $set: setInterval(function () {
+	                            scriptsStore.updateScripts();
+	                        }, 2000) } }));
+	
+	            } else if (inactive_scripts.length === 0 && interval) {
+	                clearInterval(interval);
+	                this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: { $set: null } }));
+	            }
+	        } }, { key: 'createScript', value: function createScript(
 	        e) {var _props =
 	            this.props,projectsStore = _props.projectsStore,scriptsStore = _props.scriptsStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
 	            var project = projectsStore.project(scriptsStore.creating_project);
@@ -28668,8 +28686,6 @@
 	                    success: function success(res) {
 	                        scriptsStore.scripts = res.scripts;
 	                        _this2.setState((0, _reactAddonsUpdate2.default)(_this2.state, { cloning: { $set: null } }));
-	                        //TODO: Looks like a shit, I know. Fix this later
-	                        location.reload();
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);
@@ -28747,7 +28763,10 @@
 	                                                        React.createElement('span', null,
 	                                                            _this3.state.cloning === script ?
 	                                                            React.createElement('span', null, '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435...') :
+	                                                            !script.active ?
+	                                                            React.createElement('span', null, '\u041F\u043E\u0434\u043E\u0436\u0434\u0438\u0442\u0435, \u0438\u0434\u0435\u0442 \u043A\u043E\u043D\u0432\u0435\u0440\u0442\u0430\u0446\u0438\u044F \u0441\u0441\u044B\u043B\u043E\u043A...') :
 	                                                            null) :
+	
 	
 	
 	                                                        React.createElement('button', { className: 'btn btn-default', onClick: function onClick() {_this3.cloneScript(script);} }, '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C')) :
@@ -75866,22 +75885,35 @@
 /* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ScriptsStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;var _mobx = __webpack_require__(265);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ScriptsStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;var _mobx = __webpack_require__(265);
+	var _jquery = __webpack_require__(260);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
-	ScriptsStore = exports.ScriptsStore = (_class = function () {function ScriptsStore() {_classCallCheck(this, ScriptsStore);_initDefineProp(this, 'scripts', _descriptor, this);_initDefineProp(this, 'available_scripts', _descriptor2, this);_initDefineProp(this, 'filter_by_name', _descriptor3, this);_initDefineProp(this, 'filter_by_project', _descriptor4, this);_initDefineProp(this, 'creating_name', _descriptor5, this);_initDefineProp(this, 'creating_project', _descriptor6, this);_initDefineProp(this, 'editing', _descriptor7, this);}_createClass(ScriptsStore, [{ key: 'filteredScripts', value: function filteredScripts(
-	
-	
-	
+	ScriptsStore = exports.ScriptsStore = (_class = function () {function ScriptsStore() {_classCallCheck(this, ScriptsStore);_initDefineProp(this, 'scripts', _descriptor, this);_initDefineProp(this, 'available_scripts', _descriptor2, this);_initDefineProp(this, 'filter_by_name', _descriptor3, this);_initDefineProp(this, 'filter_by_project', _descriptor4, this);_initDefineProp(this, 'creating_name', _descriptor5, this);_initDefineProp(this, 'creating_project', _descriptor6, this);_initDefineProp(this, 'editing', _descriptor7, this);}_createClass(ScriptsStore, [{ key: 'updateScripts', value: function updateScripts()
 	
 	
 	
 	
 	
-	        available) {var _this = this;
+	
+	
+	
+	        {var _this = this;
+	            _jquery2.default.ajax({
+	                method: 'GET',
+	                url: document.body.getAttribute('data-scripts-url'),
+	                success: function success(res) {
+	                    _this.scripts = res.scripts;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
+	        } }, { key: 'filteredScripts', value: function filteredScripts(
+	        available) {var _this2 = this;
 	            var scripts = void 0;
 	            var matches_by_name = new RegExp(this.filter_by_name, 'i');
-	            scripts = (available ? this.available_scripts : this.scripts).filter(function (script) {return !_this.filter_by_name || matches_by_name.test(script.name);});
-	            return scripts.filter(function (script) {return !_this.filter_by_project || script.project.id === _this.filter_by_project;});
+	            scripts = (available ? this.available_scripts : this.scripts).filter(function (script) {return !_this2.filter_by_name || matches_by_name.test(script.name);});
+	            return scripts.filter(function (script) {return !_this2.filter_by_project || script.project.id === _this2.filter_by_project;});
 	        } }, { key: 'script', value: function script(
 	        id) {
 	            return this.scripts.concat(this.available_scripts).find(function (script) {return parseInt(script.id) === parseInt(id);});

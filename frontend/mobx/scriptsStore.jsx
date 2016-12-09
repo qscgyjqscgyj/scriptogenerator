@@ -1,4 +1,5 @@
 import {computed, observable} from 'mobx';
+import $ from 'jquery';
 
 export class ScriptsStore {
     @observable scripts = [];
@@ -9,6 +10,18 @@ export class ScriptsStore {
     @observable creating_project = null;
     @observable editing = null;
 
+    updateScripts() {
+        $.ajax({
+            method: 'GET',
+            url: document.body.getAttribute('data-scripts-url'),
+            success: (res) => {
+                this.scripts = res.scripts;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
     filteredScripts(available) {
         let scripts;
         let matches_by_name = new RegExp(this.filter_by_name, 'i');

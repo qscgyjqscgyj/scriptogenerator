@@ -49221,7 +49221,7 @@
 	    }
 	    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
 	    return arr;
-	};var
+	}var
 	
 	Sort = exports.Sort = function (_React$Component) {_inherits(Sort, _React$Component);
 	    function Sort(props) {_classCallCheck(this, Sort);var _this = _possibleConstructorReturn(this, (Sort.__proto__ || Object.getPrototypeOf(Sort)).call(this,
@@ -49310,7 +49310,7 @@
 /* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TableShare = exports.TableEdit = exports.Table = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TableShare = exports.TableEdit = exports.Table = undefined;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(32);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(260);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactAddonsUpdate = __webpack_require__(262);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
@@ -49515,33 +49515,39 @@
 	        {var
 	            tablesStore = this.props.tablesStore;
 	            var table = tablesStore.table(this.props.params.table);
-	            if (table) {
-	                var sorted_colls = [];
-	                sorted_colls.push({ position: table.text_coll_position, text: true });
-	                table.colls.map(function (coll) {
-	                    sorted_colls.push({ coll: coll, position: coll.position, text: false });
-	                });
-	                return sorted_colls.sort(
-	                function (a, b) {
-	                    if (a.position > b.position) {
-	                        return 1;
-	                    }
-	                    if (a.position < b.position) {
-	                        return -1;
-	                    }
-	                    return 0;
-	                });
+	            if (table) {var _ret = function () {
+	                    var sorted_colls = [];
+	                    sorted_colls.push({ position: table.text_coll_position, text: true });
+	                    table.colls.map(function (coll) {
+	                        sorted_colls.push({ coll: coll, position: coll.position, text: false });
+	                    });
+	                    return { v: sorted_colls.sort(
+	                        function (a, b) {
+	                            if (a.position > b.position) {
+	                                return 1;
+	                            }
+	                            if (a.position < b.position) {
+	                                return -1;
+	                            }
+	                            return 0;
+	                        }) };}();if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 	
 	            }
 	        } }, { key: 'copyLink', value: function copyLink(
 	
 	        link) {
-	            return (
-	                '/tables/' + this.props.params.script +
-	                '/table/' + this.props.params.table +
-	                '/link/' + link.id +
-	                '/share/');
+	            if (!link.to_link) {
+	                return (
+	                    '/tables/' + this.props.params.script +
+	                    '/table/' + this.props.params.table +
+	                    '/link/' + link.id +
+	                    '/share/');
 	
+	            } else {
+	                return (
+	                    link.to_link.href + '/share/');
+	
+	            }
 	        } }, { key: 'onCategorySort', value: function onCategorySort(
 	
 	        items) {
@@ -49582,7 +49588,7 @@
 	            var table = tablesStore.table(this.props.params.table);
 	            var active_link = tablesStore.link(this.props.params.table, this.props.params.link);
 	            var sorted_colls = this.sortedColls();
-	            var coll_name, coll_size;
+	            var coll_name = void 0,coll_size = void 0;
 	
 	            if (usersStore.session_user) {
 	                var script = scriptsStore.script(this.props.params.script);
@@ -49739,13 +49745,27 @@
 	
 	
 	
-	TableShare = exports.TableShare = (0, _mobxReact.observer)(_class3 = function (_Table2) {_inherits(TableShare, _Table2);function TableShare() {_classCallCheck(this, TableShare);return _possibleConstructorReturn(this, (TableShare.__proto__ || Object.getPrototypeOf(TableShare)).apply(this, arguments));}_createClass(TableShare, [{ key: 'render', value: function render()
-	        {var _this7 = this;var _props2 =
+	TableShare = exports.TableShare = (0, _mobxReact.observer)(_class3 = function (_Table2) {_inherits(TableShare, _Table2);function TableShare() {_classCallCheck(this, TableShare);return _possibleConstructorReturn(this, (TableShare.__proto__ || Object.getPrototypeOf(TableShare)).apply(this, arguments));}_createClass(TableShare, [{ key: 'componentDidMount', value: function componentDidMount()
+	        {var _this7 = this;
+	            (0, _jquery2.default)(document).on("click", "#link_text_block a", function (e) {
+	                e.preventDefault();var
+	                router = _this7.props.router;
+	
+	                if (e.target.tagName !== 'A') {
+	                    return router.push((0, _jquery2.default)(e.target).closest('a').attr('href'));
+	                }
+	                return router.push(e.target.getAttribute('href'));
+	            });
+	        } }, { key: 'componentWillUnmount', value: function componentWillUnmount()
+	        {
+	            (0, _jquery2.default)('#link_text_block a').off('click');
+	        } }, { key: 'render', value: function render()
+	        {var _this8 = this;var _props2 =
 	            this.props,projectsStore = _props2.projectsStore,scriptsStore = _props2.scriptsStore,tablesStore = _props2.tablesStore,modalStore = _props2.modalStore,usersStore = _props2.usersStore;
 	            var table = tablesStore.table(this.props.params.table);
 	            var active_link = tablesStore.link(this.props.params.table, this.props.params.link);
 	            var sorted_colls = this.sortedColls();
-	            var coll_name, coll_size;
+	            var coll_name = void 0,coll_size = void 0;
 	            if (usersStore.session_user) {
 	                var script = scriptsStore.script(this.props.params.script);
 	                var access = this.access(usersStore, script);
@@ -49763,7 +49783,8 @@
 	                                                    gray: { style: _editor.styleMap.gray } } };
 	
 	
-	                                            text = (0, _draftJsExportHtml.stateToHTML)((0, _draftJs.convertFromRaw)(JSON.parse(active_link.text)), options);
+	                                            var editorState = _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(JSON.parse(active_link.text)), _editor.DECORATORS);
+	                                            text = (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent(), options);
 	                                        } catch (err) {
 	                                            console.log(err);
 	                                            text = '';
@@ -49773,7 +49794,7 @@
 	                                                active_link ?
 	                                                React.createElement('div', null,
 	                                                    React.createElement('h4', { className: 'table_header_text' }, active_link.name),
-	                                                    React.createElement('div', { dangerouslySetInnerHTML: { __html: text } })) :
+	                                                    React.createElement('div', { id: 'link_text_block', dangerouslySetInnerHTML: { __html: text } })) :
 	
 	
 	                                                ''));
@@ -49801,8 +49822,8 @@
 	                                                                            React.createElement('div', { className: 'row' },
 	                                                                                React.createElement('div', { className: 'col-md-12 link_name' },
 	                                                                                    React.createElement(_reactRouter.Link, { to: !link.to_link ?
-	                                                                                            '/tables/' + _this7.props.params.script +
-	                                                                                            '/table/' + _this7.props.params.table +
+	                                                                                            '/tables/' + _this8.props.params.script +
+	                                                                                            '/table/' + _this8.props.params.table +
 	                                                                                            '/link/' + link.id +
 	                                                                                            '/share/' :
 	
@@ -49833,13 +49854,13 @@
 	
 	
 	ToLink = function (_React$Component) {_inherits(ToLink, _React$Component);
-	    function ToLink(props) {_classCallCheck(this, ToLink);var _this8 = _possibleConstructorReturn(this, (ToLink.__proto__ || Object.getPrototypeOf(ToLink)).call(this,
+	    function ToLink(props) {_classCallCheck(this, ToLink);var _this9 = _possibleConstructorReturn(this, (ToLink.__proto__ || Object.getPrototypeOf(ToLink)).call(this,
 	        props));
 	
-	        _this8.state = {
+	        _this9.state = {
 	            table: null,
 	            category: null,
-	            link: null };return _this8;
+	            link: null };return _this9;
 	
 	    }_createClass(ToLink, [{ key: 'onChange', value: function onChange(
 	        select, selector) {var
@@ -49910,7 +49931,7 @@
 	            }
 	            return result;
 	        } }, { key: 'render', value: function render()
-	        {var _this9 = this;var
+	        {var _this10 = this;var
 	            modalStore = this.props.modalStore;var _state2 =
 	            this.state,table = _state2.table,category = _state2.category,link = _state2.link;
 	            return (
@@ -49921,7 +49942,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0442\u0430\u0431\u043B\u0438\u0446\u0443',
 	                            value: table ? table.id : null,
 	                            options: this.tablesOptions(),
-	                            onChange: function onChange(select) {_this9.onChange(select, 'table');} })),
+	                            onChange: function onChange(select) {_this10.onChange(select, 'table');} })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
 	                        React.createElement(_reactSelect2.default, {
@@ -49929,7 +49950,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044E',
 	                            value: category ? category.id : null,
 	                            options: this.categoriesOptions(),
-	                            onChange: function onChange(select) {_this9.onChange(select, 'category');},
+	                            onChange: function onChange(select) {_this10.onChange(select, 'category');},
 	                            disabled: !table })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
@@ -49938,16 +49959,16 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0441\u044B\u043B\u043A\u0443',
 	                            value: link ? link.id : null,
 	                            options: this.linksOptions(),
-	                            onChange: function onChange(select) {_this9.onChange(select, 'link');},
+	                            onChange: function onChange(select) {_this10.onChange(select, 'link');},
 	                            disabled: !table || !category })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
 	                        React.createElement('button', {
 	                                className: 'btn btn-success ' + (!link ? 'disabled' : null),
 	                                onClick: function onClick() {var
-	                                    link = _this9.state.link;
+	                                    link = _this10.state.link;
 	                                    if (link) {
-	                                        return _this9.props.createToLink(_this9.props.category, link, function () {
+	                                        return _this10.props.createToLink(_this10.props.category, link, function () {
 	                                            modalStore.modal = false;
 	                                        });
 	                                    }
@@ -49961,18 +49982,18 @@
 	
 	
 	EditableText = function (_React$Component2) {_inherits(EditableText, _React$Component2);
-	    function EditableText(props) {_classCallCheck(this, EditableText);var _this10 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
+	    function EditableText(props) {_classCallCheck(this, EditableText);var _this11 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
 	        props));
 	
-	        _this10.delay = 50;
+	        _this11.delay = 50;
 	
-	        _this10.state = {
-	            text: _this10.props.text,
+	        _this11.state = {
+	            text: _this11.props.text,
 	            edit: false,
 	            key: null,
 	
 	            click_timer: null,
-	            prevent: false };return _this10;
+	            prevent: false };return _this11;
 	
 	    }_createClass(EditableText, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -50000,10 +50021,10 @@
 	                this.props.onClick(this.props.object);
 	            }
 	        } }, { key: 'doDoubleClickAction', value: function doDoubleClickAction()
-	        {var _this11 = this;
+	        {var _this12 = this;
 	            this.clearTimer();
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { prevent: { $set: false } }), function () {
-	                return _this11.setEdit(true);
+	                return _this12.setEdit(true);
 	            });
 	        } }, { key: 'handleClick', value: function handleClick()
 	        {
@@ -50021,15 +50042,15 @@
 	
 	
 	        } }, { key: 'handleDoubleClick', value: function handleDoubleClick()
-	        {var _this12 = this;
+	        {var _this13 = this;
 	            this.clearTimer();
 	
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { prevent: { $set: true } }), function () {
-	                return _this12.doDoubleClickAction();
+	                return _this13.doDoubleClickAction();
 	            });
 	        } }, { key: 'render', value: function render()
 	
-	        {var _this13 = this;var
+	        {var _this14 = this;var
 	            settings = this.props.settings;
 	            return (
 	                React.createElement('div', null,
@@ -50042,7 +50063,7 @@
 	
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
-	                            onChange: function onChange(e) {_this13.setState((0, _reactAddonsUpdate2.default)(_this13.state, { text: { $set: e.target.value } }));},
+	                            onChange: function onChange(e) {_this14.setState((0, _reactAddonsUpdate2.default)(_this14.state, { text: { $set: e.target.value } }));},
 	                            placeholder: settings.placeholder,
 	                            name: settings.name,
 	                            value: this.state.text,
@@ -50057,7 +50078,7 @@
 /* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.styleMap = exports.CustomEditor = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.styleMap = exports.CustomEditor = exports.DECORATORS = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(32);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(260);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactAddonsUpdate = __webpack_require__(262);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
@@ -50068,19 +50089,42 @@
 	var _draftJsExportHtml = __webpack_require__(441);
 	var _draftJsImportHtml = __webpack_require__(453);
 	var _DraftPasteProcessor = __webpack_require__(420);var _DraftPasteProcessor2 = _interopRequireDefault(_DraftPasteProcessor);
-	var _immutable = __webpack_require__(449);var _immutable2 = _interopRequireDefault(_immutable);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _immutable = __webpack_require__(449);var _immutable2 = _interopRequireDefault(_immutable);
+	var _reactRouter = __webpack_require__(178);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
+	
+	var DECORATORS = exports.DECORATORS = new _draftJs.CompositeDecorator([
+	{
+	    strategy: findLinkEntities,
+	    component: LinkDecorator }]);
+	
+	
+	
+	function findLinkEntities(contentBlock, callback) {
+	    contentBlock.findEntityRanges(function (character) {
+	        var entityKey = character.getEntity();
+	        return (
+	            entityKey !== null
+	            //&& contentState.getEntity(entityKey).getType() === 'LINK'
+	        );
+	    },
+	    callback);
+	
+	}
+	
+	var LinkDecorator = function LinkDecorator(props) {var
+	    url = props.decoratedText.url;
+	    console.log(props);
+	    return (
+	        React.createElement(_reactRouter.Link, { to: url, style: styles.link }, props.children));
+	
+	};var
 	
 	
 	CustomEditor = exports.CustomEditor = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(CustomEditor, _React$Component);
 	    function CustomEditor(props) {_classCallCheck(this, CustomEditor);var _this = _possibleConstructorReturn(this, (CustomEditor.__proto__ || Object.getPrototypeOf(CustomEditor)).call(this,
 	        props));
 	
-	        _this.decorator = new _draftJs.CompositeDecorator([
-	        {
-	            strategy: findLinkEntities,
-	            component: Link }]);
-	
-	
+	        _this.decorator = DECORATORS;
 	
 	        _this.state = {
 	            object: props.object,
@@ -50338,11 +50382,6 @@
 	
 	
 	
-	
-	
-	
-	
-	
 	        } }]);return CustomEditor;}(React.Component)) || _class;
 	
 	
@@ -50484,26 +50523,6 @@
 	                        style: type.style }));})));
 	
 	
-	
-	};
-	
-	
-	function findLinkEntities(contentBlock, callback) {
-	    contentBlock.findEntityRanges(function (character) {
-	        var entityKey = character.getEntity();
-	        return (
-	            entityKey !== null
-	            //&& contentState.getEntity(entityKey).getType() === 'LINK'
-	        );
-	    },
-	    callback);
-	
-	}
-	
-	var Link = function Link(props) {var
-	    url = props.decoratedText.url;
-	    return (
-	        React.createElement('a', { href: url, style: styles.link }, props.children));
 	
 	};
 	
@@ -75857,7 +75876,7 @@
 	
 	
 	        available) {var _this = this;
-	            var scripts;
+	            var scripts = void 0;
 	            var matches_by_name = new RegExp(this.filter_by_name, 'i');
 	            scripts = (available ? this.available_scripts : this.scripts).filter(function (script) {return !_this.filter_by_name || matches_by_name.test(script.name);});
 	            return scripts.filter(function (script) {return !_this.filter_by_project || script.project.id === _this.filter_by_project;});

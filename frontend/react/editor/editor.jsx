@@ -3,25 +3,48 @@ import * as ReactDOM from 'react-dom';
 import $ from 'jquery';
 import update from 'react-addons-update';
 import {observer} from 'mobx-react';
-import {ModalWrapper} from './modal';
-import {Coll} from '../mobx/tablesStore';
+import {ModalWrapper} from '../modal';
+import {Coll} from '../../mobx/tablesStore';
 import {Editor, EditorState, CompositeDecorator, Modifier, RichUtils, ContentState, convertToRaw, convertFromRaw, Entity, convertFromHTML} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 import Immutable from 'immutable';
+import {Link} from 'react-router';
+
+export const DECORATORS = new CompositeDecorator([
+    {
+        strategy: findLinkEntities,
+        component: LinkDecorator
+    }
+]);
+
+function findLinkEntities(contentBlock, callback) {
+    contentBlock.findEntityRanges((character) => {
+            const entityKey = character.getEntity();
+            return (
+                entityKey !== null
+                //&& contentState.getEntity(entityKey).getType() === 'LINK'
+            );
+        },
+        callback
+    );
+}
+
+const LinkDecorator = (props) => {
+    const {url} = props.decoratedText;
+    console.log(props);
+    return (
+        <Link to={url} style={styles.link}>{props.children}</Link>
+    );
+};
 
 @observer
 export class CustomEditor extends React.Component {
     constructor(props) {
         super(props);
 
-        this.decorator = new CompositeDecorator([
-            {
-                strategy: findLinkEntities,
-                component: Link
-            }
-        ]);
+        this.decorator = DECORATORS;
 
         this.state = {
             object: props.object,
@@ -205,7 +228,7 @@ export class CustomEditor extends React.Component {
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.
         let className = 'RichEditor-editor';
-        var contentState = editorState.getCurrentContent();
+        let contentState = editorState.getCurrentContent();
         if (!contentState.hasText()) {
             if (contentState.getBlockMap().first().getType() !== 'unstyled') {
                 className += ' RichEditor-hidePlaceholder';
@@ -277,11 +300,6 @@ export class CustomEditor extends React.Component {
                         ref="editor"
                         spellCheck={true}/>
                 </div>
-                {
-                    //<BlockStyleControls
-                    //    editorState={editorState}
-                    //    onToggle={this.toggleBlockType}/>
-                }
             </div>
         );
     }
@@ -292,13 +310,13 @@ export const styleMap = {
     gray: {color: 'rgba(160, 160, 160, 1.0)'}
 };
 
-var COLORS = [
+let COLORS = [
     {label: 'Красный', style: 'red', icon: 'glyphicon glyphicon-stop'},
     {label: 'Серый', style: 'gray', icon: 'glyphicon glyphicon-stop'}
 ];
 
 const ColorControls = (props) => {
-    var currentStyle = props.editorState.getCurrentInlineStyle();
+    let currentStyle = props.editorState.getCurrentInlineStyle();
     return (
         <div>
             {COLORS.map((type, key) =>
@@ -405,14 +423,14 @@ const BlockStyleControls = (props) => {
     );
 };
 
-var INLINE_STYLES = [
+let INLINE_STYLES = [
     {label: 'Жирный', style: 'BOLD', icon: 'glyphicon glyphicon-bold'},
     {label: 'Курсив', style: 'ITALIC', icon: 'glyphicon glyphicon-italic'},
     {label: 'Подчеркивание', style: 'UNDERLINE', icon: 'glyphicon glyphicon-text-color'}
 ];
 
 const InlineStyleControls = (props) => {
-    var currentStyle = props.editorState.getCurrentInlineStyle();
+    let currentStyle = props.editorState.getCurrentInlineStyle();
     return (
         <div>
             {INLINE_STYLES.map(type =>
@@ -425,26 +443,6 @@ const InlineStyleControls = (props) => {
                     style={type.style}/>
             )}
         </div>
-    );
-};
-
-
-function findLinkEntities(contentBlock, callback) {
-    contentBlock.findEntityRanges((character) => {
-            const entityKey = character.getEntity();
-            return (
-                entityKey !== null
-                //&& contentState.getEntity(entityKey).getType() === 'LINK'
-            );
-        },
-        callback
-    );
-}
-
-const Link = (props) => {
-    const {url} = props.decoratedText;
-    return (
-        <a href={url} style={styles.link}>{props.children}</a>
     );
 };
 

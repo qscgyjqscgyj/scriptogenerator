@@ -17,7 +17,7 @@ export const customModalStyles = {
 };
 
 function isFunction(functionToCheck) {
-    var getType = {};
+    let getType = {};
     return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
 }
 

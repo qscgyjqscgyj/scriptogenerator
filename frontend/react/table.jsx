@@ -5,10 +5,10 @@ import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
 import {Coll} from '../mobx/tablesStore';
-import {CustomEditor, styleMap} from './editor';
+import {CustomEditor, styleMap, DECORATORS} from './editor/editor';
 import {Link} from 'react-router';
 import Clipboard from 'clipboard';
-import {ContentState, convertFromRaw} from 'draft-js';
+import {EditorState, ContentState, convertFromRaw} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
 import {Sort} from './sort';
 import {AccessableComponent} from './access';
@@ -204,7 +204,7 @@ export class Table extends AccessableComponent {
         const {tablesStore} = this.props;
         let table = tablesStore.table(this.props.params.table);
         if(table) {
-            var sorted_colls = [];
+            let sorted_colls = [];
             sorted_colls.push({position: table.text_coll_position, text: true});
             table.colls.map(coll => {
                 sorted_colls.push({coll: coll, position: coll.position, text: false});
@@ -224,12 +224,18 @@ export class Table extends AccessableComponent {
     }
 
     copyLink(link) {
-        return (
-            '/tables/' + this.props.params.script +
-            '/table/' + this.props.params.table +
-            '/link/' + link.id +
-            '/share/'
-        )
+        if(!link.to_link) {
+            return (
+                '/tables/' + this.props.params.script +
+                '/table/' + this.props.params.table +
+                '/link/' + link.id +
+                '/share/'
+            )
+        } else {
+            return (
+                link.to_link.href + '/share/'
+            )
+        }
     }
 
     onCategorySort(items) {
@@ -270,7 +276,7 @@ export class TableEdit extends Table {
         let table = tablesStore.table(this.props.params.table);
         let active_link = tablesStore.link(this.props.params.table, this.props.params.link);
         let sorted_colls = this.sortedColls();
-        var coll_name, coll_size;
+        let coll_name, coll_size;
 
         if(usersStore.session_user) {
             let script = scriptsStore.script(this.props.params.script);
@@ -428,12 +434,26 @@ export class TableEdit extends Table {
 
 @observer
 export class TableShare extends Table {
+    componentDidMount() {
+        $(document).on("click", "#link_text_block a", (e) => {
+            e.preventDefault();
+            const {router} = this.props;
+
+            if(e.target.tagName !== 'A') {
+                return router.push($(e.target).closest('a').attr('href'));
+            }
+            return router.push(e.target.getAttribute('href'));
+        });
+    }
+    componentWillUnmount() {
+        $('#link_text_block a').off('click');
+    }
     render() {
         const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
         let table = tablesStore.table(this.props.params.table);
         let active_link = tablesStore.link(this.props.params.table, this.props.params.link);
         let sorted_colls = this.sortedColls();
-        var coll_name, coll_size;
+        let coll_name, coll_size;
         if(usersStore.session_user) {
             let script = scriptsStore.script(this.props.params.script);
             let access = this.access(usersStore, script);
@@ -449,9 +469,10 @@ export class TableShare extends Table {
                                             inlineStyles: {
                                                 red: {style: styleMap.red},
                                                 gray: {style: styleMap.gray},
-                                            },
+                                            }
                                         };
-                                        text = stateToHTML(convertFromRaw(JSON.parse(active_link.text)), options);
+                                        let editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(active_link.text)), DECORATORS);
+                                        text = stateToHTML(editorState.getCurrentContent(), options);
                                     } catch(err) {
                                         console.log(err);
                                         text = '';
@@ -461,7 +482,7 @@ export class TableShare extends Table {
                                             {active_link ?
                                                 <div>
                                                     <h4 className="table_header_text">{active_link.name}</h4>
-                                                    <div dangerouslySetInnerHTML={{__html: text}}></div>
+                                                    <div id="link_text_block" dangerouslySetInnerHTML={{__html: text}}></div>
                                                 </div>
                                                 :
                                                 ''

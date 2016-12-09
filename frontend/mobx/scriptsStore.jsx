@@ -10,8 +10,8 @@ export class ScriptsStore {
     @observable editing = null;
 
     filteredScripts(available) {
-        var scripts;
-        var matches_by_name = new RegExp(this.filter_by_name, 'i');
+        let scripts;
+        let matches_by_name = new RegExp(this.filter_by_name, 'i');
         scripts = (available ? this.available_scripts : this.scripts).filter(script => !this.filter_by_name || matches_by_name.test(script.name));
         return scripts.filter(script => !this.filter_by_project || script.project.id === this.filter_by_project);
     }

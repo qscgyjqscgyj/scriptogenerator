@@ -13,7 +13,7 @@ export class ProjectsStore {
     @observable editing = null;
 
     @computed get filteredProjects() {
-        var matches_by_name = new RegExp(this.filter_by_name, 'i');
+        let matches_by_name = new RegExp(this.filter_by_name, 'i');
         return this.projects.filter(project => !this.filter_by_name || matches_by_name.test(project.name));
     }
     @computed get owner() {

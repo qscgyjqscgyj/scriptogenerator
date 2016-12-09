@@ -95,6 +95,8 @@ export class Scripts extends React.Component {
                 success: (res) => {
                     scriptsStore.scripts = res.scripts;
                     this.setState(update(this.state, {cloning: {$set: null}}));
+                    //TODO: Looks like a shit, I know. Fix this later
+                    location.reload();
                 },
                 error: (res) => {
                     console.log(res);

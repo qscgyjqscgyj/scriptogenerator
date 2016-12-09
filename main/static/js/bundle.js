@@ -28668,6 +28668,8 @@
 	                    success: function success(res) {
 	                        scriptsStore.scripts = res.scripts;
 	                        _this2.setState((0, _reactAddonsUpdate2.default)(_this2.state, { cloning: { $set: null } }));
+	                        //TODO: Looks like a shit, I know. Fix this later
+	                        location.reload();
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);

@@ -49664,11 +49664,14 @@
 	                                            React.createElement('div', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
 	                                                React.createElement('div', { className: 'row' },
 	                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                        React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, false);} })),
+	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', id: 'add_category', className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, false);} })),
+	
+	                                                    React.createElement(_reactTooltip2.default, { 'data-for': 'add_category', place: 'top', type: 'dark', effect: 'solid' }),
 	
 	                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                        React.createElement('i', { className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, true);} }))),
+	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043A\u0440\u044B\u0442\u044B\u0439 \u0440\u0430\u0437\u0434\u0435\u043B', id: 'add_hidden_category', className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, true);} })),
 	
+	                                                    React.createElement(_reactTooltip2.default, { 'data-for': 'add_hidden_category', place: 'top', type: 'dark', effect: 'solid' })),
 	
 	                                                coll.categories.map(function (category, key) {
 	                                                    return (
@@ -49767,7 +49770,8 @@
 	                                                                        React.createElement('div', { className: 'row' },
 	                                                                            React.createElement('div', { className: "col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null) },
 	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {link.opened = !link.opened;_this5.updateLink(link);} }),
-	                                                                                React.createElement('span', { className: 'inline_element link_name' },
+	                                                                                React.createElement('span', { className: "inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') },
+	
 	                                                                                    React.createElement(EditableText, {
 	                                                                                        text: link.name,
 	                                                                                        field: 'name',

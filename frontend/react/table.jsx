@@ -323,11 +323,14 @@ export class TableEdit extends Table {
                                         <div className="scroll_links" key={key} style={{width: coll.size + '%'}}>
                                             <div className="row">
                                                 <div className="col-md-1">
-                                                    <i className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
+                                                    <i data-tip="Добавить раздел" id='add_category' className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
                                                 </div>
+                                                <ReactTooltip data-for='add_category' place="top" type="dark" effect="solid"/>
+
                                                 <div className="col-md-1">
-                                                    <i className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
+                                                    <i data-tip="Добавить скрытый раздел" id='add_hidden_category' className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
                                                 </div>
+                                                <ReactTooltip data-for='add_hidden_category' place="top" type="dark" effect="solid"/>
                                             </div>
                                             {coll.categories.map((category, key) => {
                                                 return (
@@ -426,7 +429,8 @@ export class TableEdit extends Table {
                                                                     <div className="row">
                                                                         <div className={"col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null)}>
                                                                             <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {link.opened = !link.opened;  this.updateLink(link)}}/>
-                                                                            <span className="inline_element link_name">
+                                                                            <span className={"inline_element link " + (category.hidden ? 'hidden_links' : 'link_name')}>
+
                                                                                 <EditableText
                                                                                     text={link.name}
                                                                                     field={'name'}

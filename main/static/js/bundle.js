@@ -54,7 +54,7 @@
 	var _projects = __webpack_require__(305);
 	var _tables = __webpack_require__(307);
 	var _table = __webpack_require__(311);
-	var _app = __webpack_require__(468);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}
+	var _app = __webpack_require__(478);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}
 	
 	var RENDER_ELEMENT = document.getElementById('content');
 	
@@ -28768,7 +28768,6 @@
 	                                                            null) :
 	
 	
-	
 	                                                        React.createElement('button', { className: 'btn btn-default', onClick: function onClick() {_this3.cloneScript(script);} }, '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C')) :
 	
 	
@@ -49230,10 +49229,11 @@
 /* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Sort = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = __webpack_require__(1);var _react2 = _interopRequireDefault(_react);
-	var _reactAddonsUpdate = __webpack_require__(262);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Sort = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;exports.
 	
-	function moveInArray(arr, old_index, new_index) {
+	
+	
+	moveInArray = moveInArray;var _react = __webpack_require__(1);var _react2 = _interopRequireDefault(_react);var _reactAddonsUpdate = __webpack_require__(262);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);var _mobxReact = __webpack_require__(264);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}function moveInArray(arr, old_index, new_index) {
 	    if (new_index >= arr.length) {
 	        var k = new_index - arr.length;
 	        while (k-- + 1) {
@@ -49244,7 +49244,8 @@
 	    return arr;
 	}var
 	
-	Sort = exports.Sort = function (_React$Component) {_inherits(Sort, _React$Component);
+	
+	Sort = exports.Sort = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Sort, _React$Component);
 	    function Sort(props) {_classCallCheck(this, Sort);var _this = _possibleConstructorReturn(this, (Sort.__proto__ || Object.getPrototypeOf(Sort)).call(this,
 	        props));
 	        _this.state = {
@@ -49261,41 +49262,48 @@
 	                return _this2.props.onSort(items);
 	            });
 	        } }, { key: 'render', value: function render()
-	        {var _this3 = this;var
-	            items = this.state.items;
+	        {var _this3 = this;var _state =
+	            this.state,items = _state.items,itemUp = _state.itemUp,itemDown = _state.itemDown;
 	            return (
 	                _react2.default.createElement('div', null,
 	                    items.map(function (item, key) {
+	                        if (_this3.props.sortStoreItems) {
+	                            return (
+	                                _react2.default.createElement('div', { key: key },
+	                                    item));
+	
+	
+	                        }
 	                        return (
 	                            _react2.default.createElement('div', { key: key, className: 'sort_block' },
 	                                !_this3.props.left ?
 	                                _react2.default.createElement('div', { className: 'sort_item' },
 	                                    item) :
-	                                '',
 	
+	                                null,
 	                                _react2.default.createElement('div', { className: 'sort_icons' },
 	                                    key !== 0 ?
 	                                    _react2.default.createElement('i', {
 	                                        className: 'glyphicon glyphicon-triangle-top',
 	                                        'aria-hidden': 'true',
-	                                        onClick: function onClick() {_this3.moveItem(key, key - 1);} }) : '',
+	                                        onClick: function onClick() {_this3.moveItem(key, key - 1);} }) : null,
 	                                    key + 1 !== _this3.props.children.length ?
 	                                    _react2.default.createElement('i', {
 	                                        className: 'glyphicon glyphicon-triangle-bottom',
 	                                        'aria-hidden': 'true',
-	                                        onClick: function onClick() {_this3.moveItem(key, key + 1);} }) : ''),
+	                                        onClick: function onClick() {_this3.moveItem(key, key + 1);} }) : null),
 	
 	                                _this3.props.left ?
 	                                _react2.default.createElement('div', { className: 'sort_item' },
 	                                    item) :
-	                                ''));
 	
+	                                null));
 	
 	
 	                    })));
 	
 	
-	        } }]);return Sort;}(_react2.default.Component);
+	        } }]);return Sort;}(_react2.default.Component)) || _class;
 
 /***/ },
 /* 310 */
@@ -49346,7 +49354,9 @@
 	var _sort = __webpack_require__(309);
 	var _access = __webpack_require__(310);
 	var _confirm = __webpack_require__(300);var _confirm2 = _interopRequireDefault(_confirm);
-	var _reactSelect = __webpack_require__(288);var _reactSelect2 = _interopRequireDefault(_reactSelect);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _reactSelect = __webpack_require__(288);var _reactSelect2 = _interopRequireDefault(_reactSelect);
+	var _mobx = __webpack_require__(265);
+	var _reactTooltip = __webpack_require__(468);var _reactTooltip2 = _interopRequireDefault(_reactTooltip);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	Table = exports.Table = (0, _mobxReact.observer)(_class = function (_AccessableComponent) {_inherits(Table, _AccessableComponent);
@@ -49369,20 +49379,16 @@
 	            tablesStore = this.props.tablesStore;
 	            new _clipboard2.default('.copy_icon', {
 	                text: function text(trigger) {
-	                    if (tablesStore.pressed_key === 17) {
-	                        return trigger.getAttribute('data-link');
-	                    } else {
-	                        return '';
-	                    }
+	                    return trigger.getAttribute('data-link');
 	                } });
 	
-	            (0, _jquery2.default)(document.body).on('keydown', this.handleKeyDown.bind(this));
-	            (0, _jquery2.default)(document.body).on('keyup', this.handleKeyUp.bind(this));
+	            // $(document.body).on('keydown', this.handleKeyDown.bind(this));
+	            // $(document.body).on('keyup', this.handleKeyUp.bind(this));
 	        } }, { key: 'componentWillUnmount', value: function componentWillUnmount()
 	
 	        {
-	            (0, _jquery2.default)(document.body).off('keydown', this.handleKeyDown.bind(this));
-	            (0, _jquery2.default)(document.body).off('keyup', this.handleKeyUp.bind(this));
+	            // $(document.body).off('keydown', this.handleKeyDown.bind(this));
+	            // $(document.body).off('keyup', this.handleKeyUp.bind(this));
 	        } }, { key: 'handleKeyDown', value: function handleKeyDown(
 	
 	        e) {var
@@ -49571,17 +49577,17 @@
 	            }
 	        } }, { key: 'onCategorySort', value: function onCategorySort(
 	
-	        items) {
-	            items.map(function (item, key) {
-	                item.props.category.order = key;
+	        coll) {
+	            coll.categories.map(function (category, key) {
+	                category.order = key;
 	            });
-	            return this.updateTableLinksColl(items[0].props.coll);
+	            return this.updateTableLinksColl(coll);
 	        } }, { key: 'onLinkSort', value: function onLinkSort(
-	        items) {
-	            items.map(function (item, key) {
-	                item.props.link.order = key;
+	        category) {
+	            category.links.map(function (link, key) {
+	                link.order = key;
 	            });
-	            return this.updateLinkCategory(items[0].props.category);
+	            return this.updateLinkCategory(category);
 	        } }, { key: 'createToLink', value: function createToLink(
 	        category, link, cb) {
 	            this.createLink(category, link);
@@ -49625,11 +49631,11 @@
 	                                                active_link ?
 	                                                React.createElement('div', null,
 	                                                    React.createElement('div', { className: 'row' },
-	                                                        React.createElement('div', { className: 'col-md-6' },
-	                                                            React.createElement('h4', { className: 'table_header_text' }, active_link.name)),
+	                                                        React.createElement('div', { className: 'col-md-12' },
+	                                                            React.createElement('h4', { className: 'table_header_text' }, active_link.name))),
 	
-	                                                        React.createElement('div', { className: 'col-md-4 pull-right' },
-	                                                            React.createElement('button', { className: 'btn ' + (_this5.state.changed ? 'btn-success' : 'btn-default'), onClick: function onClick() {_this5.updateLink(active_link, _this5.changed.bind(_this5));} }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))),
+	
+	
 	
 	
 	
@@ -49664,88 +49670,216 @@
 	                                                        React.createElement('i', { className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, true);} }))),
 	
 	
-	                                                React.createElement(_sort.Sort, { onSort: _this5.onCategorySort.bind(_this5), left: true, child: true },
-	                                                    coll.categories.map(function (category, key) {
-	                                                        return (
-	                                                            React.createElement('div', { key: key, category: category, coll: coll, className: category.hidden ? 'hidden_links' : '' },
-	                                                                React.createElement('div', { className: 'row' },
-	                                                                    React.createElement('div', { className: 'col-md-8' },
-	                                                                        React.createElement('h4', { className: 'table_header_text' },
-	                                                                            React.createElement(EditableText, {
-	                                                                                text: category.name,
-	                                                                                field: 'name',
-	                                                                                submitHandler: function submitHandler(category) {return _this5.updateLinkCategory(category);},
-	                                                                                object: category,
-	                                                                                settings: {
-	                                                                                    placeholder: 'Имя категории',
-	                                                                                    name: 'name' } }))),
+	                                                coll.categories.map(function (category, key) {
+	                                                    return (
+	                                                        React.createElement('div', { key: key, className: category.hidden ? 'hidden_links' : '' },
+	                                                            React.createElement('div', { className: 'row' },
+	                                                                React.createElement('div', { className: "col-md-12 inline_elements edit_icon_handler hovered_list_item " + (category.opened ? 'opened' : null) },
+	                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {category.opened = !category.opened;_this5.updateLinkCategory(category);} }),
+	                                                                    React.createElement('span', { className: 'table_header_text inline_element' },
+	                                                                        React.createElement(EditableText, {
+	                                                                            text: category.name,
+	                                                                            field: 'name',
+	                                                                            submitHandler: function submitHandler(category) {return _this5.updateLinkCategory(category);},
+	                                                                            object: category,
+	                                                                            edit: category.edit,
+	                                                                            settings: {
+	                                                                                placeholder: 'Имя категории',
+	                                                                                name: 'name' } })),
 	
 	
 	
 	
-	                                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                                        React.createElement('i', { className: 'icon add_icon icon_vertical_centre glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLink(category);} })),
+	                                                                    category.opened ?
+	                                                                    React.createElement('div', { className: 'col-md-12 opened_toolbar' },
+	                                                                        React.createElement('div', { className: 'btn-toolbar', role: 'toolbar' },
+	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
+	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443', id: 'create_link' + category.id, className: 'btn btn-default', onClick: function onClick() {_this5.createLink(category);} },
+	                                                                                    React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-plus' })),
 	
-	                                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                                        React.createElement('i', { className: 'icon add_icon_blue icon_vertical_centre glyphicon glyphicon-plus',
-	                                                                            onClick: function onClick() {
-	                                                                                modalStore.modal = true;
-	                                                                                modalStore.component = React.createElement(ToLink, {
-	                                                                                    category: category,
-	                                                                                    tablesStore: tablesStore,
-	                                                                                    createToLink: _this5.createToLink.bind(_this5),
-	                                                                                    modalStore: modalStore });
+	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0434\u0440\u0443\u0433\u0443\u044E \u0442\u0430\u0431\u043B\u0438\u0446\u0443', id: 'create_ext_link' + category.id, className: 'btn btn-default',
+	                                                                                        onClick: function onClick() {
+	                                                                                            modalStore.modal = true;
+	                                                                                            modalStore.component = React.createElement(ToLink, {
+	                                                                                                category: category,
+	                                                                                                tablesStore: tablesStore,
+	                                                                                                createToLink: _this5.createToLink.bind(_this5),
+	                                                                                                modalStore: modalStore });
 	
-	                                                                            } })),
-	
-	                                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                                        React.createElement('i', { className: 'glyphicon glyphicon-remove icon icon_vertical_centre red_icon', 'aria-hidden': 'true', onClick: function onClick() {_this5.deleteLinkCategory(category);} }))),
-	
-	
-	                                                                React.createElement(_sort.Sort, { onSort: _this5.onLinkSort.bind(_this5), left: true },
-	                                                                    category.links.map(function (link, key) {
-	                                                                        return (
-	                                                                            React.createElement('div', { key: key, category: category, link: link },
-	                                                                                React.createElement('div', { className: 'row' },
-	                                                                                    React.createElement('div', { className: 'col-md-9 link_name' },
-	                                                                                        React.createElement(EditableText, {
-	                                                                                            text: link.name,
-	                                                                                            field: 'name',
-	                                                                                            onClick: function onClick(link) {
-	                                                                                                if (!tablesStore.pressed_key) {
-	                                                                                                    _this5.props.router.push(
-	                                                                                                    !link.to_link ?
-	                                                                                                    '/tables/' + _this5.props.params.script +
-	                                                                                                    '/table/' + _this5.props.params.table +
-	                                                                                                    '/link/' + link.id +
-	                                                                                                    '/edit/' :
-	
-	                                                                                                    link.to_link.href + '/edit/');
+	                                                                                        } },
+	                                                                                    React.createElement('i', { className: 'icon add_icon_blue glyphicon glyphicon-plus' }))),
 	
 	
-	                                                                                                }
-	                                                                                            },
-	                                                                                            data_link: _this5.copyLink(link),
-	                                                                                            submitHandler: function submitHandler(link) {return _this5.updateLink(link);},
-	                                                                                            object: link,
-	                                                                                            settings: {
-	                                                                                                placeholder: 'Имя ссылки',
-	                                                                                                name: 'name' } })),
+	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'create_link' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
+	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'create_ext_link' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
+	
+	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
+	                                                                                React.createElement('button', { 'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', id: 'rename_category' + category.id, onClick: function onClick() {category.edit = !category.edit;}, className: 'btn btn-default copy_icon' },
+	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' }))),
 	
 	
-	                                                                                    React.createElement('div', { className: 'col-md-1' }),
-	                                                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                                                        React.createElement('span', { className: 'glyphicon glyphicon-remove icon red_icon', 'aria-hidden': 'true', onClick: function onClick() {_this5.deleteLink(link);} })))));
+	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'rename_category' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
+	
+	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
+	                                                                                React.createElement('button', { 'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', id: 'delete_category' + category.id, style: { color: '#fff' }, onClick: function onClick() {_this5.deleteLinkCategory(category);}, className: 'btn btn-danger' },
+	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
+	
+	
+	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'delete_category' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
+	
+	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
+	                                                                                key !== 0 ?
+	                                                                                React.createElement('button', {
+	                                                                                        onClick: function onClick() {
+	                                                                                            coll.categories = (0, _sort.moveInArray)(coll.categories, key, key - 1);
+	                                                                                            _this5.onCategorySort(coll);
+	                                                                                        },
+	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u0432\u0435\u0440\u0445',
+	                                                                                        id: 'move_up_category' + category.id,
+	                                                                                        className: 'btn btn-default' },
+	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-triangle-top' })) :
+	
+	                                                                                null,
+	                                                                                key + 1 !== coll.categories.length ?
+	                                                                                React.createElement('button', {
+	                                                                                        onClick: function onClick() {
+	                                                                                            coll.categories = (0, _sort.moveInArray)(coll.categories, key, key + 1);
+	                                                                                            _this5.onCategorySort(coll);
+	                                                                                        },
+	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0445',
+	                                                                                        id: 'move_down_category' + category.id,
+	                                                                                        className: 'btn btn-default' },
+	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-triangle-bottom' })) :
+	
+	                                                                                null),
+	
+	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'move_up_category' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
+	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'move_down_category' + category.id, place: 'top', type: 'dark', effect: 'solid' }))) :
+	
+	
+	
+	                                                                    null)),
+	
+	
+	                                                            category.links.map(function (link, key) {
+	                                                                return (
+	                                                                    React.createElement('div', { key: key },
+	                                                                        React.createElement('div', { className: 'row' },
+	                                                                            React.createElement('div', { className: "col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null) },
+	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {link.opened = !link.opened;_this5.updateLink(link);} }),
+	                                                                                React.createElement('span', { className: 'inline_element link_name' },
+	                                                                                    React.createElement(EditableText, {
+	                                                                                        text: link.name,
+	                                                                                        field: 'name',
+	                                                                                        onClick: function onClick(link) {
+	                                                                                            _this5.props.router.push(
+	                                                                                            !link.to_link ?
+	                                                                                            '/tables/' + _this5.props.params.script +
+	                                                                                            '/table/' + _this5.props.params.table +
+	                                                                                            '/link/' + link.id +
+	                                                                                            '/edit/' :
+	
+	                                                                                            link.to_link.href + '/edit/');
+	
+	
+	                                                                                        },
+	                                                                                        submitHandler: function submitHandler(link) {return _this5.updateLink(link);},
+	                                                                                        object: link,
+	                                                                                        edit: link.edit,
+	                                                                                        settings: {
+	                                                                                            placeholder: 'Имя ссылки',
+	                                                                                            name: 'name' } })),
+	
+	
+	
+	                                                                                link.opened ?
+	                                                                                React.createElement('div', { className: 'col-md-12 opened_toolbar' },
+	                                                                                    React.createElement('div', { className: 'btn-toolbar', role: 'toolbar' },
+	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
+	                                                                                            React.createElement('button', {
+	                                                                                                    'data-tip': '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0430\u0434\u0440\u0435\u0441 \u0441\u0441\u044B\u043B\u043A\u0438',
+	                                                                                                    id: 'copy_link_address' + link.id,
+	                                                                                                    'data-link': _this5.copyLink(link),
+	                                                                                                    onClick: function onClick() {}, className: 'btn btn-default copy_icon' },
+	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-copy' }))),
+	
+	
+	                                                                                        React.createElement(_reactTooltip2.default, { 'data-for': 'copy_link_address' + link.id, place: 'top', type: 'dark', effect: 'solid' }),
+	
+	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
+	                                                                                            React.createElement('button', {
+	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443',
+	                                                                                                    id: 'rename_link' + link.id,
+	                                                                                                    onClick: function onClick() {link.edit = !link.edit;},
+	                                                                                                    className: 'btn btn-default copy_icon' },
+	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit' }))),
+	
+	
+	                                                                                        React.createElement(_reactTooltip2.default, { 'data-for': 'rename_link' + link.id, place: 'top', type: 'dark', effect: 'solid' }),
+	
+	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
+	                                                                                            React.createElement('button', {
+	                                                                                                    'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443',
+	                                                                                                    id: 'delete_link' + link.id,
+	                                                                                                    style: { color: '#fff' },
+	                                                                                                    onClick: function onClick() {_this5.deleteLink(link);},
+	                                                                                                    className: 'btn btn-danger' },
+	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
+	
+	
+	                                                                                        React.createElement(_reactTooltip2.default, { 'data-for': 'delete_link' + link.id, place: 'top', type: 'dark', effect: 'solid' }),
+	
+	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
+	                                                                                            key !== 0 ?
+	                                                                                            React.createElement('button', {
+	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u0432\u0435\u0440\u0445',
+	                                                                                                    id: 'move_up_link' + link.id,
+	                                                                                                    onClick: function onClick() {
+	                                                                                                        category.links = (0, _sort.moveInArray)(category.links, key, key - 1);
+	                                                                                                        _this5.onLinkSort(category);
+	                                                                                                    },
+	                                                                                                    className: 'btn btn-default' },
+	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-triangle-top' })) :
+	
+	                                                                                            null,
+	                                                                                            key + 1 !== category.links.length ?
+	                                                                                            React.createElement('button', {
+	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0437',
+	                                                                                                    id: 'move_down_link' + link.id,
+	                                                                                                    onClick: function onClick() {
+	                                                                                                        category.links = (0, _sort.moveInArray)(category.links, key, key + 1);
+	                                                                                                        _this5.onLinkSort(category);
+	                                                                                                    },
+	                                                                                                    className: 'btn btn-default' },
+	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-triangle-bottom' })) :
+	
+	                                                                                            null),
+	
+	                                                                                        React.createElement(_reactTooltip2.default, { 'data-for': 'move_up_link' + link.id, place: 'top', type: 'dark', effect: 'solid' }),
+	                                                                                        React.createElement(_reactTooltip2.default, { 'data-for': 'move_down_link' + link.id, place: 'top', type: 'dark', effect: 'solid' }))) :
+	
+	
+	                                                                                null))));
 	
 	
 	
 	
-	                                                                    }))));
+	                                                                {/*return (*/}
+	                                                                {/*<div key={key} category={category} link={link}>*/}
+	                                                                {/*<div className="row">*/}
+	                                                                {/*<div className="col-md-9 link_name">*/}
+	                                                                {/*</div>*/}
+	                                                                {/*<div className="col-md-1"></div>*/}
+	                                                                {/*<div className="col-md-1">*/}
+	                                                                {/*<span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>*/}
+	                                                                {/*</div>*/}
+	                                                                {/*</div>*/}
+	                                                                {/*</div>*/}
+	                                                                {/*)*/}
+	                                                            })));
 	
 	
-	
-	                                                    }))));
-	
+	                                                })));
 	
 	
 	                                    }
@@ -49807,7 +49941,6 @@
 	                                            var editorState = _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(JSON.parse(active_link.text)), _editor.DECORATORS);
 	                                            text = (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent(), options);
 	                                        } catch (err) {
-	                                            console.log(err);
 	                                            text = '';
 	                                        }
 	                                        return (
@@ -49830,7 +49963,7 @@
 	                                                    if (!category.hidden) {
 	                                                        return (
 	                                                            React.createElement('div', { key: key, className: category.hidden ? 'hidden_links' : '' },
-	                                                                React.createElement('h4', { className: 'table_header_text' },
+	                                                                React.createElement('span', { className: 'table_header_text' },
 	                                                                    React.createElement('div', { className: 'row' },
 	                                                                        React.createElement('div', { className: 'col-md-12' },
 	                                                                            category.name))),
@@ -50010,7 +50143,7 @@
 	
 	        _this11.state = {
 	            text: _this11.props.text,
-	            edit: false,
+	            edit: props.edit ? props.edit : false,
 	            key: null,
 	
 	            click_timer: null,
@@ -50018,7 +50151,7 @@
 	
 	    }_createClass(EditableText, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
-	            this.setState({ text: props.text, edit: false });
+	            this.setState({ text: props.text, edit: props.edit ? props.edit : false });
 	        } }, { key: 'clearTimer', value: function clearTimer()
 	        {
 	            var timer = this.state.timer;
@@ -50042,49 +50175,45 @@
 	                this.props.onClick(this.props.object);
 	            }
 	        } }, { key: 'doDoubleClickAction', value: function doDoubleClickAction()
-	        {var _this12 = this;
-	            this.clearTimer();
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { prevent: { $set: false } }), function () {
-	                return _this12.setEdit(true);
-	            });
+	        {
+	            // this.clearTimer();
+	            // this.setState(update(this.state, {prevent: {$set: false}}), () => {
+	            //     return this.setEdit(true)
+	            // });
 	        } }, { key: 'handleClick', value: function handleClick()
 	        {
-	            var self = this;
-	            this.clearTimer();
-	
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, {
-	                timer: {
-	                    $set: setTimeout(function () {
-	                        if (!self.state.prevent) {
-	                            self.doClickAction();
-	                        }
-	                        self.setState((0, _reactAddonsUpdate2.default)(self.state, { prevent: { $set: false } }));
-	                    }, this.delay) } }));
-	
-	
+	            // let self = this;
+	            // this.clearTimer();
+	            //
+	            // this.setState(update(this.state, {
+	            //     timer: {
+	            //         $set: setTimeout(function() {
+	            //             if (!self.state.prevent) {
+	            //                 self.doClickAction();
+	            //             }
+	            //             self.setState(update(self.state, {prevent: {$set: false}}));
+	            //         }, this.delay)
+	            //     }
+	            // }))
 	        } }, { key: 'handleDoubleClick', value: function handleDoubleClick()
-	        {var _this13 = this;
-	            this.clearTimer();
-	
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { prevent: { $set: true } }), function () {
-	                return _this13.doDoubleClickAction();
-	            });
+	        {
+	            // this.clearTimer();
+	            //
+	            // this.setState(update(this.state, {prevent: {$set: true}}), () => {
+	            //     return this.doDoubleClickAction();
+	            // });
 	        } }, { key: 'render', value: function render()
 	
-	        {var _this14 = this;var
+	        {var _this12 = this;var
 	            settings = this.props.settings;
 	            return (
 	                React.createElement('div', null,
 	                    !this.state.edit ?
-	                    React.createElement('span', { className: 'copy_icon',
-	                            'data-link': this.props.data_link,
-	                            onClick: this.handleClick.bind(this),
-	                            onDoubleClick: this.handleDoubleClick.bind(this) },
-	                        this.props.text) :
+	                    React.createElement('span', { onClick: this.doClickAction.bind(this) }, this.props.text) :
 	
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
-	                            onChange: function onChange(e) {_this14.setState((0, _reactAddonsUpdate2.default)(_this14.state, { text: { $set: e.target.value } }));},
+	                            onChange: function onChange(e) {_this12.setState((0, _reactAddonsUpdate2.default)(_this12.state, { text: { $set: e.target.value } }));},
 	                            placeholder: settings.placeholder,
 	                            name: settings.name,
 	                            value: this.state.text,
@@ -75708,16 +75837,1247 @@
 /* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};
+	
+	var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};
+	
+	var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();
+	
+	var _class, _class2, _temp;
+	
+	/* Decoraters */
+	
+	
+	/* Utils */
+	
+	
+	/* CSS */
+	
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(32);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _classnames = __webpack_require__(290);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	var _staticMethods = __webpack_require__(469);
+	
+	var _staticMethods2 = _interopRequireDefault(_staticMethods);
+	
+	var _windowListener = __webpack_require__(471);
+	
+	var _windowListener2 = _interopRequireDefault(_windowListener);
+	
+	var _customEvent = __webpack_require__(472);
+	
+	var _customEvent2 = _interopRequireDefault(_customEvent);
+	
+	var _isCapture = __webpack_require__(473);
+	
+	var _isCapture2 = _interopRequireDefault(_isCapture);
+	
+	var _getPosition = __webpack_require__(474);
+	
+	var _getPosition2 = _interopRequireDefault(_getPosition);
+	
+	var _getTipContent = __webpack_require__(475);
+	
+	var _getTipContent2 = _interopRequireDefault(_getTipContent);
+	
+	var _aria = __webpack_require__(476);
+	
+	var _style = __webpack_require__(477);
+	
+	var _style2 = _interopRequireDefault(_style);
+	
+	function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+	
+	function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
+	
+	function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && ((typeof call === 'undefined' ? 'undefined' : _typeof(call)) === "object" || typeof call === "function") ? call : self;}
+	
+	function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof(superClass)));}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
+	
+	var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.default)(_class = (0, _customEvent2.default)(_class = (0, _isCapture2.default)(_class = (_temp = _class2 = function (_Component) {
+	  _inherits(ReactTooltip, _Component);
+	
+	  function ReactTooltip(props) {
+	    _classCallCheck(this, ReactTooltip);
+	
+	    var _this = _possibleConstructorReturn(this, (ReactTooltip.__proto__ || Object.getPrototypeOf(ReactTooltip)).call(this, props));
+	
+	    _this.state = {
+	      place: 'top', // Direction of tooltip
+	      type: 'dark', // Color theme of tooltip
+	      effect: 'float', // float or fixed
+	      show: false,
+	      border: false,
+	      placeholder: '',
+	      offset: {},
+	      extraClass: '',
+	      html: false,
+	      delayHide: 0,
+	      delayShow: 0,
+	      event: props.event || null,
+	      eventOff: props.eventOff || null,
+	      currentEvent: null, // Current mouse event
+	      currentTarget: null, // Current target of mouse event
+	      ariaProps: (0, _aria.parseAria)(props), // aria- and role attributes
+	      isEmptyTip: false,
+	      disable: false };
+	
+	
+	    _this.bind(['showTooltip', 'updateTooltip', 'hideTooltip', 'globalRebuild', 'globalShow', 'globalHide', 'onWindowResize']);
+	
+	    _this.mount = true;
+	    _this.delayShowLoop = null;
+	    _this.delayHideLoop = null;
+	    _this.intervalUpdateContent = null;
+	    return _this;
+	  }
+	
+	  /**
+	     * For unify the bind and unbind listener
+	     */
+	
+	
+	  _createClass(ReactTooltip, [{
+	    key: 'bind',
+	    value: function bind(methodArray) {
+	      var _this2 = this;
+	
+	      methodArray.forEach(function (method) {
+	        _this2[method] = _this2[method].bind(_this2);
+	      });
+	    } },
+	  {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _props = this.props;
+	      var insecure = _props.insecure;
+	      var resizeHide = _props.resizeHide;
+	
+	      if (insecure) {
+	        this.setStyleHeader(); // Set the style to the <link>
+	      }
+	      this.bindListener(); // Bind listener for tooltip
+	      this.bindWindowEvents(resizeHide); // Bind global event for static method
+	    } },
+	  {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(props) {
+	      var ariaProps = this.state.ariaProps;
+	
+	      var newAriaProps = (0, _aria.parseAria)(props);
+	
+	      var isChanged = Object.keys(newAriaProps).some(function (props) {
+	        return newAriaProps[props] !== ariaProps[props];
+	      });
+	      if (isChanged) {
+	        this.setState({ ariaProps: newAriaProps });
+	      }
+	    } },
+	  {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.mount = false;
+	
+	      this.clearTimer();
+	
+	      this.unbindListener();
+	      this.removeScrollListener();
+	      this.unbindWindowEvents();
+	    }
+	
+	    /**
+	       * Pick out corresponded target elements
+	       */ },
+	
+	  {
+	    key: 'getTargetArray',
+	    value: function getTargetArray(id) {
+	      var targetArray = void 0;
+	
+	      if (!id) {
+	        targetArray = document.querySelectorAll('[data-tip]:not([data-for])');
+	      } else {
+	        targetArray = document.querySelectorAll('[data-tip][data-for="' + id + '"]');
+	      }
+	
+	      // targetArray is a NodeList, convert it to a real array
+	      // I hope I can use Object.values...
+	      return Object.keys(targetArray).filter(function (key) {
+	        return key !== 'length';
+	      }).map(function (key) {
+	        return targetArray[key];
+	      });
+	    }
+	
+	    /**
+	       * Bind listener to the target elements
+	       * These listeners used to trigger showing or hiding the tooltip
+	       */ },
+	
+	  {
+	    key: 'bindListener',
+	    value: function bindListener() {
+	      var _this3 = this;
+	
+	      var _props2 = this.props;
+	      var id = _props2.id;
+	      var globalEventOff = _props2.globalEventOff;
+	
+	      var targetArray = this.getTargetArray(id);
+	
+	      targetArray.forEach(function (target) {
+	        var isCaptureMode = _this3.isCapture(target);
+	        if (target.getAttribute('currentItem') === null) {
+	          target.setAttribute('currentItem', 'false');
+	        }
+	        _this3.unbindBasicListener(target);
+	
+	        if (_this3.isCustomEvent(target)) {
+	          _this3.customBindListener(target);
+	          return;
+	        }
+	
+	        target.addEventListener('mouseenter', _this3.showTooltip, isCaptureMode);
+	        if (_this3.state.effect === 'float') {
+	          target.addEventListener('mousemove', _this3.updateTooltip, isCaptureMode);
+	        }
+	        target.addEventListener('mouseleave', _this3.hideTooltip, isCaptureMode);
+	      });
+	
+	      // Global event to hide tooltip
+	      if (globalEventOff) {
+	        window.removeEventListener(globalEventOff, this.hideTooltip);
+	        window.addEventListener(globalEventOff, this.hideTooltip, false);
+	      }
+	    }
+	
+	    /**
+	       * Unbind listeners on target elements
+	       */ },
+	
+	  {
+	    key: 'unbindListener',
+	    value: function unbindListener() {
+	      var _this4 = this;
+	
+	      var _props3 = this.props;
+	      var id = _props3.id;
+	      var globalEventOff = _props3.globalEventOff;
+	
+	      var targetArray = this.getTargetArray(id);
+	      targetArray.forEach(function (target) {
+	        _this4.unbindBasicListener(target);
+	        if (_this4.isCustomEvent(target)) _this4.customUnbindListener(target);
+	      });
+	
+	      if (globalEventOff) window.removeEventListener(globalEventOff, this.hideTooltip);
+	    }
+	
+	    /**
+	       * Invoke this before bind listener and ummount the compont
+	       * it is necessary to invloke this even when binding custom event
+	       * so that the tooltip can switch between custom and default listener
+	       */ },
+	
+	  {
+	    key: 'unbindBasicListener',
+	    value: function unbindBasicListener(target) {
+	      var isCaptureMode = this.isCapture(target);
+	      target.removeEventListener('mouseenter', this.showTooltip, isCaptureMode);
+	      target.removeEventListener('mousemove', this.updateTooltip, isCaptureMode);
+	      target.removeEventListener('mouseleave', this.hideTooltip, isCaptureMode);
+	    }
+	
+	    /**
+	       * When mouse enter, show the tooltip
+	       */ },
+	
+	  {
+	    key: 'showTooltip',
+	    value: function showTooltip(e, isGlobalCall) {
+	      var _this5 = this;
+	
+	      if (isGlobalCall) {
+	        // Don't trigger other elements belongs to other ReactTooltip
+	        var targetArray = this.getTargetArray(this.props.id);
+	        var isMyElement = targetArray.some(function (ele) {
+	          return ele === e.currentTarget;
+	        });
+	        if (!isMyElement || this.state.show) return;
+	      }
+	      // Get the tooltip content
+	      // calculate in this phrase so that tip width height can be detected
+	      var _props4 = this.props;
+	      var children = _props4.children;
+	      var multiline = _props4.multiline;
+	      var getContent = _props4.getContent;
+	
+	      var originTooltip = e.currentTarget.getAttribute('data-tip');
+	      var isMultiline = e.currentTarget.getAttribute('data-multiline') || multiline || false;
+	
+	      // Generate tootlip content
+	      var content = void 0;
+	      if (getContent) {
+	        if (Array.isArray(getContent)) {
+	          content = getContent[0] && getContent[0]();
+	        } else {
+	          content = getContent();
+	        }
+	      }
+	      var placeholder = (0, _getTipContent2.default)(originTooltip, children, content, isMultiline);
+	      var isEmptyTip = typeof placeholder === 'string' && placeholder === '' || placeholder === null;
+	
+	      // If it is focus event or called by ReactTooltip.show, switch to `solid` effect
+	      var switchToSolid = e instanceof window.FocusEvent || isGlobalCall;
+	
+	      // if it need to skip adding hide listener to scroll
+	      var scrollHide = true;
+	      if (e.currentTarget.getAttribute('data-scroll-hide')) {
+	        scrollHide = e.currentTarget.getAttribute('data-scroll-hide') === 'true';
+	      } else if (this.props.scrollHide != null) {
+	        scrollHide = this.props.scrollHide;
+	      }
+	
+	      this.setState({
+	        placeholder: placeholder,
+	        isEmptyTip: isEmptyTip,
+	        place: e.currentTarget.getAttribute('data-place') || this.props.place || 'top',
+	        type: e.currentTarget.getAttribute('data-type') || this.props.type || 'dark',
+	        effect: switchToSolid && 'solid' || e.currentTarget.getAttribute('data-effect') || this.props.effect || 'float',
+	        offset: e.currentTarget.getAttribute('data-offset') || this.props.offset || {},
+	        html: e.currentTarget.getAttribute('data-html') ? e.currentTarget.getAttribute('data-html') === 'true' : this.props.html || false,
+	        delayShow: e.currentTarget.getAttribute('data-delay-show') || this.props.delayShow || 0,
+	        delayHide: e.currentTarget.getAttribute('data-delay-hide') || this.props.delayHide || 0,
+	        border: e.currentTarget.getAttribute('data-border') ? e.currentTarget.getAttribute('data-border') === 'true' : this.props.border || false,
+	        extraClass: e.currentTarget.getAttribute('data-class') || this.props.class || '',
+	        disable: e.currentTarget.getAttribute('data-tip-disable') ? e.currentTarget.getAttribute('data-tip-disable') === 'true' : this.props.disable || false },
+	      function () {
+	        if (scrollHide) _this5.addScrollListener(e);
+	        _this5.updateTooltip(e);
+	
+	        if (getContent && Array.isArray(getContent)) {
+	          _this5.intervalUpdateContent = setInterval(function () {
+	            if (_this5.mount) {
+	              var _getContent = _this5.props.getContent;
+	
+	              var _placeholder = (0, _getTipContent2.default)(originTooltip, _getContent[0](), isMultiline);
+	              var _isEmptyTip = typeof _placeholder === 'string' && _placeholder === '';
+	              _this5.setState({
+	                placeholder: _placeholder,
+	                isEmptyTip: _isEmptyTip });
+	
+	            }
+	          }, getContent[1]);
+	        }
+	      });
+	    }
+	
+	    /**
+	       * When mouse hover, updatetooltip
+	       */ },
+	
+	  {
+	    key: 'updateTooltip',
+	    value: function updateTooltip(e) {
+	      var _this6 = this;
+	
+	      var _state = this.state;
+	      var delayShow = _state.delayShow;
+	      var show = _state.show;
+	      var isEmptyTip = _state.isEmptyTip;
+	      var disable = _state.disable;
+	      var afterShow = this.props.afterShow;
+	      var placeholder = this.state.placeholder;
+	
+	      var delayTime = show ? 0 : parseInt(delayShow, 10);
+	      var eventTarget = e.currentTarget;
+	
+	      if (isEmptyTip || disable) return; // if the tooltip is empty, disable the tooltip
+	      var updateState = function updateState() {
+	        if (Array.isArray(placeholder) && placeholder.length > 0 || placeholder) {
+	          (function () {
+	            var isInvisible = !_this6.state.show;
+	            _this6.setState({
+	              currentEvent: e,
+	              currentTarget: eventTarget,
+	              show: true },
+	            function () {
+	              _this6.updatePosition();
+	              if (isInvisible && afterShow) afterShow();
+	            });
+	          })();
+	        }
+	      };
+	
+	      clearTimeout(this.delayShowLoop);
+	      if (delayShow) {
+	        this.delayShowLoop = setTimeout(updateState, delayTime);
+	      } else {
+	        updateState();
+	      }
+	    }
+	
+	    /**
+	       * When mouse leave, hide tooltip
+	       */ },
+	
+	  {
+	    key: 'hideTooltip',
+	    value: function hideTooltip(e, hasTarget) {
+	      var _this7 = this;
+	
+	      var _state2 = this.state;
+	      var delayHide = _state2.delayHide;
+	      var isEmptyTip = _state2.isEmptyTip;
+	      var disable = _state2.disable;
+	      var afterHide = this.props.afterHide;
+	
+	      if (!this.mount) return;
+	      if (isEmptyTip || disable) return; // if the tooltip is empty, disable the tooltip
+	      if (hasTarget) {
+	        // Don't trigger other elements belongs to other ReactTooltip
+	        var targetArray = this.getTargetArray(this.props.id);
+	        var isMyElement = targetArray.some(function (ele) {
+	          return ele === e.currentTarget;
+	        });
+	        if (!isMyElement || !this.state.show) return;
+	      }
+	      var resetState = function resetState() {
+	        var isVisible = _this7.state.show;
+	        _this7.setState({
+	          show: false },
+	        function () {
+	          _this7.removeScrollListener();
+	          if (isVisible && afterHide) afterHide();
+	        });
+	      };
+	
+	      this.clearTimer();
+	      if (delayHide) {
+	        this.delayHideLoop = setTimeout(resetState, parseInt(delayHide, 10));
+	      } else {
+	        resetState();
+	      }
+	    }
+	
+	    /**
+	       * Add scroll eventlistener when tooltip show
+	       * automatically hide the tooltip when scrolling
+	       */ },
+	
+	  {
+	    key: 'addScrollListener',
+	    value: function addScrollListener(e) {
+	      var isCaptureMode = this.isCapture(e.currentTarget);
+	      window.addEventListener('scroll', this.hideTooltip, isCaptureMode);
+	    } },
+	  {
+	    key: 'removeScrollListener',
+	    value: function removeScrollListener() {
+	      window.removeEventListener('scroll', this.hideTooltip);
+	    }
+	
+	    // Calculation the position
+	  },
+	  {
+	    key: 'updatePosition',
+	    value: function updatePosition() {
+	      var _this8 = this;
+	
+	      var _state3 = this.state;
+	      var currentEvent = _state3.currentEvent;
+	      var currentTarget = _state3.currentTarget;
+	      var place = _state3.place;
+	      var effect = _state3.effect;
+	      var offset = _state3.offset;
+	
+	      var node = _reactDom2.default.findDOMNode(this);
+	      var result = (0, _getPosition2.default)(currentEvent, currentTarget, node, place, effect, offset);
+	
+	      if (result.isNewState) {
+	        // Switch to reverse placement
+	        return this.setState(result.newState, function () {
+	          _this8.updatePosition();
+	        });
+	      }
+	      // Set tooltip position
+	      node.style.left = result.position.left + 'px';
+	      node.style.top = result.position.top + 'px';
+	    }
+	
+	    /**
+	       * Set style tag in header
+	       * in this way we can insert default css
+	       */ },
+	
+	  {
+	    key: 'setStyleHeader',
+	    value: function setStyleHeader() {
+	      if (!document.getElementsByTagName('head')[0].querySelector('style[id="react-tooltip"]')) {
+	        var tag = document.createElement('style');
+	        tag.id = 'react-tooltip';
+	        tag.innerHTML = _style2.default;
+	        document.getElementsByTagName('head')[0].appendChild(tag);
+	      }
+	    }
+	
+	    /**
+	       * CLear all kinds of timeout of interval
+	       */ },
+	
+	  {
+	    key: 'clearTimer',
+	    value: function clearTimer() {
+	      clearTimeout(this.delayShowLoop);
+	      clearTimeout(this.delayHideLoop);
+	      clearInterval(this.intervalUpdateContent);
+	    } },
+	  {
+	    key: 'render',
+	    value: function render() {
+	      var _state4 = this.state;
+	      var placeholder = _state4.placeholder;
+	      var extraClass = _state4.extraClass;
+	      var html = _state4.html;
+	      var ariaProps = _state4.ariaProps;
+	      var disable = _state4.disable;
+	      var isEmptyTip = _state4.isEmptyTip;
+	
+	      var tooltipClass = (0, _classnames2.default)('__react_component_tooltip', { 'show': this.state.show && !disable && !isEmptyTip }, { 'border': this.state.border }, { 'place-top': this.state.place === 'top' }, { 'place-bottom': this.state.place === 'bottom' }, { 'place-left': this.state.place === 'left' }, { 'place-right': this.state.place === 'right' }, { 'type-dark': this.state.type === 'dark' }, { 'type-success': this.state.type === 'success' }, { 'type-warning': this.state.type === 'warning' }, { 'type-error': this.state.type === 'error' }, { 'type-info': this.state.type === 'info' }, { 'type-light': this.state.type === 'light' });
+	      if (html) {
+	        return _react2.default.createElement('div', _extends({ className: tooltipClass + ' ' + extraClass },
+	        ariaProps, {
+	          'data-id': 'tooltip',
+	          dangerouslySetInnerHTML: { __html: placeholder } }));
+	      } else {
+	        return _react2.default.createElement(
+	        'div',
+	        _extends({ className: tooltipClass + ' ' + extraClass },
+	        ariaProps, {
+	          'data-id': 'tooltip' }),
+	        placeholder);
+	
+	      }
+	    } }]);
+	
+	
+	  return ReactTooltip;
+	}(_react.Component), _class2.propTypes = {
+	  children: _react.PropTypes.any,
+	  place: _react.PropTypes.string,
+	  type: _react.PropTypes.string,
+	  effect: _react.PropTypes.string,
+	  offset: _react.PropTypes.object,
+	  multiline: _react.PropTypes.bool,
+	  border: _react.PropTypes.bool,
+	  insecure: _react.PropTypes.bool,
+	  class: _react.PropTypes.string,
+	  id: _react.PropTypes.string,
+	  html: _react.PropTypes.bool,
+	  delayHide: _react.PropTypes.number,
+	  delayShow: _react.PropTypes.number,
+	  event: _react.PropTypes.string,
+	  eventOff: _react.PropTypes.string,
+	  watchWindow: _react.PropTypes.bool,
+	  isCapture: _react.PropTypes.bool,
+	  globalEventOff: _react.PropTypes.string,
+	  getContent: _react.PropTypes.any,
+	  afterShow: _react.PropTypes.func,
+	  afterHide: _react.PropTypes.func,
+	  disable: _react.PropTypes.bool,
+	  scrollHide: _react.PropTypes.bool,
+	  resizeHide: _react.PropTypes.bool },
+	_class2.defaultProps = {
+	  insecure: true,
+	  resizeHide: true },
+	_temp)) || _class) || _class) || _class) || _class;
+	
+	/* export default not fit for standalone, it will exports {default:...} */
+	
+	
+	module.exports = ReactTooltip;
+
+/***/ },
+/* 469 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	
+	exports.default = function (target) {
+	  /**
+	                                      * Hide all tooltip
+	                                      * @trigger ReactTooltip.hide()
+	                                      */
+	  target.hide = function (target) {
+	    dispatchGlobalEvent(_constant2.default.GLOBAL.HIDE, { target: target });
+	  };
+	
+	  /**
+	      * Rebuild all tooltip
+	      * @trigger ReactTooltip.rebuild()
+	      */
+	  target.rebuild = function () {
+	    dispatchGlobalEvent(_constant2.default.GLOBAL.REBUILD);
+	  };
+	
+	  /**
+	      * Show specific tooltip
+	      * @trigger ReactTooltip.show()
+	      */
+	  target.show = function (target) {
+	    dispatchGlobalEvent(_constant2.default.GLOBAL.SHOW, { target: target });
+	  };
+	
+	  target.prototype.globalRebuild = function () {
+	    if (this.mount) {
+	      this.unbindListener();
+	      this.bindListener();
+	    }
+	  };
+	
+	  target.prototype.globalShow = function (event) {
+	    if (this.mount) {
+	      // Create a fake event, specific show will limit the type to `solid`
+	      // only `float` type cares e.clientX e.clientY
+	      var e = { currentTarget: event.detail.target };
+	      this.showTooltip(e, true);
+	    }
+	  };
+	
+	  target.prototype.globalHide = function (event) {
+	    if (this.mount) {
+	      var hasTarget = event && event.detail && event.detail.target && true || false;
+	      this.hideTooltip({ currentTarget: hasTarget && event.detail.target }, hasTarget);
+	    }
+	  };
+	};
+	
+	var _constant = __webpack_require__(470);
+	
+	var _constant2 = _interopRequireDefault(_constant);
+	
+	function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+	
+	var dispatchGlobalEvent = function dispatchGlobalEvent(eventName, opts) {
+	  // Compatibale with IE
+	  // @see http://stackoverflow.com/questions/26596123/internet-explorer-9-10-11-event-constructor-doesnt-work
+	  var event = void 0;
+	
+	  if (typeof window.CustomEvent === 'function') {
+	    event = new window.CustomEvent(eventName, { detail: opts });
+	  } else {
+	    event = document.createEvent('Event');
+	    event.initEvent(eventName, false, true);
+	    event.detail = opts;
+	  }
+	
+	  window.dispatchEvent(event);
+	}; /**
+	    * Static methods for react-tooltip
+	    */
+
+/***/ },
+/* 470 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	exports.default = {
+	
+	  GLOBAL: {
+	    HIDE: '__react_tooltip_hide_event',
+	    REBUILD: '__react_tooltip_rebuild_event',
+	    SHOW: '__react_tooltip_show_event' } };
+
+/***/ },
+/* 471 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	
+	exports.default = function (target) {
+	  target.prototype.bindWindowEvents = function (resizeHide) {
+	    // ReactTooltip.hide
+	    window.removeEventListener(_constant2.default.GLOBAL.HIDE, this.globalHide);
+	    window.addEventListener(_constant2.default.GLOBAL.HIDE, this.globalHide, false);
+	
+	    // ReactTooltip.rebuild
+	    window.removeEventListener(_constant2.default.GLOBAL.REBUILD, this.globalRebuild);
+	    window.addEventListener(_constant2.default.GLOBAL.REBUILD, this.globalRebuild, false);
+	
+	    // ReactTooltip.show
+	    window.removeEventListener(_constant2.default.GLOBAL.SHOW, this.globalShow);
+	    window.addEventListener(_constant2.default.GLOBAL.SHOW, this.globalShow, false);
+	
+	    // Resize
+	    if (resizeHide) {
+	      window.removeEventListener('resize', this.onWindowResize);
+	      window.addEventListener('resize', this.onWindowResize, false);
+	    }
+	  };
+	
+	  target.prototype.unbindWindowEvents = function () {
+	    window.removeEventListener(_constant2.default.GLOBAL.HIDE, this.globalHide);
+	    window.removeEventListener(_constant2.default.GLOBAL.REBUILD, this.globalRebuild);
+	    window.removeEventListener(_constant2.default.GLOBAL.SHOW, this.globalShow);
+	    window.removeEventListener('resize', this.onWindowResize);
+	  };
+	
+	  /**
+	      * invoked by resize event of window
+	      */
+	  target.prototype.onWindowResize = function () {
+	    if (!this.mount) return;
+	    this.hideTooltip();
+	  };
+	};
+	
+	var _constant = __webpack_require__(470);
+	
+	var _constant2 = _interopRequireDefault(_constant);
+	
+	function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/***/ },
+/* 472 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	
+	exports.default = function (target) {
+	  target.prototype.isCustomEvent = function (ele) {
+	    var event = this.state.event;
+	
+	    return event || !!ele.getAttribute('data-event');
+	  };
+	
+	  /* Bind listener for custom event */
+	  target.prototype.customBindListener = function (ele) {
+	    var _this = this;
+	
+	    var _state = this.state;
+	    var event = _state.event;
+	    var eventOff = _state.eventOff;
+	
+	    var dataEvent = ele.getAttribute('data-event') || event;
+	    var dataEventOff = ele.getAttribute('data-event-off') || eventOff;
+	
+	    dataEvent.split(' ').forEach(function (event) {
+	      ele.removeEventListener(event, customListener);
+	      customListener = checkStatus.bind(_this, dataEventOff);
+	      ele.addEventListener(event, customListener, false);
+	    });
+	    if (dataEventOff) {
+	      dataEventOff.split(' ').forEach(function (event) {
+	        ele.removeEventListener(event, _this.hideTooltip);
+	        ele.addEventListener(event, _this.hideTooltip, false);
+	      });
+	    }
+	  };
+	
+	  /* Unbind listener for custom event */
+	  target.prototype.customUnbindListener = function (ele) {
+	    var _state2 = this.state;
+	    var event = _state2.event;
+	    var eventOff = _state2.eventOff;
+	
+	    var dataEvent = event || ele.getAttribute('data-event');
+	    var dataEventOff = eventOff || ele.getAttribute('data-event-off');
+	
+	    ele.removeEventListener(dataEvent, customListener);
+	    if (dataEventOff) ele.removeEventListener(dataEventOff, this.hideTooltip);
+	  };
+	};
+	
+	/**
+	    * Custom events to control showing and hiding of tooltip
+	    *
+	    * @attributes
+	    * - `event` {String}
+	    * - `eventOff` {String}
+	    */
+	
+	var checkStatus = function checkStatus(dataEventOff, e) {
+	  var show = this.state.show;
+	  var id = this.props.id;
+	
+	  var dataIsCapture = e.currentTarget.getAttribute('data-iscapture');
+	  var isCapture = dataIsCapture && dataIsCapture === 'true' || this.props.isCapture;
+	  var currentItem = e.currentTarget.getAttribute('currentItem');
+	
+	  if (!isCapture) e.stopPropagation();
+	  if (show && currentItem === 'true') {
+	    if (!dataEventOff) this.hideTooltip(e);
+	  } else {
+	    e.currentTarget.setAttribute('currentItem', 'true');
+	    setUntargetItems(e.currentTarget, this.getTargetArray(id));
+	    this.showTooltip(e);
+	  }
+	};
+	
+	var setUntargetItems = function setUntargetItems(currentTarget, targetArray) {
+	  for (var i = 0; i < targetArray.length; i++) {
+	    if (currentTarget !== targetArray[i]) {
+	      targetArray[i].setAttribute('currentItem', 'false');
+	    } else {
+	      targetArray[i].setAttribute('currentItem', 'true');
+	    }
+	  }
+	};
+	
+	var customListener = void 0;
+
+/***/ },
+/* 473 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	
+	exports.default = function (target) {
+	  target.prototype.isCapture = function (currentTarget) {
+	    var dataIsCapture = currentTarget.getAttribute('data-iscapture');
+	    return dataIsCapture && dataIsCapture === 'true' || this.props.isCapture || false;
+	  };
+	};
+
+/***/ },
+/* 474 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	
+	exports.default = function (e, target, node, place, effect, offset) {
+	  var tipWidth = node.clientWidth;
+	  var tipHeight = node.clientHeight;
+	
+	  var _getCurrentOffset = getCurrentOffset(e, target, effect);
+	
+	  var mouseX = _getCurrentOffset.mouseX;
+	  var mouseY = _getCurrentOffset.mouseY;
+	
+	  var defaultOffset = getDefaultPosition(effect, target.clientWidth, target.clientHeight, tipWidth, tipHeight);
+	
+	  var _calculateOffset = calculateOffset(offset);
+	
+	  var extraOffset_X = _calculateOffset.extraOffset_X;
+	  var extraOffset_Y = _calculateOffset.extraOffset_Y;
+	
+	
+	  var windowWidth = window.innerWidth;
+	  var windowHeight = window.innerHeight;
+	
+	  var _getParent = getParent(node);
+	
+	  var parentTop = _getParent.parentTop;
+	  var parentLeft = _getParent.parentLeft;
+	
+	  // Get the edge offset of the tooltip
+	
+	  var getTipOffsetLeft = function getTipOffsetLeft(place) {
+	    var offset_X = defaultOffset[place].l;
+	    return mouseX + offset_X + extraOffset_X;
+	  };
+	  var getTipOffsetRight = function getTipOffsetRight(place) {
+	    var offset_X = defaultOffset[place].r;
+	    return mouseX + offset_X + extraOffset_X;
+	  };
+	  var getTipOffsetTop = function getTipOffsetTop(place) {
+	    var offset_Y = defaultOffset[place].t;
+	    return mouseY + offset_Y + extraOffset_Y;
+	  };
+	  var getTipOffsetBottom = function getTipOffsetBottom(place) {
+	    var offset_Y = defaultOffset[place].b;
+	    return mouseY + offset_Y + extraOffset_Y;
+	  };
+	
+	  // Judge if the tooltip has over the window(screen)
+	  var outsideVertical = function outsideVertical() {
+	    var result = false;
+	    var newPlace = void 0;
+	    if (getTipOffsetTop('left') < 0 && getTipOffsetBottom('left') <= windowHeight && getTipOffsetBottom('bottom') <= windowHeight) {
+	      result = true;
+	      newPlace = 'bottom';
+	    } else if (getTipOffsetBottom('left') > windowHeight && getTipOffsetTop('left') >= 0 && getTipOffsetTop('top') >= 0) {
+	      result = true;
+	      newPlace = 'top';
+	    }
+	    return { result: result, newPlace: newPlace };
+	  };
+	  var outsideLeft = function outsideLeft() {
+	    var _outsideVertical = outsideVertical();
+	
+	    var result = _outsideVertical.result;
+	    var newPlace = _outsideVertical.newPlace; // Deal with vertical as first priority
+	
+	    if (result && outsideHorizontal().result) {
+	      return { result: false }; // No need to change, if change to vertical will out of space
+	    }
+	    if (!result && getTipOffsetLeft('left') < 0 && getTipOffsetRight('right') <= windowWidth) {
+	      result = true; // If vertical ok, but let out of side and right won't out of side
+	      newPlace = 'right';
+	    }
+	    return { result: result, newPlace: newPlace };
+	  };
+	  var outsideRight = function outsideRight() {
+	    var _outsideVertical2 = outsideVertical();
+	
+	    var result = _outsideVertical2.result;
+	    var newPlace = _outsideVertical2.newPlace;
+	
+	    if (result && outsideHorizontal().result) {
+	      return { result: false }; // No need to change, if change to vertical will out of space
+	    }
+	    if (!result && getTipOffsetRight('right') > windowWidth && getTipOffsetLeft('left') >= 0) {
+	      result = true;
+	      newPlace = 'left';
+	    }
+	    return { result: result, newPlace: newPlace };
+	  };
+	
+	  var outsideHorizontal = function outsideHorizontal() {
+	    var result = false;
+	    var newPlace = void 0;
+	    if (getTipOffsetLeft('top') < 0 && getTipOffsetRight('top') <= windowWidth && getTipOffsetRight('right') <= windowWidth) {
+	      result = true;
+	      newPlace = 'right';
+	    } else if (getTipOffsetRight('top') > windowWidth && getTipOffsetLeft('top') >= 0 && getTipOffsetLeft('left') >= 0) {
+	      result = true;
+	      newPlace = 'left';
+	    }
+	    return { result: result, newPlace: newPlace };
+	  };
+	  var outsideTop = function outsideTop() {
+	    var _outsideHorizontal = outsideHorizontal();
+	
+	    var result = _outsideHorizontal.result;
+	    var newPlace = _outsideHorizontal.newPlace;
+	
+	    if (result && outsideVertical().result) {
+	      return { result: false };
+	    }
+	    if (!result && getTipOffsetTop('top') < 0 && getTipOffsetBottom('bottom') <= windowHeight) {
+	      result = true;
+	      newPlace = 'bottom';
+	    }
+	    return { result: result, newPlace: newPlace };
+	  };
+	  var outsideBottom = function outsideBottom() {
+	    var _outsideHorizontal2 = outsideHorizontal();
+	
+	    var result = _outsideHorizontal2.result;
+	    var newPlace = _outsideHorizontal2.newPlace;
+	
+	    if (result && outsideVertical().result) {
+	      return { result: false };
+	    }
+	    if (!result && getTipOffsetBottom('bottom') > windowHeight && getTipOffsetTop('top') >= 0) {
+	      result = true;
+	      newPlace = 'top';
+	    }
+	    return { result: result, newPlace: newPlace };
+	  };
+	
+	  // Return new state to change the placement to the reverse if possible
+	  var outsideLeftResult = outsideLeft();
+	  var outsideRightResult = outsideRight();
+	  var outsideTopResult = outsideTop();
+	  var outsideBottomResult = outsideBottom();
+	
+	  if (place === 'left' && outsideLeftResult.result) {
+	    return {
+	      isNewState: true,
+	      newState: { place: outsideLeftResult.newPlace } };
+	
+	  } else if (place === 'right' && outsideRightResult.result) {
+	    return {
+	      isNewState: true,
+	      newState: { place: outsideRightResult.newPlace } };
+	
+	  } else if (place === 'top' && outsideTopResult.result) {
+	    return {
+	      isNewState: true,
+	      newState: { place: outsideTopResult.newPlace } };
+	
+	  } else if (place === 'bottom' && outsideBottomResult.result) {
+	    return {
+	      isNewState: true,
+	      newState: { place: outsideBottomResult.newPlace } };
+	
+	  }
+	
+	  // Return tooltip offset position
+	  return {
+	    isNewState: false,
+	    position: {
+	      left: parseInt(getTipOffsetLeft(place) - parentLeft, 10),
+	      top: parseInt(getTipOffsetTop(place) - parentTop, 10) } };
+	
+	
+	};
+	
+	// Get current mouse offset
+	var getCurrentOffset = function getCurrentOffset(e, currentTarget, effect) {
+	  var boundingClientRect = currentTarget.getBoundingClientRect();
+	  var targetTop = boundingClientRect.top;
+	  var targetLeft = boundingClientRect.left;
+	  var targetWidth = currentTarget.clientWidth;
+	  var targetHeight = currentTarget.clientHeight;
+	
+	  if (effect === 'float') {
+	    return {
+	      mouseX: e.clientX,
+	      mouseY: e.clientY };
+	
+	  }
+	  return {
+	    mouseX: targetLeft + targetWidth / 2,
+	    mouseY: targetTop + targetHeight / 2 };
+	
+	};
+	
+	// List all possibility of tooltip final offset
+	// This is useful in judging if it is necessary for tooltip to switch position when out of window
+	/**
+	 * Calculate the position of tooltip
+	 *
+	 * @params
+	 * - `e` {Event} the event of current mouse
+	 * - `target` {Element} the currentTarget of the event
+	 * - `node` {DOM} the react-tooltip object
+	 * - `place` {String} top / right / bottom / left
+	 * - `effect` {String} float / solid
+	 * - `offset` {Object} the offset to default position
+	 *
+	 * @return {Object
+	 * - `isNewState` {Bool} required
+	 * - `newState` {Object}
+	 * - `position` {OBject} {left: {Number}, top: {Number}}
+	 */
+	var getDefaultPosition = function getDefaultPosition(effect, targetWidth, targetHeight, tipWidth, tipHeight) {
+	  var top = void 0;
+	  var right = void 0;
+	  var bottom = void 0;
+	  var left = void 0;
+	  var disToMouse = 3;
+	  var triangleHeight = 2;
+	  var cursorHeight = 12; // Optimize for float bottom only, cause the cursor will hide the tooltip
+	
+	  if (effect === 'float') {
+	    top = {
+	      l: -(tipWidth / 2),
+	      r: tipWidth / 2,
+	      t: -(tipHeight + disToMouse + triangleHeight),
+	      b: -disToMouse };
+	
+	    bottom = {
+	      l: -(tipWidth / 2),
+	      r: tipWidth / 2,
+	      t: disToMouse + cursorHeight,
+	      b: tipHeight + disToMouse + triangleHeight + cursorHeight };
+	
+	    left = {
+	      l: -(tipWidth + disToMouse + triangleHeight),
+	      r: -disToMouse,
+	      t: -(tipHeight / 2),
+	      b: tipHeight / 2 };
+	
+	    right = {
+	      l: disToMouse,
+	      r: tipWidth + disToMouse + triangleHeight,
+	      t: -(tipHeight / 2),
+	      b: tipHeight / 2 };
+	
+	  } else if (effect === 'solid') {
+	    top = {
+	      l: -(tipWidth / 2),
+	      r: tipWidth / 2,
+	      t: -(targetHeight / 2 + tipHeight + triangleHeight),
+	      b: -(targetHeight / 2) };
+	
+	    bottom = {
+	      l: -(tipWidth / 2),
+	      r: tipWidth / 2,
+	      t: targetHeight / 2,
+	      b: targetHeight / 2 + tipHeight + triangleHeight };
+	
+	    left = {
+	      l: -(tipWidth + targetWidth / 2 + triangleHeight),
+	      r: -(targetWidth / 2),
+	      t: -(tipHeight / 2),
+	      b: tipHeight / 2 };
+	
+	    right = {
+	      l: targetWidth / 2,
+	      r: tipWidth + targetWidth / 2 + triangleHeight,
+	      t: -(tipHeight / 2),
+	      b: tipHeight / 2 };
+	
+	  }
+	
+	  return { top: top, bottom: bottom, left: left, right: right };
+	};
+	
+	// Consider additional offset into position calculation
+	var calculateOffset = function calculateOffset(offset) {
+	  var extraOffset_X = 0;
+	  var extraOffset_Y = 0;
+	
+	  if (Object.prototype.toString.apply(offset) === '[object String]') {
+	    offset = JSON.parse(offset.toString().replace(/\'/g, '\"'));
+	  }
+	  for (var key in offset) {
+	    if (key === 'top') {
+	      extraOffset_Y -= parseInt(offset[key], 10);
+	    } else if (key === 'bottom') {
+	      extraOffset_Y += parseInt(offset[key], 10);
+	    } else if (key === 'left') {
+	      extraOffset_X -= parseInt(offset[key], 10);
+	    } else if (key === 'right') {
+	      extraOffset_X += parseInt(offset[key], 10);
+	    }
+	  }
+	
+	  return { extraOffset_X: extraOffset_X, extraOffset_Y: extraOffset_Y };
+	};
+	
+	// Get the offset of the parent elements
+	var getParent = function getParent(currentTarget) {
+	  var currentParent = currentTarget;
+	  while (currentParent) {
+	    if (window.getComputedStyle(currentParent).getPropertyValue('transform') !== 'none') break;
+	    currentParent = currentParent.parentElement;
+	  }
+	
+	  var parentTop = currentParent && currentParent.getBoundingClientRect().top || 0;
+	  var parentLeft = currentParent && currentParent.getBoundingClientRect().left || 0;
+	
+	  return { parentTop: parentTop, parentLeft: parentLeft };
+	};
+
+/***/ },
+/* 475 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	
+	exports.default = function (tip, children, getContent, multiline) {
+	  if (children) return children;
+	  if (getContent !== undefined && getContent !== null) return getContent; // getContent can be 0, '', etc.
+	  if (getContent === null) return null; // Tip not exist and childern is null or undefined
+	
+	  var regexp = /<br\s*\/?>/;
+	  if (!multiline || multiline === 'false' || !regexp.test(tip)) {
+	    // No trim(), so that user can keep their input
+	    return tip;
+	  }
+	
+	  // Multiline tooltip content
+	  return tip.split(regexp).map(function (d, i) {
+	    return _react2.default.createElement(
+	    'span',
+	    { key: i, className: 'multi-line' },
+	    d);
+	
+	  });
+	};
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/***/ },
+/* 476 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	exports.parseAria = parseAria;
+	/**
+	                                * Support aria- and role in ReactTooltip
+	                                *
+	                                * @params props {Object}
+	                                * @return {Object}
+	                                */
+	function parseAria(props) {
+	  var ariaObj = {};
+	  Object.keys(props).filter(function (prop) {
+	    // aria-xxx and role is acceptable
+	    return (/(^aria-\w+$|^role$)/.test(prop));
+	
+	  }).forEach(function (prop) {
+	    ariaObj[prop] = props[prop];
+	  });
+	
+	  return ariaObj;
+	}
+
+/***/ },
+/* 477 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true });
+	
+	exports.default = '.__react_component_tooltip{border-radius:3px;display:inline-block;font-size:13px;left:-999em;opacity:0;padding:8px 21px;position:fixed;pointer-events:none;transition:opacity 0.3s ease-out;top:-999em;visibility:hidden;z-index:999}.__react_component_tooltip:before,.__react_component_tooltip:after{content:"";width:0;height:0;position:absolute}.__react_component_tooltip.show{opacity:0.9;margin-top:0px;margin-left:0px;visibility:visible}.__react_component_tooltip.type-dark{color:#fff;background-color:#222}.__react_component_tooltip.type-dark.place-top:after{border-top-color:#222;border-top-style:solid;border-top-width:6px}.__react_component_tooltip.type-dark.place-bottom:after{border-bottom-color:#222;border-bottom-style:solid;border-bottom-width:6px}.__react_component_tooltip.type-dark.place-left:after{border-left-color:#222;border-left-style:solid;border-left-width:6px}.__react_component_tooltip.type-dark.place-right:after{border-right-color:#222;border-right-style:solid;border-right-width:6px}.__react_component_tooltip.type-dark.border{border:1px solid #fff}.__react_component_tooltip.type-dark.border.place-top:before{border-top:8px solid #fff}.__react_component_tooltip.type-dark.border.place-bottom:before{border-bottom:8px solid #fff}.__react_component_tooltip.type-dark.border.place-left:before{border-left:8px solid #fff}.__react_component_tooltip.type-dark.border.place-right:before{border-right:8px solid #fff}.__react_component_tooltip.type-success{color:#fff;background-color:#8DC572}.__react_component_tooltip.type-success.place-top:after{border-top-color:#8DC572;border-top-style:solid;border-top-width:6px}.__react_component_tooltip.type-success.place-bottom:after{border-bottom-color:#8DC572;border-bottom-style:solid;border-bottom-width:6px}.__react_component_tooltip.type-success.place-left:after{border-left-color:#8DC572;border-left-style:solid;border-left-width:6px}.__react_component_tooltip.type-success.place-right:after{border-right-color:#8DC572;border-right-style:solid;border-right-width:6px}.__react_component_tooltip.type-success.border{border:1px solid #fff}.__react_component_tooltip.type-success.border.place-top:before{border-top:8px solid #fff}.__react_component_tooltip.type-success.border.place-bottom:before{border-bottom:8px solid #fff}.__react_component_tooltip.type-success.border.place-left:before{border-left:8px solid #fff}.__react_component_tooltip.type-success.border.place-right:before{border-right:8px solid #fff}.__react_component_tooltip.type-warning{color:#fff;background-color:#F0AD4E}.__react_component_tooltip.type-warning.place-top:after{border-top-color:#F0AD4E;border-top-style:solid;border-top-width:6px}.__react_component_tooltip.type-warning.place-bottom:after{border-bottom-color:#F0AD4E;border-bottom-style:solid;border-bottom-width:6px}.__react_component_tooltip.type-warning.place-left:after{border-left-color:#F0AD4E;border-left-style:solid;border-left-width:6px}.__react_component_tooltip.type-warning.place-right:after{border-right-color:#F0AD4E;border-right-style:solid;border-right-width:6px}.__react_component_tooltip.type-warning.border{border:1px solid #fff}.__react_component_tooltip.type-warning.border.place-top:before{border-top:8px solid #fff}.__react_component_tooltip.type-warning.border.place-bottom:before{border-bottom:8px solid #fff}.__react_component_tooltip.type-warning.border.place-left:before{border-left:8px solid #fff}.__react_component_tooltip.type-warning.border.place-right:before{border-right:8px solid #fff}.__react_component_tooltip.type-error{color:#fff;background-color:#BE6464}.__react_component_tooltip.type-error.place-top:after{border-top-color:#BE6464;border-top-style:solid;border-top-width:6px}.__react_component_tooltip.type-error.place-bottom:after{border-bottom-color:#BE6464;border-bottom-style:solid;border-bottom-width:6px}.__react_component_tooltip.type-error.place-left:after{border-left-color:#BE6464;border-left-style:solid;border-left-width:6px}.__react_component_tooltip.type-error.place-right:after{border-right-color:#BE6464;border-right-style:solid;border-right-width:6px}.__react_component_tooltip.type-error.border{border:1px solid #fff}.__react_component_tooltip.type-error.border.place-top:before{border-top:8px solid #fff}.__react_component_tooltip.type-error.border.place-bottom:before{border-bottom:8px solid #fff}.__react_component_tooltip.type-error.border.place-left:before{border-left:8px solid #fff}.__react_component_tooltip.type-error.border.place-right:before{border-right:8px solid #fff}.__react_component_tooltip.type-info{color:#fff;background-color:#337AB7}.__react_component_tooltip.type-info.place-top:after{border-top-color:#337AB7;border-top-style:solid;border-top-width:6px}.__react_component_tooltip.type-info.place-bottom:after{border-bottom-color:#337AB7;border-bottom-style:solid;border-bottom-width:6px}.__react_component_tooltip.type-info.place-left:after{border-left-color:#337AB7;border-left-style:solid;border-left-width:6px}.__react_component_tooltip.type-info.place-right:after{border-right-color:#337AB7;border-right-style:solid;border-right-width:6px}.__react_component_tooltip.type-info.border{border:1px solid #fff}.__react_component_tooltip.type-info.border.place-top:before{border-top:8px solid #fff}.__react_component_tooltip.type-info.border.place-bottom:before{border-bottom:8px solid #fff}.__react_component_tooltip.type-info.border.place-left:before{border-left:8px solid #fff}.__react_component_tooltip.type-info.border.place-right:before{border-right:8px solid #fff}.__react_component_tooltip.type-light{color:#222;background-color:#fff}.__react_component_tooltip.type-light.place-top:after{border-top-color:#fff;border-top-style:solid;border-top-width:6px}.__react_component_tooltip.type-light.place-bottom:after{border-bottom-color:#fff;border-bottom-style:solid;border-bottom-width:6px}.__react_component_tooltip.type-light.place-left:after{border-left-color:#fff;border-left-style:solid;border-left-width:6px}.__react_component_tooltip.type-light.place-right:after{border-right-color:#fff;border-right-style:solid;border-right-width:6px}.__react_component_tooltip.type-light.border{border:1px solid #222}.__react_component_tooltip.type-light.border.place-top:before{border-top:8px solid #222}.__react_component_tooltip.type-light.border.place-bottom:before{border-bottom:8px solid #222}.__react_component_tooltip.type-light.border.place-left:before{border-left:8px solid #222}.__react_component_tooltip.type-light.border.place-right:before{border-right:8px solid #222}.__react_component_tooltip.place-top{margin-top:-10px}.__react_component_tooltip.place-top:before{border-left:10px solid transparent;border-right:10px solid transparent;bottom:-8px;left:50%;margin-left:-10px}.__react_component_tooltip.place-top:after{border-left:8px solid transparent;border-right:8px solid transparent;bottom:-6px;left:50%;margin-left:-8px}.__react_component_tooltip.place-bottom{margin-top:10px}.__react_component_tooltip.place-bottom:before{border-left:10px solid transparent;border-right:10px solid transparent;top:-8px;left:50%;margin-left:-10px}.__react_component_tooltip.place-bottom:after{border-left:8px solid transparent;border-right:8px solid transparent;top:-6px;left:50%;margin-left:-8px}.__react_component_tooltip.place-left{margin-left:-10px}.__react_component_tooltip.place-left:before{border-top:6px solid transparent;border-bottom:6px solid transparent;right:-8px;top:50%;margin-top:-5px}.__react_component_tooltip.place-left:after{border-top:5px solid transparent;border-bottom:5px solid transparent;right:-6px;top:50%;margin-top:-4px}.__react_component_tooltip.place-right{margin-left:10px}.__react_component_tooltip.place-right:before{border-top:6px solid transparent;border-bottom:6px solid transparent;left:-8px;top:50%;margin-top:-5px}.__react_component_tooltip.place-right:after{border-top:5px solid transparent;border-bottom:5px solid transparent;left:-6px;top:50%;margin-top:-4px}.__react_component_tooltip .multi-line{display:block;padding:2px 0px;text-align:center}';
+
+/***/ },
+/* 478 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AppWrapper = exports.App = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(32);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(260);var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _nav = __webpack_require__(469);
+	var _nav = __webpack_require__(479);
 	var _projectsStore = __webpack_require__(306);var _projectsStore2 = _interopRequireDefault(_projectsStore);
-	var _modalStore = __webpack_require__(470);var _modalStore2 = _interopRequireDefault(_modalStore);
-	var _scriptsStore = __webpack_require__(471);var _scriptsStore2 = _interopRequireDefault(_scriptsStore);
+	var _modalStore = __webpack_require__(480);var _modalStore2 = _interopRequireDefault(_modalStore);
+	var _scriptsStore = __webpack_require__(481);var _scriptsStore2 = _interopRequireDefault(_scriptsStore);
 	var _tablesStore = __webpack_require__(308);var _tablesStore2 = _interopRequireDefault(_tablesStore);
-	var _usersStore = __webpack_require__(472);var _usersStore2 = _interopRequireDefault(_usersStore);
+	var _usersStore = __webpack_require__(482);var _usersStore2 = _interopRequireDefault(_usersStore);
 	var _mobxReact = __webpack_require__(264);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
@@ -75785,7 +77145,7 @@
 	        } }]);return AppWrapper;}(React.Component);
 
 /***/ },
-/* 469 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Nav = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
@@ -75869,7 +77229,7 @@
 	        } }]);return Nav;}(React.Component)) || _class;
 
 /***/ },
-/* 470 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ModalStore = undefined;var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(265);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
@@ -75882,7 +77242,7 @@
 	new ModalStore();
 
 /***/ },
-/* 471 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ScriptsStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;var _mobx = __webpack_require__(265);
@@ -75921,13 +77281,13 @@
 	        {
 	            this.creating_name = '';
 	            this.creating_project = null;
-	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} })), _class);exports.default =
+	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'updateScripts'), _class.prototype)), _class);exports.default =
 	
 	
 	new ScriptsStore();
 
 /***/ },
-/* 472 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(265);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var

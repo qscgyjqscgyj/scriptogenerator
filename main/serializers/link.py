@@ -35,8 +35,20 @@ class LinksField(serializers.Field):
         return links
 
 
+class CustomBooleanField(serializers.Field):
+    def to_representation(self, obj):
+        return False
+
+    def get_attribute(self, obj):
+        return None
+
+    def to_internal_value(self, obj):
+        return None
+
+
 class LinkCategorySerializer(serializers.ModelSerializer):
     links = LinksField(required=False)
+    edit = CustomBooleanField(allow_null=True, required=False)
 
     def create(self, validated_data):
         validated_data['table'] = TableLinksColl.objects.get(pk=int(validated_data['table']))
@@ -45,12 +57,13 @@ class LinkCategorySerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
         instance.order = validated_data.get('order', instance.order)
+        instance.opened = validated_data.get('opened', instance.order)
         instance.save()
         return instance
 
     class Meta:
         model = LinkCategory
-        fields = ('id', 'name', 'hidden', 'order', 'table', 'links')
+        fields = ('id', 'name', 'hidden', 'order', 'table', 'links', 'opened', 'edit')
 
 
 class ToLinkField(serializers.Field):
@@ -69,6 +82,7 @@ class ToLinkField(serializers.Field):
 class LinkSerializer(serializers.ModelSerializer):
     category = LinkCategory()
     to_link = ToLinkField(allow_null=True)
+    edit = CustomBooleanField(allow_null=True, required=False)
 
     def create(self, validated_data):
         validated_data['category'] = LinkCategory.objects.get(pk=int(validated_data['category']))
@@ -81,12 +95,13 @@ class LinkSerializer(serializers.ModelSerializer):
         instance.text = validated_data.get('text', instance.text)
         instance.category = validated_data.get('category', instance.category)
         instance.order = validated_data.get('order', instance.order)
+        instance.opened = validated_data.get('opened', instance.order)
         instance.save()
         return instance
 
     class Meta:
         model = Link
-        fields = ('id', 'name', 'category', 'text', 'order', 'to_link')
+        fields = ('id', 'name', 'category', 'text', 'order', 'to_link', 'opened', 'edit')
 
 
 class LinkCategoriesField(serializers.Field):

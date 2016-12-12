@@ -1,7 +1,8 @@
 import React from 'react';
 import update from 'react-addons-update';
+import {observer} from 'mobx-react';
 
-function moveInArray(arr, old_index, new_index) {
+export function moveInArray(arr, old_index, new_index) {
     if (new_index >= arr.length) {
         let k = new_index - arr.length;
         while ((k--) + 1) {
@@ -12,6 +13,7 @@ function moveInArray(arr, old_index, new_index) {
     return arr;
 }
 
+@observer
 export class Sort extends React.Component {
     constructor(props) {
         super(props);
@@ -30,34 +32,41 @@ export class Sort extends React.Component {
         });
     }
     render() {
-        let {items} = this.state;
+        let {items, itemUp, itemDown} = this.state;
         return(
             <div>
                 {items.map((item, key) => {
+                    if(this.props.sortStoreItems) {
+                       return(
+                           <div key={key}>
+                               {item}
+                           </div>
+                       )
+                    }
                     return(
                         <div key={key} className="sort_block">
                             {!this.props.left ?
                                 <div className="sort_item">
                                     {item}
-                                </div> : ''
-                            }
+                                </div>
+                            : null}
                             <div className="sort_icons">
                                 {key !== 0 ?
                                     <i
                                         className="glyphicon glyphicon-triangle-top"
                                         aria-hidden="true"
-                                        onClick={() => {this.moveItem(key, key - 1)}}/> : ''}
+                                        onClick={() => {this.moveItem(key, key - 1)}}/> : null}
                                 {(key + 1) !== this.props.children.length ?
                                     <i
                                         className="glyphicon glyphicon-triangle-bottom"
                                         aria-hidden="true"
-                                        onClick={() => {this.moveItem(key, key + 1)}}/> : ''}
+                                        onClick={() => {this.moveItem(key, key + 1)}}/> : null}
                             </div>
                             {this.props.left ?
                                 <div className="sort_item">
                                     {item}
-                                </div> : ''
-                            }
+                                </div>
+                            : null}
                         </div>
                     )
                 })}

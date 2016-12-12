@@ -24,13 +24,18 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name):
         cloneObject.parent = mainObject
         cloneObject.save()
 
+    if hasattr(cloneObject, 'opened'):
+        cloneObject.opened = False
+        cloneObject.save()
+
     # IF THE LINK OBJECT
     if cloneObject.__class__.__name__ == 'Link':
         if cloneObject.to_link:
             to_link = None
             while not to_link:
                 try:
-                    to_link = cloneObject.__class__.objects.get(parent__pk=cloneObject.to_link.pk)
+                    to_link = cloneObject.__class__.objects.get(parent__pk=cloneObject.to_link.pk,
+                                                                category__table__table__script__pk=cloneObject.category.table.table.script.pk)
                     cloneObject.to_link = to_link
                     cloneObject.save()
                 except ObjectDoesNotExist:

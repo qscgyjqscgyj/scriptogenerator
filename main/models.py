@@ -89,6 +89,7 @@ class LinkCategory(models.Model):
     table = models.ForeignKey('TableLinksColl', related_name='link_category_table_table_links_coll')
     hidden = models.BooleanField(default=False)
     order = models.IntegerField(blank=True, null=True)
+    opened = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
@@ -104,6 +105,7 @@ class Link(models.Model):
     category = models.ForeignKey('LinkCategory', related_name='link_category_link_category')
     text = models.TextField(blank=True, null=True)
     order = models.IntegerField(blank=True, null=True)
+    opened = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name

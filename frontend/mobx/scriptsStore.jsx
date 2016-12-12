@@ -1,4 +1,4 @@
-import {computed, observable} from 'mobx';
+import {computed, observable, action} from 'mobx';
 import $ from 'jquery';
 
 export class ScriptsStore {
@@ -10,7 +10,7 @@ export class ScriptsStore {
     @observable creating_project = null;
     @observable editing = null;
 
-    updateScripts() {
+    @action updateScripts() {
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-scripts-url'),

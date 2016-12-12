@@ -191,9 +191,8 @@ export class Scripts extends React.Component {
                                                             {this.state.cloning === script ?
                                                                 <span>Копирование...</span>
                                                             : (!script.active ?
-                                                                    <span>Подождите, идет конвертация ссылок...</span>
-                                                                : null)
-                                                            }
+                                                                <span>Подождите, идет конвертация ссылок...</span>
+                                                            : null)}
                                                         </span>
                                                     :
                                                         <button className="btn btn-default" onClick={() => {this.cloneScript(script)}}>

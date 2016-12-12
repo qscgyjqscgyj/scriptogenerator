@@ -50218,6 +50218,8 @@
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
 	                            onChange: function onChange(e) {_this12.setState((0, _reactAddonsUpdate2.default)(_this12.state, { text: { $set: e.target.value } }));},
+	                            autoFocus: true,
+	                            onBlur: this.submitHandler.bind(this),
 	                            placeholder: settings.placeholder,
 	                            name: settings.name,
 	                            value: this.state.text,

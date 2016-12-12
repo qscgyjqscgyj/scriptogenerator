@@ -877,6 +877,8 @@ class EditableText extends React.Component {
                     <form onSubmit={this.submitHandler.bind(this)}>
                         <input
                             onChange={(e) => {this.setState(update(this.state, {text: {$set: e.target.value}}))}}
+                            autoFocus={true}
+                            onBlur={this.submitHandler.bind(this)}
                             placeholder={settings.placeholder}
                             name={settings.name}
                             value={this.state.text}

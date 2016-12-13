@@ -41,13 +41,13 @@ export class Table extends AccessableComponent {
                 return trigger.getAttribute('data-link');
             }
         });
-        // $(document.body).on('keydown', this.handleKeyDown.bind(this));
-        // $(document.body).on('keyup', this.handleKeyUp.bind(this));
+        $(document.body).on('keydown', this.handleKeyDown.bind(this));
+        $(document.body).on('keyup', this.handleKeyUp.bind(this));
     }
 
     componentWillUnmount() {
-        // $(document.body).off('keydown', this.handleKeyDown.bind(this));
-        // $(document.body).off('keyup', this.handleKeyUp.bind(this));
+        $(document.body).off('keydown', this.handleKeyDown.bind(this));
+        $(document.body).off('keyup', this.handleKeyUp.bind(this));
     }
 
     handleKeyDown(e) {
@@ -452,21 +452,23 @@ export class TableEdit extends Table {
                                                                                 });
                                                                                 this.updateTableLinksColl(coll);
                                                                             }}/>
-                                                                            <span className={"inline_element link " + (category.hidden ? 'hidden_links' : 'link_name')}>
+                                                                            <span data-link={this.copyLink(link)} className={"inline_element link copy_icon " + (category.hidden ? 'hidden_links' : 'link_name')}>
                                                                                 <EditableText
                                                                                     text={link.name}
                                                                                     field={'name'}
                                                                                     onClick={(link) => {
-                                                                                        this.props.router.push(
-                                                                                            (!link.to_link ?
-                                                                                                '/tables/' + this.props.params.script +
-                                                                                                '/table/' + this.props.params.table +
-                                                                                                '/link/' + link.id +
-                                                                                                '/edit/'
-                                                                                            :
-                                                                                                link.to_link.href + '/edit/'
-                                                                                            )
-                                                                                        );
+                                                                                        if(!tablesStore.pressed_key) {
+                                                                                            this.props.router.push(
+                                                                                                (!link.to_link ?
+                                                                                                    '/tables/' + this.props.params.script +
+                                                                                                    '/table/' + this.props.params.table +
+                                                                                                    '/link/' + link.id +
+                                                                                                    '/edit/'
+                                                                                                :
+                                                                                                    link.to_link.href + '/edit/'
+                                                                                                )
+                                                                                            );
+                                                                                        }
                                                                                     }}
                                                                                     submitHandler={(link) => this.updateLink(link)}
                                                                                     object={link}

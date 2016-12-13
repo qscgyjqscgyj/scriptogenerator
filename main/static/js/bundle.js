@@ -49382,13 +49382,13 @@
 	                    return trigger.getAttribute('data-link');
 	                } });
 	
-	            // $(document.body).on('keydown', this.handleKeyDown.bind(this));
-	            // $(document.body).on('keyup', this.handleKeyUp.bind(this));
+	            (0, _jquery2.default)(document.body).on('keydown', this.handleKeyDown.bind(this));
+	            (0, _jquery2.default)(document.body).on('keyup', this.handleKeyUp.bind(this));
 	        } }, { key: 'componentWillUnmount', value: function componentWillUnmount()
 	
 	        {
-	            // $(document.body).off('keydown', this.handleKeyDown.bind(this));
-	            // $(document.body).off('keyup', this.handleKeyUp.bind(this));
+	            (0, _jquery2.default)(document.body).off('keydown', this.handleKeyDown.bind(this));
+	            (0, _jquery2.default)(document.body).off('keyup', this.handleKeyUp.bind(this));
 	        } }, { key: 'handleKeyDown', value: function handleKeyDown(
 	
 	        e) {var
@@ -49793,21 +49793,23 @@
 	                                                                                        });
 	                                                                                        _this5.updateTableLinksColl(coll);
 	                                                                                    } }),
-	                                                                                React.createElement('span', { className: "inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') },
+	                                                                                React.createElement('span', { 'data-link': _this5.copyLink(link), className: "inline_element link copy_icon " + (category.hidden ? 'hidden_links' : 'link_name') },
 	                                                                                    React.createElement(EditableText, {
 	                                                                                        text: link.name,
 	                                                                                        field: 'name',
 	                                                                                        onClick: function onClick(link) {
-	                                                                                            _this5.props.router.push(
-	                                                                                            !link.to_link ?
-	                                                                                            '/tables/' + _this5.props.params.script +
-	                                                                                            '/table/' + _this5.props.params.table +
-	                                                                                            '/link/' + link.id +
-	                                                                                            '/edit/' :
+	                                                                                            if (!tablesStore.pressed_key) {
+	                                                                                                _this5.props.router.push(
+	                                                                                                !link.to_link ?
+	                                                                                                '/tables/' + _this5.props.params.script +
+	                                                                                                '/table/' + _this5.props.params.table +
+	                                                                                                '/link/' + link.id +
+	                                                                                                '/edit/' :
 	
-	                                                                                            link.to_link.href + '/edit/');
+	                                                                                                link.to_link.href + '/edit/');
 	
 	
+	                                                                                            }
 	                                                                                        },
 	                                                                                        submitHandler: function submitHandler(link) {return _this5.updateLink(link);},
 	                                                                                        object: link,

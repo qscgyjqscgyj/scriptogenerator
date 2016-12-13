@@ -29,6 +29,7 @@ class LinksField(serializers.Field):
                 link.name = l['name']
                 link.order = l['order']
                 link.text = l['text']
+                link.opened = l['opened']
                 link.save()
             else:
                 Link.objects.create(**l)
@@ -128,7 +129,12 @@ class LinkCategoriesField(serializers.Field):
                 category = LinkCategory.objects.get(pk=int(c.get('id')))
                 category.name = c['name']
                 category.order = c['order']
+                category.opened = c['opened']
                 category.save()
+                for link in c.get('links'):
+                    link_serializer = LinkSerializer(data=link)
+                    if link_serializer.is_valid():
+                        link_serializer.update(Link.objects.get(pk=int(link['id'])), link)
             else:
                 LinkCategory.objects.create(**c)
         return categories

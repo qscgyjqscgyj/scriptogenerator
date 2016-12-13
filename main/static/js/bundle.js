@@ -49678,7 +49678,19 @@
 	                                                        React.createElement('div', { key: key, className: category.hidden ? 'hidden_links' : '' },
 	                                                            React.createElement('div', { className: 'row' },
 	                                                                React.createElement('div', { className: "col-md-12 inline_elements edit_icon_handler hovered_list_item " + (category.opened ? 'opened' : null) },
-	                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {category.opened = !category.opened;_this5.updateLinkCategory(category);} }),
+	                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
+	                                                                        onClick: function onClick() {
+	                                                                            category.opened = !category.opened;
+	                                                                            coll.categories.map(function (cat) {
+	                                                                                if (cat.id !== category.id) {
+	                                                                                    cat.opened = false;
+	                                                                                }
+	                                                                                cat.links.map(function (link) {
+	                                                                                    link.opened = false;
+	                                                                                });
+	                                                                            });
+	                                                                            _this5.updateTableLinksColl(coll);
+	                                                                        } }),
 	                                                                    React.createElement('span', { className: 'table_header_text inline_element' },
 	                                                                        React.createElement(EditableText, {
 	                                                                            text: category.name,
@@ -49769,9 +49781,19 @@
 	                                                                    React.createElement('div', { key: key },
 	                                                                        React.createElement('div', { className: 'row' },
 	                                                                            React.createElement('div', { className: "col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null) },
-	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {link.opened = !link.opened;_this5.updateLink(link);} }),
+	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {
+	                                                                                        link.opened = !link.opened;
+	                                                                                        coll.categories.map(function (cat) {
+	                                                                                            cat.opened = false;
+	                                                                                            cat.links.map(function (ln) {
+	                                                                                                if (ln.id !== link.id) {
+	                                                                                                    ln.opened = false;
+	                                                                                                }
+	                                                                                            });
+	                                                                                        });
+	                                                                                        _this5.updateTableLinksColl(coll);
+	                                                                                    } }),
 	                                                                                React.createElement('span', { className: "inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') },
-	
 	                                                                                    React.createElement(EditableText, {
 	                                                                                        text: link.name,
 	                                                                                        field: 'name',

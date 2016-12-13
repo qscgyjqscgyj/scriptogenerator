@@ -337,7 +337,19 @@ export class TableEdit extends Table {
                                                     <div key={key} className={category.hidden ? 'hidden_links' : ''}>
                                                         <div className="row">
                                                             <div className={"col-md-12 inline_elements edit_icon_handler hovered_list_item " + (category.opened ? 'opened' : null)}>
-                                                                <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {category.opened = !category.opened; this.updateLinkCategory(category)}}/>
+                                                                <i className="glyphicon glyphicon-edit edit_icon inline_element"
+                                                                   onClick={() => {
+                                                                       category.opened = !category.opened;
+                                                                       coll.categories.map((cat) => {
+                                                                           if(cat.id !== category.id) {
+                                                                               cat.opened = false;
+                                                                           }
+                                                                           cat.links.map((link) => {
+                                                                               link.opened = false;
+                                                                           });
+                                                                       });
+                                                                       this.updateTableLinksColl(coll);
+                                                                   }}/>
                                                                 <span className="table_header_text inline_element">
                                                                     <EditableText
                                                                         text={category.name}
@@ -428,9 +440,19 @@ export class TableEdit extends Table {
                                                                 <div key={key}>
                                                                     <div className="row">
                                                                         <div className={"col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null)}>
-                                                                            <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {link.opened = !link.opened;  this.updateLink(link)}}/>
+                                                                            <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {
+                                                                                link.opened = !link.opened;
+                                                                                coll.categories.map((cat) => {
+                                                                                    cat.opened = false;
+                                                                                    cat.links.map((ln) => {
+                                                                                        if(ln.id !== link.id) {
+                                                                                            ln.opened = false;
+                                                                                        }
+                                                                                    });
+                                                                                });
+                                                                                this.updateTableLinksColl(coll);
+                                                                            }}/>
                                                                             <span className={"inline_element link " + (category.hidden ? 'hidden_links' : 'link_name')}>
-
                                                                                 <EditableText
                                                                                     text={link.name}
                                                                                     field={'name'}

@@ -11,6 +11,7 @@ import {stateFromHTML} from 'draft-js-import-html';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 import Immutable from 'immutable';
 import {Link} from 'react-router';
+import ReactTooltip from 'react-tooltip';
 
 export const DECORATORS = new CompositeDecorator([
     {
@@ -272,12 +273,15 @@ export class CustomEditor extends React.Component {
                                     onToggle={this.toggleBlockType}/>
                             </div>
                             <div className="btn-group" role="group" aria-label="...">
-                                <button onMouseDown={this.promptForLink} style={{marginRight: 10}} className="btn btn-info">
+                                <button data-tip="Вставить ссылку" id="editor_add_link" onMouseDown={this.promptForLink} style={{marginRight: 10}} className="btn btn-info">
                                     <i className="glyphicon glyphicon-link"/>
                                 </button>
-                                <button onMouseDown={this.removeLink} className="btn btn-danger">
+                                <ReactTooltip data-for='editor_add_link' place="top" type="dark" effect="solid"/>
+
+                                <button data-tip="Удалить ссылку" id="editor_remove_link" onMouseDown={this.removeLink} className="btn btn-danger">
                                     <i className="glyphicon glyphicon-link"/>
                                 </button>
+                                <ReactTooltip data-for='editor_remove_link' place="top" type="dark" effect="solid"/>
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,7 @@ import {computed, observable, action} from 'mobx';
 import $ from 'jquery';
 
 export class Coll {
-    @observable name = 'Колонка с сылками';
+    @observable name = 'Ссылки';
     @observable size = 50;
     @observable position = 0;
     @observable table;
@@ -15,7 +15,7 @@ export class Coll {
 }
 
 const defaults = {
-    text_coll_name: 'Колонка с текстами ссылок',
+    text_coll_name: 'Блок с текстом',
     text_coll_size: 50,
     text_coll_position: 0
 };

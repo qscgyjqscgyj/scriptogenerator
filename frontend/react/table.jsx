@@ -52,7 +52,8 @@ export class Table extends AccessableComponent {
 
     handleKeyDown(e) {
         const {tablesStore} = this.props;
-        if(e.keyCode === 17) {
+        // 17 - CTRL, 16 - SHIFT
+        if(e.keyCode === 17 || e.keyCode === 16) {
             tablesStore.pressed_key = e.keyCode;
         }
     }
@@ -355,6 +356,12 @@ export class TableEdit extends Table {
                                                                         text={category.name}
                                                                         field={'name'}
                                                                         submitHandler={(category) => this.updateLinkCategory(category)}
+                                                                        onClick={(category) => {
+                                                                            if(tablesStore.pressed_key === 16) {
+                                                                                category.edit = true;
+                                                                            }
+                                                                        }}
+
                                                                         object={category}
                                                                         edit={category.edit}
                                                                         settings={{
@@ -468,6 +475,8 @@ export class TableEdit extends Table {
                                                                                                     link.to_link.href + '/edit/'
                                                                                                 )
                                                                                             );
+                                                                                        } else if(tablesStore.pressed_key === 16) {
+                                                                                            link.edit = true;
                                                                                         }
                                                                                     }}
                                                                                     submitHandler={(link) => this.updateLink(link)}

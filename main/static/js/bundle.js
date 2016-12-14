@@ -49426,7 +49426,8 @@
 	
 	        e) {var
 	            tablesStore = this.props.tablesStore;
-	            if (e.keyCode === 17) {
+	            // 17 - CTRL, 16 - SHIFT
+	            if (e.keyCode === 17 || e.keyCode === 16) {
 	                tablesStore.pressed_key = e.keyCode;
 	            }
 	        } }, { key: 'handleKeyUp', value: function handleKeyUp(
@@ -49729,6 +49730,12 @@
 	                                                                            text: category.name,
 	                                                                            field: 'name',
 	                                                                            submitHandler: function submitHandler(category) {return _this5.updateLinkCategory(category);},
+	                                                                            onClick: function onClick(category) {
+	                                                                                if (tablesStore.pressed_key === 16) {
+	                                                                                    category.edit = true;
+	                                                                                }
+	                                                                            },
+	
 	                                                                            object: category,
 	                                                                            edit: category.edit,
 	                                                                            settings: {
@@ -49842,6 +49849,8 @@
 	                                                                                                link.to_link.href + '/edit/');
 	
 	
+	                                                                                            } else if (tablesStore.pressed_key === 16) {
+	                                                                                                link.edit = true;
 	                                                                                            }
 	                                                                                        },
 	                                                                                        submitHandler: function submitHandler(link) {return _this5.updateLink(link);},

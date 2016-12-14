@@ -10,42 +10,19 @@ import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 import Immutable from 'immutable';
-import {Link} from 'react-router';
 import ReactTooltip from 'react-tooltip';
-
-export const DECORATORS = new CompositeDecorator([
-    {
-        strategy: findLinkEntities,
-        component: LinkDecorator
-    }
-]);
-
-function findLinkEntities(contentBlock, callback) {
-    contentBlock.findEntityRanges((character) => {
-            const entityKey = character.getEntity();
-            return (
-                entityKey !== null
-                //&& contentState.getEntity(entityKey).getType() === 'LINK'
-            );
-        },
-        callback
-    );
-}
-
-const LinkDecorator = (props) => {
-    const {url} = props.decoratedText;
-    console.log(props);
-    return (
-        <Link to={url} style={styles.link}>{props.children}</Link>
-    );
-};
 
 @observer
 export class CustomEditor extends React.Component {
     constructor(props) {
         super(props);
 
-        this.decorator = DECORATORS;
+        this.decorator = new CompositeDecorator([
+            {
+                strategy: findLinkEntities,
+                component: Link
+            }
+        ]);
 
         this.state = {
             object: props.object,
@@ -229,7 +206,7 @@ export class CustomEditor extends React.Component {
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.
         let className = 'RichEditor-editor';
-        let contentState = editorState.getCurrentContent();
+        var contentState = editorState.getCurrentContent();
         if (!contentState.hasText()) {
             if (contentState.getBlockMap().first().getType() !== 'unstyled') {
                 className += ' RichEditor-hidePlaceholder';
@@ -276,13 +253,12 @@ export class CustomEditor extends React.Component {
                                 <button data-tip="Вставить ссылку" id="editor_add_link" onMouseDown={this.promptForLink} style={{marginRight: 10}} className="btn btn-info">
                                     <i className="glyphicon glyphicon-link"/>
                                 </button>
-                                <ReactTooltip data-for='editor_add_link' place="top" type="dark" effect="solid"/>
-
                                 <button data-tip="Удалить ссылку" id="editor_remove_link" onMouseDown={this.removeLink} className="btn btn-danger">
                                     <i className="glyphicon glyphicon-link"/>
                                 </button>
-                                <ReactTooltip data-for='editor_remove_link' place="top" type="dark" effect="solid"/>
                             </div>
+                            <ReactTooltip data-for='editor_add_link' place="top" type="dark" effect="solid"/>
+                            <ReactTooltip data-for='editor_remove_link' place="top" type="dark" effect="solid"/>
                         </div>
                     </div>
                     <div className="col-md-12">
@@ -304,6 +280,11 @@ export class CustomEditor extends React.Component {
                         ref="editor"
                         spellCheck={true}/>
                 </div>
+                {
+                    //<BlockStyleControls
+                    //    editorState={editorState}
+                    //    onToggle={this.toggleBlockType}/>
+                }
             </div>
         );
     }
@@ -314,13 +295,13 @@ export const styleMap = {
     gray: {color: 'rgba(160, 160, 160, 1.0)'}
 };
 
-let COLORS = [
+var COLORS = [
     {label: 'Красный', style: 'red', icon: 'glyphicon glyphicon-stop'},
     {label: 'Серый', style: 'gray', icon: 'glyphicon glyphicon-stop'}
 ];
 
 const ColorControls = (props) => {
-    let currentStyle = props.editorState.getCurrentInlineStyle();
+    var currentStyle = props.editorState.getCurrentInlineStyle();
     return (
         <div>
             {COLORS.map((type, key) =>
@@ -427,14 +408,14 @@ const BlockStyleControls = (props) => {
     );
 };
 
-let INLINE_STYLES = [
+var INLINE_STYLES = [
     {label: 'Жирный', style: 'BOLD', icon: 'glyphicon glyphicon-bold'},
     {label: 'Курсив', style: 'ITALIC', icon: 'glyphicon glyphicon-italic'},
     {label: 'Подчеркивание', style: 'UNDERLINE', icon: 'glyphicon glyphicon-text-color'}
 ];
 
 const InlineStyleControls = (props) => {
-    let currentStyle = props.editorState.getCurrentInlineStyle();
+    var currentStyle = props.editorState.getCurrentInlineStyle();
     return (
         <div>
             {INLINE_STYLES.map(type =>
@@ -447,6 +428,26 @@ const InlineStyleControls = (props) => {
                     style={type.style}/>
             )}
         </div>
+    );
+};
+
+
+function findLinkEntities(contentBlock, callback) {
+    contentBlock.findEntityRanges((character) => {
+            const entityKey = character.getEntity();
+            return (
+                entityKey !== null
+                //&& contentState.getEntity(entityKey).getType() === 'LINK'
+            );
+        },
+        callback
+    );
+}
+
+const Link = (props) => {
+    const {url} = props.decoratedText;
+    return (
+        <a href={url} style={styles.link}>{props.children}</a>
     );
 };
 

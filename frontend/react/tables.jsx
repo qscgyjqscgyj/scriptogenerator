@@ -248,22 +248,7 @@ class CollsCreating extends React.Component {
         let text_coll_size = tablesStore.editing ? tablesStore.editing.text_coll_size : tablesStore.creating_text_coll_size;
         let text_coll_position = tablesStore.editing ? tablesStore.editing.text_coll_position : tablesStore.creating_text_coll_position;
 
-        let colls_inputs = colls.map((coll, key) => {
-            return(
-                <CollInput
-                    key={key}
-                    name={coll.name}
-                    size={coll.size}
-                    position={coll.position}
-                    index={key}
-                    text={false}
-                    coll={coll}
-                    colls={colls}
-                    deleteColl={this.deleteColl.bind(this)}
-                    onChangeSize={(e) => {coll.size = e.target.value; return this.onSizeChange()}}
-                    onChangeName={(e) => {coll.name = e.target.value}}/>
-            )
-        });
+        let colls_inputs = [];
         colls_inputs.push(
             <CollInput
                 key={colls_inputs.length}
@@ -287,6 +272,23 @@ class CollsCreating extends React.Component {
                     }
                 }}/>
         );
+        colls.map((coll, key) => {
+            colls_inputs.push(
+                <CollInput
+                    key={key}
+                    name={coll.name}
+                    size={coll.size}
+                    position={coll.position}
+                    index={key}
+                    text={false}
+                    coll={coll}
+                    colls={colls}
+                    deleteColl={this.deleteColl.bind(this)}
+                    onChangeSize={(e) => {coll.size = e.target.value; return this.onSizeChange()}}
+                    onChangeName={(e) => {coll.name = e.target.value}}/>
+            )
+        });
+        console.log(colls_inputs);
         colls_inputs = colls_inputs.sort((a, b) => {
                 if (a.props.position > b.props.position) {return 1}
                 if (a.props.position < b.props.position) {return -1}
@@ -305,7 +307,8 @@ class CollsCreating extends React.Component {
                     <div className="form-group">
                         <button className="btn btn-info" type="button" onClick={(e) => {
                             e.preventDefault();
-                            return colls.push(new Coll(tablesStore.editing));
+                            colls.push(new Coll(tablesStore.editing));
+                            return this.onSizeChange();
                         }}>+ Добавить столбец</button>
                     </div>
                 </div>

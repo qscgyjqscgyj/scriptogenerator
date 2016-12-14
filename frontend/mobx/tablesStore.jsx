@@ -35,6 +35,8 @@ export class TablesStore {
 
     @observable pressed_key = null;
 
+    @observable colls_creating_error_message = null;
+
     @action pullTables(script) {
         $.ajax({
             method: 'GET',
@@ -102,6 +104,7 @@ export class TablesStore {
         this.creating_text_coll_size = defaults.text_coll_size;
         this.creating_text_coll_position = defaults.text_coll_position;
         this.creating_script = null;
+        this.colls_creating_error_message = null;
     }
 }
 

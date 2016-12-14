@@ -48905,7 +48905,7 @@
 	
 	                        React.createElement('div', { className: 'col-md-12' },
 	                            React.createElement('div', { className: 'form-group' },
-	                                React.createElement('button', { className: 'btn btn-success', type: 'submit' }, '\u0421\u043E\u0437\u0434\u0430\u0442\u044C'))))));
+	                                React.createElement('button', { className: 'btn btn-success', disabled: tablesStore.colls_creating_error_message, type: 'submit' }, '\u0421\u043E\u0437\u0434\u0430\u0442\u044C'))))));
 	
 	
 	
@@ -48932,7 +48932,7 @@
 	
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('div', { className: 'form-group' },
-	                                    React.createElement('button', { className: 'btn btn-success', type: 'submit' }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))))));
+	                                    React.createElement('button', { className: 'btn btn-success', disabled: tablesStore.colls_creating_error_message, type: 'submit' }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))))));
 	
 	
 	
@@ -48981,6 +48981,21 @@
 	                }
 	            });
 	            tablesStore.updateTable(null, false);
+	        } }, { key: 'onSizeChange', value: function onSizeChange()
+	        {var
+	            tablesStore = this.props.tablesStore;
+	            var colls = tablesStore.editing ? tablesStore.editing.colls : tablesStore.creating_colls;
+	            var full_size = parseInt(tablesStore.editing ? tablesStore.editing.text_coll_size : tablesStore.creating_text_coll_size);
+	
+	            colls.map(function (coll) {
+	                full_size = full_size + parseInt(coll.size);
+	            });
+	            console.log(full_size);
+	            if (full_size > 100) {
+	                tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна привышать 100%';
+	            } else if (tablesStore.colls_creating_error_message) {
+	                tablesStore.colls_creating_error_message = null;
+	            }
 	        } }, { key: 'render', value: function render()
 	        {var _this8 = this;var
 	            tablesStore = this.props.tablesStore;
@@ -49001,7 +49016,7 @@
 	                        coll: coll,
 	                        colls: colls,
 	                        deleteColl: _this8.deleteColl.bind(_this8),
-	                        onChangeSize: function onChangeSize(e) {coll.size = e.target.value;},
+	                        onChangeSize: function onChangeSize(e) {coll.size = e.target.value;return _this8.onSizeChange();},
 	                        onChangeName: function onChangeName(e) {coll.name = e.target.value;} }));
 	
 	            });
@@ -49018,6 +49033,7 @@
 	                    } else {
 	                        tablesStore.creating_text_coll_size = e.target.value;
 	                    }
+	                    return _this8.onSizeChange();
 	                },
 	                onChangeName: function onChangeName(e) {
 	                    if (tablesStore.editing) {
@@ -49036,14 +49052,28 @@
 	
 	            return (
 	                React.createElement('div', { className: 'col-md-12' },
-	                    React.createElement(_sort.Sort, { onSort: this.onSort.bind(this) },
-	                        colls_inputs.map(function (coll, key) {
-	                            return coll;
-	                        })),
+	                    React.createElement('div', { className: 'col-md-12' },
+	                        React.createElement(_sort.Sort, { onSort: this.onSort.bind(this) },
+	                            colls_inputs.map(function (coll, key) {
+	                                return coll;
+	                            })),
 	
-	                    React.createElement('div', { className: 'form-group' },
-	                        React.createElement('button', { className: 'btn btn-success', onClick: function onClick(e) {e.preventDefault();colls.push(new _tablesStore.Coll(tablesStore.editing));} }, '+ \u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u0442\u043E\u043B\u0431\u0435\u0446'))));
+	                        React.createElement('div', { className: 'form-group' },
+	                            React.createElement('button', { className: 'btn btn-info', type: 'button', onClick: function onClick(e) {
+	                                        e.preventDefault();
+	                                        return colls.push(new _tablesStore.Coll(tablesStore.editing));
+	                                    } }, '+ \u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u0442\u043E\u043B\u0431\u0435\u0446'))),
 	
+	
+	                    tablesStore.colls_creating_error_message ?
+	                    React.createElement('div', { className: 'col-md-12' },
+	                        React.createElement('div', { className: 'alert alert-danger', role: 'alert' },
+	                            React.createElement('span', { className: 'glyphicon glyphicon-exclamation-sign' }),
+	                            React.createElement('span', { className: 'sr-only' }, '\u041E\u0448\u0438\u0431\u043A\u0430:'),
+	                            tablesStore.colls_creating_error_message)) :
+	
+	
+	                    null));
 	
 	
 	        } }]);return CollsCreating;}(React.Component)) || _class4;var
@@ -49116,7 +49146,7 @@
 /* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TablesStore = exports.Coll = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _desc2, _value2, _class3, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;var _mobx = __webpack_require__(265);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TablesStore = exports.Coll = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _desc2, _value2, _class3, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15;var _mobx = __webpack_require__(265);
 	var _jquery = __webpack_require__(260);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
 	Coll = exports.Coll = (_class =
@@ -49129,16 +49159,18 @@
 	    if (table) {
 	        this.table = table.id;
 	    }
-	}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return 'Колонка с сылками';} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'size', [_mobx.observable], { enumerable: true, initializer: function initializer() {return 50;} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'position', [_mobx.observable], { enumerable: true, initializer: function initializer() {return 0;} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'table', [_mobx.observable], { enumerable: true, initializer: null })), _class);
+	}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return 'Ссылки';} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'size', [_mobx.observable], { enumerable: true, initializer: function initializer() {return 50;} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'position', [_mobx.observable], { enumerable: true, initializer: function initializer() {return 0;} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'table', [_mobx.observable], { enumerable: true, initializer: null })), _class);
 	
 	
 	var defaults = {
-	    text_coll_name: 'Колонка с текстами ссылок',
+	    text_coll_name: 'Блок с текстом',
 	    text_coll_size: 50,
 	    text_coll_position: 0 };var
 	
 	
-	TablesStore = exports.TablesStore = (_class3 = function () {function TablesStore() {_classCallCheck(this, TablesStore);_initDefineProp(this, 'tables', _descriptor5, this);_initDefineProp(this, 'creating_name', _descriptor6, this);_initDefineProp(this, 'creating_colls', _descriptor7, this);_initDefineProp(this, 'creating_text_coll_name', _descriptor8, this);_initDefineProp(this, 'creating_text_coll_size', _descriptor9, this);_initDefineProp(this, 'creating_text_coll_position', _descriptor10, this);_initDefineProp(this, 'creating_script', _descriptor11, this);_initDefineProp(this, 'editing', _descriptor12, this);_initDefineProp(this, 'active_link', _descriptor13, this);_initDefineProp(this, 'pressed_key', _descriptor14, this);}_createClass(TablesStore, [{ key: 'pullTables', value: function pullTables(
+	TablesStore = exports.TablesStore = (_class3 = function () {function TablesStore() {_classCallCheck(this, TablesStore);_initDefineProp(this, 'tables', _descriptor5, this);_initDefineProp(this, 'creating_name', _descriptor6, this);_initDefineProp(this, 'creating_colls', _descriptor7, this);_initDefineProp(this, 'creating_text_coll_name', _descriptor8, this);_initDefineProp(this, 'creating_text_coll_size', _descriptor9, this);_initDefineProp(this, 'creating_text_coll_position', _descriptor10, this);_initDefineProp(this, 'creating_script', _descriptor11, this);_initDefineProp(this, 'editing', _descriptor12, this);_initDefineProp(this, 'active_link', _descriptor13, this);_initDefineProp(this, 'pressed_key', _descriptor14, this);_initDefineProp(this, 'colls_creating_error_message', _descriptor15, this);}_createClass(TablesStore, [{ key: 'pullTables', value: function pullTables(
+	
+	
 	
 	
 	
@@ -49220,7 +49252,8 @@
 	            this.creating_text_coll_size = defaults.text_coll_size;
 	            this.creating_text_coll_position = defaults.text_coll_position;
 	            this.creating_script = null;
-	        } }]);return TablesStore;}(), (_descriptor5 = _applyDecoratedDescriptor(_class3.prototype, 'tables', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor6 = _applyDecoratedDescriptor(_class3.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class3.prototype, 'creating_colls', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [new Coll()];} }), _descriptor8 = _applyDecoratedDescriptor(_class3.prototype, 'creating_text_coll_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return defaults.text_coll_name;} }), _descriptor9 = _applyDecoratedDescriptor(_class3.prototype, 'creating_text_coll_size', [_mobx.observable], { enumerable: true, initializer: function initializer() {return defaults.text_coll_size;} }), _descriptor10 = _applyDecoratedDescriptor(_class3.prototype, 'creating_text_coll_position', [_mobx.observable], { enumerable: true, initializer: function initializer() {return defaults.text_coll_position;} }), _descriptor11 = _applyDecoratedDescriptor(_class3.prototype, 'creating_script', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor12 = _applyDecoratedDescriptor(_class3.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor13 = _applyDecoratedDescriptor(_class3.prototype, 'active_link', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor14 = _applyDecoratedDescriptor(_class3.prototype, 'pressed_key', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class3.prototype, 'pullTables', [_mobx.action], Object.getOwnPropertyDescriptor(_class3.prototype, 'pullTables'), _class3.prototype), _applyDecoratedDescriptor(_class3.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class3.prototype, 'updateTable'), _class3.prototype), _applyDecoratedDescriptor(_class3.prototype, 'setLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class3.prototype, 'setLink'), _class3.prototype)), _class3);exports.default =
+	            this.colls_creating_error_message = null;
+	        } }]);return TablesStore;}(), (_descriptor5 = _applyDecoratedDescriptor(_class3.prototype, 'tables', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor6 = _applyDecoratedDescriptor(_class3.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class3.prototype, 'creating_colls', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [new Coll()];} }), _descriptor8 = _applyDecoratedDescriptor(_class3.prototype, 'creating_text_coll_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return defaults.text_coll_name;} }), _descriptor9 = _applyDecoratedDescriptor(_class3.prototype, 'creating_text_coll_size', [_mobx.observable], { enumerable: true, initializer: function initializer() {return defaults.text_coll_size;} }), _descriptor10 = _applyDecoratedDescriptor(_class3.prototype, 'creating_text_coll_position', [_mobx.observable], { enumerable: true, initializer: function initializer() {return defaults.text_coll_position;} }), _descriptor11 = _applyDecoratedDescriptor(_class3.prototype, 'creating_script', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor12 = _applyDecoratedDescriptor(_class3.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor13 = _applyDecoratedDescriptor(_class3.prototype, 'active_link', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor14 = _applyDecoratedDescriptor(_class3.prototype, 'pressed_key', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor15 = _applyDecoratedDescriptor(_class3.prototype, 'colls_creating_error_message', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class3.prototype, 'pullTables', [_mobx.action], Object.getOwnPropertyDescriptor(_class3.prototype, 'pullTables'), _class3.prototype), _applyDecoratedDescriptor(_class3.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class3.prototype, 'updateTable'), _class3.prototype), _applyDecoratedDescriptor(_class3.prototype, 'setLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class3.prototype, 'setLink'), _class3.prototype)), _class3);exports.default =
 	
 	
 	new TablesStore();

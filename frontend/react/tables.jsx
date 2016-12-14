@@ -288,7 +288,6 @@ class CollsCreating extends React.Component {
                     onChangeName={(e) => {coll.name = e.target.value}}/>
             )
         });
-        console.log(colls_inputs);
         colls_inputs = colls_inputs.sort((a, b) => {
                 if (a.props.position > b.props.position) {return 1}
                 if (a.props.position < b.props.position) {return -1}

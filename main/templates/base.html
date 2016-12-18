@@ -27,6 +27,8 @@
         data-logout-url="{% url 'auth_logout' %}"
         data-main-url="{% url 'main' %}"
         data-profile-url="{% url 'profile' %}"
+        data-payment-url="{% url 'payment' %}"
+        data-static-url="{{ STATIC_URL }}"
     >
         {% block content %}
             {% if request.user.is_authenticated %}

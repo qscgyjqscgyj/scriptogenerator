@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import View
 from main.views import JSONResponse
+import json
+
+from payment.serializers import UserPaymentSerializer
 
 
 class PaymentView(View):
@@ -9,6 +12,17 @@ class PaymentView(View):
         if test_mode and test_mode == 'test':
             return JSONResponse({'success': True, 'test': True})
         return JSONResponse({'success': True})
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        data['user'] = request.user
+        payment = UserPaymentSerializer(data=data)
+        if payment.is_valid():
+            payment.create(data)
+            return JSONResponse({
+                'payment': payment.data
+            })
+        return JSONResponse(payment.errors, status=400)
 
 
 class GetPaymentView(View):

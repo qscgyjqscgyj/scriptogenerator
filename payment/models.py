@@ -21,8 +21,10 @@ class Bonus(models.Model):
 
 class UserPayment(models.Model):
     user = models.ForeignKey(CustomUser, related_name='user_payment_user_custom_user')
-    payed = models.DateTimeField(blank=True, null=True)
     sum = models.FloatField(default=0)
+    total_sum = models.FloatField(default=0)
+    date_created = models.DateTimeField(auto_now_add=True)
+    payed = models.DateTimeField(blank=True, null=True)
 
     def __unicode__(self):
         return self.package.__unicode__()

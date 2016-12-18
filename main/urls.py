@@ -37,4 +37,5 @@ urlpatterns = patterns('',
     url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/link/(?P<link>\d+)/share/$', MainView.as_view(), name='react__link__edit'),
 
     url(r'^profile/$', MainView.as_view(), name='react__profile'),
+    url(r'^profile/payment/$', MainView.as_view(), name='react__profile_payment'),
 )

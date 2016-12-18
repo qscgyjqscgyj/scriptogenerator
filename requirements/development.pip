@@ -28,6 +28,7 @@ Pillow==3.0.0
 psutil==4.3.0
 pycrypto==2.6.1
 PyExecJS==1.1.0
+pylibmc==1.5.1
 PyReact==0.5.2
 pytils==0.3
 pytz==2016.7

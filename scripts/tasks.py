@@ -30,6 +30,22 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name, recu
             cloneObject.opened = False
             cloneObject.save()
 
+        # IF THE LINK OBJECT
+        if cloneObject.__class__.__name__ == 'Link':
+            if cloneObject.to_link:
+                print('to_link')
+                try:
+                    to_link = cloneObject.__class__.objects.get(parent__pk=cloneObject.to_link.pk,
+                                                                category__table__table__script__pk=cloneObject.category.table.table.script.pk)
+                    cloneObject.to_link = to_link
+                    cloneObject.save()
+                    print('fount')
+                except ObjectDoesNotExist:
+                    print('not fount')
+                    time.sleep(1)
+                    recursive_iteration += 1
+                    cloneTreeRelations.delay(mainObject_pk, cloneObject_pk, app_name, model_name, recursive_iteration, True)
+
         if not no_relations:
             relations = type(mainObject)._meta.get_all_related_objects_with_model()
 
@@ -48,22 +64,6 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name, recu
                             cloneRelatedObject.save()
                             if type(currentRelatedObject)._meta.get_all_related_objects_with_model():
                                 cloneTreeRelations.delay(currentRelatedObject.pk, cloneRelatedObject.pk, type(currentRelatedObject)._meta.app_label, currentRelatedObject.__class__.__name__)
-
-        # IF THE LINK OBJECT
-        if cloneObject.__class__.__name__ == 'Link':
-            if cloneObject.to_link:
-                print('to_link')
-                try:
-                    to_link = cloneObject.__class__.objects.get(parent__pk=cloneObject.to_link.pk,
-                                                                category__table__table__script__pk=cloneObject.category.table.table.script.pk)
-                    cloneObject.to_link = to_link
-                    cloneObject.save()
-                    print('fount')
-                except ObjectDoesNotExist:
-                    print('not fount')
-                    time.sleep(1)
-                    recursive_iteration += 1
-                    return cloneTreeRelations.delay(mainObject_pk, cloneObject_pk, app_name, model_name, recursive_iteration, True)
     else:
         return False
 

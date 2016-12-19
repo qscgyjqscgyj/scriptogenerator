@@ -76,4 +76,5 @@ def clone_save_links(clone_script_pk, current_script_links_count, recursive_iter
             link.clone_save()
         clone_script.active = True
         return clone_script.save()
-    return False
+    else:
+        return False

@@ -72,7 +72,7 @@ def clone_save_links(clone_script_pk, current_script_links_count, recursive_iter
             time.sleep(1)
             print(len(clone_links))
             print(current_script_links_count)
-            print('Iteration: ' + recursive_iteration)
+            print('Iteration: ' + str(recursive_iteration))
             print('---------------------')
             return clone_save_links.delay(clone_script_pk, current_script_links_count, recursive_iteration)
 

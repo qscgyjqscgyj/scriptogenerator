@@ -283,7 +283,7 @@ class CloneScriptView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         current_script = Script.objects.get(pk=int(data['id']))
-        current_links = current_script.links()
+        current_script_links_count = len(current_script.links())
 
         clone_script = Script.objects.get(pk=int(data['id']))
         clone_script.pk = None
@@ -292,11 +292,7 @@ class CloneScriptView(View):
         clone_script.save()
         cloneTreeRelations.delay(current_script.pk, clone_script.pk, 'main', 'Script')
 
-        clone_links = clone_script.links(parent=True)
-        while len(current_links) > len(clone_links):
-            clone_links = clone_script.links(parent=True)
-
-        clone_save_links.delay(clone_links.values('pk'), clone_script.pk)
+        clone_save_links.delay(clone_script.pk, current_script_links_count)
 
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data

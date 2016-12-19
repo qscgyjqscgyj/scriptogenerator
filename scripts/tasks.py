@@ -4,6 +4,7 @@ from django.db.models.loading import get_model
 
 from main.models import Link, Script
 from scripts.celery import app
+import time
 
 EXCLUDE_RELATION_FIELDS = ['parent', 'to_link']
 
@@ -30,6 +31,7 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name):
 
     # IF THE LINK OBJECT
     if cloneObject.__class__.__name__ == 'Link':
+        print('link')
         if cloneObject.to_link:
             to_link = None
             while not to_link:
@@ -61,10 +63,15 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name):
 
 
 @app.task
-def clone_save_links(links, script_pk):
-    script = Script.objects.get(pk=script_pk)
-    for link in links:
-        link = Link.objects.get(pk=link['pk'])
+def clone_save_links(clone_script_pk, current_script_links_count):
+    clone_script = Script.objects.get(pk=clone_script_pk)
+    clone_links = clone_script.links(parent=True)
+
+    while len(clone_links) < current_script_links_count:
+        time.sleep(1)
+        return clone_save_links.delay(clone_script_pk, current_script_links_count)
+
+    for link in clone_links:
         link.clone_save()
-    script.active = True
-    return script.save()
+    clone_script.active = True
+    return clone_script.save()

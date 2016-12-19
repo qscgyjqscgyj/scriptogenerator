@@ -63,6 +63,7 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name):
 
 @app.task
 def clone_save_links(clone_script_pk, current_script_links_count, recursive_iteration=1):
+    recursive_iteration += 1
     if recursive_iteration < 100:
         clone_script = Script.objects.get(pk=clone_script_pk)
         clone_links = clone_script.links(parent=True)
@@ -71,8 +72,9 @@ def clone_save_links(clone_script_pk, current_script_links_count, recursive_iter
             time.sleep(1)
             print(len(clone_links))
             print(current_script_links_count)
+            print('Iteration: ' + recursive_iteration)
             print('---------------------')
-            return clone_save_links.delay(clone_script_pk, current_script_links_count, recursive_iteration + 1)
+            return clone_save_links.delay(clone_script_pk, current_script_links_count, recursive_iteration)
 
         for link in clone_links:
             link.clone_save()

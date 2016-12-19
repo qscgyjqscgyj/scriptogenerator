@@ -31,7 +31,6 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name):
 
     # IF THE LINK OBJECT
     if cloneObject.__class__.__name__ == 'Link':
-        print('link')
         if cloneObject.to_link:
             to_link = None
             while not to_link:

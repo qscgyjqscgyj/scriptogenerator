@@ -48518,7 +48518,7 @@
 /* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Accesses = exports.Packages = exports.Profile = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Profile = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(32);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(260);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactAddonsUpdate = __webpack_require__(262);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
@@ -48529,33 +48529,12 @@
 	        {
 	            return (
 	                React.createElement('div', { className: 'row' },
-	                    React.createElement(Packages, null),
-	                    React.createElement(Accesses, null)));
+	                    React.createElement('div', { className: 'col-md-2' }),
+	                    React.createElement('div', { className: 'col-md-5' }),
+	                    React.createElement('div', { className: 'col-md-5' })));
 	
 	
-	        } }]);return Profile;}(React.Component)) || _class;var
-	
-	
-	
-	Packages = exports.Packages = (0, _mobxReact.observer)(_class2 = function (_React$Component2) {_inherits(Packages, _React$Component2);function Packages() {_classCallCheck(this, Packages);return _possibleConstructorReturn(this, (Packages.__proto__ || Object.getPrototypeOf(Packages)).apply(this, arguments));}_createClass(Packages, [{ key: 'render', value: function render()
-	        {
-	            return (
-	                React.createElement('div', { className: 'col-md-12' }));
-	
-	
-	
-	        } }]);return Packages;}(React.Component)) || _class2;var
-	
-	
-	
-	Accesses = exports.Accesses = (0, _mobxReact.observer)(_class3 = function (_React$Component3) {_inherits(Accesses, _React$Component3);function Accesses() {_classCallCheck(this, Accesses);return _possibleConstructorReturn(this, (Accesses.__proto__ || Object.getPrototypeOf(Accesses)).apply(this, arguments));}_createClass(Accesses, [{ key: 'render', value: function render()
-	        {
-	            return (
-	                React.createElement('div', { className: 'col-md-12' }));
-	
-	
-	
-	        } }]);return Accesses;}(React.Component)) || _class3;
+	        } }]);return Profile;}(React.Component)) || _class;
 
 /***/ },
 /* 305 */
@@ -48750,47 +48729,46 @@
 	        } }, { key: 'render', value: function render()
 	        {var _this2 = this;var _props2 =
 	            this.props,usersStore = _props2.usersStore,modalStore = _props2.modalStore;
-	            if (usersStore.team.length > 0) {
-	                return (
-	                    React.createElement('div', { className: 'row' },
-	                        React.createElement('div', { className: 'col-md-12' },
-	                            React.createElement('button', { onClick: function onClick() {
-	                                        modalStore.modal = true;
-	                                        modalStore.component = React.createElement(CreatingTeammate, {
-	                                            usersStore: usersStore,
-	                                            modalStore: modalStore,
-	                                            createTeammate: _this2.createTeammate.bind(_this2) });
+	            return (
+	                React.createElement('div', { className: 'row' },
+	                    React.createElement('div', { className: 'col-md-12' },
+	                        React.createElement('button', { onClick: function onClick() {
+	                                    modalStore.modal = true;
+	                                    modalStore.component = React.createElement(CreatingTeammate, {
+	                                        usersStore: usersStore,
+	                                        modalStore: modalStore,
+	                                        createTeammate: _this2.createTeammate.bind(_this2) });
 	
-	                                    }, className: 'btn btn-success' }, '+ \u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0430')),
-	
-	
-	                        React.createElement('div', { className: 'col-md-12' },
-	                            React.createElement('div', { className: 'col-md-3' }, 'Email'),
-	                            React.createElement('div', { className: 'col-md-3' }, '\u0422\u0435\u043B\u0435\u0444\u043E\u043D'),
-	                            React.createElement('div', { className: 'col-md-3' }, '\u0410\u043A\u0442\u0438\u0432\u043D\u043E\u0441\u0442\u044C'),
-	                            React.createElement('div', { className: 'col-md-3' })),
-	
-	                        usersStore.team.map(function (access, key) {
-	                            return (
-	                                React.createElement('div', { key: key, className: 'col-md-12' },
-	                                    React.createElement('div', { className: 'col-md-3' }, access.user.email),
-	                                    React.createElement('div', { className: 'col-md-3' }, access.user.phone),
-	                                    React.createElement('div', { className: 'col-md-3' },
-	                                        React.createElement('input', { type: 'checkbox', defaultChecked: access.active, onChange: function onChange() {access.active = !access.active;_this2.updateTeammate(access);} })),
-	
-	                                    React.createElement('div', { className: 'col-md-3' },
-	                                        React.createElement('button', { onClick: function onClick() {_this2.deleteTeammate(access);}, className: 'btn btn-danger' },
-	                                            React.createElement('i', { className: 'glyphicon glyphicon-remove' })))));
+	                                }, className: 'btn btn-success' }, '+ \u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0430')),
 	
 	
+	                    React.createElement('div', { className: 'col-md-12' },
+	                        React.createElement('div', { className: 'col-md-3' }, 'Email'),
+	                        React.createElement('div', { className: 'col-md-3' }, '\u0422\u0435\u043B\u0435\u0444\u043E\u043D'),
+	                        React.createElement('div', { className: 'col-md-3' }, '\u0410\u043A\u0442\u0438\u0432\u043D\u043E\u0441\u0442\u044C'),
+	                        React.createElement('div', { className: 'col-md-3' })),
+	
+	                    usersStore.team.length > 0 ?
+	                    usersStore.team.map(function (access, key) {
+	                        return (
+	                            React.createElement('div', { key: key, className: 'col-md-12' },
+	                                React.createElement('div', { className: 'col-md-3' }, access.user.email),
+	                                React.createElement('div', { className: 'col-md-3' }, access.user.phone),
+	                                React.createElement('div', { className: 'col-md-3' },
+	                                    React.createElement('input', { type: 'checkbox', defaultChecked: access.active, onChange: function onChange() {access.active = !access.active;_this2.updateTeammate(access);} })),
+	
+	                                React.createElement('div', { className: 'col-md-3' },
+	                                    React.createElement('button', { onClick: function onClick() {_this2.deleteTeammate(access);}, className: 'btn btn-danger' },
+	                                        React.createElement('i', { className: 'glyphicon glyphicon-remove' })))));
 	
 	
-	                        }),
-	                        React.createElement(_modal.ModalWrapper, { stores: [usersStore], modalStore: modalStore })));
 	
 	
-	            }
-	            return null;
+	                    }) :
+	                    null,
+	                    React.createElement(_modal.ModalWrapper, { stores: [usersStore], modalStore: modalStore })));
+	
+	
 	        } }]);return Team;}(React.Component)) || _class;var
 	
 	

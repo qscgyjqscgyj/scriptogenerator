@@ -68,27 +68,27 @@ export class Team extends React.Component {
     }
     render() {
         const {usersStore, modalStore} = this.props;
-        if(usersStore.team.length > 0) {
-            return(
-                <div className="row">
-                    <div className="col-md-12">
-                        <button onClick={() => {
-                            modalStore.modal = true;
-                            modalStore.component = React.createElement(CreatingTeammate, {
-                                usersStore: usersStore,
-                                modalStore: modalStore,
-                                createTeammate: this.createTeammate.bind(this)
-                            });
-                        }} className="btn btn-success">+ Добавить сотрудника</button>
+        return(
+            <div className="row">
+                <div className="col-md-12">
+                    <button onClick={() => {
+                        modalStore.modal = true;
+                        modalStore.component = React.createElement(CreatingTeammate, {
+                            usersStore: usersStore,
+                            modalStore: modalStore,
+                            createTeammate: this.createTeammate.bind(this)
+                        });
+                    }} className="btn btn-success">+ Добавить сотрудника</button>
 
-                    </div>
-                    <div className="col-md-12">
-                        <div className="col-md-3">Email</div>
-                        <div className="col-md-3">Телефон</div>
-                        <div className="col-md-3">Активность</div>
-                        <div className="col-md-3"></div>
-                    </div>
-                    {usersStore.team.map((access, key) => {
+                </div>
+                <div className="col-md-12">
+                    <div className="col-md-3">Email</div>
+                    <div className="col-md-3">Телефон</div>
+                    <div className="col-md-3">Активность</div>
+                    <div className="col-md-3"></div>
+                </div>
+                {usersStore.team.length > 0 ?
+                    usersStore.team.map((access, key) => {
                         return (
                             <div key={key} className="col-md-12">
                                 <div className="col-md-3">{access.user.email}</div>
@@ -103,12 +103,11 @@ export class Team extends React.Component {
                                 </div>
                             </div>
                         )
-                    })}
-                    <ModalWrapper stores={[usersStore]} modalStore={modalStore}/>
-                </div>
-            )
-        }
-        return null;
+                    })
+                : null}
+                <ModalWrapper stores={[usersStore]} modalStore={modalStore}/>
+            </div>
+        )
     }
 }
 

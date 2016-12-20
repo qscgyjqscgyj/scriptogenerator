@@ -9,30 +9,9 @@ export class Profile extends React.Component {
     render() {
         return(
             <div className="row">
-                <Packages/>
-                <Accesses/>
-            </div>
-        )
-    }
-}
-
-@observer
-export class Packages extends React.Component {
-    render() {
-        return(
-            <div className="col-md-12">
-
-            </div>
-        )
-    }
-}
-
-@observer
-export class Accesses extends React.Component {
-    render() {
-        return(
-            <div className="col-md-12">
-
+                <div className="col-md-2"></div>
+                <div className="col-md-5"></div>
+                <div className="col-md-5"></div>
             </div>
         )
     }

@@ -23,11 +23,35 @@ export class Table extends AccessableComponent {
         super(props);
 
         this.state = {
-            key: null
+            key: null,
+            clipboard: null
         }
+    }
+    fixClipboard(onInit, onDestroy) {
+        const {clipboard} = this.state;
+        let new_clipboard = new Clipboard('.copy_icon', {
+            text: function(trigger) {
+                return trigger.getAttribute('data-link');
+            }
+        });
+
+        if(this.state.clipboard) {
+            clipboard.destroy();
+            this.setState(update(this.state, {clipboard: {
+                $set: null
+            }}), () => {
+                onDestroy ? onDestroy() : null;
+            });
+        }
+        this.setState(update(this.state, {clipboard: {
+            $set: new_clipboard
+        }}), () => {
+            return onInit ? onInit() : null;
+        });
     }
     componentWillMount() {
         const {tablesStore} = this.props;
+        this.fixClipboard();
         tablesStore.pullTables(this.props.params.script);
     }
     componentWillReceiveProps(props) {
@@ -36,11 +60,7 @@ export class Table extends AccessableComponent {
     }
     componentDidMount() {
         const {tablesStore} = this.props;
-        new Clipboard('.copy_icon', {
-            text: function(trigger) {
-                return trigger.getAttribute('data-link');
-            }
-        });
+
         $(document.body).on('keydown', this.handleKeyDown.bind(this));
         $(document.body).on('keyup', this.handleKeyUp.bind(this));
     }
@@ -395,7 +415,7 @@ export class TableEdit extends Table {
                                                                             <ReactTooltip data-for={'create_ext_link' + category.id} place="top" type="dark" effect="solid"/>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Переименовать раздел" id={'rename_category' + category.id} onClick={()=>{category.edit = !category.edit}} className="btn btn-default copy_icon">
+                                                                                <button data-tip="Переименовать раздел" id={'rename_category' + category.id} onClick={()=>{category.edit = !category.edit}} className="btn btn-default">
                                                                                     <i className="glyphicon glyphicon-edit"/>
                                                                                 </button>
                                                                             </div>
@@ -427,7 +447,7 @@ export class TableEdit extends Table {
                                                                                             coll.categories = moveInArray(coll.categories, key, key + 1);
                                                                                             this.onCategorySort(coll);
                                                                                         }}
-                                                                                        data-tip="Переместить вниз"
+                                                                                        data-tip="Переместить вних"
                                                                                         id={'move_down_category' + category.id}
                                                                                         className="btn btn-default">
                                                                                         <i className="glyphicon glyphicon-triangle-bottom"/>
@@ -459,7 +479,8 @@ export class TableEdit extends Table {
                                                                                 });
                                                                                 this.updateTableLinksColl(coll);
                                                                             }}/>
-                                                                            <span data-link={this.copyLink(link)} className={"inline_element link copy_icon " + (category.hidden ? 'hidden_links' : 'link_name')}>
+                                                                            <span data-link={this.copyLink(link)}
+                                                                                  className={"inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null)}>
                                                                                 <EditableText
                                                                                     text={link.name}
                                                                                     field={'name'}
@@ -477,6 +498,7 @@ export class TableEdit extends Table {
                                                                                             );
                                                                                         } else if(tablesStore.pressed_key === 16) {
                                                                                             link.edit = true;
+                                                                                            this.fixClipboard();
                                                                                         }
                                                                                     }}
                                                                                     submitHandler={(link) => this.updateLink(link)}
@@ -493,7 +515,7 @@ export class TableEdit extends Table {
                                                                                     <div className="btn-toolbar" role="toolbar">
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             <button
-                                                                                                data-tip="Скопировать адрес ссылки"
+                                                                                                data-tip="Скопировать адрес ссылки (Ctrl + клик по названию ссылки)"
                                                                                                 id={'copy_link_address' + link.id}
                                                                                                 data-link={this.copyLink(link)}
                                                                                                 onClick={()=>{}} className="btn btn-default copy_icon">
@@ -504,10 +526,10 @@ export class TableEdit extends Table {
 
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             <button
-                                                                                                data-tip="Переименовать ссылку"
+                                                                                                data-tip="Переименовать ссылку (Shift + клик по названию ссылки)"
                                                                                                 id={'rename_link' + link.id}
                                                                                                 onClick={()=>{link.edit = !link.edit}}
-                                                                                                className="btn btn-default copy_icon">
+                                                                                                className="btn btn-default">
                                                                                                 <i className="glyphicon glyphicon-edit"/>
                                                                                             </button>
                                                                                         </div>
@@ -871,35 +893,6 @@ class EditableText extends React.Component {
             this.props.onClick(this.props.object)
         }
     }
-    doDoubleClickAction() {
-        // this.clearTimer();
-        // this.setState(update(this.state, {prevent: {$set: false}}), () => {
-        //     return this.setEdit(true)
-        // });
-    }
-    handleClick() {
-        // let self = this;
-        // this.clearTimer();
-        //
-        // this.setState(update(this.state, {
-        //     timer: {
-        //         $set: setTimeout(function() {
-        //             if (!self.state.prevent) {
-        //                 self.doClickAction();
-        //             }
-        //             self.setState(update(self.state, {prevent: {$set: false}}));
-        //         }, this.delay)
-        //     }
-        // }))
-    }
-    handleDoubleClick() {
-        // this.clearTimer();
-        //
-        // this.setState(update(this.state, {prevent: {$set: true}}), () => {
-        //     return this.doDoubleClickAction();
-        // });
-    }
-
     render() {
         const {settings} = this.props;
         return (

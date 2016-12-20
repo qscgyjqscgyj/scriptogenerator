@@ -9,6 +9,7 @@ import ScriptsStore from '../mobx/scriptsStore';
 import TablesStore from '../mobx/tablesStore';
 import UsersStore from '../mobx/usersStore';
 import PaymentStore from '../mobx/paymentStore';
+import TooltipStore from '../mobx/tooltipStore';
 import {observer} from 'mobx-react';
 
 
@@ -53,6 +54,7 @@ export class AppWrapper extends React.Component {
         let modalStore = ModalStore;
         let usersStore = UsersStore;
         let paymentStore = PaymentStore;
+        let tooltipStore = TooltipStore;
 
         const childrenWithProps = React.Children.map(this.props.children,
             (child) => React.cloneElement(child, {
@@ -61,7 +63,8 @@ export class AppWrapper extends React.Component {
                 tablesStore: tablesStore,
                 modalStore: modalStore,
                 usersStore: usersStore,
-                paymentStore: paymentStore
+                paymentStore: paymentStore,
+                tooltipStore: tooltipStore
             })
         );
         return(
@@ -72,6 +75,7 @@ export class AppWrapper extends React.Component {
                 projectsStore={projectsStore}
                 tablesStore={tablesStore}
                 paymentStore={paymentStore}
+                tooltipStore={tooltipStore}
                 children={childrenWithProps}
                 location={this.props.location}
                 params={this.props.params}/>

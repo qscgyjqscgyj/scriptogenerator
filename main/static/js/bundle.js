@@ -49520,11 +49520,35 @@
 	        props));
 	
 	        _this.state = {
-	            key: null };return _this;
+	            key: null,
+	            clipboard: null };return _this;
 	
-	    }_createClass(Table, [{ key: 'componentWillMount', value: function componentWillMount()
+	    }_createClass(Table, [{ key: 'fixClipboard', value: function fixClipboard(
+	        onInit, onDestroy) {var
+	            clipboard = this.state.clipboard;
+	            var new_clipboard = new _clipboard2.default('.copy_icon', {
+	                text: function text(trigger) {
+	                    return trigger.getAttribute('data-link');
+	                } });
+	
+	
+	            if (this.state.clipboard) {
+	                clipboard.destroy();
+	                this.setState((0, _reactAddonsUpdate2.default)(this.state, { clipboard: {
+	                        $set: null } }),
+	                function () {
+	                    onDestroy ? onDestroy() : null;
+	                });
+	            }
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { clipboard: {
+	                    $set: new_clipboard } }),
+	            function () {
+	                return onInit ? onInit() : null;
+	            });
+	        } }, { key: 'componentWillMount', value: function componentWillMount()
 	        {var
 	            tablesStore = this.props.tablesStore;
+	            this.fixClipboard();
 	            tablesStore.pullTables(this.props.params.script);
 	        } }, { key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {var
@@ -49533,10 +49557,6 @@
 	        } }, { key: 'componentDidMount', value: function componentDidMount()
 	        {var
 	            tablesStore = this.props.tablesStore;
-	            new _clipboard2.default('.copy_icon', {
-	                text: function text(trigger) {
-	                    return trigger.getAttribute('data-link');
-	                } });
 	
 	            (0, _jquery2.default)(document.body).on('keydown', this.handleKeyDown.bind(this));
 	            (0, _jquery2.default)(document.body).on('keyup', this.handleKeyUp.bind(this));
@@ -49892,7 +49912,7 @@
 	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'create_ext_link' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
 	
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', id: 'rename_category' + category.id, onClick: function onClick() {category.edit = !category.edit;}, className: 'btn btn-default copy_icon' },
+	                                                                                React.createElement('button', { 'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', id: 'rename_category' + category.id, onClick: function onClick() {category.edit = !category.edit;}, className: 'btn btn-default' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' }))),
 	
 	
@@ -49924,7 +49944,7 @@
 	                                                                                            coll.categories = (0, _sort.moveInArray)(coll.categories, key, key + 1);
 	                                                                                            _this5.onCategorySort(coll);
 	                                                                                        },
-	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0437',
+	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0445',
 	                                                                                        id: 'move_down_category' + category.id,
 	                                                                                        className: 'btn btn-default' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-triangle-bottom' })) :
@@ -49956,7 +49976,8 @@
 	                                                                                        });
 	                                                                                        _this5.updateTableLinksColl(coll);
 	                                                                                    } }),
-	                                                                                React.createElement('span', { 'data-link': _this5.copyLink(link), className: "inline_element link copy_icon " + (category.hidden ? 'hidden_links' : 'link_name') },
+	                                                                                React.createElement('span', { 'data-link': _this5.copyLink(link),
+	                                                                                        className: "inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null) },
 	                                                                                    React.createElement(EditableText, {
 	                                                                                        text: link.name,
 	                                                                                        field: 'name',
@@ -49974,6 +49995,7 @@
 	
 	                                                                                            } else if (tablesStore.pressed_key === 16) {
 	                                                                                                link.edit = true;
+	                                                                                                _this5.fixClipboard();
 	                                                                                            }
 	                                                                                        },
 	                                                                                        submitHandler: function submitHandler(link) {return _this5.updateLink(link);},
@@ -49990,7 +50012,7 @@
 	                                                                                    React.createElement('div', { className: 'btn-toolbar', role: 'toolbar' },
 	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
 	                                                                                            React.createElement('button', {
-	                                                                                                    'data-tip': '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0430\u0434\u0440\u0435\u0441 \u0441\u0441\u044B\u043B\u043A\u0438',
+	                                                                                                    'data-tip': '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0430\u0434\u0440\u0435\u0441 \u0441\u0441\u044B\u043B\u043A\u0438 (Ctrl + \u043A\u043B\u0438\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E \u0441\u0441\u044B\u043B\u043A\u0438)',
 	                                                                                                    id: 'copy_link_address' + link.id,
 	                                                                                                    'data-link': _this5.copyLink(link),
 	                                                                                                    onClick: function onClick() {}, className: 'btn btn-default copy_icon' },
@@ -50001,10 +50023,10 @@
 	
 	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
 	                                                                                            React.createElement('button', {
-	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443',
+	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 (Shift + \u043A\u043B\u0438\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E \u0441\u0441\u044B\u043B\u043A\u0438)',
 	                                                                                                    id: 'rename_link' + link.id,
 	                                                                                                    onClick: function onClick() {link.edit = !link.edit;},
-	                                                                                                    className: 'btn btn-default copy_icon' },
+	                                                                                                    className: 'btn btn-default' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit' }))),
 	
 	
@@ -50367,36 +50389,7 @@
 	            if (this.props.onClick) {
 	                this.props.onClick(this.props.object);
 	            }
-	        } }, { key: 'doDoubleClickAction', value: function doDoubleClickAction()
-	        {
-	            // this.clearTimer();
-	            // this.setState(update(this.state, {prevent: {$set: false}}), () => {
-	            //     return this.setEdit(true)
-	            // });
-	        } }, { key: 'handleClick', value: function handleClick()
-	        {
-	            // let self = this;
-	            // this.clearTimer();
-	            //
-	            // this.setState(update(this.state, {
-	            //     timer: {
-	            //         $set: setTimeout(function() {
-	            //             if (!self.state.prevent) {
-	            //                 self.doClickAction();
-	            //             }
-	            //             self.setState(update(self.state, {prevent: {$set: false}}));
-	            //         }, this.delay)
-	            //     }
-	            // }))
-	        } }, { key: 'handleDoubleClick', value: function handleDoubleClick()
-	        {
-	            // this.clearTimer();
-	            //
-	            // this.setState(update(this.state, {prevent: {$set: true}}), () => {
-	            //     return this.doDoubleClickAction();
-	            // });
 	        } }, { key: 'render', value: function render()
-	
 	        {var _this12 = this;var
 	            settings = this.props.settings;
 	            return (
@@ -77279,6 +77272,7 @@
 	var _tablesStore = __webpack_require__(309);var _tablesStore2 = _interopRequireDefault(_tablesStore);
 	var _usersStore = __webpack_require__(483);var _usersStore2 = _interopRequireDefault(_usersStore);
 	var _paymentStore = __webpack_require__(484);var _paymentStore2 = _interopRequireDefault(_paymentStore);
+	var _tooltipStore = __webpack_require__(485);var _tooltipStore2 = _interopRequireDefault(_tooltipStore);
 	var _mobxReact = __webpack_require__(264);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
@@ -77323,6 +77317,7 @@
 	            var modalStore = _modalStore2.default;
 	            var usersStore = _usersStore2.default;
 	            var paymentStore = _paymentStore2.default;
+	            var tooltipStore = _tooltipStore2.default;
 	
 	            var childrenWithProps = React.Children.map(this.props.children,
 	            function (child) {return React.cloneElement(child, {
@@ -77331,7 +77326,8 @@
 	                    tablesStore: tablesStore,
 	                    modalStore: modalStore,
 	                    usersStore: usersStore,
-	                    paymentStore: paymentStore });});
+	                    paymentStore: paymentStore,
+	                    tooltipStore: tooltipStore });});
 	
 	
 	            return (
@@ -77342,6 +77338,7 @@
 	                    projectsStore: projectsStore,
 	                    tablesStore: tablesStore,
 	                    paymentStore: paymentStore,
+	                    tooltipStore: tooltipStore,
 	                    children: childrenWithProps,
 	                    location: this.props.location,
 	                    params: this.props.params }));
@@ -77579,6 +77576,24 @@
 	
 	
 	new PaymentStore();
+
+/***/ },
+/* 485 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TooltipStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(265);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
+	
+	TooltipStore = exports.TooltipStore = (_class = function () {function TooltipStore() {_classCallCheck(this, TooltipStore);_initDefineProp(this, 'tip', _descriptor, this);_initDefineProp(this, 'id', _descriptor2, this);}_createClass(TooltipStore, [{ key: 'reset', value: function reset()
+	
+	
+	
+	        {
+	            this.tip = null;
+	            this.id = null;
+	        } }]);return TooltipStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'tip', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'id', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class.prototype, 'reset', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'reset'), _class.prototype)), _class);exports.default =
+	
+	
+	new TooltipStore();
 
 /***/ }
 /******/ ]);

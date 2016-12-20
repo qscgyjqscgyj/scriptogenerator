@@ -74,7 +74,12 @@ export class Tables extends AccessableComponent {
                                 <div className="col-md-2 col-centered">
                                     <button onClick={() => {
                                         modalStore.modal = true;
-                                        modalStore.component = CreatingTable
+                                        modalStore.component = React.createElement(CreatingTable, {
+                                            tablesStore: tablesStore,
+                                            modalStore: modalStore,
+                                            createTable: this.createTable.bind(this),
+                                            updateTable: (e) => {tablesStore.updateTable(e, modalStore)}
+                                        });
                                     }} className="btn btn-success">+ Создать таблицу</button>
                                 </div>
                                 <div className="col-md-7 col-centered">
@@ -106,7 +111,12 @@ export class Tables extends AccessableComponent {
                                                             <button className="btn btn-default" onClick={()=>{
                                                                 tablesStore.editing = table;
                                                                 modalStore.modal = true;
-                                                                modalStore.component = EditingTable
+                                                                modalStore.component = React.createElement(EditingTable, {
+                                                                    tablesStore: tablesStore,
+                                                                    modalStore: modalStore,
+                                                                    createTable: this.createTable.bind(this),
+                                                                    updateTable: (e) => {tablesStore.updateTable(e, modalStore)}
+                                                                });
                                                             }}>Ред.</button>
                                                         : null}
                                                     </td>
@@ -122,7 +132,7 @@ export class Tables extends AccessableComponent {
                                 </table>
                             </div>
                         </div>
-                        <ModalWrapper scriptsStore={scriptsStore} tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createTable={this.createTable.bind(this)} updateTable={(e) => {tablesStore.updateTable(e, modalStore)}}/>
+                        <ModalWrapper stores={[projectsStore, scriptsStore, tablesStore]} modalStore={modalStore}/>
                     </div>
                 );
             }

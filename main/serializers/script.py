@@ -17,7 +17,7 @@ class ScriptAccessField(serializers.Field):
 
 
 class ScriptSerializer(serializers.ModelSerializer):
-    project = ProjectSerializer()
+    project = ProjectSerializer(required=False, allow_null=True)
     owner = UserSerializer(read_only=True)
     accesses = ScriptAccessField(required=False)
 

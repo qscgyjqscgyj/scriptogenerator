@@ -603,11 +603,7 @@ export class TableEdit extends Table {
                                 }
                             })}
                         </div>
-                        <ModalWrapper
-                            scriptsStore={scriptsStore}
-                            tablesStore={tablesStore}
-                            projectsStore={projectsStore}
-                            modalStore={modalStore}/>
+                        <ModalWrapper stores={[projectsStore, tablesStore, scriptsStore]} modalStore={modalStore}/>
                     </div>
                 );
             }

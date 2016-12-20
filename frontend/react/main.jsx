@@ -6,6 +6,7 @@ import {createHashHistory} from 'history';
 import {Scripts, AvailableScripts} from './scripts';
 import {Profile} from './profile/profile';
 import {Payment} from './profile/payment';
+import {Team} from './profile/team';
 import {Projects} from './projects';
 import {Tables, AvailableTables} from './tables';
 import {TableEdit, TableShare} from './table';
@@ -33,6 +34,7 @@ ReactDOM.render(
 
             <Route path="/profile/" component={Profile}/>
             <Route path="/profile/payment/" component={Payment}/>
+            <Route path="/profile/team/" component={Team}/>
         </Route>
     </Router>,
     RENDER_ELEMENT

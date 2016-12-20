@@ -1,17 +1,23 @@
 from django.contrib.sites.models import Site, RequestSite
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 
 from django.views.generic import UpdateView
+from django.views.generic import View
 from registration import signals
 from registration.backends.default.views import RegistrationView
 from registration.models import RegistrationProfile
 from registration.users import UserModel
 
+from main.views import JSONResponse
 from scripts.settings import DEBUG
 from users.forms import UserProfileForm
-from users.models import CustomUser
+from users.models import CustomUser, UserAccess
+import json
+
+from users.serializers import UserAccessSerializer
 
 
 class UserProfileView(UpdateView):
@@ -49,3 +55,48 @@ class CustomRegistrationView(RegistrationView):
                                      user=new_user,
                                      request=self.request)
         return new_user
+
+
+class TeamView(View):
+    def get(self, request, *args, **kwargs):
+        return JSONResponse({
+            'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data
+        })
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        try:
+            user = CustomUser.objects.get(username=data['email'])
+            del data['email']
+            data['user'] = user
+            data['owner'] = request.user
+            access = UserAccessSerializer(data=data)
+            if access.is_valid():
+                access.create(data)
+                return JSONResponse({
+                    'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data
+                })
+            return JSONResponse(access.errors, status=400)
+        except ObjectDoesNotExist:
+            return JSONResponse({'error': 'User does not exist'}, status=400)
+
+    def put(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        access = UserAccessSerializer(data=data)
+        if access.is_valid():
+            access.update(UserAccess.objects.get(pk=int(data['id'])), data)
+            return JSONResponse({
+                'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data
+            })
+        return JSONResponse(access.errors, status=400)
+
+    def delete(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        try:
+            access = UserAccess.objects.get(pk=int(data['id']))
+            access.delete()
+            return JSONResponse({
+                'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data
+            })
+        except ObjectDoesNotExist:
+            return JSONResponse({'error': 'Object does not exist.'}, status=400)

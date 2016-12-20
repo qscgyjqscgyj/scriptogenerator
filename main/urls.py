@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from main.views import MainView, ScriptsView, ProjectsView, InitView, TablesView, CollsView, LinkCategoriesView, \
     LinkView, ScriptAccessView, CloneScriptView
+from users.views import TeamView
 
 urlpatterns = patterns('',
     url(r'^$', MainView.as_view(), name='main'),
@@ -23,6 +24,8 @@ urlpatterns = patterns('',
     url(r'^api/links/$', login_required(csrf_exempt(LinkView.as_view())), name='links'),
     url(r'^api/links/categories/$', login_required(csrf_exempt(LinkCategoriesView.as_view())), name='link_categories'),
 
+    url(r'^api/team$', login_required(csrf_exempt(TeamView.as_view())), name='team'),
+
     # REACT ROUTES
     url(r'^projects/$', MainView.as_view(), name='react__projects'),
     url(r'^scripts/user/$', MainView.as_view(), name='react__user_scripts'),
@@ -38,4 +41,5 @@ urlpatterns = patterns('',
 
     url(r'^profile/$', MainView.as_view(), name='react__profile'),
     url(r'^profile/payment/$', MainView.as_view(), name='react__profile_payment'),
+    url(r'^profile/team/$', MainView.as_view(), name='react__profile_team'),
 )

@@ -130,7 +130,14 @@ export class Scripts extends React.Component {
                             <div className="col-md-2">
                                 <button onClick={() => {
                                     modalStore.modal = true;
-                                    modalStore.component = CreatingScript;
+                                    modalStore.component = React.createElement(CreatingScript, {
+                                        projectsStore: projectsStore,
+                                        scriptsStore: scriptsStore,
+                                        modalStore: modalStore,
+                                        createScript: this.createScript.bind(this),
+                                        updateScript: this.updateScript.bind(this),
+                                        available: available
+                                    });
                                 }} className="btn btn-success">+ Создать скрипт</button>
                             </div>
                             <div className="col-md-3">
@@ -205,7 +212,11 @@ export class Scripts extends React.Component {
                                                 <td>
                                                     <button onClick={() => {
                                                         modalStore.modal = true;
-                                                        modalStore.component = React.createElement(Accesses, {script: script, usersStore: usersStore, setAccesses: this.setAccesses.bind(this)});
+                                                        modalStore.component = React.createElement(Accesses, {
+                                                            script: script,
+                                                            usersStore: usersStore,
+                                                            setAccesses: this.setAccesses.bind(this)
+                                                        });
                                                     }} className="btn btn-default">Права</button>
                                                 </td>
                                             :
@@ -219,7 +230,14 @@ export class Scripts extends React.Component {
                                                     <button className="btn btn-default" onClick={()=>{
                                                         scriptsStore.editing = script;
                                                         modalStore.modal = true;
-                                                        modalStore.component = EditingScript
+                                                        modalStore.component = React.createElement(EditingScript, {
+                                                            projectsStore: projectsStore,
+                                                            scriptsStore: scriptsStore,
+                                                            modalStore: modalStore,
+                                                            createScript: this.createScript.bind(this),
+                                                            updateScript: this.updateScript.bind(this),
+                                                            available: available
+                                                        });
                                                     }}>Ред.</button>
                                                 : null}
                                             </td>
@@ -235,7 +253,7 @@ export class Scripts extends React.Component {
                             </table>
                         </div>
                     </div>
-                    <ModalWrapper scriptsStore={scriptsStore} tablesStore={tablesStore} projectsStore={projectsStore} modalStore={modalStore} createScript={this.createScript.bind(this)} updateScript={this.updateScript.bind(this)} available={available}/>
+                    <ModalWrapper stores={[projectsStore, scriptsStore, tablesStore]} modalStore={modalStore}/>
                 </div>
             );
         }
@@ -360,10 +378,10 @@ class Accesses extends React.Component {
         let no_edit_selects = this.getSelected(false);
         let options = (edit ? edit_selects : no_edit_selects);
         let all_options = edit_selects.concat(no_edit_selects);
-        usersStore.users.map(user => {
-            if((all_options.length > 0 ? !(all_options.find(option => {return option.value === user.id})) : true)) {
+        usersStore.team.map(teammate => {
+            if((all_options.length > 0 ? !(all_options.find(option => {return option.value === teammate.user.id})) : true)) {
                 options.push(
-                    {value: user.id, label: user.email}
+                    {value: teammate.user.id, label: teammate.user.email}
                 );
             }
         });

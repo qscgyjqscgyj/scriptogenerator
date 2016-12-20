@@ -24,31 +24,27 @@ function isFunction(functionToCheck) {
 @observer
 export class ModalWrapper extends React.Component {
     render() {
-        const {scriptsStore, projectsStore, tablesStore, modalStore} = this.props;
+        const {stores, modalStore} = this.props;
         return (
             <Modal
                 isOpen={modalStore.modal}
                 style={customModalStyles}
                 onRequestClose={() => {
                     modalStore.modal = false;
-                    projectsStore.editing = null;
-                    scriptsStore.editing = null;
-                    tablesStore.editing = null;
+                    stores.map(store => {
+                        if(store.editing) {
+                            store.editing = null;
+                        }
+                    });
                 }}
                 onAfterOpen={() => {
-                    projectsStore.resetCreating();
-                    scriptsStore.resetCreating();
-                    tablesStore.resetCreating();
+                    stores.map(store => {
+                        if(store.editing) {
+                            store.resetCreating();
+                        }
+                    });
                 }}>
-                {isFunction(modalStore.component) ?
-                    modalStore.component ?
-                        React.createElement(
-                            modalStore.component,
-                            this.props
-                        )
-                        : ''
-                    : modalStore.component
-                }
+                {modalStore.component}
             </Modal>
         )
     }

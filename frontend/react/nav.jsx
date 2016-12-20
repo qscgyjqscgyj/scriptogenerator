@@ -67,8 +67,9 @@ export class Nav extends React.Component {
                             <li className="dropdown">
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{usersStore.session_user.username} <span className="caret"/></a>
                                 <ul className="dropdown-menu">
-                                    <li><a href={document.body.getAttribute('data-profile-url')}>Личный кабинет</a></li>
-                                    <li><a href='/profile/payment/'>Оплата</a></li>
+                                    <li><Link to='/profile/'>Личный Кабинет</Link></li>
+                                    <li><Link to='/profile/payment/'>Оплата</Link></li>
+                                    <li><Link to='/profile/team/'>Моя Команда</Link></li>
                                     <li><a href={document.body.getAttribute('data-logout-url')}>Выход</a></li>
                                 </ul>
                             </li>

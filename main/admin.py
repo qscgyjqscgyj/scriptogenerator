@@ -3,7 +3,8 @@ from main.models import *
 
 
 class ScriptAdmin(admin.ModelAdmin):
-    list_display = ('name', 'active', 'parent')
+    list_display = ('name', 'owner', 'active', 'parent')
+    search_fields = ('owner__email',)
 
 
 class TableAdmin(admin.ModelAdmin):

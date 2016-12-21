@@ -28,3 +28,13 @@ class UserPayment(models.Model):
 
     def __unicode__(self):
         return self.package.__unicode__()
+
+
+class LocalPayment(models.Model):
+    name = models.CharField(max_length=1024)
+    user = models.ForeignKey(CustomUser, related_name='local_payment_user_custom_user')
+    sum = models.FloatField(default=0.0)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.name

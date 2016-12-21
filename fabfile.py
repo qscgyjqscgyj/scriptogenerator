@@ -7,10 +7,11 @@ from scripts.settings import LOCAL_APPS
 env.hosts = ['root@alpateks.ru:22']
 # local_prefix = prefix('source /home/aliestarten/Env/scripts/bin/activate')
 server_prefix = prefix('source /home/Env/scripts/bin/activate')
+server_project_dir = '/home/Django/scripts'
 
 
 def deploy():
-    with cd('/home/Django/scripts'):
+    with cd(server_project_dir):
         try:
             # local('gulp build --production')
             local('git add .')
@@ -36,12 +37,12 @@ def restart_celery():
 
 def kill_celery():
     with server_prefix:
-        sudo("ps auxww | grep celeryd | awk '{print $2}' | xargs kill -9")
-        sudo('supervisorctl restart scripts.celery')
+        run("ps auxww | grep '%(server_project_dir)s/manage.py celeryd' | awk '{print $2}' | xargs kill -9" % dict(server_project_dir=server_project_dir))
+        sudo('supervisorctl stop scripts.celery')
 
 
 def manage(command='help'):
-    with cd('/home/Django/scripts'):
+    with cd(server_project_dir):
         with prefix:
             run('python ./manage.py %s' % command)
 

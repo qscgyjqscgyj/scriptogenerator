@@ -26,7 +26,7 @@ export class ScriptsStore {
         let scripts;
         let matches_by_name = new RegExp(this.filter_by_name, 'i');
         scripts = (available ? this.available_scripts : this.scripts).filter(script => !this.filter_by_name || matches_by_name.test(script.name));
-        return scripts.filter(script => !this.filter_by_project || script.project.id === this.filter_by_project);
+        return scripts.filter(script => !this.filter_by_project || (script.project ? script.project.id === this.filter_by_project : false));
     }
     script(id) {
         return this.scripts.concat(this.available_scripts).find(script => parseInt(script.id) === parseInt(id));

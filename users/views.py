@@ -17,7 +17,7 @@ from users.forms import UserProfileForm
 from users.models import CustomUser, UserAccess
 import json
 
-from users.serializers import UserAccessSerializer
+from users.serializers import UserAccessSerializer, UserSerializer
 
 
 class UserProfileView(UpdateView):
@@ -55,6 +55,19 @@ class CustomRegistrationView(RegistrationView):
                                      user=new_user,
                                      request=self.request)
         return new_user
+
+
+class ProfileView(View):
+    def put(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        user = UserSerializer(data=data)
+        current_user = CustomUser.objects.get(pk=int(data['id']))
+        if user.is_valid():
+            user.update(current_user, data)
+            return JSONResponse({
+                'session_user': UserAccessSerializer(current_user).data
+            })
+        return JSONResponse(user.errors, status=400)
 
 
 class TeamView(View):

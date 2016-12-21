@@ -189,7 +189,7 @@ export class Scripts extends React.Component {
                                                     <span>{script.name}</span>
                                                 }
                                             </td>
-                                            <td>{script.project.name}</td>
+                                            <td>{script.project ? script.project.name : null}</td>
                                             <td>{script.owner.email}</td>
                                             {!available ?
                                                 <td>

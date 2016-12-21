@@ -6,8 +6,8 @@ import {observer} from 'mobx-react';
 
 const STATIC_URL = document.body.getAttribute('data-static-url');
 const YA_CONFIG = {
-    shopId: '',
-    scid: ''
+    shopId: '91593',
+    scid: '546578'
 };
 
 @observer
@@ -72,7 +72,7 @@ export class Payment extends React.Component {
                                             onChange={(e) => {paymentStore.setSum(parseInt(e.target.value))}}
                                             value={paymentStore.sum ? paymentStore.sum : ''}
                                             placeholder="Сумма к оплате"/>
-                                        <span className="avg">рублей</span>
+                                        <span className="avg">рублей. *минимум 990р.</span>
                                     </div>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@ export class Payment extends React.Component {
                         </div>
                         <div className="col-md-12 profile_payment__payment">
                             <div className="col-md-6">
-                                <button className="btn btn-success btn-lg">ОПЛАТИТЬ</button>
+                                <button className={"btn btn-success btn-lg " + (!paymentStore.user || paymentStore.sum < 990 ? 'disabled' : null)}>ОПЛАТИТЬ</button>
                             </div>
                             <div className="col-md-6 recurrent_payments">
                                 <input type="checkbox" defaultChecked={true}/> Включить автопополнение баланса.

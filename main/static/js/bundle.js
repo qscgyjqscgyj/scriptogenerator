@@ -28766,7 +28766,7 @@
 	                                                        React.createElement('span', null, script.name)),
 	
 	
-	                                                    React.createElement('td', null, script.project.name),
+	                                                    React.createElement('td', null, script.project ? script.project.name : null),
 	                                                    React.createElement('td', null, script.owner.email),
 	                                                    !available ?
 	                                                    React.createElement('td', null,
@@ -48525,13 +48525,28 @@
 	var _mobxReact = __webpack_require__(264);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
-	Profile = exports.Profile = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Profile, _React$Component);function Profile() {_classCallCheck(this, Profile);return _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).apply(this, arguments));}_createClass(Profile, [{ key: 'render', value: function render()
+	Profile = exports.Profile = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Profile, _React$Component);function Profile() {_classCallCheck(this, Profile);return _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).apply(this, arguments));}_createClass(Profile, [{ key: 'updateSessionUser', value: function updateSessionUser()
+	        {var
+	            usersStore = this.props.usersStore;
+	            _jquery2.default.ajax({
+	                method: 'PUT',
+	                url: document.body.getAttribute('data-profile-url'),
+	                data: JSON.stringify(usersStore.session_user),
+	                success: function success(res) {
+	                    usersStore.session_user = res.session_user;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
+	        } }, { key: 'render', value: function render()
 	        {
 	            return (
 	                React.createElement('div', { className: 'row' },
-	                    React.createElement('div', { className: 'col-md-2' }),
-	                    React.createElement('div', { className: 'col-md-5' }),
-	                    React.createElement('div', { className: 'col-md-5' })));
+	                    React.createElement('div', { className: 'col-md-12' },
+	                        React.createElement('div', { className: 'col-md-6' }),
+	                        React.createElement('div', { className: 'col-md-6' }))));
+	
 	
 	
 	        } }]);return Profile;}(React.Component)) || _class;
@@ -48548,8 +48563,8 @@
 	
 	var STATIC_URL = document.body.getAttribute('data-static-url');
 	var YA_CONFIG = {
-	    shopId: '',
-	    scid: '' };var
+	    shopId: '91593',
+	    scid: '546578' };var
 	
 	
 	
@@ -48614,7 +48629,7 @@
 	                                                onChange: function onChange(e) {paymentStore.setSum(parseInt(e.target.value));},
 	                                                value: paymentStore.sum ? paymentStore.sum : '',
 	                                                placeholder: '\u0421\u0443\u043C\u043C\u0430 \u043A \u043E\u043F\u043B\u0430\u0442\u0435' }),
-	                                            React.createElement('span', { className: 'avg' }, '\u0440\u0443\u0431\u043B\u0435\u0439')))),
+	                                            React.createElement('span', { className: 'avg' }, '\u0440\u0443\u0431\u043B\u0435\u0439. *\u043C\u0438\u043D\u0438\u043C\u0443\u043C 990\u0440.')))),
 	
 	
 	
@@ -48627,7 +48642,7 @@
 	
 	                            React.createElement('div', { className: 'col-md-12 profile_payment__payment' },
 	                                React.createElement('div', { className: 'col-md-6' },
-	                                    React.createElement('button', { className: 'btn btn-success btn-lg' }, '\u041E\u041F\u041B\u0410\u0422\u0418\u0422\u042C')),
+	                                    React.createElement('button', { className: "btn btn-success btn-lg " + (!paymentStore.user || paymentStore.sum < 990 ? 'disabled' : null) }, '\u041E\u041F\u041B\u0410\u0422\u0418\u0422\u042C')),
 	
 	                                React.createElement('div', { className: 'col-md-6 recurrent_payments' },
 	                                    React.createElement('input', { type: 'checkbox', defaultChecked: true }), ' \u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0430\u0432\u0442\u043E\u043F\u043E\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0435 \u0431\u0430\u043B\u0430\u043D\u0441\u0430.')))),
@@ -77634,7 +77649,7 @@
 	            var scripts = void 0;
 	            var matches_by_name = new RegExp(this.filter_by_name, 'i');
 	            scripts = (available ? this.available_scripts : this.scripts).filter(function (script) {return !_this2.filter_by_name || matches_by_name.test(script.name);});
-	            return scripts.filter(function (script) {return !_this2.filter_by_project || script.project.id === _this2.filter_by_project;});
+	            return scripts.filter(function (script) {return !_this2.filter_by_project || (script.project ? script.project.id === _this2.filter_by_project : false);});
 	        } }, { key: 'script', value: function script(
 	        id) {
 	            return this.scripts.concat(this.available_scripts).find(function (script) {return parseInt(script.id) === parseInt(id);});

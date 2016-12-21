@@ -8,7 +8,7 @@ class Script(models.Model):
     name = models.CharField(max_length=1024)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='script_parent_script', blank=True, null=True)
     owner = models.ForeignKey(CustomUser, related_name='script_owner_custom_user')
-    project = models.ForeignKey('Project', related_name='script_project_project')
+    project = models.ForeignKey('Project', on_delete=models.SET_NULL, related_name='script_project_project', blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
     date_mod = models.DateTimeField(auto_now=True)
@@ -108,7 +108,7 @@ class Link(models.Model):
     opened = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return self.name
+        return self.name + ' (' + str(self.category.table.table.script.pk) + ')'
 
     def get_address(self):
         return '/tables/%(script)s/table/%(table)s/link/%(link)s' % dict(

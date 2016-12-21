@@ -10,45 +10,38 @@ EXCLUDE_RELATION_FIELDS = ['parent', 'to_link']
 
 
 @app.task
-def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name, recursive_iteration=1, no_relations=False):
+def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name, recursive_iteration=1):
     if recursive_iteration < 100:
         model = get_model(app_name, model_name)
         mainObject = model.objects.get(pk=mainObject_pk)
-
         try:
             cloneObject = model.objects.get(pk=cloneObject_pk)
-        except ObjectDoesNotExist:
-            time.sleep(1)
-            recursive_iteration += 1
-            return cloneTreeRelations.delay(mainObject_pk, cloneObject_pk, app_name, model_name, recursive_iteration)
+            if hasattr(cloneObject, 'parent'):
+                cloneObject.parent = mainObject
+                cloneObject.save()
 
-        if hasattr(cloneObject, 'parent'):
-            cloneObject.parent = mainObject
-            cloneObject.save()
+            if hasattr(cloneObject, 'opened'):
+                cloneObject.opened = False
+                cloneObject.save()
 
-        if hasattr(cloneObject, 'opened'):
-            cloneObject.opened = False
-            cloneObject.save()
+            # IF THE LINK OBJECT
+            if cloneObject.__class__.__name__ == 'Link':
+                if cloneObject.to_link:
+                    print('to_link (' + str(cloneObject.pk) + ') script before: ' + str(cloneObject.to_link.category.table.table.script.pk))
+                    try:
+                        to_link = cloneObject.__class__.objects.get(parent__pk=cloneObject.to_link.pk,
+                                                                    category__table__table__script__pk=cloneObject.category.table.table.script.pk)
+                        cloneObject.to_link = to_link
+                        cloneObject.save()
+                        print('found')
+                        print('to_link (' + str(cloneObject.pk) + ') script after: ' + str(cloneObject.to_link.category.table.table.script.pk))
+                    except ObjectDoesNotExist:
+                        print('not found')
+                        time.sleep(1)
+                        recursive_iteration += 1
+                        cloneTreeRelations.delay(mainObject_pk, cloneObject_pk, app_name, model_name, recursive_iteration)
 
-        # IF THE LINK OBJECT
-        if cloneObject.__class__.__name__ == 'Link':
-            if cloneObject.to_link:
-                print('to_link')
-                try:
-                    to_link = cloneObject.__class__.objects.get(parent__pk=cloneObject.to_link.pk,
-                                                                category__table__table__script__pk=cloneObject.category.table.table.script.pk)
-                    cloneObject.to_link = to_link
-                    cloneObject.save()
-                    print('fount')
-                except ObjectDoesNotExist:
-                    print('not fount')
-                    time.sleep(1)
-                    recursive_iteration += 1
-                    cloneTreeRelations.delay(mainObject_pk, cloneObject_pk, app_name, model_name, recursive_iteration, True)
-
-        if not no_relations:
             relations = type(mainObject)._meta.get_all_related_objects_with_model()
-
             for relate in relations:
                 if relate[0].field.name in EXCLUDE_RELATION_FIELDS:
                     continue
@@ -64,6 +57,10 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name, recu
                             cloneRelatedObject.save()
                             if type(currentRelatedObject)._meta.get_all_related_objects_with_model():
                                 cloneTreeRelations.delay(currentRelatedObject.pk, cloneRelatedObject.pk, type(currentRelatedObject)._meta.app_label, currentRelatedObject.__class__.__name__)
+        except ObjectDoesNotExist:
+            time.sleep(1)
+            recursive_iteration += 1
+            cloneTreeRelations.delay(mainObject_pk, cloneObject_pk, app_name, model_name, recursive_iteration)
     else:
         return False
 

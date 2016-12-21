@@ -22,8 +22,9 @@ class ScriptSerializer(serializers.ModelSerializer):
     accesses = ScriptAccessField(required=False)
 
     def create(self, validated_data):
-        project = Project.objects.get(pk=self._kwargs['data']['project']['id'])
-        validated_data['project'] = project
+        if self._kwargs['data'].get('project'):
+            project = Project.objects.get(pk=self._kwargs['data']['project']['id'])
+            validated_data['project'] = project
 
         owner = self.initial_data.pop('owner', None)
         owner = get_model('users', 'CustomUser').objects.get(**owner)

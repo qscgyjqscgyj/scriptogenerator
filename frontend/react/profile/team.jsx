@@ -123,6 +123,8 @@ class CreatingTeammate extends React.Component {
                             <input className="form-control" onChange={(e) => usersStore.creating_teammate_email = e.target.value} value={usersStore.creating_teammate_email} type="text" name="name" placeholder="Email"/>
                         </div>
                     </div>
+
+                    {/*<div className="alert alert-danger" role="alert"></div>*/}
                     <div className="col-md-12">
                         <div className="form-group">
                             <button className="btn btn-success" type="submit">Создать</button>

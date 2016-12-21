@@ -48784,6 +48784,8 @@
 	                                React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return usersStore.creating_teammate_email = e.target.value;}, value: usersStore.creating_teammate_email, type: 'text', name: 'name', placeholder: 'Email' }))),
 	
 	
+	
+	
 	                        React.createElement('div', { className: 'col-md-12' },
 	                            React.createElement('div', { className: 'form-group' },
 	                                React.createElement('button', { className: 'btn btn-success', type: 'submit' }, '\u0421\u043E\u0437\u0434\u0430\u0442\u044C'))))));

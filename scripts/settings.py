@@ -99,7 +99,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'registration',
     'djcelery',
-    'constance.backends.database'
+    'constance'
 )
 
 LOCAL_APPS = (
@@ -155,9 +155,8 @@ LOGIN_REDIRECT_URL = '/'
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 CONSTANCE_IGNORE_ADMIN_VERSION_CHECK = True
 CONSTANCE_CONFIG = {
-    'PAYMENT_PER_DAY': (33.0, u'Абонентская плата за день', float),
-    'PAYMENT_PER_USER': (11.0, u'Абонентская плата за КАЖДОГО дополнительного пользователя', float),
-    'START_USERS_COUNT': (3, u'Количество пользователей, доступных за минимальную плату', int),
+    'PAYMENT_PER_DAY': (15.0, u'Абонентская плата за день', float),
+    'PAYMENT_PER_USER': (15.0, u'Абонентская плата за КАЖДОГО пользователя', float),
 }
 
 for item in LOCAL_APPS:

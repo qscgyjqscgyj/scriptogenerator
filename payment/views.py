@@ -10,7 +10,7 @@ from django.core.mail import send_mail
 
 class PaymentView(View):
     def get(self, request, *args, **kwargs):
-        send_mail('PaymentView.post', str(request.GET), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        send_mail('PaymentView.get', str(request.GET), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         test_mode = request.GET.get('mode')
         if test_mode and test_mode == 'test':
             return JSONResponse({'success': True, 'test': True})

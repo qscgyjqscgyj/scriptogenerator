@@ -17,19 +17,32 @@ class PaymentView(View):
         return JSONResponse({'success': True})
 
     def post(self, request, *args, **kwargs):
-        send_mail('PaymentView.post', str(request.POST), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-        data = json.loads(request.body)
-        data['user'] = request.user.pk
-        payment = UserPaymentSerializer(data=data)
-        if payment.is_valid():
-            payment = payment.create(data)
-            return JSONResponse({
-                'payment': UserPaymentSerializer(payment).data
-            })
-        return JSONResponse(payment.errors, status=400)
+        method = request.GET.get('method')
+        if not method:
+            data = json.loads(request.body)
+            data['user'] = request.user.pk
+            payment = UserPaymentSerializer(data=data)
+            if payment.is_valid():
+                payment = payment.create(data)
+                return JSONResponse({
+                    'payment': UserPaymentSerializer(payment).data
+                })
+            return JSONResponse(payment.errors, status=400)
+        else:
+            send_mail('PaymentView.post', str(request.POST), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
 
 
 class GetPaymentView(View):
+    def get(self, request, *args, **kwargs):
+        send_mail('GetPaymentView.get', str(request.GET), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        payment = UserPayment.objects.get(pk=int(kwargs['pk']))
+        test_mode = request.GET.get('mode')
+        method = request.GET.get('method')
+        if test_mode and test_mode == 'test':
+            if method == 'checkOrder':
+                print('asdasd')
+        return JSONResponse({'success': True, 'payment': payment})
+
     def post(self, request, *args, **kwargs):
         send_mail('GetPaymentView.post', str(request.POST), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         payment = UserPayment.objects.get(pk=int(kwargs['pk']))

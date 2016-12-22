@@ -27,7 +27,7 @@ class UserPayment(models.Model):
     payed = models.DateTimeField(blank=True, null=True)
 
     def __unicode__(self):
-        return self.package.__unicode__()
+        return self.user.__unicode__()
 
 
 class LocalPayment(models.Model):

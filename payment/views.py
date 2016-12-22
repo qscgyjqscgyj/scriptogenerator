@@ -15,12 +15,12 @@ class PaymentView(View):
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        data['user'] = request.user
+        data['user'] = request.user.pk
         payment = UserPaymentSerializer(data=data)
         if payment.is_valid():
-            payment.create(data)
+            payment = payment.create(data)
             return JSONResponse({
-                'payment': payment.data
+                'payment': UserPaymentSerializer(payment).data
             })
         return JSONResponse(payment.errors, status=400)
 

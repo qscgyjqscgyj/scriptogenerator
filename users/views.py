@@ -65,7 +65,7 @@ class ProfileView(View):
         if user.is_valid():
             user.update(current_user, data)
             return JSONResponse({
-                'session_user': UserAccessSerializer(current_user).data
+                'session_user': UserSerializer(current_user).data
             })
         return JSONResponse(user.errors, status=400)
 

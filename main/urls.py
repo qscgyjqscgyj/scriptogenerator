@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from main.views import MainView, ScriptsView, ProjectsView, InitView, TablesView, CollsView, LinkCategoriesView, \
     LinkView, ScriptAccessView, CloneScriptView
+from payment.views import PaymentView
 from users.views import TeamView, ProfileView
 
 urlpatterns = patterns('',
@@ -25,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^api/links/categories/$', login_required(csrf_exempt(LinkCategoriesView.as_view())), name='link_categories'),
 
     url(r'^api/profile$', login_required(csrf_exempt(ProfileView.as_view())), name='profile'),
+    url(r'^api/payment$', login_required(csrf_exempt(PaymentView.as_view())), name='payment'),
     url(r'^api/team$', login_required(csrf_exempt(TeamView.as_view())), name='team'),
 
     # REACT ROUTES

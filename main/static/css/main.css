@@ -228,6 +228,9 @@
     border: solid 2px #c3c3c3;
     cursor: pointer;
 }
+.profile_payment__method_block.active {
+    border: solid 2px #c3c3c3;
+}
 
 .profile_payment__bonus_block {
     text-align: center;
@@ -248,6 +251,9 @@
 .profile_payment__bonus_block.green_bonus.active {border: solid 2px #33cc66;}
 .profile_payment__bonus_block.blue_bonus.active {border: solid 2px #6699ff;}
 
+#YA_FORM {
+    visibility: hidden;
+}
 
 .profile_payment__bonus_title {
     font-size: 17px;

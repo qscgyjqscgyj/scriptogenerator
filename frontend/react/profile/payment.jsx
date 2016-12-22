@@ -4,7 +4,6 @@ import $ from 'jquery';
 import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 
-const STATIC_URL = document.body.getAttribute('data-static-url');
 const YA_CONFIG = {
     shopId: '91593',
     scid: '546578'
@@ -12,12 +11,29 @@ const YA_CONFIG = {
 
 @observer
 export class Payment extends React.Component {
-    componentDidMount() {
-        const {paymentStore, usersStore} = this.props;
-        paymentStore.user = usersStore.session_user;
+    onSubmit() {
+        const {usersStore, paymentStore} = this.props;
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-payment-url'),
+            data: JSON.stringify({
+                user: usersStore.session_user,
+                sum: paymentStore.sum,
+                total_sum: paymentStore.sum + paymentStore.bonus
+            }),
+            success: (res) => {
+                paymentStore.payment = res.payment;
+                document.getElementById("YA_FORM").submit();
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
     }
     render() {
-        const {paymentStore} = this.props;
+        const {usersStore, paymentStore} = this.props;
+        let can_submit = (!(!usersStore.session_user) && (paymentStore.sum >= 990) && !(!paymentStore.method));
+        console.log(!(!can_submit));
         return(
             <div className="col-md-12">
                 <div className="col-md-6">
@@ -26,22 +42,17 @@ export class Payment extends React.Component {
                             <h3 className="profile_payment__title">1. Выберите способ оплаты</h3>
                         </div>
 
-                        <div className="col-md-3 profile_payment__bordered_block profile_payment__method_block">
-                            <img src={STATIC_URL + 'img/payment_method__visa.png'}/>
-                        </div>
-                        <div className="col-md-3 profile_payment__bordered_block profile_payment__method_block">
-                            <img src={STATIC_URL + 'img/payment_method__qiwi.png'}/>
-                        </div>
-                        <div className="col-md-3 profile_payment__bordered_block profile_payment__method_block">
-                            <img src={STATIC_URL + 'img/payment_method__yandex.png'}/>
-                        </div>
-                        <div className="col-md-3 profile_payment__bordered_block profile_payment__method_block">
-                            <img src={STATIC_URL + 'img/payment_method__webmoney.png'}/>
-                        </div>
-                        <div className="col-md-3 profile_payment__bordered_block profile_payment__method_block">
-                            <img src={STATIC_URL + 'img/payment_method__bank.png'}/>
-                        </div>
-                    </div>
+                        {paymentStore.methods.map((method, key) => {
+                            return (
+                                <div key={key}
+                                     onClick={() => {paymentStore.method = method.value}}
+                                     className={"col-md-3 profile_payment__bordered_block profile_payment__method_block " + (method.value === paymentStore.method ? 'active' : null)}
+                                >
+                                    <img src={method.img}/>
+                                </div>
+                            )
+                        })}
+                   </div>
 
                     <div className="col-md-12">
                         <div className="col-md-12">
@@ -85,7 +96,11 @@ export class Payment extends React.Component {
                         </div>
                         <div className="col-md-12 profile_payment__payment">
                             <div className="col-md-6">
-                                <button className={"btn btn-success btn-lg " + (!paymentStore.user || paymentStore.sum < 990 ? 'disabled' : null)}>ОПЛАТИТЬ</button>
+                                {!paymentStore.payment ?
+                                    <button className={"btn btn-lg " + (can_submit ? 'btn-success' : 'disabled btn-default')}
+                                        onClick={can_submit ? this.onSubmit.bind(this) : null}
+                                    >ОПЛАТИТЬ</button>
+                                : null}
                             </div>
                             <div className="col-md-6 recurrent_payments">
                                 <input type="checkbox" defaultChecked={true}/> Включить автопополнение баланса.
@@ -95,17 +110,16 @@ export class Payment extends React.Component {
                 </div>
 
                 <div className="col-md-6"></div>
-
-                {paymentStore.payment && paymentStore.user ?
-                    <form action="https://money.yandex.ru/eshop.xml" id="YA_FORM" method="POST">
+                {paymentStore.payment && usersStore.session_user ?
+                    <form action="https://demomoney.yandex.ru/eshop.xml" id="YA_FORM" method="POST">
                         <input name="shopId" value={YA_CONFIG.shopId} type="hidden"/>
                         <input name="scid" value={YA_CONFIG.scid} type="hidden"/>
                         <input name="sum" value={paymentStore.sum} type="hidden"/>
-                        <input name="customerNumber" value={paymentStore.user.id} type="hidden"/>
-                        <input name="paymentType" value="" type="hidden"/>
+                        <input name="customerNumber" value={usersStore.session_user.id} type="hidden"/>
+                        <input name="paymentType" value={paymentStore.method} type="hidden"/>
                         <input name="orderNumber" value={paymentStore.payment.id} type="hidden"/>
-                        <input name="cps_phone" value="" type="hidden"/>
-                        <input name="cps_email" value={paymentStore.user.email} type="hidden"/>
+                        <input name="cps_phone" value={usersStore.session_user.phone} type="hidden"/>
+                        <input name="cps_email" value={usersStore.session_user.email} type="hidden"/>
                         <input type="submit" value="Заплатить"/>
                     </form>
                 : null}
@@ -113,3 +127,4 @@ export class Payment extends React.Component {
         )
     }
 }
+// https://money.yandex.ru/eshop.xml

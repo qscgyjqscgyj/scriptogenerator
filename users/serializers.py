@@ -4,6 +4,8 @@ from users.models import CustomUser, UserAccess
 
 
 class UserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(read_only=True)
+    email = serializers.EmailField(read_only=True)
 
     def create(self, validated_data):
         return CustomUser.objects.get(**validated_data)

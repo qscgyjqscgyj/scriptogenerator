@@ -4,9 +4,31 @@ const STATIC_URL = document.body.getAttribute('data-static-url');
 
 export class PaymentStore {
     @observable user_payments = [];
-    @observable user = null;
     @observable sum = null;
     @observable payment = null;
+    @observable method = null;
+    @observable methods = [
+        {
+            img: STATIC_URL + 'img/payment_method__visa.png',
+            value: 'AC'
+        },
+        {
+            img: STATIC_URL + 'img/payment_method__qiwi.png',
+            value: 'QW'
+        },
+        {
+            img: STATIC_URL + 'img/payment_method__yandex.png',
+            value: 'PC'
+        },
+        {
+            img: STATIC_URL + 'img/payment_method__webmoney.png',
+            value: 'WM'
+        },
+        {
+            img: STATIC_URL + 'img/payment_method__bank.png',
+            value: 'SB'
+        }
+    ];
     @observable bonuses = [
         {
             className: 'red_bonus',

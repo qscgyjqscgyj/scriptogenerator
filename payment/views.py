@@ -61,16 +61,16 @@ class YandexPaymentView(View):
                 return JSONResponse({
                     'code': 0,
                     'performedDatetime': datetime.datetime.today().isoformat(),
-                    'shopId': request.POST.get('shopId'),
-                    'invoiceId': request.POST.get('invoiceId'),
+                    'shopId': int(request.POST.get('shopId')),
+                    'invoiceId': int(request.POST.get('invoiceId')),
                     'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
                 })
             else:
                 return JSONResponse({
                     'code': 100,
                     'performedDatetime': datetime.datetime.today().isoformat(),
-                    'shopId': request.POST.get('shopId'),
-                    'invoiceId': request.POST.get('invoiceId'),
+                    'shopId': int(request.POST.get('shopId')),
+                    'invoiceId': int(request.POST.get('invoiceId')),
                     'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
                     'message': 'Неверные входные параметры',
                     'techMessage': 'MD5 не совпадают'

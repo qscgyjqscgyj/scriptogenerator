@@ -10,26 +10,35 @@ from django.core.mail import send_mail
 
 class PaymentView(View):
     def get(self, request, *args, **kwargs):
-        send_mail('PaymentView.get', str(request.GET), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-        test_mode = request.GET.get('mode')
-        if test_mode and test_mode == 'test':
+        return JSONResponse({'success': True})
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        data['user'] = request.user.pk
+        payment = UserPaymentSerializer(data=data)
+        if payment.is_valid():
+            payment = payment.create(data)
+            return JSONResponse({
+                'payment': UserPaymentSerializer(payment).data
+            })
+        return JSONResponse(payment.errors, status=400)
+
+
+class YandexPaymentView(View):
+    def get(self, request, *args, **kwargs):
+        send_mail('YandexPaymentView.get', str(request.GET), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        mode = request.GET.get('mode')
+        if mode == 'test':
             return JSONResponse({'success': True, 'test': True})
         return JSONResponse({'success': True})
 
     def post(self, request, *args, **kwargs):
-        method = request.GET.get('method')
-        if not method:
-            data = json.loads(request.body)
-            data['user'] = request.user.pk
-            payment = UserPaymentSerializer(data=data)
-            if payment.is_valid():
-                payment = payment.create(data)
-                return JSONResponse({
-                    'payment': UserPaymentSerializer(payment).data
-                })
-            return JSONResponse(payment.errors, status=400)
-        else:
-            send_mail('PaymentView.post', str(request.POST), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        send_mail('YandexPaymentView.post', str(request.POST), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        method = request.POST.get('method')
+        mode = request.GET.get('mode')
+        if mode == 'test':
+            return JSONResponse({'success': True, 'test': True})
+        return JSONResponse({'success': True})
 
 
 class GetPaymentView(View):

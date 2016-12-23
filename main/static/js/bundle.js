@@ -49562,7 +49562,7 @@
 	                        React.createElement('input', { name: 'customerNumber', value: usersStore.session_user.id, type: 'hidden' }),
 	                        React.createElement('input', { name: 'paymentType', value: paymentStore.method, type: 'hidden' }),
 	                        React.createElement('input', { name: 'orderNumber', value: paymentStore.payment.id, type: 'hidden' }),
-	                        React.createElement('input', { name: 'cps_phone', value: usersStore.session_user.phone, type: 'hidden' }),
+	                        React.createElement('input', { name: 'cps_phone', value: usersStore.session_user.phone ? usersStore.session_user.phone : '', type: 'hidden' }),
 	                        React.createElement('input', { name: 'cps_email', value: usersStore.session_user.email, type: 'hidden' }),
 	                        React.createElement('input', { type: 'submit', value: '\u0417\u0430\u043F\u043B\u0430\u0442\u0438\u0442\u044C' })) :
 	

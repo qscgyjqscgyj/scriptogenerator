@@ -23,8 +23,8 @@ export class Payment extends React.Component {
             }),
             success: (res) => {
                 paymentStore.payment = res.payment;
-                // document.getElementById("YA_FORM").submit();
-                
+                document.getElementById("YA_FORM").submit();
+
             },
             error: (res) => {
                 console.log(res);
@@ -119,7 +119,7 @@ export class Payment extends React.Component {
                         <input name="customerNumber" value={usersStore.session_user.id} type="hidden"/>
                         <input name="paymentType" value={paymentStore.method} type="hidden"/>
                         <input name="orderNumber" value={paymentStore.payment.id} type="hidden"/>
-                        <input name="cps_phone" value={usersStore.session_user.phone} type="hidden"/>
+                        <input name="cps_phone" value={usersStore.session_user.phone ? usersStore.session_user.phone : ''} type="hidden"/>
                         <input name="cps_email" value={usersStore.session_user.email} type="hidden"/>
                         <input type="submit" value="Заплатить"/>
                     </form>

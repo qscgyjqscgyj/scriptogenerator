@@ -44,10 +44,8 @@ class YandexPaymentView(View):
     def post(self, request, *args, **kwargs):
         send_mail('YandexPaymentView.post', str(request.POST), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         action = request.POST.get('action')
-        mode = request.GET.get('mode')
         yandex_md5 = request.POST.get('md5')
         date = datetime.datetime.now(tzlocal()).isoformat()
-
         md5 = hashlib.md5()
         md5.update('%(action)s;%(order_sum)s;%(orderSumCurrencyPaycash)s;%(orderSumBankPaycash)s;%(shopId)s;%(invoiceId)s;%(customerNumber)s;%(shopPassword)s' % dict(
             action=action,
@@ -59,52 +57,48 @@ class YandexPaymentView(View):
             customerNumber=request.POST.get('customerNumber'),
             shopPassword=YANDEX_SHOPPASSWORD
         ))
-        if mode == 'test' and action == 'checkOrder':
+
+        def success():
+            response = {
+                'code': 0,
+                'performedDatetime': date,
+                'shopId': int(request.POST.get('shopId')),
+                'invoiceId': int(request.POST.get('invoiceId')),
+                'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
+            }
+            return JSONResponse(response)
+
+        def error():
+            response = {
+                'code': 1,
+                'performedDatetime': date,
+                'shopId': int(request.POST.get('shopId')),
+                'invoiceId': int(request.POST.get('invoiceId')),
+                'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
+                'message': 'Неверные входные параметры',
+                'techMessage': 'MD5 не совпадают'
+            }
+            send_mail('YandexPaymentView.post md5 error response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+            return JSONResponse(response)
+
+        if md5.hexdigest().upper() != yandex_md5:
+            return error()
+
+        if action == 'checkOrder':
+            return success()
+
+        elif action == 'cancelOrder':
+            return success()
+
+        elif action == 'paymentAviso':
             if md5.hexdigest().upper() == yandex_md5:
-                response = {
-                    'code': 0,
-                    'performedDatetime': date,
-                    'shopId': int(request.POST.get('shopId')),
-                    'invoiceId': int(request.POST.get('invoiceId')),
-                    'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
-                }
-                send_mail('YandexPaymentView.post success response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-                return HttpResponse(response)
-            else:
-                response = {
-                    'code': 100,
-                    'performedDatetime': date,
-                    'shopId': int(request.POST.get('shopId')),
-                    'invoiceId': int(request.POST.get('invoiceId')),
-                    'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
-                    'message': 'Неверные входные параметры',
-                    'techMessage': 'MD5 не совпадают'
-                }
-                send_mail('YandexPaymentView.post error response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-                return JSONResponse(response)
-        return JSONResponse({'success': True})
+                payment = UserPayment.objects.get(pk=id(request.POST.get('orderNumber')))
+                payment.payed = datetime.datetime.now()
+                payment.payment_data = json.dumps(dict(request.POST))
+                payment.save()
 
-
-class GetPaymentView(View):
-    def get(self, request, *args, **kwargs):
-        send_mail('GetPaymentView.get', str(request.GET), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-        payment = UserPayment.objects.get(pk=int(kwargs['pk']))
-        test_mode = request.GET.get('mode')
-        method = request.GET.get('method')
-        if test_mode and test_mode == 'test':
-            if method == 'checkOrder':
-                print('asdasd')
-        return JSONResponse({'success': True, 'payment': payment})
-
-    def post(self, request, *args, **kwargs):
-        send_mail('GetPaymentView.post', str(request.POST), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-        payment = UserPayment.objects.get(pk=int(kwargs['pk']))
-        test_mode = request.GET.get('mode')
-        method = request.GET.get('method')
-        if test_mode and test_mode == 'test':
-            if method == 'checkOrder':
-                print('asdasd')
-        return JSONResponse({'success': True, 'payment': payment})
+                return success()
+        return error()
 
 
 class PaymentSuccessView(View):

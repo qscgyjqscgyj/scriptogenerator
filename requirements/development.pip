@@ -30,6 +30,7 @@ pycrypto==2.6.1
 PyExecJS==1.1.0
 pylibmc==1.5.1
 PyReact==0.5.2
+python-dateutil==2.6.0
 pytils==0.3
 pytz==2016.7
 rcssmin==1.0.6

@@ -7,6 +7,7 @@ from django.views.generic import View
 from main.views import JSONResponse
 import json
 import hashlib
+from dateutil.tz import tzlocal
 
 from payment.models import UserPayment
 from payment.serializers import UserPaymentSerializer
@@ -44,7 +45,7 @@ class YandexPaymentView(View):
         action = request.POST.get('action')
         mode = request.GET.get('mode')
         yandex_md5 = request.POST.get('md5')
-        date = datetime.datetime.today().replace(tzinfo=pytz.UTC).isoformat()
+        date = datetime.datetime.now(tzlocal()).isoformat()
 
         md5 = hashlib.md5()
         md5.update('%(action)s;%(order_sum)s;%(orderSumCurrencyPaycash)s;%(orderSumBankPaycash)s;%(shopId)s;%(invoiceId)s;%(customerNumber)s;%(shopPassword)s' % dict(

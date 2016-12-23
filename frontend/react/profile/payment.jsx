@@ -33,7 +33,6 @@ export class Payment extends React.Component {
     render() {
         const {usersStore, paymentStore} = this.props;
         let can_submit = (!(!usersStore.session_user) && (paymentStore.sum >= 990) && !(!paymentStore.method));
-        console.log(!(!can_submit));
         return(
             <div className="col-md-12">
                 <div className="col-md-6">

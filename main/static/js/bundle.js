@@ -49476,7 +49476,6 @@
 	        {var _props2 =
 	            this.props,usersStore = _props2.usersStore,paymentStore = _props2.paymentStore;
 	            var can_submit = !!usersStore.session_user && paymentStore.sum >= 990 && !!paymentStore.method;
-	            console.log(!!can_submit);
 	            return (
 	                React.createElement('div', { className: 'col-md-12' },
 	                    React.createElement('div', { className: 'col-md-6' },

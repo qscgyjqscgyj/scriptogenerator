@@ -24,6 +24,7 @@ export class Payment extends React.Component {
             success: (res) => {
                 paymentStore.payment = res.payment;
                 // document.getElementById("YA_FORM").submit();
+                
             },
             error: (res) => {
                 console.log(res);

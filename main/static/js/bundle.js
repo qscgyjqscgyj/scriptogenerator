@@ -49467,6 +49467,7 @@
 	                success: function success(res) {
 	                    paymentStore.payment = res.payment;
 	                    // document.getElementById("YA_FORM").submit();
+	
 	                },
 	                error: function error(res) {
 	                    console.log(res);

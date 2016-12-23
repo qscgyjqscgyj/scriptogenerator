@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
+
+import pytz
 from django.shortcuts import render
 from django.views.generic import View
 from main.views import JSONResponse
@@ -42,6 +44,7 @@ class YandexPaymentView(View):
         action = request.POST.get('action')
         mode = request.GET.get('mode')
         yandex_md5 = request.POST.get('md5')
+        date = datetime.datetime.today().replace(tzinfo=pytz.UTC).isoformat()
 
         md5 = hashlib.md5()
         md5.update('%(action)s;%(order_sum)s;%(orderSumCurrencyPaycash)s;%(orderSumBankPaycash)s;%(shopId)s;%(invoiceId)s;%(customerNumber)s;%(shopPassword)s' % dict(
@@ -58,7 +61,7 @@ class YandexPaymentView(View):
             if md5.hexdigest().upper() == yandex_md5:
                 response = {
                     'code': 0,
-                    'performedDatetime': datetime.datetime.today().isoformat(),
+                    'performedDatetime': date,
                     'shopId': int(request.POST.get('shopId')),
                     'invoiceId': int(request.POST.get('invoiceId')),
                     'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
@@ -68,7 +71,7 @@ class YandexPaymentView(View):
             else:
                 response = {
                     'code': 100,
-                    'performedDatetime': datetime.datetime.today().isoformat(),
+                    'performedDatetime': date,
                     'shopId': int(request.POST.get('shopId')),
                     'invoiceId': int(request.POST.get('invoiceId')),
                     'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),

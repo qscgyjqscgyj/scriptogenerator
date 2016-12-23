@@ -2,6 +2,7 @@
 import datetime
 
 import pytz
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 from main.views import JSONResponse
@@ -68,7 +69,7 @@ class YandexPaymentView(View):
                     'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
                 }
                 send_mail('YandexPaymentView.post success response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-                return JSONResponse(response)
+                return HttpResponse(response)
             else:
                 response = {
                     'code': 100,

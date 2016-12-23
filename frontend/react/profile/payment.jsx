@@ -106,8 +106,8 @@ export class Payment extends React.Component {
                 <div className="col-md-6"></div>
                 {paymentStore.payment && usersStore.session_user ?
                     <form action="https://demomoney.yandex.ru/eshop.xml" id="YA_FORM" method="POST">
-                        <input name="shopId" value={YA_CONFIG.shopId} type="hidden"/>
-                        <input name="scid" value={YA_CONFIG.scid} type="hidden"/>
+                        <input name="shopId" value={paymentStore.shopId} type="hidden"/>
+                        <input name="scid" value={paymentStore.scid} type="hidden"/>
                         <input name="sum" value={paymentStore.sum} type="hidden"/>
                         <input name="customerNumber" value={usersStore.session_user.id} type="hidden"/>
                         <input name="paymentType" value={paymentStore.method} type="hidden"/>

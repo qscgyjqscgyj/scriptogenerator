@@ -49549,8 +49549,8 @@
 	                    React.createElement('div', { className: 'col-md-6' }),
 	                    paymentStore.payment && usersStore.session_user ?
 	                    React.createElement('form', { action: 'https://demomoney.yandex.ru/eshop.xml', id: 'YA_FORM', method: 'POST' },
-	                        React.createElement('input', { name: 'shopId', value: YA_CONFIG.shopId, type: 'hidden' }),
-	                        React.createElement('input', { name: 'scid', value: YA_CONFIG.scid, type: 'hidden' }),
+	                        React.createElement('input', { name: 'shopId', value: paymentStore.shopId, type: 'hidden' }),
+	                        React.createElement('input', { name: 'scid', value: paymentStore.scid, type: 'hidden' }),
 	                        React.createElement('input', { name: 'sum', value: paymentStore.sum, type: 'hidden' }),
 	                        React.createElement('input', { name: 'customerNumber', value: usersStore.session_user.id, type: 'hidden' }),
 	                        React.createElement('input', { name: 'paymentType', value: paymentStore.method, type: 'hidden' }),

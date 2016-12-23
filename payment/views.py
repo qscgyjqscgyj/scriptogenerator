@@ -55,18 +55,18 @@ class YandexPaymentView(View):
             shopPassword=YANDEX_SHOPPASSWORD
         ))
         if mode == 'test' and action == 'checkOrder':
-            send_mail('YandexPaymentView.post md5', str(md5.hexdigest().upper() + ' == ' + yandex_md5), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-
             if md5.hexdigest().upper() == yandex_md5:
-                return JSONResponse({
+                response = {
                     'code': 0,
                     'performedDatetime': datetime.datetime.today().isoformat(),
                     'shopId': int(request.POST.get('shopId')),
                     'invoiceId': int(request.POST.get('invoiceId')),
                     'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
-                })
+                }
+                send_mail('YandexPaymentView.post success response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+                return JSONResponse(response)
             else:
-                return JSONResponse({
+                response = {
                     'code': 100,
                     'performedDatetime': datetime.datetime.today().isoformat(),
                     'shopId': int(request.POST.get('shopId')),
@@ -74,7 +74,9 @@ class YandexPaymentView(View):
                     'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
                     'message': 'Неверные входные параметры',
                     'techMessage': 'MD5 не совпадают'
-                })
+                }
+                send_mail('YandexPaymentView.post error response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+                return JSONResponse(response)
         return JSONResponse({'success': True})
 
 

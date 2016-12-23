@@ -55,7 +55,7 @@ class YandexPaymentView(View):
             shopPassword=YANDEX_SHOPPASSWORD
         ))
         if mode == 'test' and action == 'checkOrder':
-            send_mail('YandexPaymentView.post md5', str(md5 + ' == ' + yandex_md5), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+            send_mail('YandexPaymentView.post md5', str(md5.hexdigest().upper() + ' == ' + yandex_md5), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
 
             if md5.hexdigest().upper() == yandex_md5:
                 return JSONResponse({

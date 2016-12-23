@@ -16,17 +16,22 @@ import {observer} from 'mobx-react';
 @observer
 export class App extends React.Component {
     componentWillMount() {
-        const {projectsStore, scriptsStore, usersStore} = this.props;
+        const {projectsStore, scriptsStore, usersStore, paymentStore} = this.props;
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-init-url'),
             success: (res) => {
                 projectsStore.createProjects(res.projects);
+
                 scriptsStore.scripts = res.scripts;
                 scriptsStore.available_scripts = res.available_scripts;
+
                 usersStore.users = res.users;
                 usersStore.session_user = res.session_user;
                 usersStore.team = res.team;
+
+                paymentStore.shopId = res.shopId;
+                paymentStore.scid = res.scid;
             },
             error: (res) => {
                 console.log(res);

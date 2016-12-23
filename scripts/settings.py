@@ -159,6 +159,10 @@ CONSTANCE_CONFIG = {
     'PAYMENT_PER_USER': (15.0, u'Абонентская плата за КАЖДОГО пользователя', float),
 }
 
+YANDEX_SHOPID = '91593'
+YANDEX_SCID = '546578'
+YANDEX_SHOPPASSWORD = 'K5e4RU8824ZetzjCnQVd'
+
 for item in LOCAL_APPS:
     INSTALLED_APPS+=(item,)
     TEMPLATE_DIRS+=(join(PROJECT_PATH, item,'templates'),)

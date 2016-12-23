@@ -3,6 +3,9 @@ import {computed, observable, action, autorun} from 'mobx';
 const STATIC_URL = document.body.getAttribute('data-static-url');
 
 export class PaymentStore {
+    @observable shopId = '';
+    @observable scid = '';
+
     @observable user_payments = [];
     @observable sum = null;
     @observable payment = null;

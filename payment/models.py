@@ -24,6 +24,7 @@ class UserPayment(models.Model):
     sum = models.FloatField(default=0)
     total_sum = models.FloatField(default=0)
     date_created = models.DateTimeField(auto_now_add=True)
+    payment_data = models.TextField(blank=True, null=True)
     payed = models.DateTimeField(blank=True, null=True)
 
     def __unicode__(self):

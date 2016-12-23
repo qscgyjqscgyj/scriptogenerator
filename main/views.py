@@ -13,7 +13,7 @@ from main.serializers.link import LinkCategorySerializer, LinkSerializer
 from main.serializers.project import ProjectSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
-from scripts.settings import DEBUG
+from scripts.settings import DEBUG, YANDEX_SHOPID, YANDEX_SCID
 from scripts.tasks import cloneTreeRelations, clone_save_links
 from users.models import CustomUser, UserAccess
 from users.serializers import UserSerializer, UserAccessSerializer
@@ -311,6 +311,8 @@ class InitView(View):
             'available_scripts': ScriptSerializer(Script.objects.filter(pk__in=access_scripts_ids), many=True).data,
             'users': UserSerializer(CustomUser.objects.all().exclude(pk=request.user.pk), many=True).data,
             'session_user': UserSerializer(request.user).data,
-            'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data
+            'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data,
+            'shopId': YANDEX_SHOPID,
+            'scid': YANDEX_SCID
         }, status=201)
 

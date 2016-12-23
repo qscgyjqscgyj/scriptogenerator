@@ -1,11 +1,16 @@
+# -*- coding: utf-8 -*-
+import datetime
 from django.shortcuts import render
 from django.views.generic import View
 from main.views import JSONResponse
 import json
+import hashlib
 
 from payment.models import UserPayment
 from payment.serializers import UserPaymentSerializer
 from django.core.mail import send_mail
+
+from scripts.settings import YANDEX_SHOPID, YANDEX_SHOPPASSWORD
 
 
 class PaymentView(View):
@@ -34,10 +39,42 @@ class YandexPaymentView(View):
 
     def post(self, request, *args, **kwargs):
         send_mail('YandexPaymentView.post', str(request.POST), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-        method = request.POST.get('method')
+        action = request.POST.get('action')
         mode = request.GET.get('mode')
-        if mode == 'test':
-            return JSONResponse({'success': True, 'test': True})
+        yandex_md5 = request.POST.get('md5')
+
+        md5 = hashlib.md5()
+        md5.update('%(action)s;%(order_sum)s;%(orderSumCurrencyPaycash)s;%(orderSumBankPaycash)s;%(shopId)s;%(invoiceId)s;%(customerNumber)s;%(shopPassword)s' % dict(
+            action=action,
+            order_sum=request.POST.get('orderSumAmount'),
+            orderSumCurrencyPaycash=request.POST.get('orderSumCurrencyPaycash'),
+            orderSumBankPaycash=request.POST.get('orderSumBankPaycash'),
+            shopId=YANDEX_SHOPID,
+            invoiceId=request.POST.get('invoiceId'),
+            customerNumber=request.POST.get('customerNumber'),
+            shopPassword=YANDEX_SHOPPASSWORD
+        ))
+        if mode == 'test' and action == 'checkOrder':
+            send_mail('YandexPaymentView.post md5', str(md5 + ' == ' + yandex_md5), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+
+            if md5.hexdigest().upper() == yandex_md5:
+                return JSONResponse({
+                    'code': 0,
+                    'performedDatetime': datetime.datetime.today().isoformat(),
+                    'shopId': request.POST.get('shopId'),
+                    'invoiceId': request.POST.get('invoiceId'),
+                    'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
+                })
+            else:
+                return JSONResponse({
+                    'code': 100,
+                    'performedDatetime': datetime.datetime.today().isoformat(),
+                    'shopId': request.POST.get('shopId'),
+                    'invoiceId': request.POST.get('invoiceId'),
+                    'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
+                    'message': 'Неверные входные параметры',
+                    'techMessage': 'MD5 не совпадают'
+                })
         return JSONResponse({'success': True})
 
 

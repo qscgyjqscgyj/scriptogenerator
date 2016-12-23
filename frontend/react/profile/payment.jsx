@@ -4,11 +4,6 @@ import $ from 'jquery';
 import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 
-const YA_CONFIG = {
-    shopId: '91593',
-    scid: '546578'
-};
-
 @observer
 export class Payment extends React.Component {
     onSubmit() {

@@ -46,7 +46,7 @@ class YandexPaymentView(View):
         return JSONResponse({'success': True})
 
     def post(self, request, *args, **kwargs):
-        # send_mail('YandexPaymentView.post', str(dict(request.POST)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        send_mail('YandexPaymentView.post', str(dict(request.POST)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         action = request.POST.get('action')
         yandex_md5 = request.POST.get('md5')
         date = datetime.datetime.now(tzlocal()).isoformat()
@@ -99,10 +99,10 @@ class YandexPaymentView(View):
             elif action == 'paymentAviso':
                 if md5.hexdigest().upper() == yandex_md5:
                     payment = UserPayment.objects.get(pk=id(request.POST.get('orderNumber')))
+                    send_mail('YandexPaymentView.post paymentAviso', str(payment.values()), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
                     payment.payed = datetime.datetime.today()
                     payment.payment_data = json.dumps(dict(request.POST))
                     payment.save()
-                    send_mail('YandexPaymentView.post paymentAviso', str(payment.values()), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
 
                     return success()
                 else:

@@ -98,8 +98,7 @@ class YandexPaymentView(View):
 
             elif action == 'paymentAviso':
                 if md5.hexdigest().upper() == yandex_md5:
-                    payment = UserPayment.objects.get(pk=id(request.POST.get('orderNumber')))
-                    send_mail('YandexPaymentView.post paymentAviso', str(payment.values()), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+                    payment = UserPayment.objects.get(pk=int(request.POST.get('orderNumber')))
                     payment.payed = datetime.datetime.today()
                     payment.payment_data = json.dumps(dict(request.POST))
                     payment.save()

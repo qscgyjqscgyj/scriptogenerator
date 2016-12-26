@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+import urllib
 
 import pytz
 from django.http import HttpResponse
@@ -42,7 +43,7 @@ class YandexPaymentView(View):
         return JSONResponse({'success': True})
 
     def post(self, request, *args, **kwargs):
-        send_mail('YandexPaymentView.post', str(request.POST), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        send_mail('YandexPaymentView.post', str(urllib.urlencode(request.POST)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         action = request.POST.get('action')
         yandex_md5 = request.POST.get('md5')
         if yandex_md5:

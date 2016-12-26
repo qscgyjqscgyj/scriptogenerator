@@ -24,6 +24,7 @@ export class Team extends React.Component {
             data: JSON.stringify({email: usersStore.creating_teammate_email}),
             success: (res) => {
                 usersStore.team = res.team;
+                usersStore.session_user = res.session_user;
                 modalStore.modal = false;
             },
             error: (res) => {

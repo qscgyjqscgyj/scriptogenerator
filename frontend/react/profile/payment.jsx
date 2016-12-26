@@ -30,7 +30,7 @@ export class Payment extends React.Component {
         let can_submit = (!(!usersStore.session_user) && (paymentStore.sum >= 990) && !(!paymentStore.method));
         return(
             <div className="col-md-12">
-                <div className="col-md-6">
+                <div className="col-md-8">
                     <div className="col-md-12">
                         <div className="col-md-12">
                             <h3 className="profile_payment__title">1. Выберите способ оплаты</h3>

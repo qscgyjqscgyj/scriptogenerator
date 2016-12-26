@@ -103,9 +103,11 @@ class YandexPaymentView(View):
                     payment.payment_data = json.dumps(dict(request.POST))
                     payment.save()
 
+                    payment.user.balance_real += payment.sum
+                    payment.user.balance_total += payment.total_sum
+                    payment.user.save()
+
                     return success()
-                else:
-                    return error()
             return error()
         else:
             response = {

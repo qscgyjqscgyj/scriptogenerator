@@ -104,6 +104,7 @@ class TeamView(View):
         if access.is_valid():
             access.update(UserAccess.objects.get(pk=int(data['id'])), data)
             return JSONResponse({
+                'session_user': UserSerializer(request.user).data,
                 'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data
             })
         return JSONResponse(access.errors, status=400)

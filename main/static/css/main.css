@@ -17,6 +17,12 @@
 .navbar.unmargin{
     margin-bottom: 0px !important;
 }
+.nav_balance_block .negative_balance {
+    color: #e95e42 !important;
+}
+.nav_balance_block .positive_balance {
+    color: #8bddab !important;
+}
 .link:hover {
     cursor: pointer;
     text-decoration: underline;

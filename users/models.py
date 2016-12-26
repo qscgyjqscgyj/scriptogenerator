@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User, AbstractUser, UserManager
 from django.db import models
@@ -8,6 +9,8 @@ class CustomUser(AbstractUser):
     phone = models.CharField(max_length=1025, blank=True, null=True)
     middle_name = models.CharField(max_length=30, blank=True, null=True)
     company = models.CharField(max_length=30, blank=True, null=True)
+    balance_real = models.FloatField(default=0.0)
+    balance_total = models.FloatField(default=0.0)
     utm = models.TextField(blank=True, null=True)
 
     objects = UserManager()
@@ -33,6 +36,13 @@ class UserAccess(models.Model):
     user = models.ForeignKey(CustomUser, related_name='user_access_user_custom_user')
     payed = models.DateTimeField(blank=True, null=True)
     active = models.BooleanField(default=False)
+
+    def active_to_pay(self):
+        if not self.payed:
+            return True
+        elif self.payed.date() < datetime.datetime.today().date():
+            return True
+        return False
 
     def __unicode__(self):
         return self.owner.__unicode__()

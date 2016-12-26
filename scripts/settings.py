@@ -10,9 +10,9 @@ MAIN_APPS_NAME = basename(MAIN_APPS_PATH)
 PROJECT_PATH = split(MAIN_APPS_PATH)[0]
 PROJECT_NAME = basename(PROJECT_PATH)
 
-CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
-CELERY_IMPORTS = ("scripts.tasks", )
+CELERY_IMPORTS = ('scripts.tasks', 'payment.tasks')
 BROKER_URL = 'amqp://scripts:scripts@localhost:5672/scripts'
 
 FILE_UPLOAD_PERMISSIONS = 0644

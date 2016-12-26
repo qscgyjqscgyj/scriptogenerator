@@ -49473,7 +49473,7 @@
 	            var can_submit = !!usersStore.session_user && paymentStore.sum >= 990 && !!paymentStore.method;
 	            return (
 	                React.createElement('div', { className: 'col-md-12' },
-	                    React.createElement('div', { className: 'col-md-6' },
+	                    React.createElement('div', { className: 'col-md-8' },
 	                        React.createElement('div', { className: 'col-md-12' },
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('h3', { className: 'profile_payment__title' }, '1. \u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u043F\u043E\u0441\u043E\u0431 \u043E\u043F\u043B\u0430\u0442\u044B')),
@@ -49596,6 +49596,7 @@
 	                data: JSON.stringify({ email: usersStore.creating_teammate_email }),
 	                success: function success(res) {
 	                    usersStore.team = res.team;
+	                    usersStore.session_user = res.session_user;
 	                    modalStore.modal = false;
 	                },
 	                error: function error(res) {
@@ -78489,6 +78490,16 @@
 	
 	                        usersStore.session_user ?
 	                        React.createElement('ul', { className: 'nav navbar-nav navbar-right' },
+	                            React.createElement('li', { className: 'nav_balance_block' },
+	                                React.createElement(_reactRouter.Link, { to: '/profile/payment/',
+	                                        role: 'button',
+	                                        'aria-haspopup': 'true',
+	                                        'aria-expanded': 'false',
+	                                        className: usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance' }, '\u0411\u0430\u043B\u0430\u043D\u0441: ',
+	
+	                                    usersStore.session_user.balance_total, '\u0440.')),
+	
+	
 	                            React.createElement('li', { className: 'dropdown' },
 	                                React.createElement('a', { href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, usersStore.session_user.username, ' ', React.createElement('span', { className: 'caret' })),
 	                                React.createElement('ul', { className: 'dropdown-menu' },

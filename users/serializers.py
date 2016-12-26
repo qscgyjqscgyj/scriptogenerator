@@ -1,5 +1,7 @@
+import datetime
 from rest_framework import serializers
 
+from payment.tasks import get_payment_for_user
 from users.models import CustomUser, UserAccess
 
 
@@ -21,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email', 'phone', 'first_name', 'middle_name', 'last_name', 'company')
+        fields = ('id', 'username', 'email', 'phone', 'first_name', 'middle_name', 'last_name', 'company', 'balance_total')
 
 
 class UserAccessSerializer(serializers.ModelSerializer):
@@ -32,6 +34,9 @@ class UserAccessSerializer(serializers.ModelSerializer):
         return UserAccess.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
+        if not instance.active and validated_data.get('active') and instance.active_to_pay():
+            get_payment_for_user(instance.pk)
+            instance.payed = datetime.datetime.today()
         instance.active = validated_data.get('active')
         instance.save()
         return instance

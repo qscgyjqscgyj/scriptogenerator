@@ -36,14 +36,14 @@ class PaymentView(View):
 
 class YandexPaymentView(View):
     def get(self, request, *args, **kwargs):
-        send_mail('YandexPaymentView.get', str(request.GET), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        send_mail('YandexPaymentView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         mode = request.GET.get('mode')
         if mode == 'test':
             return JSONResponse({'success': True, 'test': True})
         return JSONResponse({'success': True})
 
     def post(self, request, *args, **kwargs):
-        send_mail('YandexPaymentView.post', str(urllib.urlencode(request.POST)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        send_mail('YandexPaymentView.post', str(dict(request.POST)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         action = request.POST.get('action')
         yandex_md5 = request.POST.get('md5')
         if yandex_md5:
@@ -101,12 +101,13 @@ class YandexPaymentView(View):
 
                     return success()
             return error()
-        return JSONResponse({'error': True, 'message': 'Payment data does not found.'})
+        else:
+            return JSONResponse({'error': True, 'message': 'Payment data does not found.'})
 
 
 class PaymentSuccessView(View):
     def get(self, request, *args, **kwargs):
-        send_mail('PaymentSuccessView.get', str(request.GET), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        send_mail('PaymentSuccessView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         test_mode = request.GET.get('mode')
         if test_mode and test_mode == 'test':
             return JSONResponse({'success': True, 'test': True})
@@ -115,7 +116,7 @@ class PaymentSuccessView(View):
 
 class PaymentFailView(View):
     def get(self, request, *args, **kwargs):
-        send_mail('PaymentFailView.get', str(request.GET), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        send_mail('PaymentFailView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         test_mode = request.GET.get('mode')
         if test_mode and test_mode == 'test':
             return JSONResponse({'success': True, 'test': True})

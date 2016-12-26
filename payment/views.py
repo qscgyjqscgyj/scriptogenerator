@@ -97,7 +97,7 @@ class YandexPaymentView(View):
             elif action == 'paymentAviso':
                 if md5.hexdigest().upper() == yandex_md5:
                     payment = UserPayment.objects.get(pk=id(request.POST.get('orderNumber')))
-                    payment.payed = datetime.datetime.now()
+                    payment.payed = datetime.datetime.today()
                     payment.payment_data = json.dumps(dict(request.POST))
                     payment.save()
 

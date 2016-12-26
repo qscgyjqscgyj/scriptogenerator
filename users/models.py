@@ -8,6 +8,7 @@ class CustomUser(AbstractUser):
     phone = models.CharField(max_length=1025, blank=True, null=True)
     middle_name = models.CharField(max_length=30, blank=True, null=True)
     company = models.CharField(max_length=30, blank=True, null=True)
+    utm = models.TextField(blank=True, null=True)
 
     objects = UserManager()
 

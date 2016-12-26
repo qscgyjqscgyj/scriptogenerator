@@ -3,7 +3,9 @@ import datetime
 import urllib
 
 import pytz
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
 from django.views.generic import View
@@ -118,11 +120,7 @@ class YandexPaymentView(View):
 
 class PaymentSuccessView(View):
     def get(self, request, *args, **kwargs):
-        send_mail('PaymentSuccessView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-        test_mode = request.GET.get('mode')
-        if test_mode and test_mode == 'test':
-            return JSONResponse({'success': True, 'test': True})
-        return JSONResponse({'success': True})
+        return HttpResponseRedirect(reverse('main'))
 
 
 class PaymentFailView(View):

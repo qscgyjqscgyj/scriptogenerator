@@ -45,60 +45,62 @@ class YandexPaymentView(View):
         send_mail('YandexPaymentView.post', str(request.POST), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         action = request.POST.get('action')
         yandex_md5 = request.POST.get('md5')
-        date = datetime.datetime.now(tzlocal()).isoformat()
-        md5 = hashlib.md5()
-        md5.update('%(action)s;%(order_sum)s;%(orderSumCurrencyPaycash)s;%(orderSumBankPaycash)s;%(shopId)s;%(invoiceId)s;%(customerNumber)s;%(shopPassword)s' % dict(
-            action=action,
-            order_sum=request.POST.get('orderSumAmount'),
-            orderSumCurrencyPaycash=request.POST.get('orderSumCurrencyPaycash'),
-            orderSumBankPaycash=request.POST.get('orderSumBankPaycash'),
-            shopId=YANDEX_SHOPID,
-            invoiceId=request.POST.get('invoiceId'),
-            customerNumber=request.POST.get('customerNumber'),
-            shopPassword=YANDEX_SHOPPASSWORD
-        ))
+        if yandex_md5:
+            date = datetime.datetime.now(tzlocal()).isoformat()
+            md5 = hashlib.md5()
+            md5.update('%(action)s;%(order_sum)s;%(orderSumCurrencyPaycash)s;%(orderSumBankPaycash)s;%(shopId)s;%(invoiceId)s;%(customerNumber)s;%(shopPassword)s' % dict(
+                action=action,
+                order_sum=request.POST.get('orderSumAmount'),
+                orderSumCurrencyPaycash=request.POST.get('orderSumCurrencyPaycash'),
+                orderSumBankPaycash=request.POST.get('orderSumBankPaycash'),
+                shopId=YANDEX_SHOPID,
+                invoiceId=request.POST.get('invoiceId'),
+                customerNumber=request.POST.get('customerNumber'),
+                shopPassword=YANDEX_SHOPPASSWORD
+            ))
 
-        def success():
-            response = {
-                'code': 0,
-                'performedDatetime': date,
-                'shopId': int(request.POST.get('shopId')),
-                'invoiceId': int(request.POST.get('invoiceId')),
-                'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
-            }
-            return JSONResponse(response)
+            def success():
+                response = {
+                    'code': 0,
+                    'performedDatetime': date,
+                    'shopId': int(request.POST.get('shopId')),
+                    'invoiceId': int(request.POST.get('invoiceId')),
+                    'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
+                }
+                return JSONResponse(response)
 
-        def error():
-            response = {
-                'code': 1,
-                'performedDatetime': date,
-                'shopId': int(request.POST.get('shopId')),
-                'invoiceId': int(request.POST.get('invoiceId')),
-                'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
-                'message': 'Неверные входные параметры',
-                'techMessage': 'MD5 не совпадают'
-            }
-            send_mail('YandexPaymentView.post md5 error response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-            return JSONResponse(response)
+            def error():
+                response = {
+                    'code': 1,
+                    'performedDatetime': date,
+                    'shopId': int(request.POST.get('shopId')),
+                    'invoiceId': int(request.POST.get('invoiceId')),
+                    'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
+                    'message': 'Неверные входные параметры',
+                    'techMessage': 'MD5 не совпадают'
+                }
+                send_mail('YandexPaymentView.post md5 error response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+                return JSONResponse(response)
 
-        if md5.hexdigest().upper() != yandex_md5:
-            return error()
+            if md5.hexdigest().upper() != yandex_md5:
+                return error()
 
-        if action == 'checkOrder':
-            return success()
-
-        elif action == 'cancelOrder':
-            return success()
-
-        elif action == 'paymentAviso':
-            if md5.hexdigest().upper() == yandex_md5:
-                payment = UserPayment.objects.get(pk=id(request.POST.get('orderNumber')))
-                payment.payed = datetime.datetime.now()
-                payment.payment_data = json.dumps(dict(request.POST))
-                payment.save()
-
+            if action == 'checkOrder':
                 return success()
-        return error()
+
+            elif action == 'cancelOrder':
+                return success()
+
+            elif action == 'paymentAviso':
+                if md5.hexdigest().upper() == yandex_md5:
+                    payment = UserPayment.objects.get(pk=id(request.POST.get('orderNumber')))
+                    payment.payed = datetime.datetime.now()
+                    payment.payment_data = json.dumps(dict(request.POST))
+                    payment.save()
+
+                    return success()
+            return error()
+        return JSONResponse({'error': True, 'message': 'Payment data does not found.'})
 
 
 class PaymentSuccessView(View):

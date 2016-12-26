@@ -105,7 +105,7 @@ class YandexPaymentView(View):
             return error()
         else:
             response = {
-                'code': 1,
+                'code': 100,
                 'performedDatetime': date,
                 'shopId': YANDEX_SHOPID,
                 'invoiceId': '',

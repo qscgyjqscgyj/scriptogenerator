@@ -36,6 +36,8 @@ class UserProfileView(UpdateView):
 
 
 class CustomRegistrationView(RegistrationView):
+    success_url = 'main'
+
     def register(self, form):
         site = get_current_site(self.request)
         form.cleaned_data['username'] = form.cleaned_data['email']
@@ -48,12 +50,15 @@ class CustomRegistrationView(RegistrationView):
         new_user = RegistrationProfile.objects.create_inactive_user(
             new_user=new_user_instance,
             site=site,
-            send_email=self.SEND_ACTIVATION_EMAIL,
             request=self.request,
+            # send_email=self.SEND_ACTIVATION_EMAIL,
+            send_email=False
         )
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=self.request)
+        new_user.is_active = True
+        new_user.save()
         return new_user
 
 

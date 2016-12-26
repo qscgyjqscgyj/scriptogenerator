@@ -5,6 +5,7 @@ import urllib
 import pytz
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.template import loader
 from django.views.generic import View
 from main.views import JSONResponse
 import json
@@ -36,7 +37,7 @@ class PaymentView(View):
 
 class YandexPaymentView(View):
     def get(self, request, *args, **kwargs):
-        send_mail('YandexPaymentView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        # send_mail('YandexPaymentView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         mode = request.GET.get('mode')
         if mode == 'test':
             return JSONResponse({'success': True, 'test': True})
@@ -46,8 +47,9 @@ class YandexPaymentView(View):
         send_mail('YandexPaymentView.post', str(dict(request.POST)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         action = request.POST.get('action')
         yandex_md5 = request.POST.get('md5')
+        date = datetime.datetime.now(tzlocal()).isoformat()
+        response_template = loader.get_template('payment_response.xml')
         if yandex_md5:
-            date = datetime.datetime.now(tzlocal()).isoformat()
             md5 = hashlib.md5()
             md5.update('%(action)s;%(order_sum)s;%(orderSumCurrencyPaycash)s;%(orderSumBankPaycash)s;%(shopId)s;%(invoiceId)s;%(customerNumber)s;%(shopPassword)s' % dict(
                 action=action,
@@ -68,7 +70,7 @@ class YandexPaymentView(View):
                     'invoiceId': int(request.POST.get('invoiceId')),
                     'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
                 }
-                return JSONResponse(response)
+                return HttpResponse(response_template.render(response, request), content_type='application/xhtml+xml')
 
             def error():
                 response = {
@@ -81,7 +83,7 @@ class YandexPaymentView(View):
                     'techMessage': 'MD5 не совпадают'
                 }
                 send_mail('YandexPaymentView.post md5 error response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
-                return JSONResponse(response)
+                return HttpResponse(response_template.render(response, request), content_type='application/xhtml+xml')
 
             if md5.hexdigest().upper() != yandex_md5:
                 return error()
@@ -102,7 +104,16 @@ class YandexPaymentView(View):
                     return success()
             return error()
         else:
-            return JSONResponse({'error': True, 'message': 'Payment data does not found.'})
+            response = {
+                'code': 1,
+                'performedDatetime': date,
+                'shopId': YANDEX_SHOPID,
+                'invoiceId': '',
+                'orderSumAmount': '',
+                'message': 'Нет данные об оплате',
+                'techMessage': 'Payment data does not found.'
+            }
+            return HttpResponse(response_template.render(response, request), content_type='application/xhtml+xml')
 
 
 class PaymentSuccessView(View):

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkOrderResponse
+        performedDatetime="{{ performedDatetime }}"
+        code="{{ code }}"
+        invoiceId="{{ invoiceId }}"
+        shopId="{{ shopId }}"
+        {% if message and techMessage %}
+            message="{{ message }}"
+            techMessage="{{ techMessage }}"
+        {% endif %}
+/>

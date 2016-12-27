@@ -24,6 +24,7 @@ export class App extends React.Component {
                 projectsStore.createProjects(res.projects);
 
                 scriptsStore.scripts = res.scripts;
+                scriptsStore.template_scripts = res.template_scripts;
                 scriptsStore.available_scripts = res.available_scripts;
 
                 usersStore.users = res.users;

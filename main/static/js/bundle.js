@@ -28624,7 +28624,7 @@
 	            _jquery2.default.ajax({
 	                method: 'POST',
 	                url: document.body.getAttribute('data-scripts-url'),
-	                data: JSON.stringify({ name: scriptsStore.creating_name, owner: usersStore.session_user }),
+	                data: JSON.stringify({ name: scriptsStore.creating_name, owner: usersStore.session_user, template: scriptsStore.creating_template }),
 	                success: function success(res) {
 	                    scriptsStore.scripts = res.scripts;
 	                    modalStore.modal = false;
@@ -28844,6 +28844,37 @@
 	                            React.createElement('div', { className: 'form-group' },
 	                                React.createElement('input', { className: 'form-control', onChange: function onChange(e) {scriptsStore.creating_name = e.target.value;}, value: scriptsStore.creating_name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
 	
+	
+	                        React.createElement('div', { className: 'col-md-12' },
+	                            React.createElement('div', { className: 'radio' },
+	                                React.createElement('label', null,
+	                                    React.createElement('input', {
+	                                        type: 'radio',
+	                                        name: 'optionsRadios',
+	                                        id: 'optionsRadios1',
+	                                        value: 'option1',
+	                                        defaultChecked: !scriptsStore.creating_template,
+	                                        onChange: function onChange() {scriptsStore.creating_template = null;} }), '\u041F\u0443\u0441\u0442\u043E\u0439')),
+	
+	
+	
+	
+	                            scriptsStore.template_scripts.map(function (script, key) {
+	                                var is_checked = scriptsStore.creating_template ? script.id === scriptsStore.creating_template.id : false;
+	                                return (
+	                                    React.createElement('div', { key: key, className: 'radio' },
+	                                        React.createElement('label', null,
+	                                            React.createElement('input', {
+	                                                type: 'radio',
+	                                                name: 'optionsRadios',
+	                                                defaultChecked: is_checked,
+	                                                onChange: function onChange() {scriptsStore.creating_template = script;} }),
+	
+	                                            script.name)));
+	
+	
+	
+	                            })),
 	
 	                        React.createElement('div', { className: 'col-md-12' },
 	                            React.createElement('div', { className: 'form-group' },
@@ -77753,6 +77784,7 @@
 	                    projectsStore.createProjects(res.projects);
 	
 	                    scriptsStore.scripts = res.scripts;
+	                    scriptsStore.template_scripts = res.template_scripts;
 	                    scriptsStore.available_scripts = res.available_scripts;
 	
 	                    usersStore.users = res.users;
@@ -77929,10 +77961,14 @@
 /* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ScriptsStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;var _mobx = __webpack_require__(265);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ScriptsStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;var _mobx = __webpack_require__(265);
 	var _jquery = __webpack_require__(260);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
-	ScriptsStore = exports.ScriptsStore = (_class = function () {function ScriptsStore() {_classCallCheck(this, ScriptsStore);_initDefineProp(this, 'scripts', _descriptor, this);_initDefineProp(this, 'available_scripts', _descriptor2, this);_initDefineProp(this, 'filter_by_name', _descriptor3, this);_initDefineProp(this, 'filter_by_project', _descriptor4, this);_initDefineProp(this, 'creating_name', _descriptor5, this);_initDefineProp(this, 'creating_project', _descriptor6, this);_initDefineProp(this, 'editing', _descriptor7, this);}_createClass(ScriptsStore, [{ key: 'updateScripts', value: function updateScripts()
+	ScriptsStore = exports.ScriptsStore = (_class = function () {function ScriptsStore() {_classCallCheck(this, ScriptsStore);_initDefineProp(this, 'scripts', _descriptor, this);_initDefineProp(this, 'template_scripts', _descriptor2, this);_initDefineProp(this, 'available_scripts', _descriptor3, this);_initDefineProp(this, 'filter_by_name', _descriptor4, this);_initDefineProp(this, 'filter_by_project', _descriptor5, this);_initDefineProp(this, 'creating_name', _descriptor6, this);_initDefineProp(this, 'creating_project', _descriptor7, this);_initDefineProp(this, 'creating_template', _descriptor8, this);_initDefineProp(this, 'editing', _descriptor9, this);}_createClass(ScriptsStore, [{ key: 'updateScripts', value: function updateScripts()
+	
+	
+	
+	
 	
 	
 	
@@ -77965,7 +78001,7 @@
 	        {
 	            this.creating_name = '';
 	            this.creating_project = null;
-	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'updateScripts'), _class.prototype)), _class);exports.default =
+	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'updateScripts'), _class.prototype)), _class);exports.default =
 	
 	
 	new ScriptsStore();

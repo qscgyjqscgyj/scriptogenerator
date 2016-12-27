@@ -3,11 +3,15 @@ import $ from 'jquery';
 
 export class ScriptsStore {
     @observable scripts = [];
+    @observable template_scripts = [];
     @observable available_scripts = [];
+
     @observable filter_by_name = '';
     @observable filter_by_project = null;
+
     @observable creating_name = '';
     @observable creating_project = null;
+    @observable creating_template = null;
     @observable editing = null;
 
     @action updateScripts() {

@@ -12,6 +12,7 @@ class Script(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
     date_mod = models.DateTimeField(auto_now=True)
+    is_template = models.BooleanField(default=False)
 
     def accesses(self):
         return ScriptAccess.objects.filter(script=self)

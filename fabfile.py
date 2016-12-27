@@ -37,8 +37,8 @@ def restart_celery():
 
 def kill_celery():
     with server_prefix:
-        run("ps auxww | grep '%(server_project_dir)s/manage.py celeryd' | awk '{print $2}' | xargs kill -9" % dict(server_project_dir=server_project_dir))
-        sudo('supervisorctl stop scripts.celery')
+        sudo("ps auxww | grep 'celeryd' | awk '{print $2}' | xargs kill -9")
+        sudo("ps auxww | grep 'celerybeat' | awk '{print $2}' | xargs kill -9")
 
 
 def manage(command='help'):

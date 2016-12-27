@@ -42,7 +42,7 @@ export class Scripts extends React.Component {
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-scripts-url'),
-            data: JSON.stringify({name: scriptsStore.creating_name, owner: usersStore.session_user}),
+            data: JSON.stringify({name: scriptsStore.creating_name, owner: usersStore.session_user, template: scriptsStore.creating_template}),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;
@@ -262,6 +262,37 @@ class CreatingScript extends React.Component {
                         <div className="form-group">
                             <input className="form-control" onChange={(e) => {scriptsStore.creating_name = e.target.value}} value={scriptsStore.creating_name} type="text" name="name" placeholder="Имя скрипта"/>
                         </div>
+                    </div>
+                    <div className="col-md-12">
+                        <div className="radio">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="optionsRadios"
+                                    id="optionsRadios1"
+                                    value="option1"
+                                    defaultChecked={!scriptsStore.creating_template}
+                                    onChange={() => {scriptsStore.creating_template = null}}
+                                />
+                                Пустой
+                            </label>
+                        </div>
+                        {scriptsStore.template_scripts.map((script, key) => {
+                            let is_checked = (scriptsStore.creating_template ? script.id === scriptsStore.creating_template.id : false);
+                            return (
+                                <div key={key} className="radio">
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name="optionsRadios"
+                                            defaultChecked={is_checked}
+                                            onChange={() => {scriptsStore.creating_template = script}}
+                                        />
+                                        {script.name}
+                                    </label>
+                                </div>
+                            )
+                        })}
                     </div>
                     <div className="col-md-12">
                         <div className="form-group">

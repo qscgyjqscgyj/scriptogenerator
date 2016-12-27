@@ -301,9 +301,7 @@ class CloneScriptView(View):
         clone_script.active = False
         clone_script.save()
         cloneTreeRelations.delay(current_script.pk, clone_script.pk, 'main', 'Script')
-
         clone_save_links.delay(clone_script.pk, current_script_links_count)
-
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
         })
@@ -318,10 +316,11 @@ class InitView(View):
         return JSONResponse({
             'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
+            'template_scripts': ScriptSerializer(Script.objects.filter(is_template=True), many=True).data,
             'available_scripts': ScriptSerializer(Script.objects.filter(pk__in=access_scripts_ids), many=True).data,
             'users': UserSerializer(CustomUser.objects.all().exclude(pk=request.user.pk), many=True).data,
             'session_user': UserSerializer(request.user).data,
             'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data,
             'shopId': YANDEX_SHOPID,
-            'scid': YANDEX_SCID
+            'scid': YANDEX_SCID,
         }, status=201)

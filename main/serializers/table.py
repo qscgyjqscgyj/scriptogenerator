@@ -58,7 +58,8 @@ class TableSerializer(serializers.ModelSerializer):
     colls = CollsField()
 
     def create(self, validated_data):
-        del validated_data['colls']
+        if validated_data.get('colls'):
+            del validated_data['colls']
         return Table.objects.get_or_create(**validated_data)
 
     def update(self, instance, validated_data):

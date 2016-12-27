@@ -10,7 +10,7 @@ EXCLUDE_RELATION_FIELDS = ['parent', 'to_link']
 
 @app.task
 def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name, recursive_iteration=1):
-    if recursive_iteration < 100:
+    if recursive_iteration < 10:
         model = get_model(app_name, model_name)
         mainObject = model.objects.get(pk=mainObject_pk)
         try:
@@ -50,7 +50,7 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name, recu
 @app.task
 def clone_save_links(clone_script_pk, current_script_links_count, recursive_iteration=1):
     recursive_iteration += 1
-    if recursive_iteration < 100:
+    if recursive_iteration < 10:
         clone_script = get_model('main', 'Script').objects.get(pk=clone_script_pk)
         clone_links = clone_script.links(parent=True)
 

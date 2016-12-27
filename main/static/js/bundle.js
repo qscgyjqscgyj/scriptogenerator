@@ -49576,7 +49576,7 @@
 	                full_size = full_size + parseInt(coll.size);
 	            });
 	            if (full_size > 100) {
-	                tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна привышать 100%';
+	                tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна превышать 100%';
 	            } else if (full_size < 100) {
 	                tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна быть меньше 100%';
 	            } else if (tablesStore.colls_creating_error_message) {

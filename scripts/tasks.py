@@ -2,7 +2,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.loading import get_model
 
-from main.models import Link, Script
 from scripts.celery import app
 import time
 
@@ -52,7 +51,7 @@ def cloneTreeRelations(mainObject_pk, cloneObject_pk, app_name, model_name, recu
 def clone_save_links(clone_script_pk, current_script_links_count, recursive_iteration=1):
     recursive_iteration += 1
     if recursive_iteration < 100:
-        clone_script = Script.objects.get(pk=clone_script_pk)
+        clone_script = get_model('main', 'Script').objects.get(pk=clone_script_pk)
         clone_links = clone_script.links(parent=True)
 
         if len(clone_links) < current_script_links_count:
@@ -67,7 +66,7 @@ def clone_save_links(clone_script_pk, current_script_links_count, recursive_iter
                 if link.to_link:
                     print('to_link (' + str(link.pk) + ') script before: ' + str(link.to_link.category.table.table.script.pk))
                     try:
-                        to_link = Link.objects.get(parent__pk=link.to_link.pk, category__table__table__script__pk=link.category.table.table.script.pk)
+                        to_link = get_model('main', 'Link').objects.get(parent__pk=link.to_link.pk, category__table__table__script__pk=link.category.table.table.script.pk)
                         link.to_link = to_link
                         link.save()
                         print('found')

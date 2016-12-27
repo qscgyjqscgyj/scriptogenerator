@@ -10,6 +10,11 @@ class UserPayment(models.Model):
     payment_data = models.TextField(blank=True, null=True)
     payed = models.DateTimeField(blank=True, null=True)
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.total_sum or self.total_sum < self.sum:
+            self.total_sum = self.sum
+        return super(UserPayment, self).save(force_insert=False, force_update=False, using=None, update_fields=None)
+
     def __unicode__(self):
         return self.user.__unicode__()
 

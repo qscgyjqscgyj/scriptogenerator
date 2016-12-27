@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 import datetime
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User, AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
+from django.db.models.loading import get_model
 from registration.signals import user_registered
+
+from users.signals import user_created
 
 
 class CustomUser(AbstractUser):
@@ -18,15 +21,11 @@ class CustomUser(AbstractUser):
     def __unicode__(self):
         return self.username
 
+    def payments(self):
+        return get_model('payment', 'UserPayment').objects.filter(user=self, payed__isnull=False)
+
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
-
-
-def user_created(sender, user, request, **kwargs):
-    login(request, authenticate(
-        username=user.username,
-        password=request.POST['password1']
-    ))
 
 user_registered.connect(user_created)
 

@@ -18,6 +18,7 @@ from payment.models import UserPayment
 from payment.serializers import UserPaymentSerializer
 from django.core.mail import send_mail
 
+from payment.tasks import recount_balance
 from scripts.settings import YANDEX_SHOPID, YANDEX_SHOPPASSWORD
 
 
@@ -103,9 +104,7 @@ class YandexPaymentView(View):
                     payment.payment_data = json.dumps(dict(request.POST))
                     payment.save()
 
-                    payment.user.balance_real += payment.sum
-                    payment.user.balance_total += payment.total_sum
-                    payment.user.save()
+                    recount_balance.delay(payment.user.pk)
 
                     return success()
             return error()

@@ -42,7 +42,7 @@ export class Scripts extends React.Component {
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-scripts-url'),
-            data: JSON.stringify({name: scriptsStore.creating_name, project: project, owner: usersStore.session_user}),
+            data: JSON.stringify({name: scriptsStore.creating_name, owner: usersStore.session_user}),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;
@@ -145,18 +145,6 @@ export class Scripts extends React.Component {
                                     <input onChange={(e) => scriptsStore.filter_by_name = e.target.value} className="form-control" type="text" placeholder="Поиск по названию"/>
                                 </div>
                             </div>
-                            <div className="col-md-3">
-                                <div className="form-group">
-                                    <select onChange={(e) => scriptsStore.filter_by_project = (e.target.value ? parseInt(e.target.value) : null)} className="form-control">
-                                        <option value="">-- Выберите проект --</option>
-                                        {projectsStore.projects.map((project, key) => {
-                                            return(
-                                                <option key={key} value={project.id}>{project.name}</option>
-                                            )
-                                        })}
-                                    </select>
-                                </div>
-                            </div>
                         </div>
                     : null}
                     <div className="row">
@@ -165,7 +153,6 @@ export class Scripts extends React.Component {
                                 <thead>
                                     <tr>
                                         <td>Название</td>
-                                        <td>Проект</td>
                                         <td>Владелец</td>
                                         {!available ?
                                             <td>Скопировать</td>
@@ -189,7 +176,6 @@ export class Scripts extends React.Component {
                                                     <span>{script.name}</span>
                                                 }
                                             </td>
-                                            <td>{script.project ? script.project.name : null}</td>
                                             <td>{script.owner.email}</td>
                                             {!available ?
                                                 <td>
@@ -275,18 +261,6 @@ class CreatingScript extends React.Component {
                     </div>
                     <div className="col-md-12">
                         <div className="form-group">
-                            <select onChange={(e) => scriptsStore.creating_project = (e.target.value ? parseInt(e.target.value) : null)} name="project" className="form-control">
-                                <option value="">-- Выберите проект --</option>
-                                {projectsStore.projects.map((project, key)=>{
-                                    return(
-                                        <option key={key} value={project.id}>{project.name}</option>
-                                    )
-                                })}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="col-md-12">
-                        <div className="form-group">
                             <button className="btn btn-success" type="submit">Создать</button>
                         </div>
                     </div>
@@ -309,19 +283,6 @@ class EditingScript extends React.Component {
                                 <input className="form-control" onChange={(e) => scriptsStore.editing.name = e.target.value} value={scriptsStore.editing.name} type="text" name="name" placeholder="Имя скрипта"/>
                             </div>
                         </div>
-                        {!available ?
-                            <div className="col-md-12">
-                                <div className="form-group">
-                                    <select onChange={(e) => scriptsStore.editing.project = (e.target.value ? projectsStore.project(parseInt(e.target.value)) : null)} value={scriptsStore.editing.project.id} name="project" className="form-control">
-                                        {projectsStore.projects.map((project, key)=>{
-                                            return(
-                                                <option key={key} value={project.id}>{project.name}</option>
-                                            )
-                                        })}
-                                    </select>
-                                </div>
-                            </div>
-                        : null}
                         <div className="col-md-12">
                             <div className="form-group">
                                 <button className="btn btn-success" type="submit">Сохранить</button>

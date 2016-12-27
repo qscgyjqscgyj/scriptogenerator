@@ -29,6 +29,7 @@ export class ModalWrapper extends React.Component {
             <Modal
                 isOpen={modalStore.modal}
                 style={customModalStyles}
+								contentLabel=""
                 onRequestClose={() => {
                     modalStore.modal = false;
                     stores.map(store => {

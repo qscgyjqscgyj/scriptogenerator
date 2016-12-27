@@ -17,14 +17,13 @@ class ScriptAccessField(serializers.Field):
 
 
 class ScriptSerializer(serializers.ModelSerializer):
-    project = ProjectSerializer(required=False, allow_null=True)
     owner = UserSerializer(read_only=True)
     accesses = ScriptAccessField(required=False)
 
     def create(self, validated_data):
-        if self._kwargs['data'].get('project'):
-            project = Project.objects.get(pk=self._kwargs['data']['project']['id'])
-            validated_data['project'] = project
+        # if self._kwargs['data'].get('project'):
+        #     project = Project.objects.get(pk=self._kwargs['data']['project']['id'])
+        #     validated_data['project'] = project
 
         owner = self.initial_data.pop('owner', None)
         owner = get_model('users', 'CustomUser').objects.get(**owner)
@@ -35,16 +34,16 @@ class ScriptSerializer(serializers.ModelSerializer):
         return script
 
     def update(self, instance, validated_data):
-        project = validated_data.pop('project', None)
+        # project = validated_data.pop('project', None)
 
         instance.name = validated_data.get('name', instance.name)
-        instance.project = Project.objects.get(**project)
+        # instance.project = Project.objects.get(**project)
         instance.save()
         return instance
 
     class Meta:
         model = Script
-        fields = ('id', 'name', 'owner', 'project', 'date', 'date_mod', 'accesses', 'active')
+        fields = ('id', 'name', 'owner', 'date', 'date_mod', 'accesses', 'active')
 
 
 class ScriptAccessSerializer(serializers.ModelSerializer):

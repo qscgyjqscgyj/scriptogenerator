@@ -64,7 +64,6 @@
 	React.createElement(_reactRouter.Router, { history: _reactRouter.browserHistory },
 	    React.createElement(_reactRouter.Route, { path: '/', component: _app.AppWrapper },
 	        React.createElement(_reactRouter.IndexRoute, { component: _scripts.Scripts }),
-	        React.createElement(_reactRouter.Route, { path: '/projects', component: _projects.Projects }),
 	
 	        React.createElement(_reactRouter.Route, { path: '/scripts/user/', component: _scripts.Scripts }),
 	        React.createElement(_reactRouter.Route, { path: '/scripts/available/', component: _scripts.AvailableScripts }),
@@ -28625,7 +28624,7 @@
 	            _jquery2.default.ajax({
 	                method: 'POST',
 	                url: document.body.getAttribute('data-scripts-url'),
-	                data: JSON.stringify({ name: scriptsStore.creating_name, project: project, owner: usersStore.session_user }),
+	                data: JSON.stringify({ name: scriptsStore.creating_name, owner: usersStore.session_user }),
 	                success: function success(res) {
 	                    scriptsStore.scripts = res.scripts;
 	                    modalStore.modal = false;
@@ -28725,19 +28724,7 @@
 	
 	                            React.createElement('div', { className: 'col-md-3' },
 	                                React.createElement('div', { className: 'form-group' },
-	                                    React.createElement('input', { onChange: function onChange(e) {return scriptsStore.filter_by_name = e.target.value;}, className: 'form-control', type: 'text', placeholder: '\u041F\u043E\u0438\u0441\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E' }))),
-	
-	
-	                            React.createElement('div', { className: 'col-md-3' },
-	                                React.createElement('div', { className: 'form-group' },
-	                                    React.createElement('select', { onChange: function onChange(e) {return scriptsStore.filter_by_project = e.target.value ? parseInt(e.target.value) : null;}, className: 'form-control' },
-	                                        React.createElement('option', { value: '' }, '-- \u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043F\u0440\u043E\u0435\u043A\u0442 --'),
-	                                        projectsStore.projects.map(function (project, key) {
-	                                            return (
-	                                                React.createElement('option', { key: key, value: project.id }, project.name));
-	
-	                                        }))))) :
-	
+	                                    React.createElement('input', { onChange: function onChange(e) {return scriptsStore.filter_by_name = e.target.value;}, className: 'form-control', type: 'text', placeholder: '\u041F\u043E\u0438\u0441\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E' })))) :
 	
 	
 	
@@ -28748,7 +28735,6 @@
 	                                    React.createElement('thead', null,
 	                                        React.createElement('tr', null,
 	                                            React.createElement('td', null, '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435'),
-	                                            React.createElement('td', null, '\u041F\u0440\u043E\u0435\u043A\u0442'),
 	                                            React.createElement('td', null, '\u0412\u043B\u0430\u0434\u0435\u043B\u0435\u0446'),
 	                                            !available ?
 	                                            React.createElement('td', null, '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C') :
@@ -28772,7 +28758,6 @@
 	                                                        React.createElement('span', null, script.name)),
 	
 	
-	                                                    React.createElement('td', null, script.project ? script.project.name : null),
 	                                                    React.createElement('td', null, script.owner.email),
 	                                                    !available ?
 	                                                    React.createElement('td', null,
@@ -28858,18 +28843,6 @@
 	
 	                        React.createElement('div', { className: 'col-md-12' },
 	                            React.createElement('div', { className: 'form-group' },
-	                                React.createElement('select', { onChange: function onChange(e) {return scriptsStore.creating_project = e.target.value ? parseInt(e.target.value) : null;}, name: 'project', className: 'form-control' },
-	                                    React.createElement('option', { value: '' }, '-- \u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043F\u0440\u043E\u0435\u043A\u0442 --'),
-	                                    projectsStore.projects.map(function (project, key) {
-	                                        return (
-	                                            React.createElement('option', { key: key, value: project.id }, project.name));
-	
-	                                    })))),
-	
-	
-	
-	                        React.createElement('div', { className: 'col-md-12' },
-	                            React.createElement('div', { className: 'form-group' },
 	                                React.createElement('button', { className: 'btn btn-success', type: 'submit' }, '\u0421\u043E\u0437\u0434\u0430\u0442\u044C'))))));
 	
 	
@@ -28892,19 +28865,6 @@
 	                                    React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return scriptsStore.editing.name = e.target.value;}, value: scriptsStore.editing.name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
 	
 	
-	                            !available ?
-	                            React.createElement('div', { className: 'col-md-12' },
-	                                React.createElement('div', { className: 'form-group' },
-	                                    React.createElement('select', { onChange: function onChange(e) {return scriptsStore.editing.project = e.target.value ? projectsStore.project(parseInt(e.target.value)) : null;}, value: scriptsStore.editing.project.id, name: 'project', className: 'form-control' },
-	                                        projectsStore.projects.map(function (project, key) {
-	                                            return (
-	                                                React.createElement('option', { key: key, value: project.id }, project.name));
-	
-	                                        })))) :
-	
-	
-	
-	                            null,
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('div', { className: 'form-group' },
 	                                    React.createElement('button', { className: 'btn btn-success', type: 'submit' }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))))));
@@ -45383,6 +45343,7 @@
 	                React.createElement(_reactModal2.default, {
 	                        isOpen: modalStore.modal,
 	                        style: customModalStyles,
+	                        contentLabel: '',
 	                        onRequestClose: function onRequestClose() {
 	                            modalStore.modal = false;
 	                            stores.map(function (store) {
@@ -77867,10 +77828,9 @@
 	                React.createElement('nav', { className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
 	                    React.createElement('div', { className: 'container-fluid' },
 	                        React.createElement('ul', { className: 'nav navbar-nav' },
-	                            React.createElement('li', null, React.createElement('a', { href: '/' }, '\u0413\u043B\u0430\u0432\u043D\u0430\u044F')),
-	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/projects/' }, '\u041C\u043E\u0438 \u043F\u0440\u043E\u0435\u043A\u0442\u044B')),
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/user/' }, '\u041C\u043E\u0438 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/available/' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
+	                            React.createElement('li', null, React.createElement('a', { href: 'http://lp.scriptogenerator.ru/info', target: '_blank' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F')),
 	
 	                            script_tables.length > 0 ?
 	                            React.createElement('li', { className: 'dropdown' },

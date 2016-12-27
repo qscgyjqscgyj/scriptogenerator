@@ -18,7 +18,6 @@ ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={AppWrapper}>
             <IndexRoute component={Scripts}/>
-            <Route path="/projects" component={Projects}/>
 
             <Route path="/scripts/user/" component={Scripts}/>
             <Route path="/scripts/available/" component={AvailableScripts}/>

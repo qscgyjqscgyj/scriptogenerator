@@ -52,7 +52,7 @@ class ScriptsView(View):
         data = json.loads(request.body)
         script = ScriptSerializer(data=data)
         if script.is_valid():
-            script.save()
+            script.create(data)
             return JSONResponse({
                 'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
             })
@@ -60,9 +60,10 @@ class ScriptsView(View):
 
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        script = ScriptSerializer(Script.objects.get(pk=int(data['id'])), data=data)
+        current_script = Script.objects.get(pk=int(data['id']))
+        script = ScriptSerializer(current_script, data=data)
         if script.is_valid():
-            script.save()
+            script.update(current_script, data)
             return JSONResponse({
                 'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
             })
@@ -90,7 +91,7 @@ class ProjectsView(View):
         data = json.loads(request.body)
         project = ProjectSerializer(data=data)
         if project.is_valid():
-            project.save()
+            project.create(data)
             return JSONResponse({
                 'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data
             })
@@ -98,9 +99,10 @@ class ProjectsView(View):
 
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        project = ProjectSerializer(Project.objects.get(pk=int(data['id'])), data=data)
+        current_project = Project.objects.get(pk=int(data['id']))
+        project = ProjectSerializer(current_project, data=data)
         if project.is_valid():
-            project.save()
+            project.update(current_project, data)
             return JSONResponse({
                 'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
                 'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
@@ -130,7 +132,7 @@ class TablesView(View):
         data = json.loads(request.body)
         table = TableSerializer(data=data)
         if table.is_valid():
-            table.save()
+            table.create(data)
             return JSONResponse({
                 'tables': TableSerializer(Table.objects.filter(script=data['script']), many=True).data
             })
@@ -138,9 +140,10 @@ class TablesView(View):
 
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        table = TableSerializer(Table.objects.get(pk=int(data['id'])), data=data)
+        current_table = Table.objects.get(pk=int(data['id']))
+        table = TableSerializer(current_table, data=data)
         if table.is_valid():
-            table.save()
+            table.update(current_table, data)
             return JSONResponse({
                 'tables': TableSerializer(Table.objects.filter(script__pk=int(data['script'])), many=True).data
             })

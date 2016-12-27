@@ -188,7 +188,7 @@ export class Scripts extends React.Component {
                                                             {this.state.cloning === script ?
                                                                 <span>Копирование...</span>
                                                             : (!script.active ?
-                                                                <span>Подождите, идет конвертация ссылок...</span>
+                                                                <span>Подождите, скрипт создается...</span>
                                                             : null)}
                                                         </span>
                                                     :

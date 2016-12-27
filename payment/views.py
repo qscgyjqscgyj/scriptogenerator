@@ -103,9 +103,6 @@ class YandexPaymentView(View):
                     payment.payed = datetime.datetime.today()
                     payment.payment_data = json.dumps(dict(request.POST))
                     payment.save()
-
-                    recount_balance.delay(payment.user.pk)
-
                     return success()
             return error()
         else:

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime
-import time
 from django.contrib.auth import authenticate, login
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.loading import get_model
 
-from payment.tasks import recount_balance
 from scripts.tasks import cloneTreeRelations, clone_save_links
 
 
@@ -26,22 +24,20 @@ def user_created(sender, user, request, **kwargs):
         print('Present script does not found.')
 
     # GIVE 500 RUBLES FOR NEW USER
-    payment = get_model('payment', 'UserPayment').objects.create(
+    PRESENT_SUM = 500.0
+    payment = get_model('payment', 'UserPayment')(
         user=user,
-        sum=500.0,
-        total_sum=500.0,
+        sum=PRESENT_SUM,
+        total_sum=PRESENT_SUM,
         payed=datetime.datetime.today(),
         payment_data=u'Подарок при регистрации'
     )
+    payment.save()
 
-    payments = user.payments()
-    print(len(payments))
-    while not len(payments) > 0:
-        print(len(payments))
-        time.sleep(1)
-        payments = user.payments()
-    recount_balance.delay(payment.user.pk)
-
+    user.balance_real = PRESENT_SUM
+    user.balance_total = PRESENT_SUM
+    user.save()
+    
     return login(request, authenticate(
         username=user.username,
         password=request.POST['password1']

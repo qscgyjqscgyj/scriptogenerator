@@ -1,4 +1,8 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from payment.tasks import recount_balance
 from users.models import CustomUser
 
 
@@ -17,6 +21,11 @@ class UserPayment(models.Model):
 
     def __unicode__(self):
         return self.user.__unicode__()
+
+
+def recount_payment_user_balance(sender, instance, **kwargs):
+    return recount_balance.delay()
+post_save.connect(recount_payment_user_balance, sender=UserPayment)
 
 
 class LocalPayment(models.Model):

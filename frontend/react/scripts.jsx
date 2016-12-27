@@ -153,7 +153,9 @@ export class Scripts extends React.Component {
                                 <thead>
                                     <tr>
                                         <td>Название</td>
-                                        <td>Владелец</td>
+																				{available ?
+																						<td>Владелец</td>
+																				: null}
                                         {!available ?
                                             <td>Скопировать</td>
                                         : null}
@@ -176,7 +178,9 @@ export class Scripts extends React.Component {
                                                     <span>{script.name}</span>
                                                 }
                                             </td>
-                                            <td>{script.owner.email}</td>
+																						{available ?
+																								<td>{script.owner.email}</td>
+																						: null}
                                             {!available ?
                                                 <td>
                                                     {(this.state.cloning || !script.active) ?

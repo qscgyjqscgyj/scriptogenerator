@@ -70,8 +70,8 @@ export class Tables extends AccessableComponent {
                 return(
                     <div className="col-md-12">
                         {access.edit ?
-                            <div className="row row-centered">
-                                <div className="col-md-2 col-centered">
+                            <div>
+                                <div className="col-md-2">
                                     <button onClick={() => {
                                         modalStore.modal = true;
                                         modalStore.component = React.createElement(CreatingTable, {
@@ -82,7 +82,7 @@ export class Tables extends AccessableComponent {
                                         });
                                     }} className="btn btn-success">+ Создать таблицу</button>
                                 </div>
-                                <div className="col-md-7 col-centered">
+                                <div className="col-md-7">
                                     <h4>{script.name}</h4>
                                 </div>
                             </div>

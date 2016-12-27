@@ -28735,7 +28735,9 @@
 	                                    React.createElement('thead', null,
 	                                        React.createElement('tr', null,
 	                                            React.createElement('td', null, '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435'),
-	                                            React.createElement('td', null, '\u0412\u043B\u0430\u0434\u0435\u043B\u0435\u0446'),
+	                                            available ?
+	                                            React.createElement('td', null, '\u0412\u043B\u0430\u0434\u0435\u043B\u0435\u0446') :
+	                                            null,
 	                                            !available ?
 	                                            React.createElement('td', null, '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C') :
 	                                            null,
@@ -28758,7 +28760,9 @@
 	                                                        React.createElement('span', null, script.name)),
 	
 	
-	                                                    React.createElement('td', null, script.owner.email),
+	                                                    available ?
+	                                                    React.createElement('td', null, script.owner.email) :
+	                                                    null,
 	                                                    !available ?
 	                                                    React.createElement('td', null,
 	                                                        _this3.state.cloning || !script.active ?
@@ -49395,8 +49399,8 @@
 	                        return { v:
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                access.edit ?
-	                                React.createElement('div', { className: 'row row-centered' },
-	                                    React.createElement('div', { className: 'col-md-2 col-centered' },
+	                                React.createElement('div', null,
+	                                    React.createElement('div', { className: 'col-md-2' },
 	                                        React.createElement('button', { onClick: function onClick() {
 	                                                    modalStore.modal = true;
 	                                                    modalStore.component = React.createElement(CreatingTable, {
@@ -49407,7 +49411,7 @@
 	
 	                                                }, className: 'btn btn-success' }, '+ \u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0442\u0430\u0431\u043B\u0438\u0446\u0443')),
 	
-	                                    React.createElement('div', { className: 'col-md-7 col-centered' },
+	                                    React.createElement('div', { className: 'col-md-7' },
 	                                        React.createElement('h4', null, script.name))) :
 	
 	

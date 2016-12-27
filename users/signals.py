@@ -36,8 +36,9 @@ def user_created(sender, user, request, **kwargs):
 
     user.balance_real = PRESENT_SUM
     user.balance_total = PRESENT_SUM
+    user.is_active = True
     user.save()
-    
+
     return login(request, authenticate(
         username=user.username,
         password=request.POST['password1']

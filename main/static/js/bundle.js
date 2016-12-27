@@ -49987,10 +49987,14 @@
 	
 	    }_createClass(Table, [{ key: 'fixClipboard', value: function fixClipboard(
 	        onInit, onDestroy) {var
-	            clipboard = this.state.clipboard;
+	            clipboard = this.state.clipboard;var
+	            tablesStore = this.props.tablesStore;
 	            var new_clipboard = new _clipboard2.default('.copy_icon', {
 	                text: function text(trigger) {
-	                    return trigger.getAttribute('data-link');
+	                    if (tablesStore.pressed_key == 17) {
+	                        console.log('copy');
+	                        return trigger.getAttribute('data-link');
+	                    }
 	                } });
 	
 	
@@ -50031,6 +50035,7 @@
 	
 	        e) {var
 	            tablesStore = this.props.tablesStore;
+	            console.log('key down');
 	            // 17 - CTRL, 16 - SHIFT
 	            if (e.keyCode === 17 || e.keyCode === 16) {
 	                tablesStore.pressed_key = e.keyCode;
@@ -50039,6 +50044,7 @@
 	
 	        e) {var
 	            tablesStore = this.props.tablesStore;
+	            console.log('key up');
 	            tablesStore.pressed_key = null;
 	        } }, { key: 'componentDidUpdate', value: function componentDidUpdate()
 	

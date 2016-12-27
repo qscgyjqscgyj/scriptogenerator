@@ -29,9 +29,12 @@ export class Table extends AccessableComponent {
     }
     fixClipboard(onInit, onDestroy) {
         const {clipboard} = this.state;
+				const {tablesStore} = this.props;
         let new_clipboard = new Clipboard('.copy_icon', {
             text: function(trigger) {
-                return trigger.getAttribute('data-link');
+								if(tablesStore.pressed_key == 17) {
+										return trigger.getAttribute('data-link');
+								}
             }
         });
 

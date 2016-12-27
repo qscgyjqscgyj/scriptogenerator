@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, View
@@ -22,6 +23,11 @@ from celery.result import AsyncResult
 
 class MainView(TemplateView):
     template_name = 'base.html'
+
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated():
+            return super(MainView, self).get(*args, **kwargs)
+        return HttpResponseRedirect('http://lp.scriptogenerator.ru/')
 
     def get_context_data(self, **kwargs):
         context = super(MainView, self).get_context_data(**kwargs)
@@ -315,4 +321,3 @@ class InitView(View):
             'shopId': YANDEX_SHOPID,
             'scid': YANDEX_SCID
         }, status=201)
-

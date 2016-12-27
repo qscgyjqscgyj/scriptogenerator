@@ -8,4 +8,3 @@ class UserPaymentAdmin(admin.ModelAdmin):
 
 admin.site.register(UserPayment, UserPaymentAdmin)
 admin.site.register(LocalPayment)
-

@@ -19,26 +19,28 @@ export class Tables extends AccessableComponent {
     createTable(e) {
         const {modalStore, tablesStore, scriptsStore} = this.props;
         e.preventDefault();
-        $.ajax({
-            method: 'POST',
-            url: document.body.getAttribute('data-tables-url'),
-            data: JSON.stringify({
-                name: tablesStore.creating_name,
-                colls: tablesStore.creating_colls,
-                text_coll_name: tablesStore.creating_text_coll_name,
-                text_coll_size: tablesStore.creating_text_coll_size,
-                text_coll_position: tablesStore.creating_text_coll_position,
-                script: tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)
-                //script: scriptsStore.script((tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)))
-            }),
-            success: (res) => {
-                tablesStore.tables = res.tables;
-                modalStore.modal = false;
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
+				if(tablesStore.creating_name) {
+						$.ajax({
+		            method: 'POST',
+		            url: document.body.getAttribute('data-tables-url'),
+		            data: JSON.stringify({
+		                name: tablesStore.creating_name,
+		                colls: tablesStore.creating_colls,
+		                text_coll_name: tablesStore.creating_text_coll_name,
+		                text_coll_size: tablesStore.creating_text_coll_size,
+		                text_coll_position: tablesStore.creating_text_coll_position,
+		                script: tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)
+		                //script: scriptsStore.script((tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)))
+		            }),
+		            success: (res) => {
+		                tablesStore.tables = res.tables;
+		                modalStore.modal = false;
+		            },
+		            error: (res) => {
+		                console.log(res);
+		            }
+		        });
+				}
     }
     deleteTable(table) {
         const {tablesStore} = this.props;
@@ -244,9 +246,10 @@ class CollsCreating extends React.Component {
         colls.map((coll) => {
             full_size = full_size + parseInt(coll.size);
         });
-        console.log(full_size);
         if(full_size > 100) {
             tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна привышать 100%';
+				} else if(full_size < 100) {
+            tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна быть меньше 100%';
         } else if(tablesStore.colls_creating_error_message) {
             tablesStore.colls_creating_error_message = null;
         }

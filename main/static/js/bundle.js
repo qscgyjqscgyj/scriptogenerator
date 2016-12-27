@@ -49348,26 +49348,28 @@
 	        e) {var _props =
 	            this.props,modalStore = _props.modalStore,tablesStore = _props.tablesStore,scriptsStore = _props.scriptsStore;
 	            e.preventDefault();
-	            _jquery2.default.ajax({
-	                method: 'POST',
-	                url: document.body.getAttribute('data-tables-url'),
-	                data: JSON.stringify({
-	                    name: tablesStore.creating_name,
-	                    colls: tablesStore.creating_colls,
-	                    text_coll_name: tablesStore.creating_text_coll_name,
-	                    text_coll_size: tablesStore.creating_text_coll_size,
-	                    text_coll_position: tablesStore.creating_text_coll_position,
-	                    script: tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)
-	                    //script: scriptsStore.script((tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)))
-	                }),
-	                success: function success(res) {
-	                    tablesStore.tables = res.tables;
-	                    modalStore.modal = false;
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
+	            if (tablesStore.creating_name) {
+	                _jquery2.default.ajax({
+	                    method: 'POST',
+	                    url: document.body.getAttribute('data-tables-url'),
+	                    data: JSON.stringify({
+	                        name: tablesStore.creating_name,
+	                        colls: tablesStore.creating_colls,
+	                        text_coll_name: tablesStore.creating_text_coll_name,
+	                        text_coll_size: tablesStore.creating_text_coll_size,
+	                        text_coll_position: tablesStore.creating_text_coll_position,
+	                        script: tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)
+	                        //script: scriptsStore.script((tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)))
+	                    }),
+	                    success: function success(res) {
+	                        tablesStore.tables = res.tables;
+	                        modalStore.modal = false;
+	                    },
+	                    error: function error(res) {
+	                        console.log(res);
+	                    } });
 	
+	            }
 	        } }, { key: 'deleteTable', value: function deleteTable(
 	        table) {var
 	            tablesStore = this.props.tablesStore;
@@ -49573,9 +49575,10 @@
 	            colls.map(function (coll) {
 	                full_size = full_size + parseInt(coll.size);
 	            });
-	            console.log(full_size);
 	            if (full_size > 100) {
 	                tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна привышать 100%';
+	            } else if (full_size < 100) {
+	                tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна быть меньше 100%';
 	            } else if (tablesStore.colls_creating_error_message) {
 	                tablesStore.colls_creating_error_message = null;
 	            }
@@ -49992,7 +49995,6 @@
 	            var new_clipboard = new _clipboard2.default('.copy_icon', {
 	                text: function text(trigger) {
 	                    if (tablesStore.pressed_key == 17) {
-	                        console.log('copy');
 	                        return trigger.getAttribute('data-link');
 	                    }
 	                } });
@@ -50035,7 +50037,6 @@
 	
 	        e) {var
 	            tablesStore = this.props.tablesStore;
-	            console.log('key down');
 	            // 17 - CTRL, 16 - SHIFT
 	            if (e.keyCode === 17 || e.keyCode === 16) {
 	                tablesStore.pressed_key = e.keyCode;
@@ -50044,7 +50045,6 @@
 	
 	        e) {var
 	            tablesStore = this.props.tablesStore;
-	            console.log('key up');
 	            tablesStore.pressed_key = null;
 	        } }, { key: 'componentDidUpdate', value: function componentDidUpdate()
 	

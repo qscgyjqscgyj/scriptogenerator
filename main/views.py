@@ -103,6 +103,7 @@ class ProjectsView(View):
         project = ProjectSerializer(current_project, data=data)
         if project.is_valid():
             project.update(current_project, data)
+            
             return JSONResponse({
                 'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
                 'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data

@@ -27,10 +27,10 @@ export class PaymentStore {
             img: STATIC_URL + 'img/payment_method__webmoney.png',
             value: 'WM'
         },
-        {
-            img: STATIC_URL + 'img/payment_method__bank.png',
-            value: 'SB'
-        }
+        // {
+        //     img: STATIC_URL + 'img/payment_method__bank.png',
+        //     value: 'SB'
+        // }
     ];
     @observable bonuses = [
         {

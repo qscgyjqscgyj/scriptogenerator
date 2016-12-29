@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import $ from 'jquery';
-
 import {Nav} from './nav';
 import ProjectsStore from '../mobx/projectsStore';
 import ModalStore from '../mobx/modalStore';
@@ -10,7 +9,12 @@ import TablesStore from '../mobx/tablesStore';
 import UsersStore from '../mobx/usersStore';
 import PaymentStore from '../mobx/paymentStore';
 import TooltipStore from '../mobx/tooltipStore';
+
+import {NoMoney} from './noMoney';
 import {observer} from 'mobx-react';
+import {Scripts} from './scripts';
+import {Tables} from './tables';
+import {TableEdit, TableShare} from './table';
 
 
 @observer
@@ -40,16 +44,50 @@ export class App extends React.Component {
         });
     }
     render() {
-        const {usersStore, tablesStore} = this.props;
-        return(
-            <div>
-                <Nav location={this.props.location} params={this.props.params} usersStore={usersStore} tablesStore={tablesStore}/>
+        const {usersStore, tablesStore, scriptsStore} = this.props;
+        const PAYMENT_REQUIRED_COMPONENTS = [Scripts, Tables, TableEdit, TableShare];
+        let script = this.props.params.script ? scriptsStore.script(this.props.params.script) : null;
 
-                <div className="container-fluid" id="main_container">
-                    {this.props.children}
+        let payment_required_children = this.props.children.filter(child => {
+            if(script && usersStore.session_user) {
+                switch (child.type) {
+                    case Tables:
+                        if(script.accesses.find(access => {return access.user.id === usersStore.session_user.id})) {
+                            return false;
+                        }
+                        break;
+                    case TableEdit:
+                        if(script.accesses.find(access => {return (access.user.id === usersStore.session_user.id) && access.edit})) {
+                            return false;
+                        }
+                        break;
+                    case TableShare:
+                        if(script.accesses.find(access => {return access.user.id === usersStore.session_user.id})) {
+                            return false;
+                        }
+                        break;
+                    default:
+                        return PAYMENT_REQUIRED_COMPONENTS.includes(child.type);
+                }
+            }
+            return PAYMENT_REQUIRED_COMPONENTS.includes(child.type)
+        });
+        if(usersStore.session_user) {
+            return(
+                <div>
+                    <Nav location={this.props.location} params={this.props.params} usersStore={usersStore} tablesStore={tablesStore}/>
+
+                    <div className="container-fluid" id="main_container">
+                        {usersStore.session_user.balance_total > 0 ?
+                            this.props.children
+                        :
+                            (payment_required_children.length > 0 ? <NoMoney/> : this.props.children)
+                        }
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
+        return null;
     }
 }
 

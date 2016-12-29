@@ -153,9 +153,9 @@ export class Scripts extends React.Component {
                                 <thead>
                                     <tr>
                                         <td>Название</td>
-																				{available ?
-																						<td>Владелец</td>
-																				: null}
+                                        {available ?
+                                                <td>Владелец</td>
+                                        : null}
                                         {!available ?
                                             <td>Скопировать</td>
                                         : null}
@@ -172,15 +172,15 @@ export class Scripts extends React.Component {
                                     return (
                                         <tr key={key}>
                                             <td>
-                                                {script.active ?
+                                                {script.active && script.available ?
                                                     <Link to={'/tables/' + script.id + '/'}>{script.name}</Link>
                                                 :
                                                     <span>{script.name}</span>
                                                 }
                                             </td>
-																						{available ?
-																								<td>{script.owner.email}</td>
-																						: null}
+                                            {available ?
+                                                    <td>{script.owner.email}</td>
+                                            : null}
                                             {!available ?
                                                 <td>
                                                     {(this.state.cloning || !script.active) ?
@@ -210,13 +210,17 @@ export class Scripts extends React.Component {
                                                     }} className="btn btn-default">Права</button>
                                                 </td>
                                             :
-                                                <td>
-                                                    {access.edit ? 'Редактирование' : 'Просмотр'}
-                                                </td>
+                                                (script.available ?
+                                                    <td>
+                                                        {access.edit ? 'Редактирование' : 'Просмотр'}
+                                                    </td>
+                                                :
+                                                    <td>У создателя скрипта отрицательный баланс.</td>
+                                                )
                                             }
 
                                             <td className="text-right">
-                                                {(available ? access.edit : true) ?
+                                                {(available && script.available ? access.edit : true) ?
                                                     <button className="btn btn-default" onClick={()=>{
                                                         scriptsStore.editing = script;
                                                         modalStore.modal = true;

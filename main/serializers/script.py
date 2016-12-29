@@ -28,10 +28,24 @@ class ScriptTemplateField(serializers.Field):
         return template
 
 
+class ScriptAvailableField(serializers.Field):
+    def to_representation(self, script):
+        if script.owner.balance_total > 0:
+            return True
+        return False
+
+    def get_attribute(self, available):
+        return available
+
+    def to_internal_value(self, available):
+        return available
+
+
 class ScriptSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
     accesses = ScriptAccessField(required=False)
     template = ScriptTemplateField(required=False, allow_null=True)
+    available = ScriptAvailableField(read_only=True, allow_null=True)
 
     def create(self, validated_data):
         owner = self.initial_data.pop('owner', None)
@@ -68,7 +82,7 @@ class ScriptSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Script
-        fields = ('id', 'name', 'owner', 'date', 'date_mod', 'accesses', 'active', 'template')
+        fields = ('id', 'name', 'owner', 'date', 'date_mod', 'accesses', 'active', 'template', 'available')
 
 
 class ScriptAccessSerializer(serializers.ModelSerializer):

@@ -6,10 +6,9 @@ from users.models import CustomUser, UserAccess
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'last_name', 'first_name', 'middle_name', 'balance_real', 'balance_total', 'is_active')
-    add_fieldsets = (
+    fieldsets = UserAdmin.fieldsets + (
         (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'balance_real', 'balance_total')}
+            'fields': ('middle_name', 'balance_real', 'balance_total')}
         ),
     )
 

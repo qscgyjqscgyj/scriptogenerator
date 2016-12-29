@@ -13,7 +13,7 @@ from django.db.models import Q
 def get_payment_for_users():
     today = datetime.datetime.today()
     for user in get_model('users', 'CustomUser').objects.all():
-        for access in get_model('users', 'UserAccess').objects.filter(Q(owner=user) & (Q(payed__isnull=True) | Q(payed__date__lt=today.date()))):
+        for access in get_model('users', 'UserAccess').objects.filter(Q(active=True) & Q(owner=user) & (Q(payed__isnull=True) | Q(payed__date__lt=today.date()))):
             get_payment_for_user.delay(access.pk)
 
 

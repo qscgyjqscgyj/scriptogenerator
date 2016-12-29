@@ -10,7 +10,7 @@ import UsersStore from '../mobx/usersStore';
 import PaymentStore from '../mobx/paymentStore';
 import TooltipStore from '../mobx/tooltipStore';
 
-import {NoMoney} from './noMoney';
+import {NoMoney, NoScriptOwnerMoney, NoAccess} from './noMoney';
 import {observer} from 'mobx-react';
 import {Scripts} from './scripts';
 import {Tables} from './tables';
@@ -46,31 +46,33 @@ export class App extends React.Component {
     render() {
         const {usersStore, tablesStore, scriptsStore} = this.props;
         const PAYMENT_REQUIRED_COMPONENTS = [Scripts, Tables, TableEdit, TableShare];
-        let script = this.props.params.script ? scriptsStore.script(this.props.params.script) : null;
-
+        const script = this.props.params.script ? scriptsStore.script(this.props.params.script) : null;
         let payment_required_children = this.props.children.filter(child => {
+            return PAYMENT_REQUIRED_COMPONENTS.includes(child.type)
+        });
+        let available_children = this.props.children.filter(child => {
             if(script && usersStore.session_user) {
                 switch (child.type) {
                     case Tables:
                         if(script.accesses.find(access => {return access.user.id === usersStore.session_user.id})) {
-                            return false;
+                            return true;
                         }
                         break;
                     case TableEdit:
                         if(script.accesses.find(access => {return (access.user.id === usersStore.session_user.id) && access.edit})) {
-                            return false;
+                            return true;
                         }
                         break;
                     case TableShare:
                         if(script.accesses.find(access => {return access.user.id === usersStore.session_user.id})) {
-                            return false;
+                            return true;
                         }
                         break;
                     default:
-                        return PAYMENT_REQUIRED_COMPONENTS.includes(child.type);
+                        return false;
                 }
             }
-            return PAYMENT_REQUIRED_COMPONENTS.includes(child.type)
+            return false;
         });
         if(usersStore.session_user) {
             return(
@@ -78,10 +80,10 @@ export class App extends React.Component {
                     <Nav location={this.props.location} params={this.props.params} usersStore={usersStore} tablesStore={tablesStore}/>
 
                     <div className="container-fluid" id="main_container">
-                        {usersStore.session_user.balance_total > 0 ?
-                            this.props.children
+                        {payment_required_children.length > 0 ?
+                            (available_children.length > 0 ? (script.owner.balance_total > 0 ? this.props.children : <NoScriptOwnerMoney/>) : <NoMoney/>)
                         :
-                            (payment_required_children.length > 0 ? <NoMoney/> : this.props.children)
+                            this.props.children
                         }
                     </div>
                 </div>

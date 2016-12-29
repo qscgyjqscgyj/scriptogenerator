@@ -215,7 +215,7 @@ export class Scripts extends React.Component {
                                                         {access.edit ? 'Редактирование' : 'Просмотр'}
                                                     </td>
                                                 :
-                                                    <td>У создателя скрипта отрицательный баланс.</td>
+                                                    <td className="red_text">У создателя скрипта отрицательный баланс.</td>
                                                 )
                                             }
 

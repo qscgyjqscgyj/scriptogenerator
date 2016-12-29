@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {Link} from 'react-router';
 import {observer} from 'mobx-react';
 
+const STATIC_URL = document.body.getAttribute('data-static-url');
 
 @observer
 export class Nav extends React.Component {
@@ -14,6 +15,10 @@ export class Nav extends React.Component {
         return(
             <nav className={"navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '')}>
                 <div className="container-fluid">
+                    <a className="navbar-brand" href="/">
+                        <img alt="Scriptogenerator" src={STATIC_URL + 'img/logo.png'}/>
+                    </a>
+
                     <ul className="nav navbar-nav">
                         <li><Link to='/scripts/user/'>Мои скрипты</Link></li>
                         <li><Link to='/scripts/available/'>Доступные скрипты</Link></li>

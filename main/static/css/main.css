@@ -20,6 +20,11 @@
 .navbar.unmargin{
     margin-bottom: 0px !important;
 }
+.navbar-brand {
+    padding: 5px 0 0 15px !important;
+    margin-right: 10px;
+
+}
 .nav_balance_block .negative_balance {
     color: #e95e42 !important;
 }

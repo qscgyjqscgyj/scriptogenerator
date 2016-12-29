@@ -50967,7 +50967,7 @@
 	                            onChange: this.onChange,
 	                            onTab: this.onTab,
 	                            onBlur: function onBlur() {_this5.props.onBlur(JSON.stringify((0, _draftJs.convertToRaw)(editorState.getCurrentContent())));},
-	                            placeholder: 'Tell a story...',
+	                            placeholder: '\u041D\u0430\u043F\u0438\u0448\u0438\u0442\u0435 \u0441\u044E\u0434\u0430 \u0442\u0435\u043A\u0441\u0442 \u043C\u0435\u043D\u0435\u0434\u0436\u0435\u0440\u0430 \u0438 \u0441\u043E\u0437\u0434\u0430\u0439\u0442\u0435 \u0441\u0441\u044B\u043B\u043A\u0438 \u043D\u0430 \u043D\u0430\u0438\u0431\u043E\u043B\u0435\u0435 \u0432\u0435\u0440\u043E\u044F\u0442\u043D\u044B\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u044B \u043E\u0442\u0432\u0435\u0442\u043E\u0432...',
 	                            ref: 'editor',
 	                            spellCheck: true }))));
 	
@@ -77619,7 +77619,11 @@
 	
 	                        React.createElement('div', { className: 'container-fluid', id: 'main_container' },
 	                            payment_required_children.length > 0 ?
-	                            available_children.length > 0 ? script.owner.balance_total > 0 ? this.props.children : React.createElement(_noMoney.NoScriptOwnerMoney, null) : React.createElement(_noMoney.NoMoney, null) :
+	                            available_children.length > 0 ?
+	                            script.owner.balance_total > 0 ? this.props.children : React.createElement(_noMoney.NoScriptOwnerMoney, null) :
+	
+	                            usersStore.session_user.balance_total > 0 ? this.props.children : React.createElement(_noMoney.NoMoney, null) :
+	
 	
 	                            this.props.children)));
 	
@@ -77674,8 +77678,9 @@
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Nav = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(1);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(32);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _reactRouter = __webpack_require__(178);
-	var _mobxReact = __webpack_require__(264);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _mobxReact = __webpack_require__(264);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
 	
+	var STATIC_URL = document.body.getAttribute('data-static-url');var
 	
 	
 	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);function Nav() {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));}_createClass(Nav, [{ key: 'render', value: function render()
@@ -77687,6 +77692,10 @@
 	            return (
 	                React.createElement('nav', { className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
 	                    React.createElement('div', { className: 'container-fluid' },
+	                        React.createElement('a', { className: 'navbar-brand', href: '/' },
+	                            React.createElement('img', { alt: 'Scriptogenerator', src: STATIC_URL + 'img/logo.png' })),
+	
+	
 	                        React.createElement('ul', { className: 'nav navbar-nav' },
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/user/' }, '\u041C\u043E\u0438 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/available/' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),

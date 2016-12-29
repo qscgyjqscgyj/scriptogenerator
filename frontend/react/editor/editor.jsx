@@ -276,7 +276,7 @@ export class CustomEditor extends React.Component {
                         onChange={this.onChange}
                         onTab={this.onTab}
                         onBlur={() => {this.props.onBlur(JSON.stringify(convertToRaw(editorState.getCurrentContent())))}}
-                        placeholder="Tell a story..."
+                        placeholder="Напишите сюда текст менеджера и создайте ссылки на наиболее вероятные варианты ответов..."
                         ref="editor"
                         spellCheck={true}/>
                 </div>

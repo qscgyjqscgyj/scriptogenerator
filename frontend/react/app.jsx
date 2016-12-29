@@ -81,7 +81,11 @@ export class App extends React.Component {
 
                     <div className="container-fluid" id="main_container">
                         {payment_required_children.length > 0 ?
-                            (available_children.length > 0 ? (script.owner.balance_total > 0 ? this.props.children : <NoScriptOwnerMoney/>) : <NoMoney/>)
+                            (available_children.length > 0 ?
+                                (script.owner.balance_total > 0 ? this.props.children : <NoScriptOwnerMoney/>)
+                            :
+                                (usersStore.session_user.balance_total > 0 ? this.props.children : <NoMoney/>)
+                            )
                         :
                             this.props.children
                         }

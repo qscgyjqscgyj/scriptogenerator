@@ -16,7 +16,7 @@ def get_payment_for_users():
         for access in get_model('users', 'UserAccess').objects.filter(
                 Q(active=True) &
                 Q(owner=user) &
-                (Q(payed__isnull=True) | Q(payed__gte=today-timedelta(days=1)))):
+                (Q(payed__isnull=True) | Q(payed__lte=today-timedelta(days=1)))):
             get_payment_for_user.delay(access.pk)
 
 

@@ -18,12 +18,13 @@ def get_payment_for_users():
                 Q(owner=user) &
                 (Q(payed__isnull=True) | Q(payed__lte=today-timedelta(days=1))))
 
-        local_payment = get_model('payment', 'LocalPayment')(
-            name=u'Списание абонентской оплаты за активных пользователей в команде.',
-            user=user,
-            sum=config.PAYMENT_PER_USER * len(user_accesses)
-        )
-        local_payment.save()
+        if user_accesses:
+            local_payment = get_model('payment', 'LocalPayment')(
+                name=u'Списание абонентской оплаты за активных пользователей в команде.',
+                user=user,
+                sum=config.PAYMENT_PER_USER * len(user_accesses)
+            )
+            local_payment.save()
 
         for access in user_accesses:
             get_payment_for_user.delay(access.pk, False)

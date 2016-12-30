@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+import requests
+from django.contrib.sites.models import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, View
+from registration.models import RegistrationProfile
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 import json
@@ -324,3 +328,29 @@ class InitView(View):
             'shopId': YANDEX_SHOPID,
             'scid': YANDEX_SCID,
         }, status=201)
+
+
+class ExternalRegisterView(View):
+    def get(self, request, *args, **kwargs):
+        email = request.GET.get('email')
+        if email:
+            user = CustomUser.objects.create(
+                username=email,
+                email=email,
+                first_name=request.GET.get('first_name'),
+            )
+            user.set_password(CustomUser.objects.make_random_password(length=10))
+            user.save()
+
+            new_user = RegistrationProfile.objects.create_inactive_user(
+                new_user=user,
+                site=get_current_site(request),
+                request=request,
+                send_email=False
+            )
+            new_user.is_active = True
+            new_user.save()
+        return JsonResponse({'success': 200})
+
+    def post(self, request, *args, **kwargs):
+        return JsonResponse({'error': 'Method doesn\'t supports.'})

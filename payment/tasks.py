@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from datetime import datetime, timedelta
 from celery.schedules import crontab
 from celery.task import periodic_task
 from django.db.models.loading import get_model
@@ -11,9 +11,12 @@ from django.db.models import Q
 
 @periodic_task(run_every=(crontab(minute=0, hour=0)))
 def get_payment_for_users():
-    today = datetime.datetime.today()
+    today = datetime.today()
     for user in get_model('users', 'CustomUser').objects.all():
-        for access in get_model('users', 'UserAccess').objects.filter(Q(active=True) & Q(owner=user) & (Q(payed__isnull=True) | Q(payed__date__lt=today.date()))):
+        for access in get_model('users', 'UserAccess').objects.filter(
+                Q(active=True) &
+                Q(owner=user) &
+                (Q(payed__isnull=True) | Q(payed__gte=today-timedelta(days=1)))):
             get_payment_for_user.delay(access.pk)
 
 

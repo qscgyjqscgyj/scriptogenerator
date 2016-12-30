@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.contrib.sites.models import get_current_site
-from django.core.mail import EmailMultiAlternatives
-from django.template import Context
-from django.template.loader import get_template
 from registration.models import RegistrationProfile
 
 from main.tasks import send_new_user_data_email
@@ -10,12 +7,14 @@ from users.models import CustomUser
 from django.db import IntegrityError
 
 
-def create_active_user(request, email, first_name='', phone=''):
+def create_active_user(request, email, last_name='', first_name='', middle_name='', phone=''):
     try:
         user = CustomUser.objects.create(
             username=email,
             email=email,
+            last_name=last_name,
             first_name=first_name,
+            middle_name=middle_name,
             phone=phone
         )
         password = CustomUser.objects.make_random_password(length=10)

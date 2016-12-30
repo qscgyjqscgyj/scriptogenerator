@@ -102,6 +102,12 @@ export class Payment extends React.Component {
                         </div>
                     </div>
                 </div>
+                <div className="col-md-4">
+                    <div className="jumbotron col-md-11">
+                        <h3>История платежей.</h3>
+                        <p></p>
+                    </div>
+                </div>
 
                 <div className="col-md-6"></div>
                 {paymentStore.payment && usersStore.session_user ?

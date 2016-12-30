@@ -25,7 +25,9 @@ export class Team extends React.Component {
             url: document.body.getAttribute('data-team-url'),
             data: JSON.stringify({
                 email: usersStore.creating_teammate_email,
+                last_name: usersStore.creating_teammate_last_name,
                 first_name: usersStore.creating_teammate_first_name,
+                middle_name: usersStore.creating_teammate_middle_name,
                 phone: usersStore.creating_teammate_phone
             }),
             success: (res) => {
@@ -95,6 +97,9 @@ export class Team extends React.Component {
                                 <thead>
                                     <tr>
                                         <td>Email</td>
+                                        <td>Фамилия</td>
+                                        <td>Имя</td>
+                                        <td>Отчество</td>
                                         <td>Телефон</td>
                                         <td>Активен</td>
                                         <td/>
@@ -106,6 +111,9 @@ export class Team extends React.Component {
                                             return (
                                                 <tr key={key}>
                                                     <td>{access.user.email}</td>
+                                                    <td>{access.user.last_name}</td>
+                                                    <td>{access.user.first_name}</td>
+                                                    <td>{access.user.middle_name}</td>
                                                     <td>{access.user.phone}</td>
                                                     <td>
                                                         <input type="checkbox" defaultChecked={access.active} onChange={() => {access.active = !access.active; this.updateTeammate(access)}}/>
@@ -155,9 +163,21 @@ class CreatingTeammate extends React.Component {
                         </div>
                         <div className="form-group">
                             <input className="form-control"
+                                   onChange={(e) => usersStore.creating_teammate_last_name = e.target.value}
+                                   value={usersStore.creating_teammate_last_name}
+                                   type="text" name="last_name" placeholder="Фамилия"/>
+                        </div>
+                        <div className="form-group">
+                            <input className="form-control"
                                    onChange={(e) => usersStore.creating_teammate_first_name = e.target.value}
                                    value={usersStore.creating_teammate_first_name}
                                    type="text" name="first_name" placeholder="Имя"/>
+                        </div>
+                        <div className="form-group">
+                            <input className="form-control"
+                                   onChange={(e) => usersStore.creating_teammate_middle_name = e.target.value}
+                                   value={usersStore.creating_teammate_middle_name}
+                                   type="text" name="middle_name" placeholder="Отчество"/>
                         </div>
                         <div className="form-group">
                             <MaskedInput className="form-control" mask="+7 111 111 1111" size="20"

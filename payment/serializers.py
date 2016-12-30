@@ -1,8 +1,7 @@
 from rest_framework import serializers
 
-from payment.models import UserPayment
+from payment.models import UserPayment, LocalPayment
 from users.models import CustomUser
-from users.serializers import UserSerializer
 
 
 class UserPaymentSerializer(serializers.ModelSerializer):
@@ -16,3 +15,9 @@ class UserPaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPayment
         fields = ('id', 'user', 'sum', 'date_created', 'payed', 'total_sum')
+
+
+class LocalPaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LocalPayment
+        fields = ('id', 'name', 'user', 'sum', 'date')

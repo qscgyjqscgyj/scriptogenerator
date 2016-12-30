@@ -49545,6 +49545,12 @@
 	
 	
 	
+	                    React.createElement('div', { className: 'col-md-4' },
+	                        React.createElement('div', { className: 'jumbotron col-md-11' },
+	                            React.createElement('h3', null, '\u0418\u0441\u0442\u043E\u0440\u0438\u044F \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439.'),
+	                            React.createElement('p', null))),
+	
+	
 	
 	                    React.createElement('div', { className: 'col-md-6' }),
 	                    paymentStore.payment && usersStore.session_user ?
@@ -49597,7 +49603,9 @@
 	                url: document.body.getAttribute('data-team-url'),
 	                data: JSON.stringify({
 	                    email: usersStore.creating_teammate_email,
+	                    last_name: usersStore.creating_teammate_last_name,
 	                    first_name: usersStore.creating_teammate_first_name,
+	                    middle_name: usersStore.creating_teammate_middle_name,
 	                    phone: usersStore.creating_teammate_phone }),
 	
 	                success: function success(res) {
@@ -49667,6 +49675,9 @@
 	                                    React.createElement('thead', null,
 	                                        React.createElement('tr', null,
 	                                            React.createElement('td', null, 'Email'),
+	                                            React.createElement('td', null, '\u0424\u0430\u043C\u0438\u043B\u0438\u044F'),
+	                                            React.createElement('td', null, '\u0418\u043C\u044F'),
+	                                            React.createElement('td', null, '\u041E\u0442\u0447\u0435\u0441\u0442\u0432\u043E'),
 	                                            React.createElement('td', null, '\u0422\u0435\u043B\u0435\u0444\u043E\u043D'),
 	                                            React.createElement('td', null, '\u0410\u043A\u0442\u0438\u0432\u0435\u043D'),
 	                                            React.createElement('td', null))),
@@ -49678,6 +49689,9 @@
 	                                            return (
 	                                                React.createElement('tr', { key: key },
 	                                                    React.createElement('td', null, access.user.email),
+	                                                    React.createElement('td', null, access.user.last_name),
+	                                                    React.createElement('td', null, access.user.first_name),
+	                                                    React.createElement('td', null, access.user.middle_name),
 	                                                    React.createElement('td', null, access.user.phone),
 	                                                    React.createElement('td', null,
 	                                                        React.createElement('input', { type: 'checkbox', defaultChecked: access.active, onChange: function onChange() {access.active = !access.active;_this2.updateTeammate(access);} })),
@@ -49727,9 +49741,21 @@
 	
 	                            React.createElement('div', { className: 'form-group' },
 	                                React.createElement('input', { className: 'form-control',
+	                                    onChange: function onChange(e) {return usersStore.creating_teammate_last_name = e.target.value;},
+	                                    value: usersStore.creating_teammate_last_name,
+	                                    type: 'text', name: 'last_name', placeholder: '\u0424\u0430\u043C\u0438\u043B\u0438\u044F' })),
+	
+	                            React.createElement('div', { className: 'form-group' },
+	                                React.createElement('input', { className: 'form-control',
 	                                    onChange: function onChange(e) {return usersStore.creating_teammate_first_name = e.target.value;},
 	                                    value: usersStore.creating_teammate_first_name,
 	                                    type: 'text', name: 'first_name', placeholder: '\u0418\u043C\u044F' })),
+	
+	                            React.createElement('div', { className: 'form-group' },
+	                                React.createElement('input', { className: 'form-control',
+	                                    onChange: function onChange(e) {return usersStore.creating_teammate_middle_name = e.target.value;},
+	                                    value: usersStore.creating_teammate_middle_name,
+	                                    type: 'text', name: 'middle_name', placeholder: '\u041E\u0442\u0447\u0435\u0441\u0442\u0432\u043E' })),
 	
 	                            React.createElement('div', { className: 'form-group' },
 	                                React.createElement(_reactMaskedinput2.default, { className: 'form-control', mask: '+7 111 111 1111', size: '20',
@@ -78491,10 +78517,13 @@
 /* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;var _mobx = __webpack_require__(265);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;var _mobx = __webpack_require__(265);
 	var _jquery = __webpack_require__(260);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
-	UsersStore = exports.UsersStore = (_class = function () {function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'team', _descriptor2, this);_initDefineProp(this, 'session_user', _descriptor3, this);_initDefineProp(this, 'creating_teammate_email', _descriptor4, this);_initDefineProp(this, 'creating_teammate_first_name', _descriptor5, this);_initDefineProp(this, 'creating_teammate_phone', _descriptor6, this);}_createClass(UsersStore, [{ key: 'getTeam', value: function getTeam()
+	UsersStore = exports.UsersStore = (_class = function () {function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'team', _descriptor2, this);_initDefineProp(this, 'local_payments', _descriptor3, this);_initDefineProp(this, 'session_user', _descriptor4, this);_initDefineProp(this, 'creating_teammate_email', _descriptor5, this);_initDefineProp(this, 'creating_teammate_first_name', _descriptor6, this);_initDefineProp(this, 'creating_teammate_last_name', _descriptor7, this);_initDefineProp(this, 'creating_teammate_middle_name', _descriptor8, this);_initDefineProp(this, 'creating_teammate_phone', _descriptor9, this);}_createClass(UsersStore, [{ key: 'getData', value: function getData()
+	
+	
+	
 	
 	
 	
@@ -78518,7 +78547,7 @@
 	
 	        {
 	            this.creating_teammate_email = '';
-	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_first_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_phone', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _applyDecoratedDescriptor(_class.prototype, 'getTeam', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getTeam'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
+	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'local_payments', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_first_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_last_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_middle_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_phone', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _applyDecoratedDescriptor(_class.prototype, 'getData', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getData'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
 	
 	
 	new UsersStore();

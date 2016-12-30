@@ -85,18 +85,24 @@ class TeamView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         email = data.get('email')
+        last_name = data.get('last_name')
         first_name = data.get('first_name')
+        middle_name = data.get('middle_name')
         phone = data.get('phone')
         del data['email']
+        del data['last_name']
         del data['first_name']
+        del data['middle_name']
         del data['phone']
         try:
             user = CustomUser.objects.get(username=email)
+            user.last_name = last_name if not user.last_name else ''
             user.first_name = first_name if not user.first_name else ''
+            user.middle_name = middle_name if not user.middle_name else ''
             user.phone = phone if not user.phone else ''
             user.save()
         except ObjectDoesNotExist:
-            user = create_active_user(request, email, first_name, phone)
+            user = create_active_user(request, email, last_name, first_name, middle_name, phone)
         data['user'] = user
         data['owner'] = request.user
         access = UserAccessSerializer(data=data)

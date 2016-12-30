@@ -1,18 +1,9 @@
 # -*- coding: utf-8 -*-
-import requests
-from django.contrib.sites.models import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
-from django.template import Context
-from django.template.loader import get_template
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, View
-from registration.models import RegistrationProfile
-from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 import json
 
@@ -21,11 +12,11 @@ from main.serializers.link import LinkCategorySerializer, LinkSerializer
 from main.serializers.project import ProjectSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
+from main.utils import create_active_user
 from scripts.settings import DEBUG, YANDEX_SHOPID, YANDEX_SCID
 from scripts.tasks import cloneTreeRelations, clone_save_links
 from users.models import CustomUser, UserAccess
 from users.serializers import UserSerializer, UserAccessSerializer
-from django.db import IntegrityError
 
 
 class MainView(TemplateView):
@@ -337,39 +328,10 @@ class ExternalRegisterView(View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         if email:
-            try:
-                user = CustomUser.objects.create(
-                    username=email,
-                    email=email,
-                    first_name=request.GET.get('first_name'),
-                )
-                password = CustomUser.objects.make_random_password(length=10)
-                user.set_password(password)
-                user.save()
-            except IntegrityError:
-                return JsonResponse({'error': 500, 'message': 'User already exist.'})
-
-            new_user = RegistrationProfile.objects.create_inactive_user(
-                new_user=user,
-                site=get_current_site(request),
-                request=request,
-                send_email=False
-            )
-            new_user.is_active = True
-            new_user.save()
-
-            subject, from_email = u'Вы зарегестрировались на сайте scriptogenerator.ru', 'info@scriptogenerator.ru'
-            text_content = u'''
-                Данные для входа в систему:\n
-                Логин: %(login)s\n
-                Пароль: %(password)s\n
-                Для входа пройдите по ссылке: https://scriptogenerator.ru/accounts/login/
-            ''' % dict(login=email, password=password)
-            html_template = get_template('ext_register_email.html')
-            msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
-            msg.attach_alternative(html_template.render(Context({'login': email, 'password': password})), "text/html")
-            msg.send()
-        return JsonResponse({'success': 200})
+            user = create_active_user(request, email, request.GET.get('first_name'), request.GET.get('phone'))
+            if user:
+                return JsonResponse({'success': 200}, status=200)
+            return JsonResponse({'error': 500, 'message': u'Такой пользователь уже существует.'}, status=500)
 
     def post(self, request, *args, **kwargs):
-        return JsonResponse({'error': 'Method doesn\'t supports.'})
+        return JsonResponse({'error': 'Method doesn\'t supports.'}, status=500)

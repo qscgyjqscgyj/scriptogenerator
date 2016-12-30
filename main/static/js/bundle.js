@@ -28813,7 +28813,7 @@
 	
 	                                                    !available ?
 	                                                    React.createElement('td', { className: 'text-right' },
-	                                                        React.createElement('button', { className: 'btn btn-danger', onClick: function onClick() {_this3.deleteScript(script);} }, '\u0423\u0434\u0430\u043B\u0438\u0442\u044C')) :
+	                                                        React.createElement('button', { className: 'btn btn-danger btn-xs', onClick: function onClick() {_this3.deleteScript(script);} }, '\u0423\u0434\u0430\u043B\u0438\u0442\u044C')) :
 	
 	                                                    null));
 	
@@ -49576,7 +49576,9 @@
 	var _reactAddonsUpdate = __webpack_require__(262);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	var _mobxReact = __webpack_require__(264);
 	var _confirm = __webpack_require__(300);var _confirm2 = _interopRequireDefault(_confirm);
-	var _modal = __webpack_require__(287);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _modal = __webpack_require__(287);
+	var _reactRouter = __webpack_require__(178);
+	var _reactMaskedinput = __webpack_require__(305);var _reactMaskedinput2 = _interopRequireDefault(_reactMaskedinput);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	Team = exports.Team = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Team, _React$Component);
@@ -49587,13 +49589,17 @@
 	            new_teammate: null };return _this;
 	
 	    }_createClass(Team, [{ key: 'createTeammate', value: function createTeammate(
-	        e) {var _props =
+	        e) {
+	            e.preventDefault();var _props =
 	            this.props,usersStore = _props.usersStore,modalStore = _props.modalStore;
-	            e.preventDefault();
 	            _jquery2.default.ajax({
 	                method: 'POST',
 	                url: document.body.getAttribute('data-team-url'),
-	                data: JSON.stringify({ email: usersStore.creating_teammate_email }),
+	                data: JSON.stringify({
+	                    email: usersStore.creating_teammate_email,
+	                    first_name: usersStore.creating_teammate_first_name,
+	                    phone: usersStore.creating_teammate_phone }),
+	
 	                success: function success(res) {
 	                    usersStore.team = res.team;
 	                    usersStore.session_user = res.session_user;
@@ -49654,30 +49660,48 @@
 	                                }, className: 'btn btn-success' }, '+ \u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0430')),
 	
 	
-	                    React.createElement('div', { className: 'col-md-12' },
-	                        React.createElement('div', { className: 'col-md-3' }, 'Email'),
-	                        React.createElement('div', { className: 'col-md-3' }, '\u0422\u0435\u043B\u0435\u0444\u043E\u043D'),
-	                        React.createElement('div', { className: 'col-md-3' }, '\u0410\u043A\u0442\u0438\u0432\u043D\u043E\u0441\u0442\u044C'),
-	                        React.createElement('div', { className: 'col-md-3' })),
-	
-	                    usersStore.team.length > 0 ?
-	                    usersStore.team.map(function (access, key) {
-	                        return (
-	                            React.createElement('div', { key: key, className: 'col-md-12' },
-	                                React.createElement('div', { className: 'col-md-3' }, access.user.email),
-	                                React.createElement('div', { className: 'col-md-3' }, access.user.phone),
-	                                React.createElement('div', { className: 'col-md-3' },
-	                                    React.createElement('input', { type: 'checkbox', defaultChecked: access.active, onChange: function onChange() {access.active = !access.active;_this2.updateTeammate(access);} })),
-	
-	                                React.createElement('div', { className: 'col-md-3' },
-	                                    React.createElement('button', { onClick: function onClick() {_this2.deleteTeammate(access);}, className: 'btn btn-danger' },
-	                                        React.createElement('i', { className: 'glyphicon glyphicon-remove' })))));
+	                    React.createElement('div', { className: 'row' },
+	                        React.createElement('div', { className: 'col-md-6' },
+	                            React.createElement('div', { className: 'col-md-12' },
+	                                React.createElement('table', { className: 'table table-striped' },
+	                                    React.createElement('thead', null,
+	                                        React.createElement('tr', null,
+	                                            React.createElement('td', null, 'Email'),
+	                                            React.createElement('td', null, '\u0422\u0435\u043B\u0435\u0444\u043E\u043D'),
+	                                            React.createElement('td', null, '\u0410\u043A\u0442\u0438\u0432\u0435\u043D'),
+	                                            React.createElement('td', null))),
 	
 	
+	                                    React.createElement('tbody', null,
+	                                        usersStore.team.length > 0 ?
+	                                        usersStore.team.map(function (access, key) {
+	                                            return (
+	                                                React.createElement('tr', { key: key },
+	                                                    React.createElement('td', null, access.user.email),
+	                                                    React.createElement('td', null, access.user.phone),
+	                                                    React.createElement('td', null,
+	                                                        React.createElement('input', { type: 'checkbox', defaultChecked: access.active, onChange: function onChange() {access.active = !access.active;_this2.updateTeammate(access);} })),
+	
+	                                                    React.createElement('td', null,
+	                                                        React.createElement('button', { onClick: function onClick() {_this2.deleteTeammate(access);}, className: 'btn btn-danger btn-xs' },
+	                                                            React.createElement('i', { className: 'glyphicon glyphicon-remove' })))));
 	
 	
-	                    }) :
-	                    null,
+	
+	
+	                                        }) :
+	                                        null)))),
+	
+	
+	
+	
+	                        React.createElement('div', { className: 'col-md-6' },
+	                            React.createElement('div', { className: 'jumbotron col-md-11' },
+	                                React.createElement('h3', null, '\u0410\u0431\u043E\u043D\u0435\u043D\u0442\u0441\u043A\u0430\u044F \u043F\u043B\u0430\u0442\u0430.'),
+	                                React.createElement('p', null, '\u0410\u0431\u043E\u043D\u0435\u043D\u0442\u0441\u043A\u0430\u044F \u043F\u043B\u0430\u0442\u0430 \u0441\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u0435\u0442 15 \u0440\u0443\u0431\u043B\u0435\u0439 \u0437\u0430 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F \u0432 \u0434\u0435\u043D\u044C. \u0414\u0435\u043D\u044C\u0433\u0438 \u0441\u043F\u0438\u0441\u044B\u0432\u0430\u044E\u0442\u0441\u044F \u0442\u043E\u043B\u044C\u043A\u043E \u0437\u0430 \u0430\u043A\u0442\u0438\u0432\u043D\u044B\u0445 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0435\u0439 (\u0432\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435/\u043E\u0442\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0435\u0439 \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u0441\u044F \u0432 \u0440\u0430\u0437\u0434\u0435\u043B\u0435 ', React.createElement(_reactRouter.Link, { to: '/profile/team/' }, '"\u041A\u043E\u043C\u0430\u043D\u0434\u0430"'), ')')))),
+	
+	
+	
 	                    React.createElement(_modal.ModalWrapper, { stores: [usersStore], modalStore: modalStore })));
 	
 	
@@ -49690,12 +49714,28 @@
 	            usersStore = this.props.usersStore;
 	            return (
 	                React.createElement('div', { className: 'row' },
-	                    React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this4.props.createTeammate(e);} },
+	                    React.createElement('form', { action: '', onSubmit: function onSubmit(e) {
+	                                e.preventDefault();
+	                                _this4.props.createTeammate(e);
+	                            } },
 	                        React.createElement('div', { className: 'col-md-12' },
 	                            React.createElement('div', { className: 'form-group' },
-	                                React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return usersStore.creating_teammate_email = e.target.value;}, value: usersStore.creating_teammate_email, type: 'text', name: 'name', placeholder: 'Email' }))),
+	                                React.createElement('input', { className: 'form-control',
+	                                    onChange: function onChange(e) {return usersStore.creating_teammate_email = e.target.value;},
+	                                    value: usersStore.creating_teammate_email,
+	                                    type: 'text', name: 'name', placeholder: 'Email' })),
 	
+	                            React.createElement('div', { className: 'form-group' },
+	                                React.createElement('input', { className: 'form-control',
+	                                    onChange: function onChange(e) {return usersStore.creating_teammate_first_name = e.target.value;},
+	                                    value: usersStore.creating_teammate_first_name,
+	                                    type: 'text', name: 'first_name', placeholder: '\u0418\u043C\u044F' })),
 	
+	                            React.createElement('div', { className: 'form-group' },
+	                                React.createElement(_reactMaskedinput2.default, { className: 'form-control', mask: '+7 111 111 1111', size: '20',
+	                                    onChange: function onChange(e) {return usersStore.creating_teammate_phone = e.target.value;},
+	                                    value: usersStore.creating_teammate_phone,
+	                                    placeholder: '\u0422\u0435\u043B\u0435\u0444\u043E\u043D', name: 'phone' }))),
 	
 	
 	                        React.createElement('div', { className: 'col-md-12' },
@@ -49838,7 +49878,7 @@
 	
 	                                                            React.createElement('td', { className: 'text-right' },
 	                                                                access.edit ?
-	                                                                React.createElement('button', { className: 'btn btn-danger', onClick: function onClick() {_this2.deleteTable(table);} }, '\u0423\u0434\u0430\u043B\u0438\u0442\u044C') :
+	                                                                React.createElement('button', { className: 'btn btn-danger btn-xs', onClick: function onClick() {_this2.deleteTable(table);} }, '\u0423\u0434\u0430\u043B\u0438\u0442\u044C') :
 	                                                                null)));
 	
 	
@@ -50891,7 +50931,7 @@
 	                                                                                                    id: 'delete_link' + link.id,
 	                                                                                                    style: { color: '#fff' },
 	                                                                                                    onClick: function onClick() {_this5.deleteLink(link);},
-	                                                                                                    className: 'btn btn-danger' },
+	                                                                                                    className: 'btn btn-danger btn-xs' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
 	
 	
@@ -78451,10 +78491,12 @@
 /* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;var _mobx = __webpack_require__(265);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;var _mobx = __webpack_require__(265);
 	var _jquery = __webpack_require__(260);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
-	UsersStore = exports.UsersStore = (_class = function () {function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'team', _descriptor2, this);_initDefineProp(this, 'session_user', _descriptor3, this);_initDefineProp(this, 'creating_teammate_email', _descriptor4, this);}_createClass(UsersStore, [{ key: 'getTeam', value: function getTeam()
+	UsersStore = exports.UsersStore = (_class = function () {function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'team', _descriptor2, this);_initDefineProp(this, 'session_user', _descriptor3, this);_initDefineProp(this, 'creating_teammate_email', _descriptor4, this);_initDefineProp(this, 'creating_teammate_first_name', _descriptor5, this);_initDefineProp(this, 'creating_teammate_phone', _descriptor6, this);}_createClass(UsersStore, [{ key: 'getTeam', value: function getTeam()
+	
+	
 	
 	
 	
@@ -78476,7 +78518,7 @@
 	
 	        {
 	            this.creating_teammate_email = '';
-	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _applyDecoratedDescriptor(_class.prototype, 'getTeam', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getTeam'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
+	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_first_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_phone', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _applyDecoratedDescriptor(_class.prototype, 'getTeam', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getTeam'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
 	
 	
 	new UsersStore();

@@ -11,6 +11,7 @@ from registration.backends.default.views import RegistrationView
 from registration.models import RegistrationProfile
 from registration.users import UserModel
 
+from main.utils import create_active_user
 from main.views import JSONResponse
 from scripts.settings import DEBUG
 from users.forms import UserProfileForm
@@ -83,20 +84,30 @@ class TeamView(View):
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
+        email = data.get('email')
+        first_name = data.get('first_name')
+        phone = data.get('phone')
+        del data['email']
+        del data['first_name']
+        del data['phone']
         try:
-            user = CustomUser.objects.get(username=data['email'])
-            del data['email']
-            data['user'] = user
-            data['owner'] = request.user
-            access = UserAccessSerializer(data=data)
-            if access.is_valid():
-                access.create(data)
-                return JSONResponse({
-                    'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data
-                })
-            return JSONResponse(access.errors, status=400)
+            user = CustomUser.objects.get(username=email)
+            user.first_name = first_name if not user.first_name else ''
+            user.phone = phone if not user.phone else ''
+            user.save()
         except ObjectDoesNotExist:
-            return JSONResponse({'error': 'User does not exist'}, status=400)
+            user = create_active_user(request, email, first_name, phone)
+        data['user'] = user
+        data['owner'] = request.user
+        access = UserAccessSerializer(data=data)
+        if access.is_valid():
+            if not UserAccess.objects.filter(owner=request.user, user__email=email):
+                access.create(data)
+            return JSONResponse({
+                'session_user': UserSerializer(request.user).data,
+                'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data
+            })
+        return JSONResponse(access.errors, status=400)
 
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
@@ -115,6 +126,7 @@ class TeamView(View):
             access = UserAccess.objects.get(pk=int(data['id']))
             access.delete()
             return JSONResponse({
+                'session_user': UserSerializer(request.user).data,
                 'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data
             })
         except ObjectDoesNotExist:

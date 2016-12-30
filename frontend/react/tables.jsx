@@ -124,7 +124,7 @@ export class Tables extends AccessableComponent {
                                                     </td>
                                                     <td className="text-right">
                                                         {access.edit ?
-                                                            <button className="btn btn-danger" onClick={()=>{this.deleteTable(table)}}>Удалить</button>
+                                                            <button className="btn btn-danger btn-xs" onClick={()=>{this.deleteTable(table)}}>Удалить</button>
                                                         : null}
                                                     </td>
                                                 </tr>

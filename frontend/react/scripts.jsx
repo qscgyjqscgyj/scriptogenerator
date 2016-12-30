@@ -237,7 +237,7 @@ export class Scripts extends React.Component {
                                             </td>
                                             {!available ?
                                                 <td className="text-right">
-                                                    <button className="btn btn-danger" onClick={()=>{this.deleteScript(script)}}>Удалить</button>
+                                                    <button className="btn btn-danger btn-xs" onClick={()=>{this.deleteScript(script)}}>Удалить</button>
                                                 </td>
                                             : null}
                                         </tr>

@@ -544,7 +544,7 @@ export class TableEdit extends Table {
                                                                                                 id={'delete_link' + link.id}
                                                                                                 style={{color: '#fff'}}
                                                                                                 onClick={()=>{this.deleteLink(link)}}
-                                                                                                className="btn btn-danger">
+                                                                                                className="btn btn-danger btn-xs">
                                                                                                 <i className="glyphicon glyphicon-remove"/>
                                                                                             </button>
                                                                                         </div>

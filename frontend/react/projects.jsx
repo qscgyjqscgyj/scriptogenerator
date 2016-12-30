@@ -113,7 +113,7 @@ export class Projects extends React.Component {
                                                 }}>Ред.</button>
                                             </td>
                                             <td className="text-right">
-                                                <button className="btn btn-danger" onClick={()=>{this.deleteProject(project)}}>Удалить</button>
+                                                <button className="btn btn-danger btn-xs" onClick={()=>{this.deleteProject(project)}}>Удалить</button>
                                             </td>
                                         </tr>
                                     )

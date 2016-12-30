@@ -7,6 +7,8 @@ export class UsersStore {
     @observable session_user = null;
 
     @observable creating_teammate_email = '';
+    @observable creating_teammate_first_name = '';
+    @observable creating_teammate_phone = '';
 
     @action getTeam() {
         $.ajax({

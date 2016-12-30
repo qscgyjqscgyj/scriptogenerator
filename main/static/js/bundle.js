@@ -49448,7 +49448,11 @@
 	var _mobxReact = __webpack_require__(264);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
-	Payment = exports.Payment = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Payment, _React$Component);function Payment() {_classCallCheck(this, Payment);return _possibleConstructorReturn(this, (Payment.__proto__ || Object.getPrototypeOf(Payment)).apply(this, arguments));}_createClass(Payment, [{ key: 'onSubmit', value: function onSubmit()
+	Payment = exports.Payment = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Payment, _React$Component);function Payment() {_classCallCheck(this, Payment);return _possibleConstructorReturn(this, (Payment.__proto__ || Object.getPrototypeOf(Payment)).apply(this, arguments));}_createClass(Payment, [{ key: 'componentWillMount', value: function componentWillMount()
+	        {var
+	            usersStore = this.props.usersStore;
+	            usersStore.getData();
+	        } }, { key: 'onSubmit', value: function onSubmit()
 	        {var _props =
 	            this.props,usersStore = _props.usersStore,paymentStore = _props.paymentStore;
 	            _jquery2.default.ajax({
@@ -49548,7 +49552,26 @@
 	                    React.createElement('div', { className: 'col-md-4' },
 	                        React.createElement('div', { className: 'jumbotron col-md-11' },
 	                            React.createElement('h3', null, '\u0418\u0441\u0442\u043E\u0440\u0438\u044F \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439.'),
-	                            React.createElement('p', null))),
+	                            React.createElement('table', { className: 'table' },
+	                                React.createElement('thead', null,
+	                                    React.createElement('tr', null,
+	                                        React.createElement('td', null, '\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435'),
+	                                        React.createElement('td', null, '\u0421\u0443\u043C\u043C\u0430'),
+	                                        React.createElement('td', null, '\u0414\u0430\u0442\u0430'))),
+	
+	
+	                                React.createElement('tbody', null,
+	                                    usersStore.local_payments.map(function (payment, key) {
+	                                        return (
+	                                            React.createElement('tr', { key: key },
+	                                                React.createElement('td', null, payment.name),
+	                                                React.createElement('td', null, payment.sum, ' \u0440.'),
+	                                                React.createElement('td', null, payment.date)));
+	
+	
+	                                    }))))),
+	
+	
 	
 	
 	
@@ -49669,7 +49692,7 @@
 	
 	
 	                    React.createElement('div', { className: 'row' },
-	                        React.createElement('div', { className: 'col-md-6' },
+	                        React.createElement('div', { className: 'col-md-8' },
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('table', { className: 'table table-striped' },
 	                                    React.createElement('thead', null,
@@ -49709,7 +49732,7 @@
 	
 	
 	
-	                        React.createElement('div', { className: 'col-md-6' },
+	                        React.createElement('div', { className: 'col-md-4' },
 	                            React.createElement('div', { className: 'jumbotron col-md-11' },
 	                                React.createElement('h3', null, '\u0410\u0431\u043E\u043D\u0435\u043D\u0442\u0441\u043A\u0430\u044F \u043F\u043B\u0430\u0442\u0430.'),
 	                                React.createElement('p', null, '\u0410\u0431\u043E\u043D\u0435\u043D\u0442\u0441\u043A\u0430\u044F \u043F\u043B\u0430\u0442\u0430 \u0441\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u0435\u0442 15 \u0440\u0443\u0431\u043B\u0435\u0439 \u0437\u0430 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F \u0432 \u0434\u0435\u043D\u044C. \u0414\u0435\u043D\u044C\u0433\u0438 \u0441\u043F\u0438\u0441\u044B\u0432\u0430\u044E\u0442\u0441\u044F \u0442\u043E\u043B\u044C\u043A\u043E \u0437\u0430 \u0430\u043A\u0442\u0438\u0432\u043D\u044B\u0445 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0435\u0439 (\u0432\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435/\u043E\u0442\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0435\u0439 \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u0441\u044F \u0432 \u0440\u0430\u0437\u0434\u0435\u043B\u0435 ', React.createElement(_reactRouter.Link, { to: '/profile/team/' }, '"\u041A\u043E\u043C\u0430\u043D\u0434\u0430"'), ')')))),
@@ -78535,9 +78558,9 @@
 	        {var _this = this;
 	            _jquery2.default.ajax({
 	                method: 'GET',
-	                url: document.body.getAttribute('data-team-url'),
+	                url: document.body.getAttribute('data-profile-url'),
 	                success: function success(res) {
-	                    _this.team = res.team;
+	                    _this.local_payments = res.local_payments;
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -78547,6 +78570,10 @@
 	
 	        {
 	            this.creating_teammate_email = '';
+	            this.creating_teammate_last_name = '';
+	            this.creating_teammate_first_name = '';
+	            this.creating_teammate_middle_name = '';
+	            this.creating_teammate_phone = '';
 	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'local_payments', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_first_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_last_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_middle_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_phone', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _applyDecoratedDescriptor(_class.prototype, 'getData', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getData'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
 	
 	

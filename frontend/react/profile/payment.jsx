@@ -6,6 +6,10 @@ import {observer} from 'mobx-react';
 
 @observer
 export class Payment extends React.Component {
+    componentWillMount() {
+        const {usersStore} = this.props;
+        usersStore.getData();
+    }
     onSubmit() {
         const {usersStore, paymentStore} = this.props;
         $.ajax({
@@ -105,7 +109,26 @@ export class Payment extends React.Component {
                 <div className="col-md-4">
                     <div className="jumbotron col-md-11">
                         <h3>История платежей.</h3>
-                        <p></p>
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <td>Наименование</td>
+                                    <td>Сумма</td>
+                                    <td>Дата</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {usersStore.local_payments.map((payment, key) => {
+                                    return (
+                                        <tr key={key}>
+                                            <td>{payment.name}</td>
+                                            <td>{payment.sum} р.</td>
+                                            <td>{payment.date}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 

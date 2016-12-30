@@ -91,7 +91,7 @@ export class Team extends React.Component {
 
                 </div>
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-8">
                         <div className="col-md-12">
                             <table className="table table-striped">
                                 <thead>
@@ -131,7 +131,7 @@ export class Team extends React.Component {
                             </table>
                         </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                         <div className="jumbotron col-md-11">
                             <h3>Абонентская плата.</h3>
                             <p>Абонентская плата составляет 15 рублей за пользователя в день. Деньги списываются только за активных пользователей (включение/отключение пользователей находится в разделе <Link to="/profile/team/">"Команда"</Link>)</p>

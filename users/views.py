@@ -13,6 +13,8 @@ from registration.users import UserModel
 
 from main.utils import create_active_user
 from main.views import JSONResponse
+from payment.models import LocalPayment
+from payment.serializers import LocalPaymentSerializer
 from scripts.settings import DEBUG
 from users.forms import UserProfileForm
 from users.models import CustomUser, UserAccess
@@ -64,6 +66,11 @@ class CustomRegistrationView(RegistrationView):
 
 
 class ProfileView(View):
+    def get(self, request, *args, **kwargs):
+        return JSONResponse({
+            'local_payments': LocalPaymentSerializer(LocalPayment.objects.filter(user=request.user), many=True).data
+        })
+
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
         user = UserSerializer(data=data)

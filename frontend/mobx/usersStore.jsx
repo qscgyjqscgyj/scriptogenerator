@@ -16,9 +16,9 @@ export class UsersStore {
     @action getData() {
         $.ajax({
             method: 'GET',
-            url: document.body.getAttribute('data-team-url'),
+            url: document.body.getAttribute('data-profile-url'),
             success: (res) => {
-                this.team = res.team;
+                this.local_payments = res.local_payments;
             },
             error: (res) => {
                 console.log(res);
@@ -28,6 +28,10 @@ export class UsersStore {
 
     @action resetCreating() {
         this.creating_teammate_email = '';
+        this.creating_teammate_last_name = '';
+        this.creating_teammate_first_name = '';
+        this.creating_teammate_middle_name = '';
+        this.creating_teammate_phone = '';
     }
 }
 

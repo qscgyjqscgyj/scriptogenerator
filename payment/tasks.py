@@ -13,11 +13,20 @@ from django.db.models import Q
 def get_payment_for_users():
     today = datetime.today()
     for user in get_model('users', 'CustomUser').objects.all():
-        for access in get_model('users', 'UserAccess').objects.filter(
+        user_accesses = get_model('users', 'UserAccess').objects.filter(
                 Q(active=True) &
                 Q(owner=user) &
-                (Q(payed__isnull=True) | Q(payed__lte=today-timedelta(days=1)))):
-            get_payment_for_user.delay(access.pk)
+                (Q(payed__isnull=True) | Q(payed__lte=today-timedelta(days=1))))
+
+        local_payment = get_model('payment', 'LocalPayment')(
+            name=u'Списание абонентской оплаты за активных пользователей в команде.',
+            user=user,
+            sum=config.PAYMENT_PER_USER * len(user_accesses)
+        )
+        local_payment.save()
+
+        for access in user_accesses:
+            get_payment_for_user.delay(access.pk, False)
 
 
 @periodic_task(run_every=(crontab(minute=0, hour=1)))
@@ -27,14 +36,15 @@ def recount_balances():
 
 
 @app.task
-def get_payment_for_user(access_pk):
+def get_payment_for_user(access_pk, history=True):
     access = get_model('users', 'UserAccess').objects.get(pk=access_pk)
-    local_payment = get_model('payment', 'LocalPayment')(
-        name=u'Списание абонентской оплаты за доступ пользователю: %(email)s' % dict(email=access.user.email),
-        user=access.owner,
-        sum=config.PAYMENT_PER_USER
-    )
-    local_payment.save()
+    if history:
+        local_payment = get_model('payment', 'LocalPayment')(
+            name=u'Списание абонентской оплаты за доступ пользователю: %(email)s' % dict(email=access.user.email),
+            user=access.owner,
+            sum=config.PAYMENT_PER_USER
+        )
+        local_payment.save()
     return recount_balance(user_pk=access.owner.pk)
 
 

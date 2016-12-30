@@ -13,7 +13,7 @@ $(function() {
         var request = 'https://scriptogenerator.ru/api/ext.register/';
         request = request + '?first_name=' + data.firs_name + '&email=' + data.email + '&phone=' + data.phone;
         request = encodeURI(request);
-        alert(request);
+        console.log(request);
         // $('<img src="' + request + '"/>');
     });
 });

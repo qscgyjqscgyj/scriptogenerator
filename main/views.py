@@ -355,8 +355,8 @@ class ExternalRegisterView(View):
             new_user.is_active = True
             new_user.save()
 
-            subject, from_email = 'Вы зарегестрировались на сайте scriptogenerator.ru', 'info@scriptogenerator.ru'
-            text_content = '''
+            subject, from_email = u'Вы зарегестрировались на сайте scriptogenerator.ru', 'info@scriptogenerator.ru'
+            text_content = u'''
                 Данные для входа в систему:\n
                 Логин: %(login)s\n
                 Пароль: %(password)s\n

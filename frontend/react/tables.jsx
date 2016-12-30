@@ -105,6 +105,7 @@ export class Tables extends AccessableComponent {
                                                         <Link to={
                                                             '/tables/' + this.props.params.script +
                                                             '/table/' + table.id +
+                                                            (table.colls.length > 0 && table.colls[0].categories.length > 0 && table.colls[0].categories[0].links.length > 0 ? '/link/' + table.colls[0].categories[0].links[0].id : '') +
                                                             (access.edit ? '/edit/' : '/share/')
                                                         }>{table.name}</Link>
                                                     </td>

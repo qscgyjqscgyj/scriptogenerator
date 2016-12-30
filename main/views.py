@@ -25,7 +25,7 @@ from scripts.settings import DEBUG, YANDEX_SHOPID, YANDEX_SCID
 from scripts.tasks import cloneTreeRelations, clone_save_links
 from users.models import CustomUser, UserAccess
 from users.serializers import UserSerializer, UserAccessSerializer
-from celery.result import AsyncResult
+from django.db import IntegrityError
 
 
 class MainView(TemplateView):
@@ -337,14 +337,17 @@ class ExternalRegisterView(View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         if email:
-            user = CustomUser.objects.create(
-                username=email,
-                email=email,
-                first_name=request.GET.get('first_name'),
-            )
-            password = CustomUser.objects.make_random_password(length=10)
-            user.set_password(password)
-            user.save()
+            try:
+                user = CustomUser.objects.create(
+                    username=email,
+                    email=email,
+                    first_name=request.GET.get('first_name'),
+                )
+                password = CustomUser.objects.make_random_password(length=10)
+                user.set_password(password)
+                user.save()
+            except IntegrityError:
+                return JsonResponse({'error': 500, 'message': 'User already exist.'})
 
             new_user = RegistrationProfile.objects.create_inactive_user(
                 new_user=user,

@@ -2,9 +2,12 @@
 import requests
 from django.contrib.sites.models import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
+from django.template import Context
+from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, View
@@ -339,7 +342,8 @@ class ExternalRegisterView(View):
                 email=email,
                 first_name=request.GET.get('first_name'),
             )
-            user.set_password(CustomUser.objects.make_random_password(length=10))
+            password = CustomUser.objects.make_random_password(length=10)
+            user.set_password(password)
             user.save()
 
             new_user = RegistrationProfile.objects.create_inactive_user(
@@ -350,6 +354,18 @@ class ExternalRegisterView(View):
             )
             new_user.is_active = True
             new_user.save()
+
+            subject, from_email = 'Вы зарегестрировались на сайте scriptogenerator.ru', 'info@scriptogenerator.ru'
+            text_content = '''
+                Данные для входа в систему:\n
+                Логин: %(login)s\n
+                Пароль: %(password)s\n
+                Для входа пройдите по ссылке: https://scriptogenerator.ru/accounts/login/
+            ''' % dict(login=email, password=password)
+            html_template = get_template('ext_register_email.html')
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
+            msg.attach_alternative(html_template.render(Context({'login': email, 'password': password})), "text/html")
+            msg.send()
         return JsonResponse({'success': 200})
 
     def post(self, request, *args, **kwargs):

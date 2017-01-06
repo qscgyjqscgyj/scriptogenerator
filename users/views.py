@@ -61,6 +61,10 @@ class CustomRegistrationView(RegistrationView):
                                      user=new_user,
                                      request=self.request)
         new_user.is_active = True
+        new_user.utm = json.dumps({
+            'referer_utms': self.request.session.get('referer_utms'),
+            'get_params_utms': self.request.session.get('get_params_utms')
+        })
         new_user.save()
         return new_user
 

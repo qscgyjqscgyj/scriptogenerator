@@ -216,7 +216,9 @@
 .modal_block .modal_header {
     margin-bottom: 20px;
 }
-
+.ReactModal__Content {
+    overflow: visible !important;
+}
 /*TABLE*/
 .opened_toolbar {
     padding: 5px;

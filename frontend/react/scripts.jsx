@@ -103,6 +103,24 @@ export class Scripts extends React.Component {
             }
         });
     }
+    delegateScript(script, email) {
+        const {scriptsStore, modalStore} = this.props;
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-delegate-script-url'),
+            data: JSON.stringify({
+                script: script,
+                email: email
+            }),
+            success: (res) => {
+                scriptsStore.scripts = res.scripts;
+                modalStore.modal = false;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
     cloneScript(script) {
         const {scriptsStore} = this.props;
         this.setState(update(this.state, {cloning: {$set: script}}), () => {
@@ -205,7 +223,8 @@ export class Scripts extends React.Component {
                                                         modalStore.component = React.createElement(Accesses, {
                                                             script: script,
                                                             usersStore: usersStore,
-                                                            setAccesses: this.setAccesses.bind(this)
+                                                            setAccesses: this.setAccesses.bind(this),
+                                                            delegateScript: this.delegateScript.bind(this)
                                                         });
                                                     }} className="btn btn-default">Права</button>
                                                 </td>
@@ -419,11 +438,13 @@ class Accesses extends React.Component {
                     <h3>Делегирование</h3>
                     <div className="form-group">
                         <label>Email нового владельца</label>
-                        <input type="text" className="form-control" placeholder="Введите email нового владельца" onChange={(e) => {
+                        <input type="text" name="email" className="form-control" placeholder="Введите email нового владельца" onChange={(e) => {
                             this.setState(update(this.state, {delegate_email: {$set: e.target.value}}));
                         }}/>
                     </div>
-                    <button className={'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled')}>Делегировать</button>
+                    <button className={'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled')} onClick={(e) => {
+                        (validateEmail(delegate_email) ? this.props.delegateScript(this.props.script, delegate_email) : null);
+                    }}>Делегировать</button>
                 </div>
             </div>
         )

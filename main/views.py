@@ -79,6 +79,25 @@ class ScriptsView(View):
             return JSONResponse({'error': 'Object does not exist.'}, status=400)
 
 
+class DelegateScriptView(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        script = data['script']
+        new_owner_email = data['email']
+        try:
+            user = CustomUser.objects.get(username=new_owner_email)
+            script = Script.objects.get(pk=int(script['id']))
+            script.owner = user
+            script.save()
+            for access in script.accesses():
+                access.delete()
+            return JSONResponse({
+                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+            })
+        except ObjectDoesNotExist:
+            return JSONResponse({'message': 'User does not exist.'}, status=400)
+
+
 class ProjectsView(View):
     def get(self, request, *args, **kwargs):
         return JSONResponse({

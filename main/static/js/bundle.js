@@ -28684,6 +28684,24 @@
 	                    console.log(res);
 	                } });
 	
+	        } }, { key: 'delegateScript', value: function delegateScript(
+	        script, email) {var _props4 =
+	            this.props,scriptsStore = _props4.scriptsStore,modalStore = _props4.modalStore;
+	            _jquery2.default.ajax({
+	                method: 'POST',
+	                url: document.body.getAttribute('data-delegate-script-url'),
+	                data: JSON.stringify({
+	                    script: script,
+	                    email: email }),
+	
+	                success: function success(res) {
+	                    scriptsStore.scripts = res.scripts;
+	                    modalStore.modal = false;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
 	        } }, { key: 'cloneScript', value: function cloneScript(
 	        script) {var _this2 = this;var
 	            scriptsStore = this.props.scriptsStore;
@@ -28702,8 +28720,8 @@
 	
 	            });
 	        } }, { key: 'render', value: function render()
-	        {var _this3 = this;var _props4 =
-	            this.props,scriptsStore = _props4.scriptsStore,modalStore = _props4.modalStore,projectsStore = _props4.projectsStore,usersStore = _props4.usersStore,tablesStore = _props4.tablesStore,available = _props4.available;
+	        {var _this3 = this;var _props5 =
+	            this.props,scriptsStore = _props5.scriptsStore,modalStore = _props5.modalStore,projectsStore = _props5.projectsStore,usersStore = _props5.usersStore,tablesStore = _props5.tablesStore,available = _props5.available;
 	            if (usersStore.session_user) {
 	                return (
 	                    React.createElement('div', { className: 'col-md-12' },
@@ -28787,7 +28805,8 @@
 	                                                                    modalStore.component = React.createElement(Accesses, {
 	                                                                        script: script,
 	                                                                        usersStore: usersStore,
-	                                                                        setAccesses: _this3.setAccesses.bind(_this3) });
+	                                                                        setAccesses: _this3.setAccesses.bind(_this3),
+	                                                                        delegateScript: _this3.delegateScript.bind(_this3) });
 	
 	                                                                }, className: 'btn btn-default' }, '\u041F\u0440\u0430\u0432\u0430')) :
 	
@@ -28839,8 +28858,8 @@
 	
 	
 	CreatingScript = (0, _mobxReact.observer)(_class2 = function (_React$Component2) {_inherits(CreatingScript, _React$Component2);function CreatingScript() {_classCallCheck(this, CreatingScript);return _possibleConstructorReturn(this, (CreatingScript.__proto__ || Object.getPrototypeOf(CreatingScript)).apply(this, arguments));}_createClass(CreatingScript, [{ key: 'render', value: function render()
-	        {var _this5 = this;var _props5 =
-	            this.props,projectsStore = _props5.projectsStore,scriptsStore = _props5.scriptsStore;
+	        {var _this5 = this;var _props6 =
+	            this.props,projectsStore = _props6.projectsStore,scriptsStore = _props6.scriptsStore;
 	            return (
 	                React.createElement('div', { className: 'row' },
 	                    React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this5.props.createScript(e);} },
@@ -28893,8 +28912,8 @@
 	
 	
 	EditingScript = (0, _mobxReact.observer)(_class3 = function (_React$Component3) {_inherits(EditingScript, _React$Component3);function EditingScript() {_classCallCheck(this, EditingScript);return _possibleConstructorReturn(this, (EditingScript.__proto__ || Object.getPrototypeOf(EditingScript)).apply(this, arguments));}_createClass(EditingScript, [{ key: 'render', value: function render()
-	        {var _this7 = this;var _props6 =
-	            this.props,projectsStore = _props6.projectsStore,scriptsStore = _props6.scriptsStore,available = _props6.available;
+	        {var _this7 = this;var _props7 =
+	            this.props,projectsStore = _props7.projectsStore,scriptsStore = _props7.scriptsStore,available = _props7.available;
 	            if (scriptsStore.editing) {
 	                return (
 	                    React.createElement('div', { className: 'row' },
@@ -29001,11 +29020,13 @@
 	                        React.createElement('h3', null, '\u0414\u0435\u043B\u0435\u0433\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435'),
 	                        React.createElement('div', { className: 'form-group' },
 	                            React.createElement('label', null, 'Email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430'),
-	                            React.createElement('input', { type: 'text', className: 'form-control', placeholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430', onChange: function onChange(e) {
+	                            React.createElement('input', { type: 'text', name: 'email', className: 'form-control', placeholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430', onChange: function onChange(e) {
 	                                    _this10.setState((0, _reactAddonsUpdate2.default)(_this10.state, { delegate_email: { $set: e.target.value } }));
 	                                } })),
 	
-	                        React.createElement('button', { className: 'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled') }, '\u0414\u0435\u043B\u0435\u0433\u0438\u0440\u043E\u0432\u0430\u0442\u044C'))));
+	                        React.createElement('button', { className: 'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled'), onClick: function onClick(e) {
+	                                    validateEmail(delegate_email) ? _this10.props.delegateScript(_this10.props.script, delegate_email) : null;
+	                                } }, '\u0414\u0435\u043B\u0435\u0433\u0438\u0440\u043E\u0432\u0430\u0442\u044C'))));
 	
 	
 	

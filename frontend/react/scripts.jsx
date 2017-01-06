@@ -115,6 +115,7 @@ export class Scripts extends React.Component {
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;
+                alert('Скрипт "' + script.name + '" делегирован пользователю: ' + email);
             },
             error: (res) => {
                 console.log(res);

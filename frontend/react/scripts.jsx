@@ -335,13 +335,19 @@ class EditingScript extends React.Component {
     }
 }
 
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
 @observer
 class Accesses extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            accesses: this.formatAccesses(props.script.accesses)
+            accesses: this.formatAccesses(props.script.accesses),
+            delegate_email: null
         }
     }
     componentWillReceiveProps(props) {
@@ -388,23 +394,36 @@ class Accesses extends React.Component {
         return options;
     }
     render() {
+        const {delegate_email} = this.state;
         return(
-            <div className="col-md-12">
-                <div className="row">
-                    <div className="col-md-12">
-                        <p>Модераторы</p>
+            <div className="row">
+                <div className="col-md-12">
+                    <h3>Права и доступы</h3>
+                    <div className="form-group">
+                        <label>Модераторы</label>
                         <MultiSelectField
+                            className="form-control"
                             options={this.getOptions(true)}
                             onChange={(selects) => {this.onSelect(selects, true)}}/>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <p>Операторы</p>
+                    <div className="form-group">
+                        <label>Операторы</label>
                         <MultiSelectField
+                            className="form-control"
                             options={this.getOptions(false)}
                             onChange={(selects) => {this.onSelect(selects, false)}}/>
                     </div>
+                    <hr/>
+                </div>
+                <div className="col-md-12">
+                    <h3>Делегирование</h3>
+                    <div className="form-group">
+                        <label>Email нового владельца</label>
+                        <input type="text" className="form-control" placeholder="Введите email нового владельца" onChange={(e) => {
+                            this.setState(update(this.state, {delegate_email: {$set: e.target.value}}));
+                        }}/>
+                    </div>
+                    <button className={'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled')}>Делегировать</button>
                 </div>
             </div>
         )

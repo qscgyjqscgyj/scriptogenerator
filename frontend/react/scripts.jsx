@@ -413,6 +413,11 @@ class Accesses extends React.Component {
         });
         return options;
     }
+    delegateScript() {
+        const {delegate_email} = this.state;
+        this.props.delegateScript(this.props.script, delegate_email);
+        return this.setState(update(this.state, {delegate_email: {$set: null}}));
+    }
     render() {
         const {delegate_email} = this.state;
         return(
@@ -444,7 +449,7 @@ class Accesses extends React.Component {
                         }}/>
                     </div>
                     <button className={'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled')} onClick={(e) => {
-                        (validateEmail(delegate_email) ? this.props.delegateScript(this.props.script, delegate_email) : null);
+                        (validateEmail(delegate_email) ? this.delegateScript() : null);
                     }}>Делегировать</button>
                 </div>
             </div>

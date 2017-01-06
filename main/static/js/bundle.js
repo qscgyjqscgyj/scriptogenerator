@@ -28994,6 +28994,11 @@
 	                }
 	            });
 	            return options;
+	        } }, { key: 'delegateScript', value: function delegateScript()
+	        {var
+	            delegate_email = this.state.delegate_email;
+	            this.props.delegateScript(this.props.script, delegate_email);
+	            return this.setState((0, _reactAddonsUpdate2.default)(this.state, { delegate_email: { $set: null } }));
 	        } }, { key: 'render', value: function render()
 	        {var _this10 = this;var
 	            delegate_email = this.state.delegate_email;
@@ -29026,7 +29031,7 @@
 	                                } })),
 	
 	                        React.createElement('button', { className: 'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled'), onClick: function onClick(e) {
-	                                    validateEmail(delegate_email) ? _this10.props.delegateScript(_this10.props.script, delegate_email) : null;
+	                                    validateEmail(delegate_email) ? _this10.delegateScript() : null;
 	                                } }, '\u0414\u0435\u043B\u0435\u0433\u0438\u0440\u043E\u0432\u0430\u0442\u044C'))));
 	
 	

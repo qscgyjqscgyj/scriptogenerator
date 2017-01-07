@@ -182,8 +182,15 @@ class TablesView(View):
 class CollsView(View):
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        coll = TableLinksCollSerializer(data=data)
-        coll_object = TableLinksColl.objects.get(pk=int(data['id']))
+
+        if data['opened_category'] or data['opened_link']:
+            for category in data['coll']['categories']:
+                category['opened'] = not data['opened_category']['opened'] if data.get('opened_category') and data['opened_category']['id'] == category['id'] else False
+                for link in category['links']:
+                    link['opened'] = not data['opened_link']['opened'] if data.get('opened_link') and data['opened_link']['id'] == link['id'] else False
+
+        coll = TableLinksCollSerializer(data=data['coll'])
+        coll_object = TableLinksColl.objects.get(pk=int(data['coll']['id']))
         if coll.is_valid():
             coll.update(coll_object, data)
             return JSONResponse({

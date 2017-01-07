@@ -95,12 +95,16 @@ export class Table extends AccessableComponent {
         });
     }
 
-    updateTableLinksColl(coll) {
+    updateTableLinksColl(coll, opened_category, opened_link) {
         const {tablesStore} = this.props;
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-colls-url'),
-            data: JSON.stringify(coll),
+            data: JSON.stringify({
+                coll: coll,
+                opened_category: opened_category,
+                opened_link: opened_link
+            }),
             success: (res) => {
                 tablesStore.tables = res.tables;
             },
@@ -361,7 +365,7 @@ export class TableEdit extends Table {
                                                             <div className={"col-md-12 inline_elements edit_icon_handler hovered_list_item " + (category.opened ? 'opened' : null)}>
                                                                 <i className="glyphicon glyphicon-edit edit_icon inline_element"
                                                                    onClick={() => {
-                                                                       let category_is_open = category.opened;
+                                                                       this.updateTableLinksColl(coll, category, null);
                                                                        category.opened = !category.opened;
                                                                        coll.categories.map((cat) => {
                                                                            if(cat.id !== category.id) {
@@ -371,9 +375,6 @@ export class TableEdit extends Table {
                                                                                link.opened = false;
                                                                            });
                                                                        });
-                                                                       if(category_is_open !== category.open) {
-                                                                           this.updateTableLinksColl(coll);
-                                                                       }
                                                                    }}/>
                                                                 <span className="table_header_text inline_element">
                                                                     <EditableText
@@ -464,7 +465,7 @@ export class TableEdit extends Table {
                                                                     <div className="row">
                                                                         <div className={"col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null)}>
                                                                             <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {
-                                                                                let link_is_open = link.opened;
+                                                                                this.updateTableLinksColl(coll, null, link);
                                                                                 link.opened = !link.opened;
                                                                                 coll.categories.map((cat) => {
                                                                                     cat.opened = false;
@@ -474,9 +475,6 @@ export class TableEdit extends Table {
                                                                                         }
                                                                                     });
                                                                                 });
-                                                                                if(link_is_open !== link.opened) {
-                                                                                    this.updateTableLinksColl(coll);
-                                                                                }
                                                                             }}/>
                                                                             <span data-link={this.copyLink(link)}
                                                                                   className={"inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null)}>

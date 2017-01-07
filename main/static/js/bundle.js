@@ -50018,12 +50018,16 @@
 	            });
 	        } }, { key: 'updateTableLinksColl', value: function updateTableLinksColl(
 	
-	        coll) {var
+	        coll, opened_category, opened_link) {var
 	            tablesStore = this.props.tablesStore;
 	            _jquery2.default.ajax({
 	                method: 'PUT',
 	                url: document.body.getAttribute('data-colls-url'),
-	                data: JSON.stringify(coll),
+	                data: JSON.stringify({
+	                    coll: coll,
+	                    opened_category: opened_category,
+	                    opened_link: opened_link }),
+	
 	                success: function success(res) {
 	                    tablesStore.tables = res.tables;
 	                },
@@ -50284,7 +50288,7 @@
 	                                                                React.createElement('div', { className: "col-md-12 inline_elements edit_icon_handler hovered_list_item " + (category.opened ? 'opened' : null) },
 	                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
 	                                                                        onClick: function onClick() {
-	                                                                            var category_is_open = category.opened;
+	                                                                            _this5.updateTableLinksColl(coll, category, null);
 	                                                                            category.opened = !category.opened;
 	                                                                            coll.categories.map(function (cat) {
 	                                                                                if (cat.id !== category.id) {
@@ -50294,9 +50298,6 @@
 	                                                                                    link.opened = false;
 	                                                                                });
 	                                                                            });
-	                                                                            if (category_is_open !== category.open) {
-	                                                                                _this5.updateTableLinksColl(coll);
-	                                                                            }
 	                                                                        } }),
 	                                                                    React.createElement('span', { className: 'table_header_text inline_element' },
 	                                                                        React.createElement(EditableText, {
@@ -50387,7 +50388,7 @@
 	                                                                        React.createElement('div', { className: 'row' },
 	                                                                            React.createElement('div', { className: "col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null) },
 	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {
-	                                                                                        var link_is_open = link.opened;
+	                                                                                        _this5.updateTableLinksColl(coll, null, link);
 	                                                                                        link.opened = !link.opened;
 	                                                                                        coll.categories.map(function (cat) {
 	                                                                                            cat.opened = false;
@@ -50397,9 +50398,6 @@
 	                                                                                                }
 	                                                                                            });
 	                                                                                        });
-	                                                                                        if (link_is_open !== link.opened) {
-	                                                                                            _this5.updateTableLinksColl(coll);
-	                                                                                        }
 	                                                                                    } }),
 	                                                                                React.createElement('span', { 'data-link': _this5.copyLink(link),
 	                                                                                        className: "inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null) },

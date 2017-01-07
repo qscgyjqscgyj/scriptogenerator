@@ -50284,6 +50284,7 @@
 	                                                                React.createElement('div', { className: "col-md-12 inline_elements edit_icon_handler hovered_list_item " + (category.opened ? 'opened' : null) },
 	                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
 	                                                                        onClick: function onClick() {
+	                                                                            var category_is_open = category.opened;
 	                                                                            category.opened = !category.opened;
 	                                                                            coll.categories.map(function (cat) {
 	                                                                                if (cat.id !== category.id) {
@@ -50293,7 +50294,9 @@
 	                                                                                    link.opened = false;
 	                                                                                });
 	                                                                            });
-	                                                                            _this5.updateTableLinksColl(coll);
+	                                                                            if (category_is_open !== category.open) {
+	                                                                                _this5.updateTableLinksColl(coll);
+	                                                                            }
 	                                                                        } }),
 	                                                                    React.createElement('span', { className: 'table_header_text inline_element' },
 	                                                                        React.createElement(EditableText, {
@@ -50384,6 +50387,7 @@
 	                                                                        React.createElement('div', { className: 'row' },
 	                                                                            React.createElement('div', { className: "col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null) },
 	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {
+	                                                                                        var link_is_open = link.opened;
 	                                                                                        link.opened = !link.opened;
 	                                                                                        coll.categories.map(function (cat) {
 	                                                                                            cat.opened = false;
@@ -50393,7 +50397,9 @@
 	                                                                                                }
 	                                                                                            });
 	                                                                                        });
-	                                                                                        _this5.updateTableLinksColl(coll);
+	                                                                                        if (link_is_open !== link.opened) {
+	                                                                                            _this5.updateTableLinksColl(coll);
+	                                                                                        }
 	                                                                                    } }),
 	                                                                                React.createElement('span', { 'data-link': _this5.copyLink(link),
 	                                                                                        className: "inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null) },

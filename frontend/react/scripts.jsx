@@ -178,7 +178,6 @@ export class Scripts extends React.Component {
                                                 {(available && script.available ? access.edit : true) ?
                                                     <i className="glyphicon glyphicon-edit edit_icon inline_element"
                                                         data-tip="Редактировать скрипт"
-                                                        id={'edit_script_' + script.id}
                                                         onClick={() => {
                                                             scriptsStore.editing = script;
                                                             modalStore.modal = true;
@@ -208,14 +207,12 @@ export class Scripts extends React.Component {
                                         <div className="btn-group pull-right">
                                             <button className={'btn btn-default btn-xs ' + (this.state.cloning || !script.active ? 'disabled' : null)}
                                                     data-tip="Копировать скрипт"
-                                                    id={'copy_script_' + script.id}
                                                     onClick={() => {this.cloneScript(script)}}>
                                                 <i className="glyphicon glyphicon-copy"/>
                                             </button>
                                             {!available ?
                                                 <button className="btn btn-default btn-xs"
                                                         data-tip="Права доступа к скрипту"
-                                                        id={'access_to_script_' + script.id}
                                                         onClick={() => {
                                                             modalStore.modal = true;
                                                             modalStore.component = React.createElement(Accesses, {
@@ -231,14 +228,12 @@ export class Scripts extends React.Component {
                                             {(available && script.available ? access.edit : true) ?
                                                 <button className="btn btn-default btn-xs"
                                                         data-tip="Редактировать структуру скрипта"
-                                                        id={'editing_data_of_script_' + script.id}
                                                         onClick={()=>{this.props.router.push('/tables/' + script.id + '/')}}>
                                                     <i className="glyphicon glyphicon-edit"/>
                                                 </button>
                                             : null}
                                             <button className="btn btn-default btn-xs"
                                                     data-tip="Просмотр скрипта"
-                                                    id={'looking_script_' + script.id}
                                                     onClick={() => {
                                                         this.props.router.push(
                                                             '/tables/' + script.id + '/' +
@@ -266,7 +261,6 @@ export class Scripts extends React.Component {
                                             {!available ?
                                                 <button className="btn btn-danger btn-xs"
                                                         data-tip="Удалить скрипт"
-                                                        id={'delete_script_' + script.id}
                                                         onClick={()=>{this.deleteScript(script)}}>
                                                     <i className="glyphicon glyphicon-remove"/>
                                                 </button>
@@ -277,6 +271,7 @@ export class Scripts extends React.Component {
                             )
                         })}
                     </div>
+                    <ReactTooltip place="top" type="dark" effect="solid"/>
                     <ModalWrapper stores={[projectsStore, scriptsStore, tablesStore]} modalStore={modalStore}/>
                 </div>
             );

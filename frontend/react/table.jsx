@@ -347,14 +347,12 @@ export class TableEdit extends Table {
                                         <div className="scroll_links" key={key} style={{width: coll.size + '%'}}>
                                             <div className="row">
                                                 <div className="col-md-1">
-                                                    <i data-tip="Добавить раздел" id='add_category' className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
+                                                    <i data-tip="Добавить раздел" className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
                                                 </div>
-                                                <ReactTooltip data-for='add_category' place="top" type="dark" effect="solid"/>
 
                                                 <div className="col-md-1">
-                                                    <i data-tip="Добавить скрытый раздел" id='add_hidden_category' className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
+                                                    <i data-tip="Добавить скрытый раздел" className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
                                                 </div>
-                                                <ReactTooltip data-for='add_hidden_category' place="top" type="dark" effect="solid"/>
                                             </div>
                                             {coll.categories.map((category, key) => {
                                                 return (
@@ -398,10 +396,10 @@ export class TableEdit extends Table {
                                                                     <div className="col-md-12 opened_toolbar">
                                                                         <div className="btn-toolbar" role="toolbar">
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Создать ссылку" id={'create_link' + category.id} className="btn btn-default" onClick={()=>{this.createLink(category)}}>
+                                                                                <button data-tip="Создать ссылку" className="btn btn-default" onClick={()=>{this.createLink(category)}}>
                                                                                     <i className="icon add_icon glyphicon glyphicon-plus"/>
                                                                                 </button>
-                                                                                <button data-tip="Создать ссылку на другую таблицу" id={'create_ext_link' + category.id} className="btn btn-default"
+                                                                                <button data-tip="Создать ссылку на другую таблицу" className="btn btn-default"
                                                                                     onClick={() => {
                                                                                         modalStore.modal = true;
                                                                                         modalStore.component = React.createElement(ToLink, {
@@ -414,22 +412,18 @@ export class TableEdit extends Table {
                                                                                     <i className="icon add_icon_blue glyphicon glyphicon-plus"/>
                                                                                 </button>
                                                                             </div>
-                                                                            <ReactTooltip data-for={'create_link' + category.id} place="top" type="dark" effect="solid"/>
-                                                                            <ReactTooltip data-for={'create_ext_link' + category.id} place="top" type="dark" effect="solid"/>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Переименовать раздел" id={'rename_category' + category.id} onClick={()=>{category.edit = !category.edit}} className="btn btn-default">
+                                                                                <button data-tip="Переименовать раздел" onClick={()=>{category.edit = !category.edit}} className="btn btn-default">
                                                                                     <i className="glyphicon glyphicon-edit"/>
                                                                                 </button>
                                                                             </div>
-                                                                            <ReactTooltip data-for={'rename_category' + category.id} place="top" type="dark" effect="solid"/>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Удалить раздел" id={'delete_category' + category.id} style={{color: '#fff'}} onClick={()=>{this.deleteLinkCategory(category)}} className="btn btn-danger">
+                                                                                <button data-tip="Удалить раздел" style={{color: '#fff'}} onClick={()=>{this.deleteLinkCategory(category)}} className="btn btn-danger">
                                                                                     <i className="glyphicon glyphicon-remove"/>
                                                                                 </button>
                                                                             </div>
-                                                                            <ReactTooltip data-for={'delete_category' + category.id} place="top" type="dark" effect="solid"/>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
                                                                                 {key !== 0 ?
@@ -439,7 +433,6 @@ export class TableEdit extends Table {
                                                                                             this.onCategorySort(coll);
                                                                                         }}
                                                                                         data-tip="Переместить вверх"
-                                                                                        id={'move_up_category' + category.id}
                                                                                         className="btn btn-default">
                                                                                         <i className="glyphicon glyphicon-triangle-top"/>
                                                                                     </button>
@@ -451,15 +444,12 @@ export class TableEdit extends Table {
                                                                                             this.onCategorySort(coll);
                                                                                         }}
                                                                                         data-tip="Переместить вних"
-                                                                                        id={'move_down_category' + category.id}
                                                                                         className="btn btn-default">
                                                                                         <i className="glyphicon glyphicon-triangle-bottom"/>
                                                                                     </button>
                                                                                 : null}
                                                                             </div>
-                                                                            <ReactTooltip data-for={'move_up_category' + category.id} place="top" type="dark" effect="solid"/>
-                                                                            <ReactTooltip data-for={'move_down_category' + category.id} place="top" type="dark" effect="solid"/>
-
+                                                                                <ReactTooltip place="top" type="dark" effect="solid"/>
                                                                         </div>
                                                                     </div>
                                                                 : null}
@@ -519,42 +509,35 @@ export class TableEdit extends Table {
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             <button
                                                                                                 data-tip="Скопировать адрес ссылки (Ctrl + клик по названию ссылки)"
-                                                                                                id={'copy_link_address' + link.id}
                                                                                                 data-link={this.copyLink(link)}
                                                                                                 onClick={()=>{}} className="btn btn-default copy_icon">
                                                                                                 <i className="glyphicon glyphicon-copy"/>
                                                                                             </button>
                                                                                         </div>
-                                                                                        <ReactTooltip data-for={'copy_link_address' + link.id} place="top" type="dark" effect="solid"/>
 
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             <button
                                                                                                 data-tip="Переименовать ссылку (Shift + клик по названию ссылки)"
-                                                                                                id={'rename_link' + link.id}
                                                                                                 onClick={()=>{link.edit = !link.edit}}
                                                                                                 className="btn btn-default">
                                                                                                 <i className="glyphicon glyphicon-edit"/>
                                                                                             </button>
                                                                                         </div>
-                                                                                        <ReactTooltip data-for={'rename_link' + link.id} place="top" type="dark" effect="solid"/>
 
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             <button
                                                                                                 data-tip="Удалить ссылку"
-                                                                                                id={'delete_link' + link.id}
                                                                                                 style={{color: '#fff'}}
                                                                                                 onClick={()=>{this.deleteLink(link)}}
                                                                                                 className="btn btn-danger btn-xs">
                                                                                                 <i className="glyphicon glyphicon-remove"/>
                                                                                             </button>
                                                                                         </div>
-                                                                                        <ReactTooltip data-for={'delete_link' + link.id} place="top" type="dark" effect="solid"/>
 
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             {key !== 0 ?
                                                                                                 <button
                                                                                                     data-tip="Переместить вверх"
-                                                                                                    id={'move_up_link' + link.id}
                                                                                                     onClick={() => {
                                                                                                         category.links = moveInArray(category.links, key, key - 1);
                                                                                                         this.onLinkSort(category);
@@ -566,7 +549,6 @@ export class TableEdit extends Table {
                                                                                             {(key + 1) !== category.links.length ?
                                                                                                 <button
                                                                                                     data-tip="Переместить вниз"
-                                                                                                    id={'move_down_link' + link.id}
                                                                                                     onClick={() => {
                                                                                                         category.links = moveInArray(category.links, key, key + 1);
                                                                                                         this.onLinkSort(category);
@@ -576,8 +558,7 @@ export class TableEdit extends Table {
                                                                                                 </button>
                                                                                             : null}
                                                                                         </div>
-                                                                                        <ReactTooltip data-for={'move_up_link' + link.id} place="top" type="dark" effect="solid"/>
-                                                                                        <ReactTooltip data-for={'move_down_link' + link.id} place="top" type="dark" effect="solid"/>
+                                                                                        <ReactTooltip place="top" type="dark" effect="solid"/>
                                                                                     </div>
                                                                                 </div>
                                                                             : null}

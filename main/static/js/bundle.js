@@ -28760,7 +28760,6 @@
 	                                                (available && script.available ? access.edit : true) ?
 	                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
 	                                                    'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                    id: 'edit_script_' + script.id,
 	                                                    onClick: function onClick() {
 	                                                        scriptsStore.editing = script;
 	                                                        modalStore.modal = true;
@@ -28790,14 +28789,12 @@
 	                                            React.createElement('div', { className: 'btn-group pull-right' },
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs ' + (_this3.state.cloning || !script.active ? 'disabled' : null),
 	                                                        'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                        id: 'copy_script_' + script.id,
 	                                                        onClick: function onClick() {_this3.cloneScript(script);} },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-copy' })),
 	
 	                                                !available ?
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u041F\u0440\u0430\u0432\u0430 \u0434\u043E\u0441\u0442\u0443\u043F\u0430 \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
-	                                                        id: 'access_to_script_' + script.id,
 	                                                        onClick: function onClick() {
 	                                                            modalStore.modal = true;
 	                                                            modalStore.component = React.createElement(Accesses, {
@@ -28813,14 +28810,12 @@
 	                                                (available && script.available ? access.edit : true) ?
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
-	                                                        id: 'editing_data_of_script_' + script.id,
 	                                                        onClick: function onClick() {_this3.props.router.push('/tables/' + script.id + '/');} },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' })) :
 	
 	                                                null,
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
-	                                                        id: 'looking_script_' + script.id,
 	                                                        onClick: function onClick() {
 	                                                            _this3.props.router.push(
 	                                                            '/tables/' + script.id + '/' + (
@@ -28848,7 +28843,6 @@
 	                                                !available ?
 	                                                React.createElement('button', { className: 'btn btn-danger btn-xs',
 	                                                        'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                        id: 'delete_script_' + script.id,
 	                                                        onClick: function onClick() {_this3.deleteScript(script);} },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
 	
@@ -28859,6 +28853,7 @@
 	
 	                            })),
 	
+	                        React.createElement(_reactTooltip2.default, { place: 'top', type: 'dark', effect: 'solid' }),
 	                        React.createElement(_modal.ModalWrapper, { stores: [projectsStore, scriptsStore, tablesStore], modalStore: modalStore })));
 	
 	
@@ -50275,14 +50270,12 @@
 	                                            React.createElement('div', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
 	                                                React.createElement('div', { className: 'row' },
 	                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', id: 'add_category', className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, false);} })),
+	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, false);} })),
 	
-	                                                    React.createElement(_reactTooltip2.default, { 'data-for': 'add_category', place: 'top', type: 'dark', effect: 'solid' }),
 	
 	                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043A\u0440\u044B\u0442\u044B\u0439 \u0440\u0430\u0437\u0434\u0435\u043B', id: 'add_hidden_category', className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, true);} })),
+	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043A\u0440\u044B\u0442\u044B\u0439 \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, true);} }))),
 	
-	                                                    React.createElement(_reactTooltip2.default, { 'data-for': 'add_hidden_category', place: 'top', type: 'dark', effect: 'solid' })),
 	
 	                                                coll.categories.map(function (category, key) {
 	                                                    return (
@@ -50326,10 +50319,10 @@
 	                                                                    React.createElement('div', { className: 'col-md-12 opened_toolbar' },
 	                                                                        React.createElement('div', { className: 'btn-toolbar', role: 'toolbar' },
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443', id: 'create_link' + category.id, className: 'btn btn-default', onClick: function onClick() {_this5.createLink(category);} },
+	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443', className: 'btn btn-default', onClick: function onClick() {_this5.createLink(category);} },
 	                                                                                    React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-plus' })),
 	
-	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0434\u0440\u0443\u0433\u0443\u044E \u0442\u0430\u0431\u043B\u0438\u0446\u0443', id: 'create_ext_link' + category.id, className: 'btn btn-default',
+	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0434\u0440\u0443\u0433\u0443\u044E \u0442\u0430\u0431\u043B\u0438\u0446\u0443', className: 'btn btn-default',
 	                                                                                        onClick: function onClick() {
 	                                                                                            modalStore.modal = true;
 	                                                                                            modalStore.component = React.createElement(ToLink, {
@@ -50342,22 +50335,18 @@
 	                                                                                    React.createElement('i', { className: 'icon add_icon_blue glyphicon glyphicon-plus' }))),
 	
 	
-	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'create_link' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
-	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'create_ext_link' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
 	
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', id: 'rename_category' + category.id, onClick: function onClick() {category.edit = !category.edit;}, className: 'btn btn-default' },
+	                                                                                React.createElement('button', { 'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', onClick: function onClick() {category.edit = !category.edit;}, className: 'btn btn-default' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' }))),
 	
 	
-	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'rename_category' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
 	
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', id: 'delete_category' + category.id, style: { color: '#fff' }, onClick: function onClick() {_this5.deleteLinkCategory(category);}, className: 'btn btn-danger' },
+	                                                                                React.createElement('button', { 'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', style: { color: '#fff' }, onClick: function onClick() {_this5.deleteLinkCategory(category);}, className: 'btn btn-danger' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
 	
 	
-	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'delete_category' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
 	
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
 	                                                                                key !== 0 ?
@@ -50367,7 +50356,6 @@
 	                                                                                            _this5.onCategorySort(coll);
 	                                                                                        },
 	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u0432\u0435\u0440\u0445',
-	                                                                                        id: 'move_up_category' + category.id,
 	                                                                                        className: 'btn btn-default' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-triangle-top' })) :
 	
@@ -50379,15 +50367,12 @@
 	                                                                                            _this5.onCategorySort(coll);
 	                                                                                        },
 	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0445',
-	                                                                                        id: 'move_down_category' + category.id,
 	                                                                                        className: 'btn btn-default' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-triangle-bottom' })) :
 	
 	                                                                                null),
 	
-	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'move_up_category' + category.id, place: 'top', type: 'dark', effect: 'solid' }),
-	                                                                            React.createElement(_reactTooltip2.default, { 'data-for': 'move_down_category' + category.id, place: 'top', type: 'dark', effect: 'solid' }))) :
-	
+	                                                                            React.createElement(_reactTooltip2.default, { place: 'top', type: 'dark', effect: 'solid' }))) :
 	
 	
 	                                                                    null)),
@@ -50447,42 +50432,35 @@
 	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
 	                                                                                            React.createElement('button', {
 	                                                                                                    'data-tip': '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0430\u0434\u0440\u0435\u0441 \u0441\u0441\u044B\u043B\u043A\u0438 (Ctrl + \u043A\u043B\u0438\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E \u0441\u0441\u044B\u043B\u043A\u0438)',
-	                                                                                                    id: 'copy_link_address' + link.id,
 	                                                                                                    'data-link': _this5.copyLink(link),
 	                                                                                                    onClick: function onClick() {}, className: 'btn btn-default copy_icon' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-copy' }))),
 	
 	
-	                                                                                        React.createElement(_reactTooltip2.default, { 'data-for': 'copy_link_address' + link.id, place: 'top', type: 'dark', effect: 'solid' }),
 	
 	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
 	                                                                                            React.createElement('button', {
 	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 (Shift + \u043A\u043B\u0438\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E \u0441\u0441\u044B\u043B\u043A\u0438)',
-	                                                                                                    id: 'rename_link' + link.id,
 	                                                                                                    onClick: function onClick() {link.edit = !link.edit;},
 	                                                                                                    className: 'btn btn-default' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit' }))),
 	
 	
-	                                                                                        React.createElement(_reactTooltip2.default, { 'data-for': 'rename_link' + link.id, place: 'top', type: 'dark', effect: 'solid' }),
 	
 	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
 	                                                                                            React.createElement('button', {
 	                                                                                                    'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443',
-	                                                                                                    id: 'delete_link' + link.id,
 	                                                                                                    style: { color: '#fff' },
 	                                                                                                    onClick: function onClick() {_this5.deleteLink(link);},
 	                                                                                                    className: 'btn btn-danger btn-xs' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
 	
 	
-	                                                                                        React.createElement(_reactTooltip2.default, { 'data-for': 'delete_link' + link.id, place: 'top', type: 'dark', effect: 'solid' }),
 	
 	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
 	                                                                                            key !== 0 ?
 	                                                                                            React.createElement('button', {
 	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u0432\u0435\u0440\u0445',
-	                                                                                                    id: 'move_up_link' + link.id,
 	                                                                                                    onClick: function onClick() {
 	                                                                                                        category.links = (0, _sort.moveInArray)(category.links, key, key - 1);
 	                                                                                                        _this5.onLinkSort(category);
@@ -50494,7 +50472,6 @@
 	                                                                                            key + 1 !== category.links.length ?
 	                                                                                            React.createElement('button', {
 	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0437',
-	                                                                                                    id: 'move_down_link' + link.id,
 	                                                                                                    onClick: function onClick() {
 	                                                                                                        category.links = (0, _sort.moveInArray)(category.links, key, key + 1);
 	                                                                                                        _this5.onLinkSort(category);
@@ -50504,8 +50481,7 @@
 	
 	                                                                                            null),
 	
-	                                                                                        React.createElement(_reactTooltip2.default, { 'data-for': 'move_up_link' + link.id, place: 'top', type: 'dark', effect: 'solid' }),
-	                                                                                        React.createElement(_reactTooltip2.default, { 'data-for': 'move_down_link' + link.id, place: 'top', type: 'dark', effect: 'solid' }))) :
+	                                                                                        React.createElement(_reactTooltip2.default, { place: 'top', type: 'dark', effect: 'solid' }))) :
 	
 	
 	                                                                                null))));

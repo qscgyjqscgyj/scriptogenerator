@@ -272,12 +272,6 @@ export class Scripts extends React.Component {
                                                 </button>
                                             : null}
                                         </div>
-                                        <ReactTooltip data-for={'edit_script_' + script.id} place="top" type="dark" effect="solid"/>
-                                        <ReactTooltip data-for={'copy_script_' + script.id} place="top" type="dark" effect="solid"/>
-                                        <ReactTooltip data-for={'access_to_script_' + script.id} place="top" type="dark" effect="solid"/>
-                                        <ReactTooltip data-for={'editing_data_of_script_' + script.id} place="top" type="dark" effect="solid"/>
-                                        <ReactTooltip data-for={'looking_script_' + script.id} place="top" type="dark" effect="solid"/>
-                                        <ReactTooltip data-for={'delete_script_' + script.id} place="top" type="dark" effect="solid"/>
                                     </div>
                                 </div>
                             )

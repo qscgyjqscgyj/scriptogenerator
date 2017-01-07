@@ -28852,14 +28852,8 @@
 	                                                        onClick: function onClick() {_this3.deleteScript(script);} },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
 	
-	                                                null),
+	                                                null))));
 	
-	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'edit_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }),
-	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'copy_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }),
-	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'access_to_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }),
-	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'editing_data_of_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }),
-	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'looking_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }),
-	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'delete_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }))));
 	
 	
 	

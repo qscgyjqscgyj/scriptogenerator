@@ -73,3 +73,14 @@ class TableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Table
         fields = ('id', 'name', 'script', 'text_coll_name', 'text_coll_size', 'text_coll_position', 'date', 'date_mod', 'colls')
+
+
+class ScriptTablesField(serializers.Field):
+    def to_representation(self, script):
+        return TableSerializer(Table.objects.filter(script__pk=script.pk), many=True).data
+
+    def get_attribute(self, tables):
+        return tables
+
+    def to_internal_value(self, tables):
+        return tables

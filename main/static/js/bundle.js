@@ -28589,7 +28589,8 @@
 	var _modal = __webpack_require__(277);
 	var _reactRouter = __webpack_require__(178);
 	var _reactSelect = __webpack_require__(278);var _reactSelect2 = _interopRequireDefault(_reactSelect);
-	var _confirm = __webpack_require__(290);var _confirm2 = _interopRequireDefault(_confirm);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _confirm = __webpack_require__(290);var _confirm2 = _interopRequireDefault(_confirm);
+	var _reactTooltip = __webpack_require__(452);var _reactTooltip2 = _interopRequireDefault(_reactTooltip);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	Scripts = exports.Scripts = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Scripts, _React$Component);
@@ -28749,105 +28750,120 @@
 	
 	                        null,
 	                        React.createElement('div', { className: 'row' },
-	                            React.createElement('div', { className: 'col-md-12' },
-	                                React.createElement('table', { className: 'table' },
-	                                    React.createElement('thead', null,
-	                                        React.createElement('tr', null,
-	                                            React.createElement('td', null, '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435'),
+	                            scriptsStore.filteredScripts(available).map(function (script, key) {
+	                                var access = available ? script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;}) : null;
+	                                return (
+	                                    React.createElement('div', { key: key, className: 'col-md-12 hovered_list_item list_item edit_icon_handler' },
+	                                        React.createElement('div', { className: 'col-md-6' },
+	                                            script.active && script.available ?
+	                                            React.createElement('span', { className: 'inline_elements' },
+	                                                (available && script.available ? access.edit : true) ?
+	                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
+	                                                    'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                                    id: 'edit_script_' + script.id,
+	                                                    onClick: function onClick() {
+	                                                        scriptsStore.editing = script;
+	                                                        modalStore.modal = true;
+	                                                        modalStore.component = React.createElement(EditingScript, {
+	                                                            projectsStore: projectsStore,
+	                                                            scriptsStore: scriptsStore,
+	                                                            modalStore: modalStore,
+	                                                            createScript: _this3.createScript.bind(_this3),
+	                                                            updateScript: _this3.updateScript.bind(_this3),
+	                                                            available: available });
+	
+	                                                    } }) :
+	                                                null,
+	
+	                                                React.createElement(_reactRouter.Link, { className: 'inline_element', to: '/tables/' + script.id + '/' }, script.name)) :
+	
+	
+	                                            React.createElement('span', null, script.name)),
+	
+	
+	                                        React.createElement('div', { className: 'col-md-3' },
 	                                            available ?
-	                                            React.createElement('td', null, '\u0412\u043B\u0430\u0434\u0435\u043B\u0435\u0446') :
-	                                            null,
-	                                            !available ?
-	                                            React.createElement('td', null, '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C') :
-	                                            null,
-	                                            !available ?
-	                                            React.createElement('td', null, '\u0414\u043E\u0441\u0442\u0443\u043F\u044B') :
+	                                            React.createElement('td', null, script.owner.email) :
+	                                            null),
 	
-	                                            React.createElement('td', null, '\u041F\u0440\u0430\u0432\u0430'))),
+	                                        React.createElement('div', { className: 'col-md-3' },
+	                                            React.createElement('div', { className: 'btn-group pull-right' },
+	                                                React.createElement('button', { className: 'btn btn-default btn-xs ' + (_this3.state.cloning || !script.active ? 'disabled' : null),
+	                                                        'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                                        id: 'copy_script_' + script.id,
+	                                                        onClick: function onClick() {_this3.cloneScript(script);} },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-copy' })),
 	
+	                                                !available ?
+	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                        'data-tip': '\u041F\u0440\u0430\u0432\u0430 \u0434\u043E\u0441\u0442\u0443\u043F\u0430 \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
+	                                                        id: 'access_to_script_' + script.id,
+	                                                        onClick: function onClick() {
+	                                                            modalStore.modal = true;
+	                                                            modalStore.component = React.createElement(Accesses, {
+	                                                                script: script,
+	                                                                usersStore: usersStore,
+	                                                                setAccesses: _this3.setAccesses.bind(_this3),
+	                                                                delegateScript: _this3.delegateScript.bind(_this3) });
 	
+	                                                        } },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-user' })) :
 	
-	                                    React.createElement('tbody', null,
-	                                        scriptsStore.filteredScripts(available).map(function (script, key) {
-	                                            var access = available ? script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;}) : null;
-	                                            return (
-	                                                React.createElement('tr', { key: key },
-	                                                    React.createElement('td', null,
-	                                                        script.active && script.available ?
-	                                                        React.createElement(_reactRouter.Link, { to: '/tables/' + script.id + '/' }, script.name) :
+	                                                null,
+	                                                (available && script.available ? access.edit : true) ?
+	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                        'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
+	                                                        id: 'editing_data_of_script_' + script.id,
+	                                                        onClick: function onClick() {_this3.props.router.push('/tables/' + script.id + '/');} },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' })) :
 	
-	                                                        React.createElement('span', null, script.name)),
+	                                                null,
+	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                        'data-tip': '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
+	                                                        id: 'looking_script_' + script.id,
+	                                                        onClick: function onClick() {
+	                                                            _this3.props.router.push(
+	                                                            '/tables/' + script.id + '/' + (
 	
+	                                                            script.tables.length > 0 ?
 	
-	                                                    available ?
-	                                                    React.createElement('td', null, script.owner.email) :
-	                                                    null,
-	                                                    !available ?
-	                                                    React.createElement('td', null,
-	                                                        _this3.state.cloning || !script.active ?
-	                                                        React.createElement('span', null,
-	                                                            _this3.state.cloning === script ?
-	                                                            React.createElement('span', null, '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435...') :
-	                                                            !script.active ?
-	                                                            React.createElement('span', null, '\u041F\u043E\u0434\u043E\u0436\u0434\u0438\u0442\u0435, \u0441\u043A\u0440\u0438\u043F\u0442 \u0441\u043E\u0437\u0434\u0430\u0435\u0442\u0441\u044F...') :
-	                                                            null) :
+	                                                            'table/' + script.tables[0].id + '/' :
 	
-	
-	                                                        React.createElement('button', { className: 'btn btn-default', onClick: function onClick() {_this3.cloneScript(script);} }, '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C')) :
-	
-	
-	
-	
-	                                                    null,
-	                                                    !available ?
-	                                                    React.createElement('td', null,
-	                                                        React.createElement('button', { onClick: function onClick() {
-	                                                                    modalStore.modal = true;
-	                                                                    modalStore.component = React.createElement(Accesses, {
-	                                                                        script: script,
-	                                                                        usersStore: usersStore,
-	                                                                        setAccesses: _this3.setAccesses.bind(_this3),
-	                                                                        delegateScript: _this3.delegateScript.bind(_this3) });
-	
-	                                                                }, className: 'btn btn-default' }, '\u041F\u0440\u0430\u0432\u0430')) :
+	                                                            '') + (
 	
 	
-	                                                    script.available ?
-	                                                    React.createElement('td', null,
-	                                                        access.edit ? 'Редактирование' : 'Просмотр') :
+	                                                            script.tables.length > 0 &&
+	                                                            script.tables[0].colls.length > 0 &&
+	                                                            script.tables[0].colls[0].categories.length > 0 &&
+	                                                            script.tables[0].colls[0].categories[0].links.length > 0 ?
+	
+	                                                            'link/' + script.tables[0].colls[0].categories[0].links[0].id + '/share/' :
+	
+	                                                            'share/'));
 	
 	
-	                                                    React.createElement('td', { className: 'red_text' }, '\u0423 \u0441\u043E\u0437\u0434\u0430\u0442\u0435\u043B\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430 \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u0439 \u0431\u0430\u043B\u0430\u043D\u0441.'),
+	                                                        } },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-eye-open' })),
 	
+	                                                !available ?
+	                                                React.createElement('button', { className: 'btn btn-danger btn-xs',
+	                                                        'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                                        id: 'delete_script_' + script.id,
+	                                                        onClick: function onClick() {_this3.deleteScript(script);} },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
 	
+	                                                null),
 	
-	                                                    React.createElement('td', { className: 'text-right' },
-	                                                        (available && script.available ? access.edit : true) ?
-	                                                        React.createElement('button', { className: 'btn btn-default', onClick: function onClick() {
-	                                                                    scriptsStore.editing = script;
-	                                                                    modalStore.modal = true;
-	                                                                    modalStore.component = React.createElement(EditingScript, {
-	                                                                        projectsStore: projectsStore,
-	                                                                        scriptsStore: scriptsStore,
-	                                                                        modalStore: modalStore,
-	                                                                        createScript: _this3.createScript.bind(_this3),
-	                                                                        updateScript: _this3.updateScript.bind(_this3),
-	                                                                        available: available });
-	
-	                                                                } }, '\u0420\u0435\u0434.') :
-	                                                        null),
-	
-	                                                    !available ?
-	                                                    React.createElement('td', { className: 'text-right' },
-	                                                        React.createElement('button', { className: 'btn btn-danger btn-xs', onClick: function onClick() {_this3.deleteScript(script);} }, '\u0423\u0434\u0430\u043B\u0438\u0442\u044C')) :
-	
-	                                                    null));
-	
-	
-	                                        }))))),
+	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'edit_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }),
+	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'copy_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }),
+	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'access_to_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }),
+	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'editing_data_of_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }),
+	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'looking_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }),
+	                                            React.createElement(_reactTooltip2.default, { 'data-for': 'delete_script_' + script.id, place: 'top', type: 'dark', effect: 'solid' }))));
 	
 	
 	
+	                            })),
 	
 	                        React.createElement(_modal.ModalWrapper, { stores: [projectsStore, scriptsStore, tablesStore], modalStore: modalStore })));
 	
@@ -29076,6 +29092,17 @@
 	        {
 	            return React.cloneElement(React.createElement(Scripts, this.props), { available: true });
 	        } }]);return AvailableScripts;}(React.Component)) || _class5;
+	
+	
+	
+	//     (script.available ?
+	//         <td>
+	//             {access.edit ? 'Редактирование' : 'Просмотр'}
+	//         </td>
+	//     :
+	//         <td className="red_text">У создателя скрипта отрицательный баланс.</td>
+	//     )
+	// }
 
 /***/ },
 /* 260 */

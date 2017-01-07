@@ -50369,7 +50369,7 @@
 	                                                                                            coll.categories = (0, _sort.moveInArray)(coll.categories, key, key + 1);
 	                                                                                            _this5.onCategorySort(coll);
 	                                                                                        },
-	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0445',
+	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0437',
 	                                                                                        className: 'btn btn-default' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-triangle-bottom' })) :
 	

@@ -446,7 +446,7 @@ export class TableEdit extends Table {
                                                                                             coll.categories = moveInArray(coll.categories, key, key + 1);
                                                                                             this.onCategorySort(coll);
                                                                                         }}
-                                                                                        data-tip="Переместить вних"
+                                                                                        data-tip="Переместить вниз"
                                                                                         className="btn btn-default">
                                                                                         <i className="glyphicon glyphicon-triangle-bottom"/>
                                                                                     </button>

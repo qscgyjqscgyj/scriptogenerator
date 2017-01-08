@@ -28774,7 +28774,7 @@
 	                                                    } }) :
 	                                                null,
 	
-	                                                React.createElement(_reactRouter.Link, { className: 'inline_element', to: '/tables/' + script.id + '/' }, script.name)) :
+	                                                React.createElement(_reactRouter.Link, { className: 'inline_element', to: script.url }, script.name)) :
 	
 	
 	                                            React.createElement('span', null, script.name)),
@@ -28817,26 +28817,7 @@
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
 	                                                        onClick: function onClick() {
-	                                                            _this3.props.router.push(
-	                                                            '/tables/' + script.id + '/' + (
-	
-	                                                            script.tables.length > 0 ?
-	
-	                                                            'table/' + script.tables[0].id + '/' :
-	
-	                                                            '') + (
-	
-	
-	                                                            script.tables.length > 0 &&
-	                                                            script.tables[0].colls.length > 0 &&
-	                                                            script.tables[0].colls[0].categories.length > 0 &&
-	                                                            script.tables[0].colls[0].categories[0].links.length > 0 ?
-	
-	                                                            'link/' + script.tables[0].colls[0].categories[0].links[0].id + '/share/' :
-	
-	                                                            'share/'));
-	
-	
+	                                                            _this3.props.router.push(script.view_url);
 	                                                        } },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-eye-open' })),
 	
@@ -50622,12 +50603,7 @@
 	                                                    return (
 	                                                        React.createElement('tr', { key: key },
 	                                                            React.createElement('td', null,
-	                                                                React.createElement(_reactRouter.Link, { to:
-	                                                                        '/tables/' + _this2.props.params.script +
-	                                                                        '/table/' + table.id + (
-	                                                                        table.colls.length > 0 && table.colls[0].categories.length > 0 && table.colls[0].categories[0].links.length > 0 ? '/link/' + table.colls[0].categories[0].links[0].id : '') + (
-	                                                                        access.edit ? '/edit/' : '/share/') },
-	                                                                    table.name)),
+	                                                                React.createElement(_reactRouter.Link, { to: table.view_url }, table.name)),
 	
 	                                                            React.createElement('td', { className: 'text-right' },
 	                                                                access.edit ?
@@ -51639,10 +51615,7 @@
 	                                                                                            if (!tablesStore.pressed_key) {
 	                                                                                                _this5.props.router.push(
 	                                                                                                !link.to_link ?
-	                                                                                                '/tables/' + _this5.props.params.script +
-	                                                                                                '/table/' + _this5.props.params.table +
-	                                                                                                '/link/' + link.id +
-	                                                                                                '/edit/' :
+	                                                                                                link.edit_url :
 	
 	                                                                                                link.to_link.href + '/edit/');
 	
@@ -51771,7 +51744,7 @@
 	        {
 	            (0, _jquery2.default)('#link_text_block a').off('click');
 	        } }, { key: 'render', value: function render()
-	        {var _this8 = this;var _props2 =
+	        {var _props2 =
 	            this.props,projectsStore = _props2.projectsStore,scriptsStore = _props2.scriptsStore,tablesStore = _props2.tablesStore,modalStore = _props2.modalStore,usersStore = _props2.usersStore;
 	            var table = tablesStore.table(this.props.params.table);
 	            var active_link = tablesStore.link(this.props.params.table, this.props.params.link);
@@ -51832,10 +51805,7 @@
 	                                                                            React.createElement('div', { className: 'row' },
 	                                                                                React.createElement('div', { className: 'col-md-12 link_name' },
 	                                                                                    React.createElement(_reactRouter.Link, { to: !link.to_link ?
-	                                                                                            '/tables/' + _this8.props.params.script +
-	                                                                                            '/table/' + _this8.props.params.table +
-	                                                                                            '/link/' + link.id +
-	                                                                                            '/share/' :
+	                                                                                            link.share_url :
 	
 	                                                                                            link.to_link.href + '/share/' },
 	
@@ -51864,13 +51834,13 @@
 	
 	
 	ToLink = function (_React$Component) {_inherits(ToLink, _React$Component);
-	    function ToLink(props) {_classCallCheck(this, ToLink);var _this9 = _possibleConstructorReturn(this, (ToLink.__proto__ || Object.getPrototypeOf(ToLink)).call(this,
+	    function ToLink(props) {_classCallCheck(this, ToLink);var _this8 = _possibleConstructorReturn(this, (ToLink.__proto__ || Object.getPrototypeOf(ToLink)).call(this,
 	        props));
 	
-	        _this9.state = {
+	        _this8.state = {
 	            table: null,
 	            category: null,
-	            link: null };return _this9;
+	            link: null };return _this8;
 	
 	    }_createClass(ToLink, [{ key: 'onChange', value: function onChange(
 	        select, selector) {var
@@ -51941,7 +51911,7 @@
 	            }
 	            return result;
 	        } }, { key: 'render', value: function render()
-	        {var _this10 = this;var
+	        {var _this9 = this;var
 	            modalStore = this.props.modalStore;var _state2 =
 	            this.state,table = _state2.table,category = _state2.category,link = _state2.link;
 	            return (
@@ -51952,7 +51922,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0442\u0430\u0431\u043B\u0438\u0446\u0443',
 	                            value: table ? table.id : null,
 	                            options: this.tablesOptions(),
-	                            onChange: function onChange(select) {_this10.onChange(select, 'table');} })),
+	                            onChange: function onChange(select) {_this9.onChange(select, 'table');} })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
 	                        React.createElement(_reactSelect2.default, {
@@ -51960,7 +51930,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044E',
 	                            value: category ? category.id : null,
 	                            options: this.categoriesOptions(),
-	                            onChange: function onChange(select) {_this10.onChange(select, 'category');},
+	                            onChange: function onChange(select) {_this9.onChange(select, 'category');},
 	                            disabled: !table })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
@@ -51969,16 +51939,16 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0441\u044B\u043B\u043A\u0443',
 	                            value: link ? link.id : null,
 	                            options: this.linksOptions(),
-	                            onChange: function onChange(select) {_this10.onChange(select, 'link');},
+	                            onChange: function onChange(select) {_this9.onChange(select, 'link');},
 	                            disabled: !table || !category })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
 	                        React.createElement('button', {
 	                                className: 'btn btn-success ' + (!link ? 'disabled' : null),
 	                                onClick: function onClick() {var
-	                                    link = _this10.state.link;
+	                                    link = _this9.state.link;
 	                                    if (link) {
-	                                        return _this10.props.createToLink(_this10.props.category, link, function () {
+	                                        return _this9.props.createToLink(_this9.props.category, link, function () {
 	                                            modalStore.modal = false;
 	                                        });
 	                                    }
@@ -51992,18 +51962,18 @@
 	
 	
 	EditableText = function (_React$Component2) {_inherits(EditableText, _React$Component2);
-	    function EditableText(props) {_classCallCheck(this, EditableText);var _this11 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
+	    function EditableText(props) {_classCallCheck(this, EditableText);var _this10 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
 	        props));
 	
-	        _this11.delay = 50;
+	        _this10.delay = 50;
 	
-	        _this11.state = {
-	            text: _this11.props.text,
+	        _this10.state = {
+	            text: _this10.props.text,
 	            edit: props.edit ? props.edit : false,
 	            key: null,
 	
 	            click_timer: null,
-	            prevent: false };return _this11;
+	            prevent: false };return _this10;
 	
 	    }_createClass(EditableText, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -52031,7 +52001,7 @@
 	                this.props.onClick(this.props.object);
 	            }
 	        } }, { key: 'render', value: function render()
-	        {var _this12 = this;var
+	        {var _this11 = this;var
 	            settings = this.props.settings;
 	            return (
 	                React.createElement('div', null,
@@ -52040,7 +52010,7 @@
 	
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
-	                            onChange: function onChange(e) {_this12.setState((0, _reactAddonsUpdate2.default)(_this12.state, { text: { $set: e.target.value } }));},
+	                            onChange: function onChange(e) {_this11.setState((0, _reactAddonsUpdate2.default)(_this11.state, { text: { $set: e.target.value } }));},
 	                            autoFocus: true,
 	                            onBlur: this.submitHandler.bind(this),
 	                            placeholder: settings.placeholder,

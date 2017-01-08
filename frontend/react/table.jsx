@@ -485,10 +485,7 @@ export class TableEdit extends Table {
                                                                                         if(!tablesStore.pressed_key) {
                                                                                             this.props.router.push(
                                                                                                 (!link.to_link ?
-                                                                                                    '/tables/' + this.props.params.script +
-                                                                                                    '/table/' + this.props.params.table +
-                                                                                                    '/link/' + link.id +
-                                                                                                    '/edit/'
+                                                                                                    link.edit_url
                                                                                                 :
                                                                                                     link.to_link.href + '/edit/'
                                                                                                 )
@@ -678,10 +675,7 @@ export class TableShare extends Table {
                                                                         <div className="row">
                                                                             <div className="col-md-12 link_name">
                                                                                 <Link to={(!link.to_link ?
-                                                                                        '/tables/' + this.props.params.script +
-                                                                                        '/table/' + this.props.params.table +
-                                                                                        '/link/' + link.id +
-                                                                                        '/share/'
+                                                                                        link.share_url
                                                                                     :
                                                                                         link.to_link.href + '/share/'
                                                                                     )

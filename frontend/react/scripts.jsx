@@ -192,7 +192,7 @@ export class Scripts extends React.Component {
                                                         }}/>
                                                 : null}
 
-                                                <Link className="inline_element" to={'/tables/' + script.id + '/'}>{script.name}</Link>
+                                                <Link className="inline_element" to={script.url}>{script.name}</Link>
                                             </span>
                                         :
                                             <span>{script.name}</span>
@@ -235,26 +235,7 @@ export class Scripts extends React.Component {
                                             <button className="btn btn-default btn-xs"
                                                     data-tip="Просмотр скрипта"
                                                     onClick={() => {
-                                                        this.props.router.push(
-                                                            '/tables/' + script.id + '/' +
-                                                            (
-                                                                script.tables.length > 0
-                                                                    ?
-                                                                        'table/' + script.tables[0].id + '/'
-                                                                    :
-                                                                        ''
-                                                            ) +
-                                                            (
-                                                                script.tables.length > 0 &&
-                                                                script.tables[0].colls.length > 0 &&
-                                                                script.tables[0].colls[0].categories.length > 0 &&
-                                                                script.tables[0].colls[0].categories[0].links.length > 0
-                                                                    ?
-                                                                        'link/' + script.tables[0].colls[0].categories[0].links[0].id + '/share/'
-                                                                    :
-                                                                        'share/'
-                                                            )
-                                                        )
+                                                        this.props.router.push(script.view_url);
                                                     }}>
                                                 <i className="glyphicon glyphicon-eye-open"/>
                                             </button>

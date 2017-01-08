@@ -14,6 +14,19 @@ class Script(models.Model):
     date_mod = models.DateTimeField(auto_now=True)
     is_template = models.BooleanField(default=False)
 
+    def get_client_url(self):
+        return '/tables/' + str(self.pk) + '/'
+
+    def get_client_view_url(self):
+        result = '/tables/' + str(self.pk) + '/'
+        tables = self.tables()
+        if tables:
+            result += 'table/' + str(tables[0].pk) + '/'
+            links = tables[0].links()
+            if links:
+                result += 'link/' + str(links[0].pk) + '/share/'
+        return result
+
     def accesses(self):
         return ScriptAccess.objects.filter(script=self)
 
@@ -64,6 +77,18 @@ class Table(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     date_mod = models.DateTimeField(auto_now=True)
 
+    def get_client_url(self):
+        return '/tables/' + str(self.script.pk) + '/table/' + str(self.pk) + '/share/'
+
+    def get_client_view_url(self):
+        result = '/tables/' + str(self.script.pk) + '/table/' + str(self.pk) + '/'
+        links = self.links()
+        if links:
+            result += 'link/' + str(links[0].pk) + '/share/'
+        else:
+            result += 'share/'
+        return result
+
     def links(self):
         colls = [coll.pk for coll in TableLinksColl.objects.filter(table=self)]
         return Link.objects.filter(category__table__pk__in=colls)
@@ -110,6 +135,14 @@ class Link(models.Model):
 
     def __unicode__(self):
         return self.name + ' (' + str(self.category.table.table.script.pk) + ')'
+
+    def get_client_url(self, edit=False):
+        result = self.get_address()
+        if edit:
+            result += '/edit/'
+        else:
+            result += '/share/'
+        return result
 
     def get_address(self):
         return '/tables/%(script)s/table/%(table)s/link/%(link)s' % dict(

@@ -47,7 +47,14 @@ class ScriptSerializer(serializers.ModelSerializer):
     accesses = ScriptAccessField(required=False)
     template = ScriptTemplateField(required=False, allow_null=True)
     available = ScriptAvailableField(read_only=True, allow_null=True)
-    tables = ScriptTablesField(read_only=True, allow_null=True)
+    url = serializers.SerializerMethodField()
+    view_url = serializers.SerializerMethodField()
+
+    def get_url(self, script):
+        return script.get_client_url()
+
+    def get_view_url(self, script):
+        return script.get_client_view_url()
 
     def create(self, validated_data):
         owner = self.initial_data.pop('owner', None)
@@ -84,7 +91,7 @@ class ScriptSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Script
-        fields = ('id', 'name', 'owner', 'date', 'date_mod', 'accesses', 'active', 'template', 'available', 'tables')
+        fields = ('id', 'name', 'owner', 'date', 'date_mod', 'accesses', 'active', 'template', 'available', 'url', 'view_url')
 
 
 class ScriptAccessSerializer(serializers.ModelSerializer):

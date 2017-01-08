@@ -56,6 +56,14 @@ class CollsField(serializers.Field):
 
 class TableSerializer(serializers.ModelSerializer):
     colls = CollsField()
+    url = serializers.SerializerMethodField()
+    view_url = serializers.SerializerMethodField()
+
+    def get_url(self, table):
+        return table.get_client_url()
+
+    def get_view_url(self, table):
+        return table.get_client_view_url()
 
     def create(self, validated_data):
         if validated_data.get('colls'):
@@ -72,7 +80,7 @@ class TableSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Table
-        fields = ('id', 'name', 'script', 'text_coll_name', 'text_coll_size', 'text_coll_position', 'date', 'date_mod', 'colls')
+        fields = ('id', 'name', 'script', 'text_coll_name', 'text_coll_size', 'text_coll_position', 'date', 'date_mod', 'colls', 'url', 'view_url')
 
 
 class ScriptTablesField(serializers.Field):

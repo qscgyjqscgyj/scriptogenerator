@@ -74,7 +74,6 @@ class ScriptSerializer(serializers.ModelSerializer):
             script.owner = owner
             script.save()
             cloneTreeRelations.delay(template_script.pk, script.pk, 'main', 'Script')
-            
             clone_save_links.delay(script.pk, template_script_links_count)
         else:
             del validated_data['template']

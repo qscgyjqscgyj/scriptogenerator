@@ -13,14 +13,20 @@ from django.db.models import Q
 def get_payment_for_users():
     today = datetime.today()
     for user in get_model('users', 'CustomUser').objects.all():
+        local_payment = get_model('payment', 'LocalPayment')(
+            name=u'Списание ежедневной абонентской платы.',
+            user=user,
+            sum=config.PAYMENT_PER_DAY
+        )
+        local_payment.save()
+
         user_accesses = get_model('users', 'UserAccess').objects.filter(
                 Q(active=True) &
                 Q(owner=user) &
                 (Q(payed__isnull=True) | Q(payed__lte=today-timedelta(days=1))))
-
         if user_accesses:
             local_payment = get_model('payment', 'LocalPayment')(
-                name=u'Списание абонентской оплаты за активных пользователей в команде.',
+                name=u'Списание абонентской платы за активных пользователей в команде.',
                 user=user,
                 sum=config.PAYMENT_PER_USER * len(user_accesses)
             )

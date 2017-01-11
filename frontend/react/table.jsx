@@ -29,12 +29,14 @@ export class Table extends AccessableComponent {
     }
     fixClipboard(onInit, onDestroy) {
         const {clipboard} = this.state;
-				const {tablesStore} = this.props;
+        const {tablesStore} = this.props;
         let new_clipboard = new Clipboard('.copy_icon', {
             text: function(trigger) {
-								if(tablesStore.pressed_key == 17) {
-										return trigger.getAttribute('data-link');
-								}
+                if(tablesStore.pressed_key == 17) {
+                    return trigger.getAttribute('data-link');
+                } else if($(trigger).hasClass('enable_copy_icon')) {
+                    return trigger.getAttribute('data-link');
+                }
             }
         });
 
@@ -103,6 +105,7 @@ export class Table extends AccessableComponent {
             data: JSON.stringify(coll),
             success: (res) => {
                 tablesStore.tables = res.tables;
+                this.fixClipboard();
             },
             error: (res) => {
                 console.log(res);
@@ -521,8 +524,8 @@ export class TableEdit extends Table {
                                                                                                 data-tip="Скопировать адрес ссылки (Ctrl + клик по названию ссылки)"
                                                                                                 id={'copy_link_address' + link.id}
                                                                                                 data-link={this.copyLink(link)}
-                                                                                                onClick={()=>{}} className="btn btn-default copy_icon">
-                                                                                                <i className="glyphicon glyphicon-copy"/>
+                                                                                                onClick={()=>{}} className="btn btn-default copy_icon enable_copy_icon">
+                                                                                                <i className="glyphicon glyphicon-copy copy_icon enable_copy_icon" data-link={this.copyLink(link)}/>
                                                                                             </button>
                                                                                         </div>
                                                                                         <ReactTooltip data-for={'copy_link_address' + link.id} place="top" type="dark" effect="solid"/>

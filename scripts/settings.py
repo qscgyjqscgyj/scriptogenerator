@@ -67,6 +67,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'scripts.middleware.SaveAnonymousUTMs'
 )
 
 ANONYMOUS_USER_ID = -1

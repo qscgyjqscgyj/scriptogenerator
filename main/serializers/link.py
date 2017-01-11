@@ -84,6 +84,14 @@ class LinkSerializer(serializers.ModelSerializer):
     category = LinkCategory()
     to_link = ToLinkField(allow_null=True)
     edit = CustomBooleanField(allow_null=True, required=False)
+    share_url = serializers.SerializerMethodField()
+    edit_url = serializers.SerializerMethodField()
+
+    def get_share_url(self, link):
+        return link.get_client_url()
+
+    def get_edit_url(self, link):
+        return link.get_client_url(edit=True)
 
     def create(self, validated_data):
         validated_data['category'] = LinkCategory.objects.get(pk=int(validated_data['category']))
@@ -102,7 +110,7 @@ class LinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Link
-        fields = ('id', 'name', 'category', 'text', 'order', 'to_link', 'opened', 'edit')
+        fields = ('id', 'name', 'category', 'text', 'order', 'to_link', 'opened', 'edit', 'share_url', 'edit_url')
 
 
 class LinkCategoriesField(serializers.Field):

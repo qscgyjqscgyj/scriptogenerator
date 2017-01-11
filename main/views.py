@@ -79,6 +79,25 @@ class ScriptsView(View):
             return JSONResponse({'error': 'Object does not exist.'}, status=400)
 
 
+class DelegateScriptView(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        script = data['script']
+        new_owner_email = data['email']
+        try:
+            user = CustomUser.objects.get(username=new_owner_email)
+            script = Script.objects.get(pk=int(script['id']))
+            script.owner = user
+            script.save()
+            for access in script.accesses():
+                access.delete()
+            return JSONResponse({
+                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+            })
+        except ObjectDoesNotExist:
+            return JSONResponse({'message': 'User does not exist.'}, status=400)
+
+
 class ProjectsView(View):
     def get(self, request, *args, **kwargs):
         return JSONResponse({
@@ -163,8 +182,15 @@ class TablesView(View):
 class CollsView(View):
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        coll = TableLinksCollSerializer(data=data)
-        coll_object = TableLinksColl.objects.get(pk=int(data['id']))
+
+        if data['opened_category'] or data['opened_link']:
+            for category in data['coll']['categories']:
+                category['opened'] = not data['opened_category']['opened'] if data.get('opened_category') and data['opened_category']['id'] == category['id'] else False
+                for link in category['links']:
+                    link['opened'] = not data['opened_link']['opened'] if data.get('opened_link') and data['opened_link']['id'] == link['id'] else False
+
+        coll = TableLinksCollSerializer(data=data['coll'])
+        coll_object = TableLinksColl.objects.get(pk=int(data['coll']['id']))
         if coll.is_valid():
             coll.update(coll_object, data)
             return JSONResponse({

@@ -97,12 +97,16 @@ export class Table extends AccessableComponent {
         });
     }
 
-    updateTableLinksColl(coll) {
+    updateTableLinksColl(coll, opened_category, opened_link) {
         const {tablesStore} = this.props;
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-colls-url'),
-            data: JSON.stringify(coll),
+            data: JSON.stringify({
+                coll: coll,
+                opened_category: opened_category,
+                opened_link: opened_link
+            }),
             success: (res) => {
                 tablesStore.tables = res.tables;
                 this.fixClipboard();
@@ -350,14 +354,12 @@ export class TableEdit extends Table {
                                         <div className="scroll_links" key={key} style={{width: coll.size + '%'}}>
                                             <div className="row">
                                                 <div className="col-md-1">
-                                                    <i data-tip="Добавить раздел" id='add_category' className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
+                                                    <i data-tip="Добавить раздел" className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
                                                 </div>
-                                                <ReactTooltip data-for='add_category' place="top" type="dark" effect="solid"/>
 
                                                 <div className="col-md-1">
-                                                    <i data-tip="Добавить скрытый раздел" id='add_hidden_category' className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
+                                                    <i data-tip="Добавить скрытый раздел" className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
                                                 </div>
-                                                <ReactTooltip data-for='add_hidden_category' place="top" type="dark" effect="solid"/>
                                             </div>
                                             {coll.categories.map((category, key) => {
                                                 return (
@@ -366,6 +368,7 @@ export class TableEdit extends Table {
                                                             <div className={"col-md-12 inline_elements edit_icon_handler hovered_list_item " + (category.opened ? 'opened' : null)}>
                                                                 <i className="glyphicon glyphicon-edit edit_icon inline_element"
                                                                    onClick={() => {
+                                                                       this.updateTableLinksColl(coll, category, null);
                                                                        category.opened = !category.opened;
                                                                        coll.categories.map((cat) => {
                                                                            if(cat.id !== category.id) {
@@ -375,7 +378,6 @@ export class TableEdit extends Table {
                                                                                link.opened = false;
                                                                            });
                                                                        });
-                                                                       this.updateTableLinksColl(coll);
                                                                    }}/>
                                                                 <span className="table_header_text inline_element">
                                                                     <EditableText
@@ -401,10 +403,10 @@ export class TableEdit extends Table {
                                                                     <div className="col-md-12 opened_toolbar">
                                                                         <div className="btn-toolbar" role="toolbar">
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Создать ссылку" id={'create_link' + category.id} className="btn btn-default" onClick={()=>{this.createLink(category)}}>
+                                                                                <button data-tip="Создать ссылку" className="btn btn-default" onClick={()=>{this.createLink(category)}}>
                                                                                     <i className="icon add_icon glyphicon glyphicon-plus"/>
                                                                                 </button>
-                                                                                <button data-tip="Создать ссылку на другую таблицу" id={'create_ext_link' + category.id} className="btn btn-default"
+                                                                                <button data-tip="Создать ссылку на другую таблицу" className="btn btn-default"
                                                                                     onClick={() => {
                                                                                         modalStore.modal = true;
                                                                                         modalStore.component = React.createElement(ToLink, {
@@ -417,22 +419,18 @@ export class TableEdit extends Table {
                                                                                     <i className="icon add_icon_blue glyphicon glyphicon-plus"/>
                                                                                 </button>
                                                                             </div>
-                                                                            <ReactTooltip data-for={'create_link' + category.id} place="top" type="dark" effect="solid"/>
-                                                                            <ReactTooltip data-for={'create_ext_link' + category.id} place="top" type="dark" effect="solid"/>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Переименовать раздел" id={'rename_category' + category.id} onClick={()=>{category.edit = !category.edit}} className="btn btn-default">
+                                                                                <button data-tip="Переименовать раздел" onClick={()=>{category.edit = !category.edit}} className="btn btn-default">
                                                                                     <i className="glyphicon glyphicon-edit"/>
                                                                                 </button>
                                                                             </div>
-                                                                            <ReactTooltip data-for={'rename_category' + category.id} place="top" type="dark" effect="solid"/>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Удалить раздел" id={'delete_category' + category.id} style={{color: '#fff'}} onClick={()=>{this.deleteLinkCategory(category)}} className="btn btn-danger">
+                                                                                <button data-tip="Удалить раздел" style={{color: '#fff'}} onClick={()=>{this.deleteLinkCategory(category)}} className="btn btn-danger">
                                                                                     <i className="glyphicon glyphicon-remove"/>
                                                                                 </button>
                                                                             </div>
-                                                                            <ReactTooltip data-for={'delete_category' + category.id} place="top" type="dark" effect="solid"/>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
                                                                                 {key !== 0 ?
@@ -442,7 +440,6 @@ export class TableEdit extends Table {
                                                                                             this.onCategorySort(coll);
                                                                                         }}
                                                                                         data-tip="Переместить вверх"
-                                                                                        id={'move_up_category' + category.id}
                                                                                         className="btn btn-default">
                                                                                         <i className="glyphicon glyphicon-triangle-top"/>
                                                                                     </button>
@@ -453,16 +450,13 @@ export class TableEdit extends Table {
                                                                                             coll.categories = moveInArray(coll.categories, key, key + 1);
                                                                                             this.onCategorySort(coll);
                                                                                         }}
-                                                                                        data-tip="Переместить вних"
-                                                                                        id={'move_down_category' + category.id}
+                                                                                        data-tip="Переместить вниз"
                                                                                         className="btn btn-default">
                                                                                         <i className="glyphicon glyphicon-triangle-bottom"/>
                                                                                     </button>
                                                                                 : null}
                                                                             </div>
-                                                                            <ReactTooltip data-for={'move_up_category' + category.id} place="top" type="dark" effect="solid"/>
-                                                                            <ReactTooltip data-for={'move_down_category' + category.id} place="top" type="dark" effect="solid"/>
-
+                                                                            <ReactTooltip place="top" type="dark" effect="solid"/>
                                                                         </div>
                                                                     </div>
                                                                 : null}
@@ -474,6 +468,7 @@ export class TableEdit extends Table {
                                                                     <div className="row">
                                                                         <div className={"col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null)}>
                                                                             <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {
+                                                                                this.updateTableLinksColl(coll, null, link);
                                                                                 link.opened = !link.opened;
                                                                                 coll.categories.map((cat) => {
                                                                                     cat.opened = false;
@@ -483,7 +478,6 @@ export class TableEdit extends Table {
                                                                                         }
                                                                                     });
                                                                                 });
-                                                                                this.updateTableLinksColl(coll);
                                                                             }}/>
                                                                             <span data-link={this.copyLink(link)}
                                                                                   className={"inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null)}>
@@ -494,10 +488,7 @@ export class TableEdit extends Table {
                                                                                         if(!tablesStore.pressed_key) {
                                                                                             this.props.router.push(
                                                                                                 (!link.to_link ?
-                                                                                                    '/tables/' + this.props.params.script +
-                                                                                                    '/table/' + this.props.params.table +
-                                                                                                    '/link/' + link.id +
-                                                                                                    '/edit/'
+                                                                                                    link.edit_url
                                                                                                 :
                                                                                                     link.to_link.href + '/edit/'
                                                                                                 )
@@ -522,42 +513,35 @@ export class TableEdit extends Table {
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             <button
                                                                                                 data-tip="Скопировать адрес ссылки (Ctrl + клик по названию ссылки)"
-                                                                                                id={'copy_link_address' + link.id}
                                                                                                 data-link={this.copyLink(link)}
                                                                                                 onClick={()=>{}} className="btn btn-default copy_icon enable_copy_icon">
                                                                                                 <i className="glyphicon glyphicon-copy copy_icon enable_copy_icon" data-link={this.copyLink(link)}/>
                                                                                             </button>
                                                                                         </div>
-                                                                                        <ReactTooltip data-for={'copy_link_address' + link.id} place="top" type="dark" effect="solid"/>
 
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             <button
                                                                                                 data-tip="Переименовать ссылку (Shift + клик по названию ссылки)"
-                                                                                                id={'rename_link' + link.id}
                                                                                                 onClick={()=>{link.edit = !link.edit}}
                                                                                                 className="btn btn-default">
                                                                                                 <i className="glyphicon glyphicon-edit"/>
                                                                                             </button>
                                                                                         </div>
-                                                                                        <ReactTooltip data-for={'rename_link' + link.id} place="top" type="dark" effect="solid"/>
 
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             <button
                                                                                                 data-tip="Удалить ссылку"
-                                                                                                id={'delete_link' + link.id}
                                                                                                 style={{color: '#fff'}}
                                                                                                 onClick={()=>{this.deleteLink(link)}}
                                                                                                 className="btn btn-danger btn-xs">
                                                                                                 <i className="glyphicon glyphicon-remove"/>
                                                                                             </button>
                                                                                         </div>
-                                                                                        <ReactTooltip data-for={'delete_link' + link.id} place="top" type="dark" effect="solid"/>
 
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             {key !== 0 ?
                                                                                                 <button
                                                                                                     data-tip="Переместить вверх"
-                                                                                                    id={'move_up_link' + link.id}
                                                                                                     onClick={() => {
                                                                                                         category.links = moveInArray(category.links, key, key - 1);
                                                                                                         this.onLinkSort(category);
@@ -569,7 +553,6 @@ export class TableEdit extends Table {
                                                                                             {(key + 1) !== category.links.length ?
                                                                                                 <button
                                                                                                     data-tip="Переместить вниз"
-                                                                                                    id={'move_down_link' + link.id}
                                                                                                     onClick={() => {
                                                                                                         category.links = moveInArray(category.links, key, key + 1);
                                                                                                         this.onLinkSort(category);
@@ -579,8 +562,7 @@ export class TableEdit extends Table {
                                                                                                 </button>
                                                                                             : null}
                                                                                         </div>
-                                                                                        <ReactTooltip data-for={'move_up_link' + link.id} place="top" type="dark" effect="solid"/>
-                                                                                        <ReactTooltip data-for={'move_down_link' + link.id} place="top" type="dark" effect="solid"/>
+                                                                                        <ReactTooltip place="top" type="dark" effect="solid"/>
                                                                                     </div>
                                                                                 </div>
                                                                             : null}
@@ -696,10 +678,7 @@ export class TableShare extends Table {
                                                                         <div className="row">
                                                                             <div className="col-md-12 link_name">
                                                                                 <Link to={(!link.to_link ?
-                                                                                        '/tables/' + this.props.params.script +
-                                                                                        '/table/' + this.props.params.table +
-                                                                                        '/link/' + link.id +
-                                                                                        '/share/'
+                                                                                        link.share_url
                                                                                     :
                                                                                         link.to_link.href + '/share/'
                                                                                     )

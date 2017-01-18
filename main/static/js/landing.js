@@ -75,10 +75,18 @@
 	        {var _this2 = this;
 	            return (
 	                React.createElement('form', { id: 'landing_form', action: document.body.getAttribute('data-ext-register-url'), onSubmit: this.submitForm, method: 'GET' },
-	                    React.createElement('input', { name: 'email', placeholder: 'Email', onChange: function onChange(e) {_this2.updateField('email', e.target.value);}, required: true, type: 'text' }),
-	                    React.createElement('input', { name: 'first_name', placeholder: '\u0418\u043C\u044F', onChange: function onChange(e) {_this2.updateField('first_name', e.target.value);}, type: 'text' }),
-	                    React.createElement('input', { name: 'phone', placeholder: '\u0422\u0435\u043B\u0435\u0444\u043E\u043D', onChange: function onChange(e) {_this2.updateField('phone', e.target.value);}, required: true, type: 'text' }),
-	                    React.createElement('button', { type: 'submit' }, '\u0417\u0430\u0440\u0435\u0433\u0435\u0441\u0442\u0440\u0438\u0440\u043E\u0432\u0430\u0442\u044C\u0441\u044F')));
+	                    React.createElement('div', { className: 'inline_item' },
+	                        React.createElement('input', { name: 'email', placeholder: 'Email', onChange: function onChange(e) {_this2.updateField('email', e.target.value);}, required: true, type: 'text' })),
+	
+	                    React.createElement('div', { className: 'inline_item' },
+	                        React.createElement('input', { name: 'first_name', placeholder: '\u0418\u043C\u044F', onChange: function onChange(e) {_this2.updateField('first_name', e.target.value);}, type: 'text' })),
+	
+	                    React.createElement('div', { className: 'inline_item' },
+	                        React.createElement('input', { name: 'phone', placeholder: '\u0422\u0435\u043B\u0435\u0444\u043E\u043D', onChange: function onChange(e) {_this2.updateField('phone', e.target.value);}, required: true, type: 'text' })),
+	
+	                    React.createElement('div', { className: 'inline_item submit' },
+	                        React.createElement('button', { type: 'submit' }, '\u0417\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043E\u0432\u0430\u0442\u044C\u0441\u044F'))));
+	
 	
 	
 	        } }]);return LandingForm;}(React.Component);

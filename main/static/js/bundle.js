@@ -53,12 +53,11 @@
 	var _profile = __webpack_require__(304);
 	var _payment = __webpack_require__(307);
 	var _team = __webpack_require__(308);
-	
 	var _tables = __webpack_require__(309);
 	var _table = __webpack_require__(313);
 	var _app = __webpack_require__(470);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}
 	
-	var RENDER_ELEMENT = document.getElementById('content'); // import {Projects} from './projects';
+	var RENDER_ELEMENT = document.getElementById('content');
 	
 	ReactDOM.render(
 	React.createElement(_reactRouter.Router, { history: _reactRouter.browserHistory },

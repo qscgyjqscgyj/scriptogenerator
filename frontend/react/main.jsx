@@ -7,7 +7,6 @@ import {Scripts, AvailableScripts} from './scripts';
 import {Profile} from './profile/profile';
 import {Payment} from './profile/payment';
 import {Team} from './profile/team';
-// import {Projects} from './projects';
 import {Tables, AvailableTables} from './tables';
 import {TableEdit, TableShare} from './table';
 import {AppWrapper} from './app';

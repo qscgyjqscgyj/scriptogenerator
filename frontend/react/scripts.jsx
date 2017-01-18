@@ -10,6 +10,8 @@ import Select from 'react-select';
 import confirm from './confirm';
 import ReactTooltip from 'react-tooltip';
 
+const STATIC_URL = document.body.getAttribute('data-static-url');
+
 @observer
 export class Scripts extends React.Component {
     constructor(props) {
@@ -253,6 +255,9 @@ export class Scripts extends React.Component {
                                             : null}
                                         </div>
                                     </div>
+                                    {!script.active ?
+                                        <p className="loading">Скрипт создается <img src={STATIC_URL + 'img/loading.gif'}/></p>
+                                    : null}
                                 </div>
                             )
                         })}

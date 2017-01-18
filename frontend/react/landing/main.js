@@ -28,20 +28,22 @@ class LandingForm extends React.Component {
     }
     render() {
         return(
-            <form id="landing_form" action={document.body.getAttribute('data-ext-register-url')} onSubmit={this.submitForm} method="GET">
-                <div className="inline_item">
-                    <input name="email" placeholder="Email" onChange={(e) => {this.updateField('email', e.target.value)}} required={true} type="text"/>
-                </div>
-                <div className="inline_item">
-                    <input name="first_name" placeholder="Имя" onChange={(e) => {this.updateField('first_name', e.target.value)}} type="text"/>
-                </div>
-                <div className="inline_item">
-                    <input name="phone" placeholder="Телефон" onChange={(e) => {this.updateField('phone', e.target.value)}} required={true} type="text"/>
-                </div>
-                <div className="inline_item submit">
-                    <button type="submit">Зарегистрироваться</button>
-                </div>
-            </form>
+            <center>
+                <form id="landing_form" action={document.body.getAttribute('data-ext-register-url')} onSubmit={this.submitForm} method="GET">
+                    <div className="inline_item">
+                        <input name="first_name" placeholder="Имя" onChange={(e) => {this.updateField('first_name', e.target.value)}} type="text"/>
+                    </div>
+                    <div className="inline_item">
+                        <input name="email" placeholder="Email *" onChange={(e) => {this.updateField('email', e.target.value)}} required={true} type="text"/>
+                    </div>
+                    <div className="inline_item">
+                        <input name="phone" placeholder="Телефон *" onChange={(e) => {this.updateField('phone', e.target.value)}} required={true} type="text"/>
+                    </div>
+                    <div className="inline_item submit">
+                        <button type="submit">Зарегистрироваться</button>
+                    </div>
+                </form>
+            </center>
         )
     }
 }

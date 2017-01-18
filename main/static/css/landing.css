@@ -3,7 +3,6 @@
 }
 #landing_form .inline_item {
     display: inline;
-    margin-bottom: 15px;
     font-size: 125%;
 }
 #landing_form .inline_item input {
@@ -11,6 +10,7 @@
     border-width: 2px;
     padding: 10px 12px;
     border-radius: 5px;
+    margin-bottom: 15px;
     width: 100%;
     color: grey;
     overflow: hidden;
@@ -34,8 +34,8 @@
     border-left-width: 1px;
     border-right-width: 1px;
     border-color: rgb(195, 6, 6);
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding-top: 7px;
+    padding-bottom: 7px;
     padding-left: 34px;
     padding-right: 34px;
     font-size: 21px;

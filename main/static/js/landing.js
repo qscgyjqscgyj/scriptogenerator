@@ -75,7 +75,7 @@
 	        {var _this2 = this;
 	            return (
 	                React.createElement('center', null,
-	                    React.createElement('form', { id: 'landing_form', action: document.body.getAttribute('data-ext-register-url'), onSubmit: this.submitForm, method: 'GET' },
+	                    React.createElement('form', { id: 'landing_form', action: document.body.getAttribute('data-ext-register-url'), onSubmit: this.submitForm.bind(this), method: 'GET' },
 	                        React.createElement('div', { className: 'inline_item' },
 	                            React.createElement('input', { name: 'first_name', placeholder: '\u0418\u043C\u044F', onChange: function onChange(e) {_this2.updateField('first_name', e.target.value);}, type: 'text' })),
 	

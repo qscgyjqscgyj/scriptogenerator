@@ -1,5 +1,6 @@
 #landing_form_container {
     max-width: 300px;
+    margin: 0 auto;
 }
 #landing_form .inline_item {
     display: inline;

@@ -29,7 +29,7 @@ class LandingForm extends React.Component {
     render() {
         return(
             <center>
-                <form id="landing_form" action={document.body.getAttribute('data-ext-register-url')} onSubmit={this.submitForm} method="GET">
+                <form id="landing_form" action={document.body.getAttribute('data-ext-register-url')} onSubmit={this.submitForm.bind(this)} method="GET">
                     <div className="inline_item">
                         <input name="first_name" placeholder="Имя" onChange={(e) => {this.updateField('first_name', e.target.value)}} type="text"/>
                     </div>

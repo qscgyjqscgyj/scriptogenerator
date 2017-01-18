@@ -28771,7 +28771,10 @@
 	                                                React.createElement(_reactRouter.Link, { className: 'inline_element', to: script.url }, script.name)) :
 	
 	
-	                                            React.createElement('span', null, script.name)),
+	                                            React.createElement('span', { className: 'inline_elements' },
+	                                                React.createElement('i', { className: 'glyphicon glyphicon-edit hidden_icon inline_element' }),
+	                                                React.createElement('span', null, script.name))),
+	
 	
 	
 	                                        React.createElement('div', { className: 'col-md-3' },
@@ -50851,7 +50854,7 @@
 	
 	                    React.createElement('div', { className: 'col-md-6' }),
 	                    paymentStore.payment && usersStore.session_user ?
-	                    React.createElement('form', { action: 'https://demomoney.yandex.ru/eshop.xml', id: 'YA_FORM', method: 'POST' },
+	                    React.createElement('form', { action: 'https://money.yandex.ru/eshop.xml', id: 'YA_FORM', method: 'POST' },
 	                        React.createElement('input', { name: 'shopId', value: paymentStore.shopId, type: 'hidden' }),
 	                        React.createElement('input', { name: 'scid', value: paymentStore.scid, type: 'hidden' }),
 	                        React.createElement('input', { name: 'sum', value: paymentStore.sum, type: 'hidden' }),

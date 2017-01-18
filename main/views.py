@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
@@ -352,6 +353,7 @@ class InitView(View):
 
 class ExternalRegisterView(View):
     def get(self, request, *args, **kwargs):
+        send_mail('ExternalRegisterView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         email = request.GET.get('email')
         if email:
             user = create_active_user(request, email, request.GET.get('first_name'), request.GET.get('phone'))

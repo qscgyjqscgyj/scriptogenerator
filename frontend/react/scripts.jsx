@@ -205,11 +205,13 @@ export class Scripts extends React.Component {
                                         </div>
                                     <div className="col-md-3">
                                         <div className="btn-group pull-right">
-                                            <button className={'btn btn-default btn-xs ' + (this.state.cloning || !script.active ? 'disabled' : null)}
-                                                    data-tip="Копировать скрипт"
-                                                    onClick={() => {this.cloneScript(script)}}>
-                                                <i className="glyphicon glyphicon-copy"/>
-                                            </button>
+                                            {!available ?
+                                                <button className={'btn btn-default btn-xs ' + (this.state.cloning || !script.active ? 'disabled' : null)}
+                                                        data-tip="Копировать скрипт"
+                                                        onClick={() => {this.cloneScript(script)}}>
+                                                    <i className="glyphicon glyphicon-copy"/>
+                                                </button>
+                                            : null}
                                             {!available ?
                                                 <button className="btn btn-default btn-xs"
                                                         data-tip="Права доступа к скрипту"

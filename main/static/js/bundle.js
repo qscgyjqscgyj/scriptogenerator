@@ -28787,11 +28787,13 @@
 	
 	                                        React.createElement('div', { className: 'col-md-3' },
 	                                            React.createElement('div', { className: 'btn-group pull-right' },
+	                                                !available ?
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs ' + (_this3.state.cloning || !script.active ? 'disabled' : null),
 	                                                        'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
 	                                                        onClick: function onClick() {_this3.cloneScript(script);} },
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-copy' })),
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-copy' })) :
 	
+	                                                null,
 	                                                !available ?
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u041F\u0440\u0430\u0432\u0430 \u0434\u043E\u0441\u0442\u0443\u043F\u0430 \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',

@@ -65,13 +65,14 @@ class YandexPaymentView(View):
                 shopPassword=YANDEX_SHOPPASSWORD
             ))
 
-            def success():
+            def success(aviso=False):
                 response = {
                     'code': 0,
                     'performedDatetime': date,
                     'shopId': int(request.POST.get('shopId')),
                     'invoiceId': int(request.POST.get('invoiceId')),
                     'orderSumAmount': request.POST.get('orderSumCurrencyPaycash'),
+                    'aviso': aviso
                 }
                 return HttpResponse(response_template.render(response, request), content_type='application/xhtml+xml')
 
@@ -103,7 +104,7 @@ class YandexPaymentView(View):
                     payment.payed = datetime.datetime.today()
                     payment.payment_data = json.dumps(dict(request.POST))
                     payment.save()
-                    return success()
+                    return success(aviso=True)
             return error()
         else:
             response = {

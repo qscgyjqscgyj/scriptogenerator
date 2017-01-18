@@ -28777,7 +28777,10 @@
 	                                                React.createElement(_reactRouter.Link, { className: 'inline_element', to: script.url }, script.name)) :
 	
 	
-	                                            React.createElement('span', null, script.name)),
+	                                            React.createElement('span', { className: 'inline_elements' },
+	                                                React.createElement('i', { className: 'glyphicon glyphicon-edit hidden_icon inline_element' }),
+	                                                React.createElement('span', null, script.name))),
+	
 	
 	
 	                                        React.createElement('div', { className: 'col-md-3' },
@@ -50277,7 +50280,7 @@
 	
 	                    React.createElement('div', { className: 'col-md-6' }),
 	                    paymentStore.payment && usersStore.session_user ?
-	                    React.createElement('form', { action: 'https://demomoney.yandex.ru/eshop.xml', id: 'YA_FORM', method: 'POST' },
+	                    React.createElement('form', { action: 'https://money.yandex.ru/eshop.xml', id: 'YA_FORM', method: 'POST' },
 	                        React.createElement('input', { name: 'shopId', value: paymentStore.shopId, type: 'hidden' }),
 	                        React.createElement('input', { name: 'scid', value: paymentStore.scid, type: 'hidden' }),
 	                        React.createElement('input', { name: 'sum', value: paymentStore.sum, type: 'hidden' }),
@@ -51166,6 +51169,8 @@
 	                text: function text(trigger) {
 	                    if (tablesStore.pressed_key == 17) {
 	                        return trigger.getAttribute('data-link');
+	                    } else if ((0, _jquery2.default)(trigger).hasClass('enable_copy_icon')) {
+	                        return trigger.getAttribute('data-link');
 	                    }
 	                } });
 	
@@ -51227,7 +51232,7 @@
 	            });
 	        } }, { key: 'updateTableLinksColl', value: function updateTableLinksColl(
 	
-	        coll, opened_category, opened_link) {var
+	        coll, opened_category, opened_link) {var _this2 = this;var
 	            tablesStore = this.props.tablesStore;
 	            _jquery2.default.ajax({
 	                method: 'PUT',
@@ -51239,6 +51244,7 @@
 	
 	                success: function success(res) {
 	                    tablesStore.tables = res.tables;
+	                    _this2.fixClipboard();
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -51261,14 +51267,14 @@
 	
 	        } }, { key: 'deleteLinkCategory', value: function deleteLinkCategory(
 	
-	        category) {var _this2 = this;var
+	        category) {var _this3 = this;var
 	            tablesStore = this.props.tablesStore;
 	            (0, _confirm2.default)("Вы действительно хотите удалить категорию: " + category.name).then(
 	            function (result) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
 	                    url: document.body.getAttribute('data-link-categories-url'),
-	                    data: JSON.stringify({ category: category.id, table: _this2.props.params.table }),
+	                    data: JSON.stringify({ category: category.id, table: _this3.props.params.table }),
 	                    success: function success(res) {
 	                        tablesStore.tables = res.tables;
 	                    },
@@ -51318,14 +51324,14 @@
 	
 	        } }, { key: 'deleteLink', value: function deleteLink(
 	
-	        link) {var _this3 = this;var
+	        link) {var _this4 = this;var
 	            tablesStore = this.props.tablesStore;
 	            (0, _confirm2.default)("Вы действительно хотите удалить ссылку: " + link.name).then(
 	            function (result) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
 	                    url: document.body.getAttribute('data-links-url'),
-	                    data: JSON.stringify({ link: link.id, table: _this3.props.params.table }),
+	                    data: JSON.stringify({ link: link.id, table: _this4.props.params.table }),
 	                    success: function success(res) {
 	                        tablesStore.tables = res.tables;
 	                    },
@@ -51416,11 +51422,11 @@
 	
 	
 	TableEdit = (0, _mobxReact.observer)(_class2 = function (_Table) {_inherits(TableEdit, _Table);
-	    function TableEdit(props) {_classCallCheck(this, TableEdit);var _this4 = _possibleConstructorReturn(this, (TableEdit.__proto__ || Object.getPrototypeOf(TableEdit)).call(this,
+	    function TableEdit(props) {_classCallCheck(this, TableEdit);var _this5 = _possibleConstructorReturn(this, (TableEdit.__proto__ || Object.getPrototypeOf(TableEdit)).call(this,
 	        props));
 	
-	        _this4.state = {
-	            changed: false };return _this4;
+	        _this5.state = {
+	            changed: false };return _this5;
 	
 	    }
 	    //componentWillReceiveProps(props) {
@@ -51429,7 +51435,7 @@
 	    _createClass(TableEdit, [{ key: 'changed', value: function changed(_changed) {
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { changed: { $set: _changed } }));
 	        } }, { key: 'render', value: function render()
-	        {var _this5 = this;var _props =
+	        {var _this6 = this;var _props =
 	            this.props,projectsStore = _props.projectsStore,scriptsStore = _props.scriptsStore,tablesStore = _props.tablesStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
 	            var table = tablesStore.table(this.props.params.table);
 	            var active_link = tablesStore.link(this.props.params.table, this.props.params.link);
@@ -51462,13 +51468,13 @@
 	                                                    React.createElement('div', { className: 'link_text_editor' },
 	                                                        React.createElement(_editor.CustomEditor, { object: active_link, value: active_link.text,
 	                                                            onChange: function onChange(value) {
-	                                                                _this5.changed(true);
+	                                                                _this6.changed(true);
 	                                                                active_link.text = value;
 	                                                            },
 	                                                            onBlur: function onBlur(value) {
-	                                                                _this5.changed(true);
+	                                                                _this6.changed(true);
 	                                                                active_link.text = value;
-	                                                                _this5.updateLink(active_link, _this5.changed.bind(_this5));
+	                                                                _this6.updateLink(active_link, _this6.changed.bind(_this6));
 	                                                            } }))) :
 	
 	
@@ -51483,11 +51489,11 @@
 	                                            React.createElement('div', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
 	                                                React.createElement('div', { className: 'row' },
 	                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, false);} })),
+	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this6.createLinkCategory(coll, false);} })),
 	
 	
 	                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043A\u0440\u044B\u0442\u044B\u0439 \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, true);} }))),
+	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043A\u0440\u044B\u0442\u044B\u0439 \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this6.createLinkCategory(coll, true);} }))),
 	
 	
 	                                                coll.categories.map(function (category, key) {
@@ -51497,7 +51503,7 @@
 	                                                                React.createElement('div', { className: "col-md-12 inline_elements edit_icon_handler hovered_list_item " + (category.opened ? 'opened' : null) },
 	                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
 	                                                                        onClick: function onClick() {
-	                                                                            _this5.updateTableLinksColl(coll, category, null);
+	                                                                            _this6.updateTableLinksColl(coll, category, null);
 	                                                                            category.opened = !category.opened;
 	                                                                            coll.categories.map(function (cat) {
 	                                                                                if (cat.id !== category.id) {
@@ -51512,7 +51518,7 @@
 	                                                                        React.createElement(EditableText, {
 	                                                                            text: category.name,
 	                                                                            field: 'name',
-	                                                                            submitHandler: function submitHandler(category) {return _this5.updateLinkCategory(category);},
+	                                                                            submitHandler: function submitHandler(category) {return _this6.updateLinkCategory(category);},
 	                                                                            onClick: function onClick(category) {
 	                                                                                if (tablesStore.pressed_key === 16) {
 	                                                                                    category.edit = true;
@@ -51532,7 +51538,7 @@
 	                                                                    React.createElement('div', { className: 'col-md-12 opened_toolbar' },
 	                                                                        React.createElement('div', { className: 'btn-toolbar', role: 'toolbar' },
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443', className: 'btn btn-default', onClick: function onClick() {_this5.createLink(category);} },
+	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443', className: 'btn btn-default', onClick: function onClick() {_this6.createLink(category);} },
 	                                                                                    React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-plus' })),
 	
 	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0434\u0440\u0443\u0433\u0443\u044E \u0442\u0430\u0431\u043B\u0438\u0446\u0443', className: 'btn btn-default',
@@ -51541,7 +51547,7 @@
 	                                                                                            modalStore.component = React.createElement(ToLink, {
 	                                                                                                category: category,
 	                                                                                                tablesStore: tablesStore,
-	                                                                                                createToLink: _this5.createToLink.bind(_this5),
+	                                                                                                createToLink: _this6.createToLink.bind(_this6),
 	                                                                                                modalStore: modalStore });
 	
 	                                                                                        } },
@@ -51556,7 +51562,7 @@
 	
 	
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', style: { color: '#fff' }, onClick: function onClick() {_this5.deleteLinkCategory(category);}, className: 'btn btn-danger' },
+	                                                                                React.createElement('button', { 'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', style: { color: '#fff' }, onClick: function onClick() {_this6.deleteLinkCategory(category);}, className: 'btn btn-danger' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
 	
 	
@@ -51566,7 +51572,7 @@
 	                                                                                React.createElement('button', {
 	                                                                                        onClick: function onClick() {
 	                                                                                            coll.categories = (0, _sort.moveInArray)(coll.categories, key, key - 1);
-	                                                                                            _this5.onCategorySort(coll);
+	                                                                                            _this6.onCategorySort(coll);
 	                                                                                        },
 	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u0432\u0435\u0440\u0445',
 	                                                                                        className: 'btn btn-default' },
@@ -51577,7 +51583,7 @@
 	                                                                                React.createElement('button', {
 	                                                                                        onClick: function onClick() {
 	                                                                                            coll.categories = (0, _sort.moveInArray)(coll.categories, key, key + 1);
-	                                                                                            _this5.onCategorySort(coll);
+	                                                                                            _this6.onCategorySort(coll);
 	                                                                                        },
 	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0437',
 	                                                                                        className: 'btn btn-default' },
@@ -51597,7 +51603,7 @@
 	                                                                        React.createElement('div', { className: 'row' },
 	                                                                            React.createElement('div', { className: "col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null) },
 	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {
-	                                                                                        _this5.updateTableLinksColl(coll, null, link);
+	                                                                                        _this6.updateTableLinksColl(coll, null, link);
 	                                                                                        link.opened = !link.opened;
 	                                                                                        coll.categories.map(function (cat) {
 	                                                                                            cat.opened = false;
@@ -51608,14 +51614,14 @@
 	                                                                                            });
 	                                                                                        });
 	                                                                                    } }),
-	                                                                                React.createElement('span', { 'data-link': _this5.copyLink(link),
+	                                                                                React.createElement('span', { 'data-link': _this6.copyLink(link),
 	                                                                                        className: "inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null) },
 	                                                                                    React.createElement(EditableText, {
 	                                                                                        text: link.name,
 	                                                                                        field: 'name',
 	                                                                                        onClick: function onClick(link) {
 	                                                                                            if (!tablesStore.pressed_key) {
-	                                                                                                _this5.props.router.push(
+	                                                                                                _this6.props.router.push(
 	                                                                                                !link.to_link ?
 	                                                                                                link.edit_url :
 	
@@ -51624,10 +51630,10 @@
 	
 	                                                                                            } else if (tablesStore.pressed_key === 16) {
 	                                                                                                link.edit = true;
-	                                                                                                _this5.fixClipboard();
+	                                                                                                _this6.fixClipboard();
 	                                                                                            }
 	                                                                                        },
-	                                                                                        submitHandler: function submitHandler(link) {return _this5.updateLink(link);},
+	                                                                                        submitHandler: function submitHandler(link) {return _this6.updateLink(link);},
 	                                                                                        object: link,
 	                                                                                        edit: link.edit,
 	                                                                                        settings: {
@@ -51642,9 +51648,9 @@
 	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
 	                                                                                            React.createElement('button', {
 	                                                                                                    'data-tip': '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0430\u0434\u0440\u0435\u0441 \u0441\u0441\u044B\u043B\u043A\u0438 (Ctrl + \u043A\u043B\u0438\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E \u0441\u0441\u044B\u043B\u043A\u0438)',
-	                                                                                                    'data-link': _this5.copyLink(link),
-	                                                                                                    onClick: function onClick() {}, className: 'btn btn-default copy_icon' },
-	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-copy' }))),
+	                                                                                                    'data-link': _this6.copyLink(link),
+	                                                                                                    onClick: function onClick() {}, className: 'btn btn-default copy_icon enable_copy_icon' },
+	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-copy copy_icon enable_copy_icon', 'data-link': _this6.copyLink(link) }))),
 	
 	
 	
@@ -51661,7 +51667,7 @@
 	                                                                                            React.createElement('button', {
 	                                                                                                    'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443',
 	                                                                                                    style: { color: '#fff' },
-	                                                                                                    onClick: function onClick() {_this5.deleteLink(link);},
+	                                                                                                    onClick: function onClick() {_this6.deleteLink(link);},
 	                                                                                                    className: 'btn btn-danger btn-xs' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
 	
@@ -51673,7 +51679,7 @@
 	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u0432\u0435\u0440\u0445',
 	                                                                                                    onClick: function onClick() {
 	                                                                                                        category.links = (0, _sort.moveInArray)(category.links, key, key - 1);
-	                                                                                                        _this5.onLinkSort(category);
+	                                                                                                        _this6.onLinkSort(category);
 	                                                                                                    },
 	                                                                                                    className: 'btn btn-default' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-triangle-top' })) :
@@ -51684,7 +51690,7 @@
 	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0437',
 	                                                                                                    onClick: function onClick() {
 	                                                                                                        category.links = (0, _sort.moveInArray)(category.links, key, key + 1);
-	                                                                                                        _this5.onLinkSort(category);
+	                                                                                                        _this6.onLinkSort(category);
 	                                                                                                    },
 	                                                                                                    className: 'btn btn-default' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-triangle-bottom' })) :
@@ -51732,10 +51738,10 @@
 	
 	
 	TableShare = exports.TableShare = (0, _mobxReact.observer)(_class3 = function (_Table2) {_inherits(TableShare, _Table2);function TableShare() {_classCallCheck(this, TableShare);return _possibleConstructorReturn(this, (TableShare.__proto__ || Object.getPrototypeOf(TableShare)).apply(this, arguments));}_createClass(TableShare, [{ key: 'componentDidMount', value: function componentDidMount()
-	        {var _this7 = this;
+	        {var _this8 = this;
 	            (0, _jquery2.default)(document).on("click", "#link_text_block a", function (e) {
 	                e.preventDefault();var
-	                router = _this7.props.router;
+	                router = _this8.props.router;
 	
 	                if (e.target.tagName !== 'A') {
 	                    return router.push((0, _jquery2.default)(e.target).closest('a').attr('href'));
@@ -51836,13 +51842,13 @@
 	
 	
 	ToLink = function (_React$Component) {_inherits(ToLink, _React$Component);
-	    function ToLink(props) {_classCallCheck(this, ToLink);var _this8 = _possibleConstructorReturn(this, (ToLink.__proto__ || Object.getPrototypeOf(ToLink)).call(this,
+	    function ToLink(props) {_classCallCheck(this, ToLink);var _this9 = _possibleConstructorReturn(this, (ToLink.__proto__ || Object.getPrototypeOf(ToLink)).call(this,
 	        props));
 	
-	        _this8.state = {
+	        _this9.state = {
 	            table: null,
 	            category: null,
-	            link: null };return _this8;
+	            link: null };return _this9;
 	
 	    }_createClass(ToLink, [{ key: 'onChange', value: function onChange(
 	        select, selector) {var
@@ -51913,7 +51919,7 @@
 	            }
 	            return result;
 	        } }, { key: 'render', value: function render()
-	        {var _this9 = this;var
+	        {var _this10 = this;var
 	            modalStore = this.props.modalStore;var _state2 =
 	            this.state,table = _state2.table,category = _state2.category,link = _state2.link;
 	            return (
@@ -51924,7 +51930,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0442\u0430\u0431\u043B\u0438\u0446\u0443',
 	                            value: table ? table.id : null,
 	                            options: this.tablesOptions(),
-	                            onChange: function onChange(select) {_this9.onChange(select, 'table');} })),
+	                            onChange: function onChange(select) {_this10.onChange(select, 'table');} })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
 	                        React.createElement(_reactSelect2.default, {
@@ -51932,7 +51938,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044E',
 	                            value: category ? category.id : null,
 	                            options: this.categoriesOptions(),
-	                            onChange: function onChange(select) {_this9.onChange(select, 'category');},
+	                            onChange: function onChange(select) {_this10.onChange(select, 'category');},
 	                            disabled: !table })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
@@ -51941,16 +51947,16 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0441\u044B\u043B\u043A\u0443',
 	                            value: link ? link.id : null,
 	                            options: this.linksOptions(),
-	                            onChange: function onChange(select) {_this9.onChange(select, 'link');},
+	                            onChange: function onChange(select) {_this10.onChange(select, 'link');},
 	                            disabled: !table || !category })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
 	                        React.createElement('button', {
 	                                className: 'btn btn-success ' + (!link ? 'disabled' : null),
 	                                onClick: function onClick() {var
-	                                    link = _this9.state.link;
+	                                    link = _this10.state.link;
 	                                    if (link) {
-	                                        return _this9.props.createToLink(_this9.props.category, link, function () {
+	                                        return _this10.props.createToLink(_this10.props.category, link, function () {
 	                                            modalStore.modal = false;
 	                                        });
 	                                    }
@@ -51964,18 +51970,18 @@
 	
 	
 	EditableText = function (_React$Component2) {_inherits(EditableText, _React$Component2);
-	    function EditableText(props) {_classCallCheck(this, EditableText);var _this10 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
+	    function EditableText(props) {_classCallCheck(this, EditableText);var _this11 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
 	        props));
 	
-	        _this10.delay = 50;
+	        _this11.delay = 50;
 	
-	        _this10.state = {
-	            text: _this10.props.text,
+	        _this11.state = {
+	            text: _this11.props.text,
 	            edit: props.edit ? props.edit : false,
 	            key: null,
 	
 	            click_timer: null,
-	            prevent: false };return _this10;
+	            prevent: false };return _this11;
 	
 	    }_createClass(EditableText, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -52003,7 +52009,7 @@
 	                this.props.onClick(this.props.object);
 	            }
 	        } }, { key: 'render', value: function render()
-	        {var _this11 = this;var
+	        {var _this12 = this;var
 	            settings = this.props.settings;
 	            return (
 	                React.createElement('div', null,
@@ -52012,7 +52018,7 @@
 	
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
-	                            onChange: function onChange(e) {_this11.setState((0, _reactAddonsUpdate2.default)(_this11.state, { text: { $set: e.target.value } }));},
+	                            onChange: function onChange(e) {_this12.setState((0, _reactAddonsUpdate2.default)(_this12.state, { text: { $set: e.target.value } }));},
 	                            autoFocus: true,
 	                            onBlur: this.submitHandler.bind(this),
 	                            placeholder: settings.placeholder,

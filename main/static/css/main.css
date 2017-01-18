@@ -111,6 +111,11 @@
     font-size: 12px;
     visibility: hidden;
 }
+.hidden_icon {
+    margin-right: 10px;
+    font-size: 12px;
+    visibility: hidden;
+}
 .edit_icon:hover {
     cursor: pointer;
     color: #48c1e4;

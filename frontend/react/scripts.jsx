@@ -195,7 +195,10 @@ export class Scripts extends React.Component {
                                                 <Link className="inline_element" to={script.url}>{script.name}</Link>
                                             </span>
                                         :
-                                            <span>{script.name}</span>
+                                            <span className="inline_elements">
+                                                <i className="glyphicon glyphicon-edit hidden_icon inline_element"/>
+                                                <span>{script.name}</span>
+                                            </span>
                                         }
                                     </div>
                                         <div className="col-md-3">

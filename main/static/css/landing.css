@@ -1,7 +1,7 @@
-#landing_form_container .inline_item {
+#landing_form .inline_item {
     display: inline-block;
 }
-#landing_form_container .inline_item input {
+#landing_form .inline_item input {
     border-radius: 5px;
     height: 44px;
     width: 100%;
@@ -17,7 +17,7 @@
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-#landing_form_container .submit {
+#landing_form .submit {
     background-color: rgb(244, 8, 8);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;

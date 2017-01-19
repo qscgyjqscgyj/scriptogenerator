@@ -64,17 +64,13 @@ export class Table extends AccessableComponent {
         tablesStore.pullTables(props.params.script);
     }
     componentDidMount() {
-        const {tablesStore} = this.props;
-
         $(document.body).on('keydown', this.handleKeyDown.bind(this));
         $(document.body).on('keyup', this.handleKeyUp.bind(this));
     }
-
     componentWillUnmount() {
         $(document.body).off('keydown', this.handleKeyDown.bind(this));
         $(document.body).off('keyup', this.handleKeyUp.bind(this));
     }
-
     handleKeyDown(e) {
         const {tablesStore} = this.props;
         // 17 - CTRL, 16 - SHIFT
@@ -82,12 +78,10 @@ export class Table extends AccessableComponent {
             tablesStore.pressed_key = e.keyCode;
         }
     }
-
     handleKeyUp(e) {
         const {tablesStore} = this.props;
         tablesStore.pressed_key = null;
     }
-
     componentDidUpdate() {
         const content_height = screen.height - 200;
         let scroll_links = [].slice.call(document.getElementsByClassName('scroll_links'));
@@ -96,7 +90,6 @@ export class Table extends AccessableComponent {
             $(el).css('max-height', content_height + 'px');
         });
     }
-
     updateTableLinksColl(coll, opened_category, opened_link) {
         const {tablesStore} = this.props;
         $.ajax({
@@ -109,14 +102,12 @@ export class Table extends AccessableComponent {
             }),
             success: (res) => {
                 tablesStore.tables = res.tables;
-                this.fixClipboard();
             },
             error: (res) => {
                 console.log(res);
             }
         });
     }
-
     createLinkCategory(coll, hidden) {
         const {tablesStore} = this.props;
         $.ajax({
@@ -131,7 +122,6 @@ export class Table extends AccessableComponent {
             }
         });
     }
-
     deleteLinkCategory(category) {
         const {tablesStore} = this.props;
         confirm("Вы действительно хотите удалить категорию: " + category.name).then(
@@ -153,7 +143,6 @@ export class Table extends AccessableComponent {
             }
         )
     }
-
     updateLinkCategory(category) {
         const {tablesStore} = this.props;
         $.ajax({
@@ -168,7 +157,6 @@ export class Table extends AccessableComponent {
             }
         });
     }
-
     createLink(category, to_link) {
         const {tablesStore} = this.props;
         $.ajax({
@@ -188,7 +176,6 @@ export class Table extends AccessableComponent {
             }
         });
     }
-
     deleteLink(link) {
         const {tablesStore} = this.props;
         confirm("Вы действительно хотите удалить ссылку: " + link.name).then(
@@ -210,8 +197,7 @@ export class Table extends AccessableComponent {
             }
         )
     }
-
-    updateLink(link, onSave) {
+    updateLink(link) {
         const {tablesStore} = this.props;
         $.ajax({
             method: 'PUT',
@@ -219,16 +205,12 @@ export class Table extends AccessableComponent {
             data: JSON.stringify(link),
             success: (res) => {
                 tablesStore.tables = res.tables;
-                if(onSave) {
-                    return onSave(false);
-                }
             },
             error: (res) => {
                 console.log(res);
             }
         });
     }
-
     sortedColls() {
         const {tablesStore} = this.props;
         let table = tablesStore.table(this.props.params.table);
@@ -251,7 +233,6 @@ export class Table extends AccessableComponent {
             );
         }
     }
-
     copyLink(link) {
         if(!link.to_link) {
             return (
@@ -266,15 +247,15 @@ export class Table extends AccessableComponent {
             )
         }
     }
-
-    onCategorySort(coll) {
-        coll.categories.map((category, key) => {
+    async onCategorySort(coll) {
+        let categories = await coll.categories.map((category, key) => {
             category.order = key;
+            return category;
         });
         return this.updateTableLinksColl(coll);
     }
-    onLinkSort(category) {
-        category.links.map((link, key) => {
+    async onLinkSort(category) {
+        let links = await category.links.map((link, key) => {
             link.order = key;
         });
         return this.updateLinkCategory(category);
@@ -287,18 +268,31 @@ export class Table extends AccessableComponent {
 
 @observer
 export class TableEdit extends Table {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            changed: false
-        }
+    async openCategory(coll, category) {
+        category.opened = !category.opened;
+        let categories = await coll.categories.map((cat) => {
+            if(cat.id !== category.id) {
+               cat.opened = false;
+            }
+            cat.links.map((link) => {
+               link.opened = false;
+            });
+            return cat;
+        });
+        this.updateTableLinksColl(coll, category, null);
     }
-    //componentWillReceiveProps(props) {
-    //    this.setState(update(this.state, {changed: {$set: props.changed}}))
-    //}
-    changed(changed) {
-        this.setState(update(this.state, {changed: {$set: changed}}))
+    async openLink(coll, link) {
+        link.opened = !link.opened;
+        let categories = await coll.categories.map((cat) => {
+            cat.opened = false;
+            cat.links.map((ln) => {
+                if(ln.id !== link.id) {
+                    ln.opened = false;
+                }
+            });
+            return cat;
+        });
+        this.updateTableLinksColl(coll, null, link);
     }
     render() {
         const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
@@ -324,22 +318,18 @@ export class TableEdit extends Table {
                                                         <div className="col-md-12">
                                                             <h4 className="table_header_text">{active_link.name}</h4>
                                                         </div>
-                                                        {/*<div className="col-md-4 pull-right">*/}
-                                                            {/*<button className={'btn ' + (this.state.changed ? 'btn-success' : 'btn-default')} onClick={() => {this.updateLink(active_link, this.changed.bind(this))}}>*/}
-                                                                {/*Сохранить*/}
-                                                            {/*</button>*/}
-                                                        {/*</div>*/}
                                                     </div>
                                                     <div className="link_text_editor">
                                                         <CustomEditor object={active_link} value={active_link.text}
                                                             onChange={(value) => {
-                                                                this.changed(true);
                                                                 active_link.text = value;
                                                             }}
                                                             onBlur={(value) => {
-                                                                this.changed(true);
+                                                                let active_link_text = active_link.text;
                                                                 active_link.text = value;
-                                                                this.updateLink(active_link, this.changed.bind(this));
+                                                                if(active_link_text !== active_link.text) {
+                                                                    this.updateLink(active_link);
+                                                                }
                                                             }}/>
                                                     </div>
                                                 </div>
@@ -367,18 +357,7 @@ export class TableEdit extends Table {
                                                         <div className="row">
                                                             <div className={"col-md-12 inline_elements edit_icon_handler hovered_list_item " + (category.opened ? 'opened' : null)}>
                                                                 <i className="glyphicon glyphicon-edit edit_icon inline_element"
-                                                                   onClick={() => {
-                                                                       this.updateTableLinksColl(coll, category, null);
-                                                                       category.opened = !category.opened;
-                                                                       coll.categories.map((cat) => {
-                                                                           if(cat.id !== category.id) {
-                                                                               cat.opened = false;
-                                                                           }
-                                                                           cat.links.map((link) => {
-                                                                               link.opened = false;
-                                                                           });
-                                                                       });
-                                                                   }}/>
+                                                                   onClick={() => {this.openCategory(coll, category)}}/>
                                                                 <span className="table_header_text inline_element">
                                                                     <EditableText
                                                                         text={category.name}
@@ -467,18 +446,7 @@ export class TableEdit extends Table {
                                                                 <div key={key}>
                                                                     <div className="row">
                                                                         <div className={"col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null)}>
-                                                                            <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {
-                                                                                this.updateTableLinksColl(coll, null, link);
-                                                                                link.opened = !link.opened;
-                                                                                coll.categories.map((cat) => {
-                                                                                    cat.opened = false;
-                                                                                    cat.links.map((ln) => {
-                                                                                        if(ln.id !== link.id) {
-                                                                                            ln.opened = false;
-                                                                                        }
-                                                                                    });
-                                                                                });
-                                                                            }}/>
+                                                                            <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {this.openLink(coll, link)}}/>
                                                                             <span data-link={this.copyLink(link)}
                                                                                   className={"inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null)}>
                                                                                 <EditableText

@@ -50,7 +50,6 @@ export class TablesStore {
             }
         });
     }
-
     @action updateTable(e, modalStore) {
         if(e) {e.preventDefault()}
         $.ajax({
@@ -69,19 +68,15 @@ export class TablesStore {
             }
         });
     }
-
     @action setLink(table_id, link_id) {
         this.active_link = this.link(table_id, link_id);
     }
-
     table(id) {
         return this.tables.find(table => parseInt(table.id) === parseInt(id));
     }
-
     script_tables(script_id) {
         return this.tables.filter(table => parseInt(table.script) === parseInt(script_id));
     }
-
     link(table_id, link_id) {
         let table = this.table(table_id);
         let all_links = [];
@@ -96,7 +91,6 @@ export class TablesStore {
             return all_links.find(link => parseInt(link.id) === parseInt(link_id));
         }
     }
-
     resetCreating() {
         this.creating_name = '';
         this.creating_colls = [new Coll()];

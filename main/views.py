@@ -184,11 +184,11 @@ class CollsView(View):
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
 
-        if data['opened_category'] or data['opened_link']:
-            for category in data['coll']['categories']:
-                category['opened'] = not data['opened_category']['opened'] if data.get('opened_category') and data['opened_category']['id'] == category['id'] else False
-                for link in category['links']:
-                    link['opened'] = not data['opened_link']['opened'] if data.get('opened_link') and data['opened_link']['id'] == link['id'] else False
+        # if data.get('opened_category') or data.get('opened_link'):
+        #     for category in data['coll']['categories']:
+        #         category['opened'] = not data['opened_category']['opened'] if data.get('opened_category') and data['opened_category']['id'] == category['id'] else None
+        #         for link in category['links']:
+        #             link['opened'] = not data['opened_link']['opened'] if data.get('opened_link') and data['opened_link']['id'] == link['id'] else None
 
         coll = TableLinksCollSerializer(data=data['coll'])
         coll_object = TableLinksColl.objects.get(pk=int(data['coll']['id']))
@@ -353,7 +353,6 @@ class InitView(View):
 
 class ExternalRegisterView(View):
     def get(self, request, *args, **kwargs):
-        send_mail('ExternalRegisterView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         email = request.GET.get('email')
         if email:
             user = create_active_user(request, email, request.GET.get('first_name'), request.GET.get('phone'))

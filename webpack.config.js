@@ -6,8 +6,8 @@ const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 
 module.exports = {
   entry: {
-    bundle: './frontend/react/main',
-    landing: './frontend/react/landing/main'
+    bundle: ['babel-polyfill', './frontend/react/main'],
+    // landing: './frontend/react/landing/main'
   },
   output: {
     path: path.join(__dirname, 'main/static/js'),

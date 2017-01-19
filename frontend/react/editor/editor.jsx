@@ -16,14 +16,12 @@ import ReactTooltip from 'react-tooltip';
 export class CustomEditor extends React.Component {
     constructor(props) {
         super(props);
-
         this.decorator = new CompositeDecorator([
             {
                 strategy: findLinkEntities,
                 component: Link
             }
         ]);
-
         this.state = {
             object: props.object,
             editorState: this.getEditorState(props),

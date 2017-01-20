@@ -26,9 +26,9 @@ urlpatterns = patterns('',
     url(r'^api/links/$', login_required(csrf_exempt(LinkView.as_view())), name='links'),
     url(r'^api/links/categories/$', login_required(csrf_exempt(LinkCategoriesView.as_view())), name='link_categories'),
 
-    url(r'^api/profile$', login_required(csrf_exempt(ProfileView.as_view())), name='profile'),
-    url(r'^api/payment$', login_required(csrf_exempt(PaymentView.as_view())), name='payment'),
-    url(r'^api/team$', login_required(csrf_exempt(TeamView.as_view())), name='team'),
+    url(r'^api/profile/$', login_required(csrf_exempt(ProfileView.as_view())), name='profile'),
+    url(r'^api/payment/$', login_required(csrf_exempt(PaymentView.as_view())), name='payment'),
+    url(r'^api/team/$', login_required(csrf_exempt(TeamView.as_view())), name='team'),
 
     url(r'^api/ext.register$', ExternalRegisterView.as_view(), name='ext.register'),
 

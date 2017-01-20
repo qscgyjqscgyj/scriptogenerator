@@ -32,10 +32,5 @@ def create_active_user(request, email, last_name='', first_name='', middle_name=
     )
     new_user.is_active = True
     new_user.save()
-
-    login(request, authenticate(
-        username=user.username,
-        password=password
-    ))
     send_new_user_data_email.delay(email, password)
-    return new_user
+    return {'user': new_user, 'password': password}

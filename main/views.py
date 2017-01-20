@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import datetime
+
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.db.models.loading import get_model
@@ -357,7 +360,9 @@ class ExternalRegisterView(View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         if email:
-            user = create_active_user(request, email, request.GET.get('first_name'), request.GET.get('phone'))
+            active_user = create_active_user(request, email, request.GET.get('first_name'), request.GET.get('phone'))
+            user = active_user['user']
+            password = active_user['password']
             if user:
                 if request.GET.get('balance') == '1':
                     PRESENT_SUM = 500.0
@@ -373,6 +378,11 @@ class ExternalRegisterView(View):
                     user.balance_real = PRESENT_SUM
                     user.balance_total = PRESENT_SUM
                     user.save()
+
+                    login(request, authenticate(
+                        username=user.username,
+                        password=password
+                    ))
                 return JsonResponse({'success': 200}, status=200)
             return JsonResponse({'error': 500, 'message': u'Такой пользователь уже существует.'}, status=500)
 

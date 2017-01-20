@@ -386,7 +386,7 @@ class ExternalRegisterView(View):
                 if request.GET.get('type') == 'ext':
                     return HttpResponseRedirect('/')
                 return JsonResponse({'success': 200}, status=200)
-            return JsonResponse({'error': 500, 'message': u'Такой пользователь уже существует.'}, status=500)
+        return JsonResponse({'error': 500, 'message': u'Такой пользователь уже существует.'}, status=500)
 
     def post(self, request, *args, **kwargs):
         return JsonResponse({'error': 'Method doesn\'t supports.'}, status=500)

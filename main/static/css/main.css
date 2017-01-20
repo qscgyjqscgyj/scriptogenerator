@@ -325,3 +325,7 @@
 .profile_payment__payment {
     margin-top: 20px;
 }
+.logo {
+    position: relative;
+    top: 8px;
+}

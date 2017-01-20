@@ -86217,7 +86217,7 @@
 	                React.createElement('nav', { className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
 	                    React.createElement('div', { className: 'container-fluid' },
 	                        React.createElement('a', { className: 'navbar-brand', href: '/' },
-	                            React.createElement('img', { className: 'logo', width: '180px', alt: 'Scriptogenerator', src: STATIC_URL + 'img/logo.png' })),
+	                            React.createElement('img', { className: 'logo', width: '40px', alt: 'Scriptogenerator', src: STATIC_URL + 'img/logo.png' })),
 	
 	
 	                        React.createElement('ul', { className: 'nav navbar-nav' },

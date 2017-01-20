@@ -383,7 +383,7 @@ class ExternalRegisterView(View):
                         username=user.username,
                         password=password
                     ))
-                if request.GET.get('type') and request.GET.get('type') == 'ext':
+                if request.GET.get('type') == 'ext':
                     return HttpResponseRedirect('/')
                 return JsonResponse({'success': 200}, status=200)
             return JsonResponse({'error': 500, 'message': u'Такой пользователь уже существует.'}, status=500)

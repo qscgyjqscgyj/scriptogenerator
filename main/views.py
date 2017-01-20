@@ -360,6 +360,9 @@ class ExternalRegisterView(View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         if email:
+            if request.GET.get('redirect') == '1':
+                return JsonResponse({'success': 200}, status=200)
+
             active_user = create_active_user(request, email, request.GET.get('first_name'), request.GET.get('phone'))
             if active_user:
                 user = active_user['user']
@@ -384,6 +387,7 @@ class ExternalRegisterView(View):
                             username=user.username,
                             password=password
                         ))
+
                     if request.GET.get('type') == 'ext':
                         return HttpResponseRedirect('/')
                     return JsonResponse({'success': 200}, status=200)

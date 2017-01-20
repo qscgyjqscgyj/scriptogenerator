@@ -36634,94 +36634,96 @@
 	                        React.createElement('div', { className: 'row' },
 	                            scriptsStore.filteredScripts(available).map(function (script, key) {
 	                                var access = available ? script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;}) : null;
-	                                return (
-	                                    React.createElement('div', { key: key, className: 'col-md-12 hovered_list_item list_item edit_icon_handler' },
-	                                        React.createElement('div', { className: 'col-md-6' },
-	                                            script.active && script.available ?
-	                                            React.createElement('span', { className: 'inline_elements' },
-	                                                (available && script.available ? access.edit : true) ?
-	                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
-	                                                    'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                    onClick: function onClick() {
-	                                                        scriptsStore.editing = script;
-	                                                        modalStore.modal = true;
-	                                                        modalStore.component = React.createElement(EditingScript, {
-	                                                            projectsStore: projectsStore,
-	                                                            scriptsStore: scriptsStore,
-	                                                            modalStore: modalStore,
-	                                                            createScript: _this3.createScript.bind(_this3),
-	                                                            updateScript: _this3.updateScript.bind(_this3),
-	                                                            available: available });
-	
-	                                                    } }) :
-	                                                null,
-	
-	                                                React.createElement(_reactRouter.Link, { className: 'inline_element', to: script.url }, script.name)) :
-	
-	
-	                                            React.createElement('span', { className: 'inline_elements' },
-	                                                React.createElement('i', { className: 'glyphicon glyphicon-edit hidden_icon inline_element' }),
-	                                                React.createElement('span', null, script.name))),
-	
-	
-	
-	                                        React.createElement('div', { className: 'col-md-3' },
-	                                            available ?
-	                                            React.createElement('td', null, script.owner.email) :
-	                                            null),
-	
-	                                        React.createElement('div', { className: 'col-md-3' },
-	                                            React.createElement('div', { className: 'btn-group pull-right' },
-	                                                !available ?
-	                                                React.createElement('button', { className: 'btn btn-default btn-xs ' + (_this3.state.cloning || !script.active ? 'disabled' : null),
-	                                                        'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                        onClick: function onClick() {_this3.cloneScript(script);} },
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-copy' })) :
-	
-	                                                null,
-	                                                !available ?
-	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
-	                                                        'data-tip': '\u041F\u0440\u0430\u0432\u0430 \u0434\u043E\u0441\u0442\u0443\u043F\u0430 \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
+	                                if (access ? access.active || !access : true) {
+	                                    return (
+	                                        React.createElement('div', { key: key, className: 'col-md-12 hovered_list_item list_item edit_icon_handler' },
+	                                            React.createElement('div', { className: 'col-md-6' },
+	                                                script.active && script.available ?
+	                                                React.createElement('span', { className: 'inline_elements' },
+	                                                    (available && script.available ? access.edit : true) ?
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
+	                                                        'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
 	                                                        onClick: function onClick() {
+	                                                            scriptsStore.editing = script;
 	                                                            modalStore.modal = true;
-	                                                            modalStore.component = React.createElement(Accesses, {
-	                                                                script: script,
-	                                                                usersStore: usersStore,
-	                                                                setAccesses: _this3.setAccesses.bind(_this3),
-	                                                                delegateScript: _this3.delegateScript.bind(_this3) });
+	                                                            modalStore.component = React.createElement(EditingScript, {
+	                                                                projectsStore: projectsStore,
+	                                                                scriptsStore: scriptsStore,
+	                                                                modalStore: modalStore,
+	                                                                createScript: _this3.createScript.bind(_this3),
+	                                                                updateScript: _this3.updateScript.bind(_this3),
+	                                                                available: available });
 	
-	                                                        } },
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-user' })) :
+	                                                        } }) :
+	                                                    null,
 	
-	                                                null,
-	                                                (available && script.available ? access.edit : true) ?
-	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
-	                                                        'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
-	                                                        onClick: function onClick() {_this3.props.router.push('/tables/' + script.id + '/');} },
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' })) :
-	
-	                                                null,
-	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
-	                                                        'data-tip': '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
-	                                                        onClick: function onClick() {
-	                                                            _this3.props.router.push(script.view_url);
-	                                                        } },
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-eye-open' })),
-	
-	                                                !available ?
-	                                                React.createElement('button', { className: 'btn btn-danger btn-xs',
-	                                                        'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                        onClick: function onClick() {_this3.deleteScript(script);} },
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
-	
-	                                                null)),
+	                                                    React.createElement(_reactRouter.Link, { className: 'inline_element', to: script.url }, script.name)) :
 	
 	
-	                                        !script.active ?
-	                                        React.createElement('p', { className: 'loading' }, '\u0421\u043A\u0440\u0438\u043F\u0442 \u0441\u043E\u0437\u0434\u0430\u0435\u0442\u0441\u044F ', React.createElement('img', { src: STATIC_URL + 'img/loading.gif' })) :
-	                                        null));
+	                                                React.createElement('span', { className: 'inline_elements' },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit hidden_icon inline_element' }),
+	                                                    React.createElement('span', null, script.name))),
 	
 	
+	
+	                                            React.createElement('div', { className: 'col-md-3' },
+	                                                available ?
+	                                                React.createElement('span', null, script.owner.email) :
+	                                                null),
+	
+	                                            React.createElement('div', { className: 'col-md-3' },
+	                                                React.createElement('div', { className: 'btn-group pull-right' },
+	                                                    !available ?
+	                                                    React.createElement('button', { className: 'btn btn-default btn-xs ' + (_this3.state.cloning || !script.active ? 'disabled' : null),
+	                                                            'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                                            onClick: function onClick() {_this3.cloneScript(script);} },
+	                                                        React.createElement('i', { className: 'glyphicon glyphicon-copy' })) :
+	
+	                                                    null,
+	                                                    !available ?
+	                                                    React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                            'data-tip': '\u041F\u0440\u0430\u0432\u0430 \u0434\u043E\u0441\u0442\u0443\u043F\u0430 \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
+	                                                            onClick: function onClick() {
+	                                                                modalStore.modal = true;
+	                                                                modalStore.component = React.createElement(Accesses, {
+	                                                                    script: script,
+	                                                                    usersStore: usersStore,
+	                                                                    setAccesses: _this3.setAccesses.bind(_this3),
+	                                                                    delegateScript: _this3.delegateScript.bind(_this3) });
+	
+	                                                            } },
+	                                                        React.createElement('i', { className: 'glyphicon glyphicon-user' })) :
+	
+	                                                    null,
+	                                                    (available && script.available ? access.edit : true) ?
+	                                                    React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                            'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
+	                                                            onClick: function onClick() {_this3.props.router.push('/tables/' + script.id + '/');} },
+	                                                        React.createElement('i', { className: 'glyphicon glyphicon-edit' })) :
+	
+	                                                    null,
+	                                                    React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                            'data-tip': '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
+	                                                            onClick: function onClick() {
+	                                                                _this3.props.router.push(script.view_url);
+	                                                            } },
+	                                                        React.createElement('i', { className: 'glyphicon glyphicon-eye-open' })),
+	
+	                                                    !available ?
+	                                                    React.createElement('button', { className: 'btn btn-danger btn-xs',
+	                                                            'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                                            onClick: function onClick() {_this3.deleteScript(script);} },
+	                                                        React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
+	
+	                                                    null)),
+	
+	
+	                                            !script.active ?
+	                                            React.createElement('p', { className: 'loading' }, '\u0421\u043A\u0440\u0438\u043F\u0442 \u0441\u043E\u0437\u0434\u0430\u0435\u0442\u0441\u044F ', React.createElement('img', { src: STATIC_URL + 'img/loading.gif' })) :
+	                                            null));
+	
+	
+	                                }
 	                            })),
 	
 	                        React.createElement(_reactTooltip2.default, { place: 'top', type: 'dark', effect: 'solid' }),
@@ -59567,7 +59569,7 @@
 	                var script_access = script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;});
 	                if (usersStore.session_user.id === script.owner.id) {
 	                    access = { edit: true };
-	                } else if (script_access) {
+	                } else if (script_access && script_access.active) {
 	                    access = script_access;
 	                }
 	                return access;

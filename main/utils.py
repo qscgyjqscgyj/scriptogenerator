@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.sites.models import get_current_site
 from registration.models import RegistrationProfile
 
@@ -34,7 +34,7 @@ def create_active_user(request, email, last_name='', first_name='', middle_name=
     new_user.save()
 
     login(request, authenticate(
-        username=new_user.username,
+        username=user.username,
         password=password
     ))
     send_new_user_data_email.delay(email, password)

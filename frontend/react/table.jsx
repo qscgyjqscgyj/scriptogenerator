@@ -325,11 +325,8 @@ export class TableEdit extends Table {
                                                                 active_link.text = value;
                                                             }}
                                                             onBlur={(value) => {
-                                                                let active_link_text = active_link.text;
                                                                 active_link.text = value;
-                                                                if(active_link_text !== active_link.text) {
-                                                                    this.updateLink(active_link);
-                                                                }
+                                                                this.updateLink(active_link);
                                                             }}/>
                                                     </div>
                                                 </div>

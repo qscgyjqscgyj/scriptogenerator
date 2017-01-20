@@ -54,7 +54,7 @@ export class CustomEditor extends React.Component {
         if(props.value) {
             try {
                 editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(props.value)), this.decorator);
-                editorState = EditorState.moveFocusToEnd(editorState);
+                // editorState = EditorState.moveFocusToEnd(editorState);
             } catch (err) {
                 console.log(err);
                 editorState = EditorState.createEmpty(this.decorator);

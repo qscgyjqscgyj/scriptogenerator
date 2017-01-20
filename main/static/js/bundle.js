@@ -59330,11 +59330,8 @@
 	                                                                active_link.text = value;
 	                                                            },
 	                                                            onBlur: function onBlur(value) {
-	                                                                var active_link_text = active_link.text;
 	                                                                active_link.text = value;
-	                                                                if (active_link_text !== active_link.text) {
-	                                                                    _this5.updateLink(active_link);
-	                                                                }
+	                                                                _this5.updateLink(active_link);
 	                                                            } }))) :
 	
 	
@@ -59929,7 +59926,7 @@
 	            if (props.value) {
 	                try {
 	                    editorState = _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(JSON.parse(props.value)), this.decorator);
-	                    editorState = _draftJs.EditorState.moveFocusToEnd(editorState);
+	                    // editorState = EditorState.moveFocusToEnd(editorState);
 	                } catch (err) {
 	                    console.log(err);
 	                    editorState = _draftJs.EditorState.createEmpty(this.decorator);

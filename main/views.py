@@ -361,31 +361,34 @@ class ExternalRegisterView(View):
         email = request.GET.get('email')
         if email:
             active_user = create_active_user(request, email, request.GET.get('first_name'), request.GET.get('phone'))
-            user = active_user['user']
-            password = active_user['password']
-            if user:
-                if request.GET.get('balance') == '1':
-                    PRESENT_SUM = 500.0
-                    payment = get_model('payment', 'UserPayment')(
-                        user=user,
-                        sum=PRESENT_SUM,
-                        total_sum=PRESENT_SUM,
-                        payed=datetime.datetime.today(),
-                        payment_data=u'Подарок при регистрации'
-                    )
-                    payment.save()
+            if active_user:
+                user = active_user['user']
+                password = active_user['password']
+                if user:
+                    if request.GET.get('balance') == '1':
+                        PRESENT_SUM = 500.0
+                        payment = get_model('payment', 'UserPayment')(
+                            user=user,
+                            sum=PRESENT_SUM,
+                            total_sum=PRESENT_SUM,
+                            payed=datetime.datetime.today(),
+                            payment_data=u'Подарок при регистрации'
+                        )
+                        payment.save()
 
-                    user.balance_real = PRESENT_SUM
-                    user.balance_total = PRESENT_SUM
-                    user.save()
+                        user.balance_real = PRESENT_SUM
+                        user.balance_total = PRESENT_SUM
+                        user.save()
 
-                    login(request, authenticate(
-                        username=user.username,
-                        password=password
-                    ))
-                if request.GET.get('type') == 'ext':
-                    return HttpResponseRedirect('/')
-                return JsonResponse({'success': 200}, status=200)
+                        login(request, authenticate(
+                            username=user.username,
+                            password=password
+                        ))
+                    if request.GET.get('type') == 'ext':
+                        return HttpResponseRedirect('/')
+                    return JsonResponse({'success': 200}, status=200)
+            else:
+                pass
         return JsonResponse({'error': 500, 'message': u'Такой пользователь уже существует.'}, status=500)
 
     def post(self, request, *args, **kwargs):

@@ -361,21 +361,22 @@ class ExternalRegisterView(View):
         email = request.GET.get('email')
         if email:
             active_user = create_active_user(request, email, request.GET.get('first_name'), request.GET.get('phone'))
-            user = active_user['user']
-            password = active_user['password']
-            if user:
-                if request.GET.get('balance') == '1':
-                    take_presents_to_user(user)
+            if active_user:
+                user = active_user['user']
+                password = active_user['password']
+                if user:
+                    if request.GET.get('balance') == '1':
+                        take_presents_to_user(user)
 
-                    login(request, authenticate(
-                        username=user.username,
-                        password=password
-                    ))
-                    if request.GET.get('type') == 'ext':
-                        return HttpResponseRedirect('/')
-                    return JsonResponse({'success': 200}, status=200)
-            else:
-                pass
+                        login(request, authenticate(
+                            username=user.username,
+                            password=password
+                        ))
+                        if request.GET.get('type') == 'ext':
+                            return HttpResponseRedirect('/')
+                        return JsonResponse({'success': 200}, status=200)
+                else:
+                    pass
         return JsonResponse({'error': 500, 'message': u'Такой пользователь уже существует.'}, status=500)
 
     def post(self, request, *args, **kwargs):

@@ -13,12 +13,13 @@ from django.views.generic import TemplateView, View
 from rest_framework.renderers import JSONRenderer
 import json
 
-from main.events import take_presents_to_user, create_active_user
+from main.events import take_presents_to_user
 from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
 from main.serializers.link import LinkCategorySerializer, LinkSerializer
 from main.serializers.project import ProjectSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
+from main.utils import create_active_user
 from scripts.settings import DEBUG, YANDEX_SHOPID, YANDEX_SCID
 from scripts.tasks import cloneTreeRelations, clone_save_links
 from users.models import CustomUser, UserAccess
@@ -360,7 +361,12 @@ class ExternalRegisterView(View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         if email:
-            active_user = create_active_user(request=request, email=email, first_name=request.GET.get('first_name'), phone=request.GET.get('phone'))
+            active_user = create_active_user(
+                request=request,
+                email=email,
+                first_name=request.GET.get('first_name'),
+                phone=request.GET.get('phone')
+            )
             if active_user:
                 user = active_user['user']
                 password = active_user['password']

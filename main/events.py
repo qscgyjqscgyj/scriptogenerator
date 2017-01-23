@@ -1,14 +1,8 @@
 # -*- coding: utf-8 -*-
 import datetime
-
-from django.contrib.sites.models import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.loading import get_model
-from registration.models import RegistrationProfile
-
 from scripts.tasks import cloneTreeRelations, clone_save_links
-from django.db import IntegrityError
-from main.tasks import send_new_user_data_email
 
 PRESENT_SCRIPT_ID = 275
 PRESENT_SUM = 500.0
@@ -40,31 +34,3 @@ def take_presents_to_user(user):
     user.balance_total = PRESENT_SUM
     user.save()
     return True
-
-
-def create_active_user(request, email, last_name='', first_name='', middle_name='', phone=''):
-    try:
-        user = get_model('users', 'CustomUser').objects.create(
-            username=email,
-            email=email,
-            last_name=last_name,
-            first_name=first_name,
-            middle_name=middle_name,
-            phone=phone
-        )
-        password = get_model('users', 'CustomUser').objects.make_random_password(length=10)
-        user.set_password(password)
-        user.save()
-    except IntegrityError:
-        return False
-
-    new_user = RegistrationProfile.objects.create_inactive_user(
-        new_user=user,
-        site=get_current_site(request),
-        request=request,
-        send_email=False
-    )
-    new_user.is_active = True
-    new_user.save()
-    send_new_user_data_email.delay(email, password)
-    return {'user': new_user, 'password': password}

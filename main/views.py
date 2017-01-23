@@ -360,7 +360,7 @@ class ExternalRegisterView(View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         if email:
-            active_user = create_active_user(request, email, request.GET.get('first_name'), request.GET.get('phone'))
+            active_user = create_active_user(request=request, email=email, first_name=request.GET.get('first_name'), phone=request.GET.get('phone'))
             if active_user:
                 user = active_user['user']
                 password = active_user['password']

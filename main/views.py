@@ -370,10 +370,14 @@ class ExternalRegisterView(View):
                 if request.GET.get('balance') == '1':
                     take_presents_to_user(user)
 
-                    login(request, authenticate(
-                        username=user.username,
-                        password=password
-                    ))
+                login(request, authenticate(
+                    username=user.username,
+                    password=password
+                ))
+
+                if request.GET.get('type') == 'ext':
+                    return HttpResponseRedirect('/')
+
                 return JsonResponse({'success': 200}, status=200)
         return JsonResponse({'error': 500, 'message': u'User with same email already exist.'}, status=500)
 

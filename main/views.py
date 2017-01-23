@@ -13,12 +13,12 @@ from django.views.generic import TemplateView, View
 from rest_framework.renderers import JSONRenderer
 import json
 
+from main.events import take_presents_to_user, create_active_user
 from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
 from main.serializers.link import LinkCategorySerializer, LinkSerializer
 from main.serializers.project import ProjectSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
-from main.utils import create_active_user
 from scripts.settings import DEBUG, YANDEX_SHOPID, YANDEX_SCID
 from scripts.tasks import cloneTreeRelations, clone_save_links
 from users.models import CustomUser, UserAccess
@@ -365,19 +365,7 @@ class ExternalRegisterView(View):
             password = active_user['password']
             if user:
                 if request.GET.get('balance') == '1':
-                    PRESENT_SUM = 500.0
-                    payment = get_model('payment', 'UserPayment')(
-                        user=user,
-                        sum=PRESENT_SUM,
-                        total_sum=PRESENT_SUM,
-                        payed=datetime.datetime.today(),
-                        payment_data=u'Подарок при регистрации'
-                    )
-                    payment.save()
-
-                    user.balance_real = PRESENT_SUM
-                    user.balance_total = PRESENT_SUM
-                    user.save()
+                    take_presents_to_user(user)
 
                     login(request, authenticate(
                         username=user.username,

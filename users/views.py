@@ -11,7 +11,7 @@ from registration.backends.default.views import RegistrationView
 from registration.models import RegistrationProfile
 from registration.users import UserModel
 
-from main.utils import create_active_user
+from main.events import create_active_user
 from main.views import JSONResponse
 from payment.models import LocalPayment
 from payment.serializers import LocalPaymentSerializer

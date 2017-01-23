@@ -1,15 +1,25 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.loading import get_model
 from rest_framework import serializers
 from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
 from main.serializers.project import ProjectSerializer
 from main.serializers.table import ScriptTablesField
+from users.models import UserAccess
 from users.serializers import UserSerializer
 from scripts.tasks import clone_save_links, cloneTreeRelations
 
 
 class ScriptAccessField(serializers.Field):
     def to_representation(self, script):
-        return ScriptAccessSerializer(ScriptAccess.objects.filter(script=script), many=True).data
+        team = UserAccess.objects.filter(owner=script.owner)
+        accesses = ScriptAccessSerializer(ScriptAccess.objects.filter(script=script), many=True).data
+        for i, access in enumerate(accesses):
+            try:
+                teammate = team.get(user=int(access['user']['id']))
+                accesses[i]['active'] = teammate.active
+            except ObjectDoesNotExist:
+                accesses[i]['active'] = False
+        return accesses
 
     def get_attribute(self, accesses):
         return accesses

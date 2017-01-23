@@ -16,7 +16,7 @@ export class AccessableComponent extends React.Component {
             let script_access = script.accesses.find(access => {return access.user.id === usersStore.session_user.id});
             if(usersStore.session_user.id === script.owner.id) {
                 access = {edit: true};
-            } else if(script_access) {
+            } else if(script_access && script_access.active) {
                 access = script_access;
             }
             return access;

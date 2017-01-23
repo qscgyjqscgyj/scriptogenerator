@@ -16,7 +16,7 @@ export class Nav extends React.Component {
             <nav className={"navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '')}>
                 <div className="container-fluid">
                     <a className="navbar-brand" href="/">
-                        <img alt="Scriptogenerator" src={STATIC_URL + 'img/logo.png'}/>
+                        <img className="logo" width="40px" alt="Scriptogenerator" src={STATIC_URL + 'img/logo.png'}/>
                     </a>
 
                     <ul className="nav navbar-nav">

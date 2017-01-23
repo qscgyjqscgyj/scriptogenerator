@@ -10,7 +10,7 @@ import UsersStore from '../mobx/usersStore';
 import PaymentStore from '../mobx/paymentStore';
 import TooltipStore from '../mobx/tooltipStore';
 
-import {NoMoney, NoScriptOwnerMoney, NoAccess} from './noMoney';
+import {NoMoney, NoScriptOwnerMoney} from './noMoney';
 import {observer} from 'mobx-react';
 import {Scripts} from './scripts';
 import {Tables} from './tables';

@@ -361,18 +361,21 @@ class ExternalRegisterView(View):
         email = request.GET.get('email')
         if email:
             active_user = create_active_user(request=request, email=email, first_name=request.GET.get('first_name'), phone=request.GET.get('phone'))
-            user = active_user['user']
-            password = active_user['password']
-            if user:
-                if request.GET.get('balance') == '1':
-                    take_presents_to_user(user)
+            if active_user:
+                user = active_user['user']
+                password = active_user['password']
+                if user:
+                    if request.GET.get('balance') == '1':
+                        take_presents_to_user(user)
 
-                    login(request, authenticate(
-                        username=user.username,
-                        password=password
-                    ))
-                return JsonResponse({'success': 200}, status=200)
-            return JsonResponse({'error': 500, 'message': u'Такой пользователь уже существует.'}, status=500)
+                        login(request, authenticate(
+                            username=user.username,
+                            password=password
+                        ))
+                    return JsonResponse({'success': 200}, status=200)
+            else:
+                return JsonResponse({'error': 500, 'message': u'Integrity error.'}, status=500)
+            return JsonResponse({'error': 500, 'message': u'User with same email already exist.'}, status=500)
 
     def post(self, request, *args, **kwargs):
         return JsonResponse({'error': 'Method doesn\'t supports.'}, status=500)

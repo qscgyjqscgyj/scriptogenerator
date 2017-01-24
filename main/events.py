@@ -8,7 +8,7 @@ PRESENT_SCRIPT_ID = 275
 PRESENT_SUM = 500.0
 
 
-def take_presents_to_user(user):
+def take_presents_to_user(user, sum=PRESENT_SUM, title=u'Подарок при регистрации'):
     try:
         current_script = get_model('main', 'Script').objects.get(pk=PRESENT_SCRIPT_ID)
         current_script_links_count = len(current_script.links())
@@ -24,13 +24,13 @@ def take_presents_to_user(user):
         return False
     payment = get_model('payment', 'UserPayment')(
         user=user,
-        sum=PRESENT_SUM,
-        total_sum=PRESENT_SUM,
+        sum=sum,
+        total_sum=sum,
         payed=datetime.datetime.today(),
-        payment_data=u'Подарок при регистрации'
+        payment_data=title
     )
     payment.save()
-    user.balance_real = PRESENT_SUM
-    user.balance_total = PRESENT_SUM
+    user.balance_real = sum
+    user.balance_total = sum
     user.save()
     return True

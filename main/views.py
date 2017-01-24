@@ -361,9 +361,6 @@ class ExternalRegisterView(View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         if email:
-            if request.GET.get('redirect') == '1':
-                return JsonResponse({'success': 200}, status=200)
-
             active_user = create_active_user(request=request, email=email, first_name=request.GET.get('first_name'), phone=request.GET.get('phone'))
             user = active_user['user']
             password = active_user['password']
@@ -380,6 +377,37 @@ class ExternalRegisterView(View):
                     return HttpResponseRedirect('/')
 
                 return JsonResponse({'success': 200}, status=200)
+        return JsonResponse({'error': 500, 'message': u'User with same email already exist.'}, status=500)
+
+    def post(self, request, *args, **kwargs):
+        return JsonResponse({'error': 'Method doesn\'t supports.'}, status=500)
+
+
+EXT_PAYMENT_TITLES = {
+    'SG_PAY_1000': 1000.0,
+    'SG_PAY_3000': 4000.0,
+    'SG_PAY_5000': 7000.0
+}
+
+
+class ExternalPaymentView(View):
+    def get(self, request, *args, **kwargs):
+        email = request.GET.get('email')
+        if email:
+            try:
+                user = CustomUser.objects.get(username=email)
+                product_title = request.GET.get('product_title')
+                if product_title:
+                    try:
+                        take_presents_to_user(user, EXT_PAYMENT_TITLES[product_title], u'Оплата пакета: ' + product_title)
+                    except KeyError:
+                        return JsonResponse({'error': 500, 'message': u'Package does not exist.'}, status=500)
+                    if request.GET.get('type') == 'ext':
+                        return HttpResponseRedirect('/')
+                else:
+                    return JsonResponse({'error': 500, 'message': u'Argument project_title does not exist.'}, status=500)
+            except ObjectDoesNotExist:
+                return JsonResponse({'error': 500, 'message': u'User with same email does not exist.'}, status=500)
         return JsonResponse({'error': 500, 'message': u'User with same email already exist.'}, status=500)
 
     def post(self, request, *args, **kwargs):

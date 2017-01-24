@@ -400,10 +400,10 @@ class ExternalPaymentView(View):
                 if product_title:
                     try:
                         take_presents_to_user(user, EXT_PAYMENT_TITLES[product_title], u'Оплата пакета: ' + product_title)
+                        if request.GET.get('type') == 'ext':
+                            return HttpResponseRedirect('/')
                     except KeyError:
                         return JsonResponse({'error': 500, 'message': u'Package does not exist.'}, status=500)
-                    if request.GET.get('type') == 'ext':
-                        return HttpResponseRedirect('/')
                 else:
                     return JsonResponse({'error': 500, 'message': u'Argument project_title does not exist.'}, status=500)
             except ObjectDoesNotExist:

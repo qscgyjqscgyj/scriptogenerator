@@ -29,7 +29,10 @@
     color: #e95e42 !important;
 }
 .nav_balance_block .positive_balance {
-    color: #8bddab !important;
+    color: #5cb85c !important;
+}
+.nav_promotion_block a {
+    color: #e95e42 !important;
 }
 .link:hover {
     cursor: pointer;
@@ -130,16 +133,16 @@
     border: 3px solid #fff;
 }
 .StyleButton.active {
-    border: 3px solid #8bddab;
+    border: 3px solid #5cb85c;
 }
 .color_button.active {
-    border: 3px solid #8bddab;
+    border: 3px solid #5cb85c;
 }
 .icon:hover {
     cursor: pointer;
 }
 .add_icon {
-    color: #8bddab;
+    color: #5cb85c;
 }
 .add_icon_blue {
     color: #91a8dd;

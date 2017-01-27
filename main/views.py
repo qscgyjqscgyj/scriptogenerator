@@ -399,7 +399,7 @@ class ExternalPaymentView(View):
                 product_title = request.GET.get('product_title')
                 if product_title:
                     try:
-                        take_presents_to_user(user, EXT_PAYMENT_TITLES[product_title], u'Оплата пакета: ' + product_title)
+                        take_presents_to_user(user, EXT_PAYMENT_TITLES[product_title], u'Оплата пакета: ' + product_title, present_script=False)
                         if request.GET.get('type') == 'ext':
                             return HttpResponseRedirect('/')
                     except KeyError:

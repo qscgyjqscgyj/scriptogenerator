@@ -343,7 +343,6 @@ class InitView(View):
         access_scripts_ids = []
         for access in ScriptAccess.objects.filter(user=request.user):
             access_scripts_ids.append(access.script.pk)
-
         return JSONResponse({
             'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
@@ -386,7 +385,8 @@ class ExternalRegisterView(View):
 EXT_PAYMENT_TITLES = {
     'SG_PAY_1000': 1000.0,
     'SG_PAY_3000': 4000.0,
-    'SG_PAY_5000': 7000.0
+    'SG_PAY_5000': 7000.0,
+    'SG_PAY_YEAR': 15000.0
 }
 
 
@@ -399,7 +399,13 @@ class ExternalPaymentView(View):
                 product_title = request.GET.get('product_title')
                 if product_title:
                     try:
-                        take_presents_to_user(user, EXT_PAYMENT_TITLES[product_title], u'Оплата пакета: ' + product_title, present_script=False)
+                        take_presents_to_user(
+                            user,
+                            EXT_PAYMENT_TITLES[product_title],
+                            u'Оплата пакета: ' + product_title,
+                            present_script=False,
+                            promotion=True if product_title == 'SG_PAY_YEAR' else False
+                        )
                         if request.GET.get('type') == 'ext':
                             return HttpResponseRedirect('/')
                     except KeyError:

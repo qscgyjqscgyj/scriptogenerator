@@ -8,7 +8,7 @@ PRESENT_SCRIPT_ID = 275
 PRESENT_SUM = 500.0
 
 
-def take_presents_to_user(user, sum=PRESENT_SUM, title=u'Подарок при регистрации', present_script=True):
+def take_presents_to_user(user, sum=PRESENT_SUM, title=u'Подарок при регистрации', present_script=True, promotion=False):
     if present_script:
         try:
             current_script = get_model('main', 'Script').objects.get(pk=PRESENT_SCRIPT_ID)
@@ -27,7 +27,8 @@ def take_presents_to_user(user, sum=PRESENT_SUM, title=u'Подарок при �
         sum=sum,
         total_sum=sum,
         payed=datetime.datetime.today(),
-        payment_data=title
+        payment_data=title,
+        promotion=promotion
     )
     payment.save()
     user.balance_real = sum

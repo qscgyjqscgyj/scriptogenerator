@@ -36489,6 +36489,12 @@
 	            interval: null };return _this;
 	
 	    }_createClass(Scripts, [{ key: 'componentDidUpdate', value: function componentDidUpdate()
+	        {
+	            this.checkingInactiveScripts();
+	        } }, { key: 'componentDidMount', value: function componentDidMount()
+	        {
+	            this.checkingInactiveScripts();
+	        } }, { key: 'checkingInactiveScripts', value: function checkingInactiveScripts()
 	        {var
 	            scriptsStore = this.props.scriptsStore;var
 	            interval = this.state.interval;

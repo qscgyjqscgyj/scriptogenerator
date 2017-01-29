@@ -32,7 +32,8 @@ class MainView(TemplateView):
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated():
             return super(MainView, self).get(*args, **kwargs)
-        return HttpResponseRedirect('http://lp.scriptogenerator.ru/')
+        # return HttpResponseRedirect('http://lp.scriptogenerator.ru/')
+        return HttpResponseRedirect('http://getproff.ru/scriptogenerator')
 
     def get_context_data(self, **kwargs):
         context = super(MainView, self).get_context_data(**kwargs)

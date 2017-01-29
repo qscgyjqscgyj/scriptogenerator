@@ -362,6 +362,8 @@ class ExternalRegisterView(View):
         email = request.GET.get('email')
         if email:
             active_user = create_active_user(request=request, email=email, first_name=request.GET.get('first_name'), phone=request.GET.get('phone'))
+            if not active_user:
+                return JsonResponse({'error': 500, 'message': u'User with same email already exist.'}, status=500)
             user = active_user['user']
             password = active_user['password']
             if user:

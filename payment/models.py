@@ -13,6 +13,7 @@ class UserPayment(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     payment_data = models.TextField(blank=True, null=True)
     payed = models.DateTimeField(blank=True, null=True)
+    promotion = models.BooleanField(default=False)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.total_sum or self.total_sum < self.sum:

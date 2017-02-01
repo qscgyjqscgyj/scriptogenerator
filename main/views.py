@@ -13,6 +13,7 @@ from django.views.generic import TemplateView, View
 from rest_framework.renderers import JSONRenderer
 import json
 
+from main.events import take_presents_to_user
 from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
 from main.serializers.link import LinkCategorySerializer, LinkSerializer
 from main.serializers.project import ProjectSerializer
@@ -31,7 +32,8 @@ class MainView(TemplateView):
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated():
             return super(MainView, self).get(*args, **kwargs)
-        return HttpResponseRedirect('http://lp.scriptogenerator.ru/')
+        # return HttpResponseRedirect('http://lp.scriptogenerator.ru/')
+        return HttpResponseRedirect('http://getproff.ru/scriptogenerator')
 
     def get_context_data(self, **kwargs):
         context = super(MainView, self).get_context_data(**kwargs)
@@ -342,7 +344,6 @@ class InitView(View):
         access_scripts_ids = []
         for access in ScriptAccess.objects.filter(user=request.user):
             access_scripts_ids.append(access.script.pk)
-
         return JSONResponse({
             'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
@@ -360,40 +361,63 @@ class ExternalRegisterView(View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         if email:
-            if request.GET.get('redirect') == '1':
+            active_user = create_active_user(request=request, email=email, first_name=request.GET.get('first_name'), phone=request.GET.get('phone'))
+            if not active_user:
+                return HttpResponseRedirect('/')
+            user = active_user['user']
+            password = active_user['password']
+            if user:
+                if request.GET.get('balance') == '1':
+                    take_presents_to_user(user)
+
+                login(request, authenticate(
+                    username=user.username,
+                    password=password
+                ))
+
+                if request.GET.get('type') == 'ext':
+                    return HttpResponseRedirect('/')
+
                 return JsonResponse({'success': 200}, status=200)
+        return JsonResponse({'error': 500, 'message': u'User with same email already exist.'}, status=500)
 
-            active_user = create_active_user(request, email, request.GET.get('first_name'), request.GET.get('phone'))
-            if active_user:
-                user = active_user['user']
-                password = active_user['password']
-                if user:
-                    if request.GET.get('balance') == '1':
-                        PRESENT_SUM = 500.0
-                        payment = get_model('payment', 'UserPayment')(
-                            user=user,
-                            sum=PRESENT_SUM,
-                            total_sum=PRESENT_SUM,
-                            payed=datetime.datetime.today(),
-                            payment_data=u'Подарок при регистрации'
+    def post(self, request, *args, **kwargs):
+        return JsonResponse({'error': 'Method doesn\'t supports.'}, status=500)
+
+
+EXT_PAYMENT_TITLES = {
+    'SG_PAY_1000': 1000.0,
+    'SG_PAY_3000': 4000.0,
+    'SG_PAY_5000': 7000.0,
+    'SG_PAY_YEAR': 15000.0
+}
+
+
+class ExternalPaymentView(View):
+    def get(self, request, *args, **kwargs):
+        email = request.GET.get('email')
+        if email:
+            try:
+                user = CustomUser.objects.get(username=email)
+                product_title = request.GET.get('product_title')
+                if product_title:
+                    try:
+                        take_presents_to_user(
+                            user,
+                            EXT_PAYMENT_TITLES[product_title],
+                            u'Оплата пакета: ' + product_title,
+                            present_script=False,
+                            promotion=True if product_title == 'SG_PAY_YEAR' else False
                         )
-                        payment.save()
-
-                        user.balance_real = PRESENT_SUM
-                        user.balance_total = PRESENT_SUM
-                        user.save()
-
-                        login(request, authenticate(
-                            username=user.username,
-                            password=password
-                        ))
-
-                    if request.GET.get('type') == 'ext':
-                        return HttpResponseRedirect('/')
-                    return JsonResponse({'success': 200}, status=200)
-            else:
-                pass
-        return JsonResponse({'error': 500, 'message': u'Такой пользователь уже существует.'}, status=500)
+                        if request.GET.get('type') == 'ext':
+                            return HttpResponseRedirect('/')
+                    except KeyError:
+                        return JsonResponse({'error': 500, 'message': u'Package does not exist.'}, status=500)
+                else:
+                    return JsonResponse({'error': 500, 'message': u'Argument project_title does not exist.'}, status=500)
+            except ObjectDoesNotExist:
+                return JsonResponse({'error': 500, 'message': u'User with same email does not exist.'}, status=500)
+        return JsonResponse({'error': 500, 'message': u'User with same email already exist.'}, status=500)
 
     def post(self, request, *args, **kwargs):
         return JsonResponse({'error': 'Method doesn\'t supports.'}, status=500)

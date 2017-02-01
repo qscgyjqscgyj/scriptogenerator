@@ -24,6 +24,9 @@ class CustomUser(AbstractUser):
     def payments(self):
         return get_model('payment', 'UserPayment').objects.filter(user=self, payed__isnull=False)
 
+    def promoted(self):
+        return True if get_model('payment', 'UserPayment').objects.filter(user=self, promotion=True) else False
+
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 

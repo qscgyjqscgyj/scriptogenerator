@@ -68,7 +68,7 @@ class ScriptSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         owner = self.initial_data.pop('owner', None)
-        owner = get_model('users', 'CustomUser').objects.get(**owner)
+        owner = get_model('users', 'CustomUser').objects.get(pk=int(owner['id']))
         validated_data['owner'] = owner
 
         template = self.initial_data.get('template')

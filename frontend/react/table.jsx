@@ -90,7 +90,7 @@ export class Table extends AccessableComponent {
             $(el).css('max-height', content_height + 'px');
         });
     }
-    updateTableLinksColl(coll, opened_category, opened_link) {
+    updateTableLinksColl(coll, opened_category, opened_link, update_sate=true) {
         const {tablesStore} = this.props;
         $.ajax({
             method: 'PUT',
@@ -101,7 +101,9 @@ export class Table extends AccessableComponent {
                 opened_link: opened_link
             }),
             success: (res) => {
-                tablesStore.tables = res.tables;
+                if(update_sate) {
+                    tablesStore.tables = res.tables;
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -197,14 +199,16 @@ export class Table extends AccessableComponent {
             }
         )
     }
-    updateLink(link) {
+    updateLink(link, update_state=true) {
         const {tablesStore} = this.props;
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-links-url'),
             data: JSON.stringify(link),
             success: (res) => {
-                tablesStore.tables = res.tables;
+                if(update_state) {
+                    tablesStore.tables = res.tables;
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -279,7 +283,7 @@ export class TableEdit extends Table {
             });
             return cat;
         });
-        this.updateTableLinksColl(coll, category, null);
+        this.updateTableLinksColl(coll, category, null, false);
     }
     async openLink(coll, link) {
         link.opened = !link.opened;
@@ -292,7 +296,7 @@ export class TableEdit extends Table {
             });
             return cat;
         });
-        this.updateTableLinksColl(coll, null, link);
+        this.updateTableLinksColl(coll, null, link, false);
     }
     render() {
         const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
@@ -326,7 +330,7 @@ export class TableEdit extends Table {
                                                             }}
                                                             onBlur={(value) => {
                                                                 active_link.text = value;
-                                                                this.updateLink(active_link);
+                                                                this.updateLink(active_link, false);
                                                             }}/>
                                                     </div>
                                                 </div>

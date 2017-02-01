@@ -22,6 +22,12 @@ export class Scripts extends React.Component {
         }
     }
     componentDidUpdate() {
+        this.checkingInactiveScripts();
+    }
+    componentDidMount() {
+        this.checkingInactiveScripts();
+    }
+    checkingInactiveScripts() {
         const {scriptsStore} = this.props;
         const {interval} = this.state;
         let inactive_scripts = scriptsStore.scripts.filter((script) => {

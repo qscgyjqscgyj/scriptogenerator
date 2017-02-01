@@ -113,7 +113,7 @@ class TeamView(View):
             user.phone = phone if not user.phone else ''
             user.save()
         except ObjectDoesNotExist:
-            user = create_active_user(request, email, last_name, first_name, middle_name, phone)
+            user = create_active_user(request=request, email=email, last_name=last_name, first_name=first_name, middle_name=middle_name, phone=phone)
         data['user'] = user
         data['owner'] = request.user
         access = UserAccessSerializer(data=data)

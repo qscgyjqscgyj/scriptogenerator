@@ -55,6 +55,9 @@ export class Scripts extends React.Component {
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;
+                if (res.cloning) {
+                    scriptsStore.createCloningProcess();
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -139,7 +142,9 @@ export class Scripts extends React.Component {
                 url: document.body.getAttribute('data-clone-script-url'),
                 data: JSON.stringify(script),
                 success: (res) => {
-                    scriptsStore.scripts = res.scripts;
+                    if (res.cloning) {
+                        scriptsStore.createCloningProcess();
+                    }
                     this.setState(update(this.state, {cloning: {$set: null}}));
                 },
                 error: (res) => {

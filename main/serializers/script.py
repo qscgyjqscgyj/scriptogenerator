@@ -6,7 +6,7 @@ from main.serializers.project import ProjectSerializer
 from main.serializers.table import ScriptTablesField
 from users.models import UserAccess
 from users.serializers import UserSerializer
-from scripts.tasks import clone_save_links, cloneTreeRelations
+from scripts.tasks import clone_script_with_relations
 
 
 class ScriptAccessField(serializers.Field):
@@ -74,22 +74,12 @@ class ScriptSerializer(serializers.ModelSerializer):
         template = self.initial_data.get('template')
         if template:
             template_script = Script.objects.get(pk=int(template['id']))
-            template_script_links_count = len(template_script.links())
-
-            script = Script.objects.get(pk=int(template['id']))
-            script.pk = None
-            script.name = validated_data.get('name')
-            script.active = False
-            script.is_template = False
-            script.owner = owner
-            script.save()
-            cloneTreeRelations.delay(template_script.pk, script.pk, 'main', 'Script')
-            clone_save_links.delay(script.pk, template_script_links_count)
+            clone_script_with_relations.delay(template_script.pk, [('name', validated_data.get('name')), ('active', False), ('owner', owner)])
         else:
             del validated_data['template']
             script = Script(**validated_data)
             script.save()
-        return script
+        return template
 
     def update(self, instance, validated_data):
         # project = validated_data.pop('project', None)

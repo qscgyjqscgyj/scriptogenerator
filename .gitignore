@@ -15,6 +15,7 @@ atlassian-ide-plugin.xml
 .idea/*
 
 # Project
+celerybeat.pid
 local.py
 static/*
 media/*

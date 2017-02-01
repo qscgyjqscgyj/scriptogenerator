@@ -13,6 +13,7 @@ class Script(models.Model):
     active = models.BooleanField(default=True)
     date_mod = models.DateTimeField(auto_now=True)
     is_template = models.BooleanField(default=False)
+    is_present = models.BooleanField(default=False)
 
     def get_client_url(self):
         return '/tables/' + str(self.pk) + '/'
@@ -161,7 +162,6 @@ class Link(models.Model):
         return None
 
     def clone_save(self):
-        self.save()
         for link in self.category.table.table.script.links():
             self.text = self.text.replace(link.get_parent_address(), link.get_address())
         return self.save()

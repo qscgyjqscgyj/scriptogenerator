@@ -21,7 +21,7 @@ from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
 from main.utils import create_active_user
 from scripts.settings import DEBUG, YANDEX_SHOPID, YANDEX_SCID
-from scripts.tasks import cloneTreeRelations, clone_save_links
+from scripts.tasks import clone_script_with_relations
 from users.models import CustomUser, UserAccess
 from users.serializers import UserSerializer, UserAccessSerializer
 
@@ -60,7 +60,8 @@ class ScriptsView(View):
         if script.is_valid():
             script.create(data)
             return JSONResponse({
-                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
+                'cloning': True
             })
         return JSONResponse(script.errors, status=400)
 
@@ -325,17 +326,9 @@ class CloneScriptView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         current_script = Script.objects.get(pk=int(data['id']))
-        current_script_links_count = len(current_script.links())
-
-        clone_script = Script.objects.get(pk=int(data['id']))
-        clone_script.pk = None
-        clone_script.name += u' (копия)'
-        clone_script.active = False
-        clone_script.save()
-        cloneTreeRelations.delay(current_script.pk, clone_script.pk, 'main', 'Script')
-        clone_save_links.delay(clone_script.pk, current_script_links_count)
+        clone_script_with_relations.delay(current_script.pk, [('name', current_script.name + u'  (копия)'), ('active', False)])
         return JSONResponse({
-            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+            'cloning': True
         })
 
 

@@ -36517,6 +36517,9 @@
 	                success: function success(res) {
 	                    scriptsStore.scripts = res.scripts;
 	                    modalStore.modal = false;
+	                    if (res.cloning) {
+	                        scriptsStore.createCloningProcess();
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -36601,7 +36604,9 @@
 	                    url: document.body.getAttribute('data-clone-script-url'),
 	                    data: JSON.stringify(script),
 	                    success: function success(res) {
-	                        scriptsStore.scripts = res.scripts;
+	                        if (res.cloning) {
+	                            scriptsStore.createCloningProcess();
+	                        }
 	                        _this2.setState((0, _reactAddonsUpdate2.default)(_this2.state, { cloning: { $set: null } }));
 	                    },
 	                    error: function error(res) {
@@ -86456,10 +86461,17 @@
 /* 781 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ScriptsStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;var _mobx = __webpack_require__(562);
-	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ScriptsStore = undefined;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;var _mobx = __webpack_require__(562);
+	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;} else {return Array.from(arr);}}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
 	
-	ScriptsStore = exports.ScriptsStore = (_class = function () {function ScriptsStore() {_classCallCheck(this, ScriptsStore);_initDefineProp(this, 'scripts', _descriptor, this);_initDefineProp(this, 'template_scripts', _descriptor2, this);_initDefineProp(this, 'available_scripts', _descriptor3, this);_initDefineProp(this, 'filter_by_name', _descriptor4, this);_initDefineProp(this, 'filter_by_project', _descriptor5, this);_initDefineProp(this, 'creating_name', _descriptor6, this);_initDefineProp(this, 'creating_project', _descriptor7, this);_initDefineProp(this, 'creating_template', _descriptor8, this);_initDefineProp(this, 'editing', _descriptor9, this);}_createClass(ScriptsStore, [{ key: 'updateScripts', value: function updateScripts()
+	EmptyInactiveScript = function EmptyInactiveScript() {_classCallCheck(this, EmptyInactiveScript);this.
+	    id = null;this.
+	    name = '...';this.
+	    active = false;this.
+	    available = false;};var
+	
+	
+	ScriptsStore = exports.ScriptsStore = (_class2 = function () {function ScriptsStore() {_classCallCheck(this, ScriptsStore);_initDefineProp(this, 'scripts', _descriptor, this);_initDefineProp(this, 'template_scripts', _descriptor2, this);_initDefineProp(this, 'available_scripts', _descriptor3, this);_initDefineProp(this, 'filter_by_name', _descriptor4, this);_initDefineProp(this, 'filter_by_project', _descriptor5, this);_initDefineProp(this, 'creating_name', _descriptor6, this);_initDefineProp(this, 'creating_project', _descriptor7, this);_initDefineProp(this, 'creating_template', _descriptor8, this);_initDefineProp(this, 'editing', _descriptor9, this);}_createClass(ScriptsStore, [{ key: 'updateScripts', value: function updateScripts()
 	
 	
 	
@@ -86483,12 +86495,18 @@
 	                    console.log(res);
 	                } });
 	
+	        } }, { key: 'createCloningProcess', value: function createCloningProcess()
+	        {
+	            this.scripts = [new EmptyInactiveScript()].concat(_toConsumableArray(this.scripts));
 	        } }, { key: 'filteredScripts', value: function filteredScripts(
 	        available) {var _this2 = this;
 	            var scripts = void 0;
-	            var matches_by_name = new RegExp(this.filter_by_name, 'i');
-	            scripts = (available ? this.available_scripts : this.scripts).filter(function (script) {return !_this2.filter_by_name || matches_by_name.test(script.name);});
-	            return scripts.filter(function (script) {return !_this2.filter_by_project || (script.project ? script.project.id === _this2.filter_by_project : false);});
+	            if (this.scripts.length > 0) {var _ret = function () {
+	                    var matches_by_name = new RegExp(_this2.filter_by_name, 'i');
+	                    scripts = (available ? _this2.available_scripts : _this2.scripts).filter(function (script) {return !_this2.filter_by_name || matches_by_name.test(script.name);});
+	                    return { v: scripts.filter(function (script) {return !_this2.filter_by_project || (script.project ? script.project.id === _this2.filter_by_project : false);}) };}();if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	            }
+	            return [];
 	        } }, { key: 'script', value: function script(
 	        id) {
 	            return this.scripts.concat(this.available_scripts).find(function (script) {return parseInt(script.id) === parseInt(id);});
@@ -86496,7 +86514,7 @@
 	        {
 	            this.creating_name = '';
 	            this.creating_project = null;
-	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'updateScripts'), _class.prototype)), _class);exports.default =
+	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype)), _class2);exports.default =
 	
 	
 	new ScriptsStore();

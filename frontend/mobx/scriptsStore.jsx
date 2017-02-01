@@ -1,6 +1,13 @@
 import {computed, observable, action} from 'mobx';
 import $ from 'jquery';
 
+class EmptyInactiveScript {
+    id = null;
+    name = '...';
+    active = false;
+    available = false;
+}
+
 export class ScriptsStore {
     @observable scripts = [];
     @observable template_scripts = [];
@@ -26,11 +33,17 @@ export class ScriptsStore {
             }
         });
     }
+    @action createCloningProcess() {
+        this.scripts = [new EmptyInactiveScript(), ...this.scripts]
+    }
     filteredScripts(available) {
         let scripts;
-        let matches_by_name = new RegExp(this.filter_by_name, 'i');
-        scripts = (available ? this.available_scripts : this.scripts).filter(script => !this.filter_by_name || matches_by_name.test(script.name));
-        return scripts.filter(script => !this.filter_by_project || (script.project ? script.project.id === this.filter_by_project : false));
+        if (this.scripts.length > 0) {
+            let matches_by_name = new RegExp(this.filter_by_name, 'i');
+            scripts = (available ? this.available_scripts : this.scripts).filter(script => !this.filter_by_name || matches_by_name.test(script.name));
+            return scripts.filter(script => !this.filter_by_project || (script.project ? script.project.id === this.filter_by_project : false));
+        }
+        return [];
     }
     script(id) {
         return this.scripts.concat(this.available_scripts).find(script => parseInt(script.id) === parseInt(id));

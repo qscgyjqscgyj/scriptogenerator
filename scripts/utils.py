@@ -15,38 +15,24 @@ def get_params(url):
     return result
 
 
-# def duplicate(obj, value, field):
-#     """
-#     Duplicate all related objects of `obj` setting
-#     `field` to `value`. If one of the duplicate
-#     objects has an FK to another duplicate object
-#     update that as well. Return the duplicate copy
-#     of `obj`.
-#     """
-#     collected_objs = NestedObjects(using='default')
-#     obj._collect_sub_objects(collected_objs)
-#     related_models = collected_objs.keys()
-#     root_obj = None
-#     # Traverse the related models in reverse deletion order.
-#     for model in reversed(related_models):
-#         # Find all FKs on `model` that point to a `related_model`.
-#         fks = []
-#         for f in model._meta.fields:
-#             if isinstance(f, ForeignKey) and f.rel.to in related_models:
-#                 fks.append(f)
-#         # Replace each `sub_obj` with a duplicate.
-#         sub_obj = collected_objs[model]
-#         for pk_val, obj in sub_obj.iteritems():
-#             for fk in fks:
-#                 fk_value = getattr(obj, "%s_id" % fk.name)
-#                 # If this FK has been duplicated then point to the duplicate.
-#                 if fk_value in collected_objs[fk.rel.to]:
-#                     dupe_obj = collected_objs[fk.rel.to][fk_value]
-#                     setattr(obj, fk.name, dupe_obj)
-#             # Duplicate the object and save it.
-#             obj.id = None
-#             setattr(obj, field, value)
-#             obj.save()
-#             if root_obj is None:
-#                 root_obj = obj
-#     return root_objn n
+def duplicate(instance):
+    kwargs = {}
+    for field in instance._meta.fields:
+        kwargs[field.name] = getattr(instance, field.name)
+        # or self.__dict__[field.name]
+    kwargs.pop('id')
+    new_instance = instance.__class__(**kwargs)
+    new_instance.save()
+    # now you have id for the new instance so you can
+    # create related models in similar fashion
+    fkeys_qs = instance.fkeys.all()
+    new_fkeys = []
+    for fkey in fkeys_qs:
+        fkey_kwargs = {}
+        for field in fkey._meta.fields:
+            fkey_kwargs[field.name] = getattr(fkey, field.name)
+        fkey_kwargs.pop('id')
+        fkey_kwargs['foreign_key_field'] = new_instance.id
+        new_fkeys.append(fkeys_qs.model(**fkey_kwargs))
+    fkeys_qs.model.objects.bulk_create(new_fkeys)
+    return new_instance

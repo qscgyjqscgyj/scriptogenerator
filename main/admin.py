@@ -5,6 +5,7 @@ from main.models import *
 class ScriptAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner', 'active', 'parent')
     search_fields = ('owner__email',)
+    list_filter = ('active',)
 
 
 class TableAdmin(admin.ModelAdmin):

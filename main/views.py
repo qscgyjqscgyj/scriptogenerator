@@ -58,10 +58,10 @@ class ScriptsView(View):
         data = json.loads(request.body)
         script = ScriptSerializer(data=data)
         if script.is_valid():
-            script.create(data)
+            is_template = script.create(data)
             return JSONResponse({
                 'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
-                'cloning': True
+                'cloning': True if is_template else False
             })
         return JSONResponse(script.errors, status=400)
 

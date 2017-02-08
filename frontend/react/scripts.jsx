@@ -21,11 +21,19 @@ export class Scripts extends React.Component {
             interval: null
         }
     }
-    componentDidUpdate() {
-        this.checkingInactiveScripts();
-    }
+    // componentDidUpdate() {
+    //     this.checkingInactiveScripts();
+    // }
     componentDidMount() {
         this.checkingInactiveScripts();
+    }
+    clearInterval() {
+        const {interval} = this.state;
+        clearInterval(interval);
+        this.setState(update(this.state, {interval: {$set: null}}));
+    }
+    componentWillUnmount() {
+        return this.clearInterval();
     }
     checkingInactiveScripts() {
         const {scriptsStore} = this.props;
@@ -40,6 +48,21 @@ export class Scripts extends React.Component {
                 }, 2000)
             }}));
         } else if(inactive_scripts.length === 0 && interval){
+            this.clearInterval()
+        }
+    }
+    setCloningChecking() {
+        const {scriptsStore} = this.props;
+        const {interval, cloning} = this.state;
+
+        scriptsStore.createCloningProcess();
+        if(!interval) {
+            this.setState(update(this.state, {interval: {
+                $set: setInterval(function() {
+                    scriptsStore.updateScripts();
+                }, 2000)
+            }}));
+        } else if(interval){
             clearInterval(interval);
             this.setState(update(this.state, {interval: {$set: null}}));
         }
@@ -56,7 +79,7 @@ export class Scripts extends React.Component {
                 scriptsStore.scripts = res.scripts;
                 modalStore.modal = false;
                 if (res.cloning) {
-                    scriptsStore.createCloningProcess();
+
                 }
             },
             error: (res) => {

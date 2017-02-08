@@ -10,7 +10,6 @@ import time
 EXCLUDE_RELATION_FIELDS = ['parent', 'to_link']
 
 
-
 @app.task
 @transaction.atomic
 def clone_save_links(clone_script_pk):

@@ -36482,12 +36482,20 @@
 	            cloning: null,
 	            interval: null };return _this;
 	
-	    }_createClass(Scripts, [{ key: 'componentDidUpdate', value: function componentDidUpdate()
-	        {
+	    }
+	    // componentDidUpdate() {
+	    //     this.checkingInactiveScripts();
+	    // }
+	    _createClass(Scripts, [{ key: 'componentDidMount', value: function componentDidMount() {
 	            this.checkingInactiveScripts();
-	        } }, { key: 'componentDidMount', value: function componentDidMount()
+	        } }, { key: 'clearInterval', value: function (_clearInterval) {function clearInterval() {return _clearInterval.apply(this, arguments);}clearInterval.toString = function () {return _clearInterval.toString();};return clearInterval;}(function ()
+	        {var
+	            interval = this.state.interval;
+	            clearInterval(interval);
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: { $set: null } }));
+	        }) }, { key: 'componentWillUnmount', value: function componentWillUnmount()
 	        {
-	            this.checkingInactiveScripts();
+	            return this.clearInterval();
 	        } }, { key: 'checkingInactiveScripts', value: function checkingInactiveScripts()
 	        {var
 	            scriptsStore = this.props.scriptsStore;var
@@ -36502,6 +36510,21 @@
 	                        }, 2000) } }));
 	
 	            } else if (inactive_scripts.length === 0 && interval) {
+	                this.clearInterval();
+	            }
+	        } }, { key: 'setCloningChecking', value: function setCloningChecking()
+	        {var
+	            scriptsStore = this.props.scriptsStore;var _state =
+	            this.state,interval = _state.interval,cloning = _state.cloning;
+	
+	            scriptsStore.createCloningProcess();
+	            if (!interval) {
+	                this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: {
+	                        $set: setInterval(function () {
+	                            scriptsStore.updateScripts();
+	                        }, 2000) } }));
+	
+	            } else if (interval) {
 	                clearInterval(interval);
 	                this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: { $set: null } }));
 	            }
@@ -36518,7 +36541,7 @@
 	                    scriptsStore.scripts = res.scripts;
 	                    modalStore.modal = false;
 	                    if (res.cloning) {
-	                        scriptsStore.createCloningProcess();
+	
 	                    }
 	                },
 	                error: function error(res) {

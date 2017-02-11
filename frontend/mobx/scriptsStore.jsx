@@ -6,6 +6,7 @@ class EmptyInactiveScript {
     name = '...';
     active = false;
     available = false;
+    cloning_process = true;
 }
 
 export class ScriptsStore {
@@ -21,20 +22,34 @@ export class ScriptsStore {
     @observable creating_template = null;
     @observable editing = null;
 
-    @action updateScripts() {
+    @action updateScripts(usersStore, update_cloning_tasks) {
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-scripts-url'),
+            data: (update_cloning_tasks ? {update_cloning_tasks: true} : null),
             success: (res) => {
                 this.scripts = res.scripts;
+                if(usersStore) {
+                    usersStore.session_user = res.session_user;
+                }
             },
             error: (res) => {
                 console.log(res);
             }
         });
     }
-    @action createCloningProcess() {
-        this.scripts = [new EmptyInactiveScript(), ...this.scripts]
+    @action createCloningProcess(length) {
+        if(length) {
+            let empty_scripts = [];
+            for(let i = 0; i < length; i++) {
+                empty_scripts.push(new EmptyInactiveScript());
+            }
+            this.scripts = [...empty_scripts, ...this.scripts];
+        } else {
+            this.scripts = this.scripts.filter(script => {
+                return !script.cloning_process;
+            });
+        }
     }
     filteredScripts(available) {
         let scripts;

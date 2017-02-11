@@ -21,55 +21,39 @@ export class Scripts extends React.Component {
             interval: null
         }
     }
-    // componentDidUpdate() {
-    //     this.checkingInactiveScripts();
-    // }
+    componentDidUpdate() {
+        this.checkingCloningScripts();
+    }
     componentDidMount() {
-        this.checkingInactiveScripts();
+        this.checkingCloningScripts();
     }
     clearInterval() {
+        const {scriptsStore} = this.props;
         const {interval} = this.state;
         clearInterval(interval);
+        scriptsStore.createCloningProcess(0);
         this.setState(update(this.state, {interval: {$set: null}}));
     }
     componentWillUnmount() {
         return this.clearInterval();
     }
-    checkingInactiveScripts() {
-        const {scriptsStore} = this.props;
+    checkingCloningScripts() {
+        const {scriptsStore, usersStore} = this.props;
         const {interval} = this.state;
-        let inactive_scripts = scriptsStore.scripts.filter((script) => {
-            return !script.active;
-        });
-        if(inactive_scripts.length > 0 && !interval) {
+        const cloning_tasks = usersStore.session_user.cloning_tasks;
+        if(cloning_tasks && cloning_tasks.length > 0 && !interval) {
+            scriptsStore.createCloningProcess(cloning_tasks.length);
             this.setState(update(this.state, {interval: {
                 $set: setInterval(function() {
-                    scriptsStore.updateScripts();
+                    scriptsStore.updateScripts(usersStore, true);
                 }, 2000)
             }}));
-        } else if(inactive_scripts.length === 0 && interval){
+        } else if(!cloning_tasks && interval){
             this.clearInterval()
         }
     }
-    setCloningChecking() {
-        const {scriptsStore} = this.props;
-        const {interval, cloning} = this.state;
-
-        scriptsStore.createCloningProcess();
-        if(!interval) {
-            this.setState(update(this.state, {interval: {
-                $set: setInterval(function() {
-                    scriptsStore.updateScripts();
-                }, 2000)
-            }}));
-        } else if(interval){
-            clearInterval(interval);
-            this.setState(update(this.state, {interval: {$set: null}}));
-        }
-    }
     createScript(e) {
-        const {projectsStore, scriptsStore, modalStore, usersStore} = this.props;
-        let project = projectsStore.project(scriptsStore.creating_project);
+        const {scriptsStore, modalStore, usersStore} = this.props;
         e.preventDefault();
         $.ajax({
             method: 'POST',
@@ -77,10 +61,8 @@ export class Scripts extends React.Component {
             data: JSON.stringify({name: scriptsStore.creating_name, owner: usersStore.session_user, template: scriptsStore.creating_template}),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
+                usersStore.session_user = res.session_user;
                 modalStore.modal = false;
-                if (res.cloning) {
-
-                }
             },
             error: (res) => {
                 console.log(res);
@@ -158,17 +140,15 @@ export class Scripts extends React.Component {
         });
     }
     cloneScript(script) {
-        const {scriptsStore} = this.props;
+        const {scriptsStore, usersStore} = this.props;
         this.setState(update(this.state, {cloning: {$set: script}}), () => {
             $.ajax({
                 method: 'POST',
                 url: document.body.getAttribute('data-clone-script-url'),
                 data: JSON.stringify(script),
                 success: (res) => {
-                    if (res.cloning) {
-                        scriptsStore.createCloningProcess();
-                    }
-                    this.setState(update(this.state, {cloning: {$set: null}}));
+                    scriptsStore.scripts = res.scripts;
+                    usersStore.session_user = res.session_user;
                 },
                 error: (res) => {
                     console.log(res);
@@ -246,7 +226,7 @@ export class Scripts extends React.Component {
                                         <div className="col-md-3">
                                             <div className="btn-group pull-right">
                                                 {!available ?
-                                                    <button className={'btn btn-default btn-xs ' + (this.state.cloning || !script.active ? 'disabled' : null)}
+                                                    <button className='btn btn-default btn-xs'
                                                             data-tip="Копировать скрипт"
                                                             onClick={() => {this.cloneScript(script)}}>
                                                         <i className="glyphicon glyphicon-copy"/>

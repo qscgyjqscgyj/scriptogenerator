@@ -36482,56 +36482,40 @@
 	            cloning: null,
 	            interval: null };return _this;
 	
-	    }
-	    // componentDidUpdate() {
-	    //     this.checkingInactiveScripts();
-	    // }
-	    _createClass(Scripts, [{ key: 'componentDidMount', value: function componentDidMount() {
-	            this.checkingInactiveScripts();
+	    }_createClass(Scripts, [{ key: 'componentDidUpdate', value: function componentDidUpdate()
+	        {
+	            this.checkingCloningScripts();
+	        } }, { key: 'componentDidMount', value: function componentDidMount()
+	        {
+	            this.checkingCloningScripts();
 	        } }, { key: 'clearInterval', value: function (_clearInterval) {function clearInterval() {return _clearInterval.apply(this, arguments);}clearInterval.toString = function () {return _clearInterval.toString();};return clearInterval;}(function ()
 	        {var
+	            scriptsStore = this.props.scriptsStore;var
 	            interval = this.state.interval;
 	            clearInterval(interval);
+	            scriptsStore.createCloningProcess(0);
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: { $set: null } }));
 	        }) }, { key: 'componentWillUnmount', value: function componentWillUnmount()
 	        {
 	            return this.clearInterval();
-	        } }, { key: 'checkingInactiveScripts', value: function checkingInactiveScripts()
-	        {var
-	            scriptsStore = this.props.scriptsStore;var
+	        } }, { key: 'checkingCloningScripts', value: function checkingCloningScripts()
+	        {var _props =
+	            this.props,scriptsStore = _props.scriptsStore,usersStore = _props.usersStore;var
 	            interval = this.state.interval;
-	            var inactive_scripts = scriptsStore.scripts.filter(function (script) {
-	                return !script.active;
-	            });
-	            if (inactive_scripts.length > 0 && !interval) {
+	            var cloning_tasks = usersStore.session_user.cloning_tasks;
+	            if (cloning_tasks && cloning_tasks.length > 0 && !interval) {
+	                scriptsStore.createCloningProcess(cloning_tasks.length);
 	                this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: {
 	                        $set: setInterval(function () {
-	                            scriptsStore.updateScripts();
+	                            scriptsStore.updateScripts(usersStore, true);
 	                        }, 2000) } }));
 	
-	            } else if (inactive_scripts.length === 0 && interval) {
+	            } else if (!cloning_tasks && interval) {
 	                this.clearInterval();
 	            }
-	        } }, { key: 'setCloningChecking', value: function setCloningChecking()
-	        {var
-	            scriptsStore = this.props.scriptsStore;var _state =
-	            this.state,interval = _state.interval,cloning = _state.cloning;
-	
-	            scriptsStore.createCloningProcess();
-	            if (!interval) {
-	                this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: {
-	                        $set: setInterval(function () {
-	                            scriptsStore.updateScripts();
-	                        }, 2000) } }));
-	
-	            } else if (interval) {
-	                clearInterval(interval);
-	                this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: { $set: null } }));
-	            }
 	        } }, { key: 'createScript', value: function createScript(
-	        e) {var _props =
-	            this.props,projectsStore = _props.projectsStore,scriptsStore = _props.scriptsStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
-	            var project = projectsStore.project(scriptsStore.creating_project);
+	        e) {var _props2 =
+	            this.props,scriptsStore = _props2.scriptsStore,modalStore = _props2.modalStore,usersStore = _props2.usersStore;
 	            e.preventDefault();
 	            _jquery2.default.ajax({
 	                method: 'POST',
@@ -36539,18 +36523,16 @@
 	                data: JSON.stringify({ name: scriptsStore.creating_name, owner: usersStore.session_user, template: scriptsStore.creating_template }),
 	                success: function success(res) {
 	                    scriptsStore.scripts = res.scripts;
+	                    usersStore.session_user = res.session_user;
 	                    modalStore.modal = false;
-	                    if (res.cloning) {
-	
-	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
 	                } });
 	
 	        } }, { key: 'updateScript', value: function updateScript(
-	        e, script) {var _props2 =
-	            this.props,scriptsStore = _props2.scriptsStore,modalStore = _props2.modalStore;
+	        e, script) {var _props3 =
+	            this.props,scriptsStore = _props3.scriptsStore,modalStore = _props3.modalStore;
 	            if (e) {e.preventDefault();}
 	            _jquery2.default.ajax({
 	                method: 'PUT',
@@ -36565,8 +36547,8 @@
 	                } });
 	
 	        } }, { key: 'deleteScript', value: function deleteScript(
-	        script) {var _props3 =
-	            this.props,scriptsStore = _props3.scriptsStore,modalStore = _props3.modalStore;
+	        script) {var _props4 =
+	            this.props,scriptsStore = _props4.scriptsStore,modalStore = _props4.modalStore;
 	            (0, _confirm2.default)("Вы действительно хотите удалить скрипт: " + script.name).then(
 	            function (result) {
 	                _jquery2.default.ajax({
@@ -36600,8 +36582,8 @@
 	                } });
 	
 	        } }, { key: 'delegateScript', value: function delegateScript(
-	        script, email) {var _props4 =
-	            this.props,scriptsStore = _props4.scriptsStore,modalStore = _props4.modalStore;
+	        script, email) {var _props5 =
+	            this.props,scriptsStore = _props5.scriptsStore,modalStore = _props5.modalStore;
 	            _jquery2.default.ajax({
 	                method: 'POST',
 	                url: document.body.getAttribute('data-delegate-script-url'),
@@ -36619,18 +36601,16 @@
 	                } });
 	
 	        } }, { key: 'cloneScript', value: function cloneScript(
-	        script) {var _this2 = this;var
-	            scriptsStore = this.props.scriptsStore;
+	        script) {var _props6 =
+	            this.props,scriptsStore = _props6.scriptsStore,usersStore = _props6.usersStore;
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { cloning: { $set: script } }), function () {
 	                _jquery2.default.ajax({
 	                    method: 'POST',
 	                    url: document.body.getAttribute('data-clone-script-url'),
 	                    data: JSON.stringify(script),
 	                    success: function success(res) {
-	                        if (res.cloning) {
-	                            scriptsStore.createCloningProcess();
-	                        }
-	                        _this2.setState((0, _reactAddonsUpdate2.default)(_this2.state, { cloning: { $set: null } }));
+	                        scriptsStore.scripts = res.scripts;
+	                        usersStore.session_user = res.session_user;
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);
@@ -36638,8 +36618,8 @@
 	
 	            });
 	        } }, { key: 'render', value: function render()
-	        {var _this3 = this;var _props5 =
-	            this.props,scriptsStore = _props5.scriptsStore,modalStore = _props5.modalStore,projectsStore = _props5.projectsStore,usersStore = _props5.usersStore,tablesStore = _props5.tablesStore,available = _props5.available;
+	        {var _this2 = this;var _props7 =
+	            this.props,scriptsStore = _props7.scriptsStore,modalStore = _props7.modalStore,projectsStore = _props7.projectsStore,usersStore = _props7.usersStore,tablesStore = _props7.tablesStore,available = _props7.available;
 	            if (usersStore.session_user) {
 	                return (
 	                    React.createElement('div', { className: 'col-md-12' },
@@ -36652,8 +36632,8 @@
 	                                                projectsStore: projectsStore,
 	                                                scriptsStore: scriptsStore,
 	                                                modalStore: modalStore,
-	                                                createScript: _this3.createScript.bind(_this3),
-	                                                updateScript: _this3.updateScript.bind(_this3),
+	                                                createScript: _this2.createScript.bind(_this2),
+	                                                updateScript: _this2.updateScript.bind(_this2),
 	                                                available: available });
 	
 	                                        }, className: 'btn btn-success' }, '+ \u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442')),
@@ -36684,8 +36664,8 @@
 	                                                                projectsStore: projectsStore,
 	                                                                scriptsStore: scriptsStore,
 	                                                                modalStore: modalStore,
-	                                                                createScript: _this3.createScript.bind(_this3),
-	                                                                updateScript: _this3.updateScript.bind(_this3),
+	                                                                createScript: _this2.createScript.bind(_this2),
+	                                                                updateScript: _this2.updateScript.bind(_this2),
 	                                                                available: available });
 	
 	                                                        } }) :
@@ -36708,9 +36688,9 @@
 	                                            React.createElement('div', { className: 'col-md-3' },
 	                                                React.createElement('div', { className: 'btn-group pull-right' },
 	                                                    !available ?
-	                                                    React.createElement('button', { className: 'btn btn-default btn-xs ' + (_this3.state.cloning || !script.active ? 'disabled' : null),
+	                                                    React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                            'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                            onClick: function onClick() {_this3.cloneScript(script);} },
+	                                                            onClick: function onClick() {_this2.cloneScript(script);} },
 	                                                        React.createElement('i', { className: 'glyphicon glyphicon-copy' })) :
 	
 	                                                    null,
@@ -36722,8 +36702,8 @@
 	                                                                modalStore.component = React.createElement(Accesses, {
 	                                                                    script: script,
 	                                                                    usersStore: usersStore,
-	                                                                    setAccesses: _this3.setAccesses.bind(_this3),
-	                                                                    delegateScript: _this3.delegateScript.bind(_this3) });
+	                                                                    setAccesses: _this2.setAccesses.bind(_this2),
+	                                                                    delegateScript: _this2.delegateScript.bind(_this2) });
 	
 	                                                            } },
 	                                                        React.createElement('i', { className: 'glyphicon glyphicon-user' })) :
@@ -36732,21 +36712,21 @@
 	                                                    (available && script.available ? access.edit : true) ?
 	                                                    React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                            'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
-	                                                            onClick: function onClick() {_this3.props.router.push('/tables/' + script.id + '/');} },
+	                                                            onClick: function onClick() {_this2.props.router.push('/tables/' + script.id + '/');} },
 	                                                        React.createElement('i', { className: 'glyphicon glyphicon-edit' })) :
 	
 	                                                    null,
 	                                                    React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                            'data-tip': '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
 	                                                            onClick: function onClick() {
-	                                                                _this3.props.router.push(script.view_url);
+	                                                                _this2.props.router.push(script.view_url);
 	                                                            } },
 	                                                        React.createElement('i', { className: 'glyphicon glyphicon-eye-open' })),
 	
 	                                                    !available ?
 	                                                    React.createElement('button', { className: 'btn btn-danger btn-xs',
 	                                                            'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                            onClick: function onClick() {_this3.deleteScript(script);} },
+	                                                            onClick: function onClick() {_this2.deleteScript(script);} },
 	                                                        React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
 	
 	                                                    null)),
@@ -36771,11 +36751,11 @@
 	
 	
 	CreatingScript = (0, _mobxReact.observer)(_class2 = function (_React$Component2) {_inherits(CreatingScript, _React$Component2);function CreatingScript() {_classCallCheck(this, CreatingScript);return _possibleConstructorReturn(this, (CreatingScript.__proto__ || Object.getPrototypeOf(CreatingScript)).apply(this, arguments));}_createClass(CreatingScript, [{ key: 'render', value: function render()
-	        {var _this5 = this;var _props6 =
-	            this.props,projectsStore = _props6.projectsStore,scriptsStore = _props6.scriptsStore;
+	        {var _this4 = this;var _props8 =
+	            this.props,projectsStore = _props8.projectsStore,scriptsStore = _props8.scriptsStore;
 	            return (
 	                React.createElement('div', { className: 'row' },
-	                    React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this5.props.createScript(e);} },
+	                    React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this4.props.createScript(e);} },
 	                        React.createElement('div', { className: 'col-md-12' },
 	                            React.createElement('div', { className: 'form-group' },
 	                                React.createElement('input', { className: 'form-control', onChange: function onChange(e) {scriptsStore.creating_name = e.target.value;}, value: scriptsStore.creating_name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
@@ -36825,12 +36805,12 @@
 	
 	
 	EditingScript = (0, _mobxReact.observer)(_class3 = function (_React$Component3) {_inherits(EditingScript, _React$Component3);function EditingScript() {_classCallCheck(this, EditingScript);return _possibleConstructorReturn(this, (EditingScript.__proto__ || Object.getPrototypeOf(EditingScript)).apply(this, arguments));}_createClass(EditingScript, [{ key: 'render', value: function render()
-	        {var _this7 = this;var _props7 =
-	            this.props,projectsStore = _props7.projectsStore,scriptsStore = _props7.scriptsStore,available = _props7.available;
+	        {var _this6 = this;var _props9 =
+	            this.props,projectsStore = _props9.projectsStore,scriptsStore = _props9.scriptsStore,available = _props9.available;
 	            if (scriptsStore.editing) {
 	                return (
 	                    React.createElement('div', { className: 'row' },
-	                        React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this7.props.updateScript(e);} },
+	                        React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this6.props.updateScript(e);} },
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('div', { className: 'form-group' },
 	                                    React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return scriptsStore.editing.name = e.target.value;}, value: scriptsStore.editing.name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
@@ -36856,12 +36836,12 @@
 	
 	
 	Accesses = (0, _mobxReact.observer)(_class4 = function (_React$Component4) {_inherits(Accesses, _React$Component4);
-	    function Accesses(props) {_classCallCheck(this, Accesses);var _this8 = _possibleConstructorReturn(this, (Accesses.__proto__ || Object.getPrototypeOf(Accesses)).call(this,
+	    function Accesses(props) {_classCallCheck(this, Accesses);var _this7 = _possibleConstructorReturn(this, (Accesses.__proto__ || Object.getPrototypeOf(Accesses)).call(this,
 	        props));
 	
-	        _this8.state = {
-	            accesses: _this8.formatAccesses(props.script.accesses),
-	            delegate_email: null };return _this8;
+	        _this7.state = {
+	            accesses: _this7.formatAccesses(props.script.accesses),
+	            delegate_email: null };return _this7;
 	
 	    }_createClass(Accesses, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -36874,7 +36854,7 @@
 	                return { value: access.user.id, label: access.user.email, selected: true, edit: access.edit };
 	            });
 	        } }, { key: 'onSelect', value: function onSelect(
-	        selects, edit) {var _this9 = this;var
+	        selects, edit) {var _this8 = this;var
 	            script = this.props.script;var
 	            accesses = this.state.accesses;
 	            var new_accesses = accesses.filter(function (access) {return access.edit !== edit;});
@@ -36884,7 +36864,7 @@
 	
 	            });
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { accesses: { $set: new_accesses } }), function () {
-	                _this9.props.setAccesses(new_accesses.map(function (access) {
+	                _this8.props.setAccesses(new_accesses.map(function (access) {
 	                    return { user_id: access.value, edit: access.edit };
 	                }), script);
 	            });
@@ -36912,7 +36892,7 @@
 	            this.props.delegateScript(this.props.script, delegate_email);
 	            return this.setState((0, _reactAddonsUpdate2.default)(this.state, { delegate_email: { $set: null } }));
 	        } }, { key: 'render', value: function render()
-	        {var _this10 = this;var
+	        {var _this9 = this;var
 	            delegate_email = this.state.delegate_email;
 	            return (
 	                React.createElement('div', { className: 'row' },
@@ -36923,14 +36903,14 @@
 	                            React.createElement(MultiSelectField, {
 	                                className: 'form-control',
 	                                options: this.getOptions(true),
-	                                onChange: function onChange(selects) {_this10.onSelect(selects, true);} })),
+	                                onChange: function onChange(selects) {_this9.onSelect(selects, true);} })),
 	
 	                        React.createElement('div', { className: 'form-group' },
 	                            React.createElement('label', null, '\u041E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u044B'),
 	                            React.createElement(MultiSelectField, {
 	                                className: 'form-control',
 	                                options: this.getOptions(false),
-	                                onChange: function onChange(selects) {_this10.onSelect(selects, false);} })),
+	                                onChange: function onChange(selects) {_this9.onSelect(selects, false);} })),
 	
 	                        React.createElement('hr', null)),
 	
@@ -36939,11 +36919,11 @@
 	                        React.createElement('div', { className: 'form-group' },
 	                            React.createElement('label', null, 'Email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430'),
 	                            React.createElement('input', { type: 'text', name: 'email', className: 'form-control', placeholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430', onChange: function onChange(e) {
-	                                    _this10.setState((0, _reactAddonsUpdate2.default)(_this10.state, { delegate_email: { $set: e.target.value } }));
+	                                    _this9.setState((0, _reactAddonsUpdate2.default)(_this9.state, { delegate_email: { $set: e.target.value } }));
 	                                } })),
 	
 	                        React.createElement('button', { className: 'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled'), onClick: function onClick(e) {
-	                                    validateEmail(delegate_email) ? _this10.delegateScript() : null;
+	                                    validateEmail(delegate_email) ? _this9.delegateScript() : null;
 	                                } }, '\u0414\u0435\u043B\u0435\u0433\u0438\u0440\u043E\u0432\u0430\u0442\u044C'))));
 	
 	
@@ -36952,13 +36932,13 @@
 	
 	
 	MultiSelectField = function (_React$Component5) {_inherits(MultiSelectField, _React$Component5);
-	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this11 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
+	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this10 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
 	        props));
 	
-	        _this11.displayName = 'MultiSelect';
-	        _this11.state = {
+	        _this10.displayName = 'MultiSelect';
+	        _this10.state = {
 	            options: props.options,
-	            value: props.options.filter(function (i) {return i.selected;}) };return _this11;
+	            value: props.options.filter(function (i) {return i.selected;}) };return _this10;
 	
 	    }_createClass(MultiSelectField, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -36967,7 +36947,7 @@
 	                value: props.options.filter(function (i) {return i.selected;}) });
 	
 	        } }, { key: 'render', value: function render()
-	        {var _this12 = this;
+	        {var _this11 = this;
 	            return (
 	                React.createElement(_reactSelect2.default, {
 	                    multi: true,
@@ -36975,8 +36955,8 @@
 	                    placeholder: '\u0414\u0430\u0442\u044C \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
 	                    options: this.state.options,
 	                    onChange: function onChange(e) {
-	                        _this12.setState((0, _reactAddonsUpdate2.default)(_this12.state, { value: { $set: e } }), function () {
-	                            _this12.props.onChange(e);
+	                        _this11.setState((0, _reactAddonsUpdate2.default)(_this11.state, { value: { $set: e } }), function () {
+	                            _this11.props.onChange(e);
 	                        });
 	                    } }));
 	
@@ -86491,14 +86471,11 @@
 	    id = null;this.
 	    name = '...';this.
 	    active = false;this.
-	    available = false;};var
+	    available = false;this.
+	    cloning_process = true;};var
 	
 	
-	ScriptsStore = exports.ScriptsStore = (_class2 = function () {function ScriptsStore() {_classCallCheck(this, ScriptsStore);_initDefineProp(this, 'scripts', _descriptor, this);_initDefineProp(this, 'template_scripts', _descriptor2, this);_initDefineProp(this, 'available_scripts', _descriptor3, this);_initDefineProp(this, 'filter_by_name', _descriptor4, this);_initDefineProp(this, 'filter_by_project', _descriptor5, this);_initDefineProp(this, 'creating_name', _descriptor6, this);_initDefineProp(this, 'creating_project', _descriptor7, this);_initDefineProp(this, 'creating_template', _descriptor8, this);_initDefineProp(this, 'editing', _descriptor9, this);}_createClass(ScriptsStore, [{ key: 'updateScripts', value: function updateScripts()
-	
-	
-	
-	
+	ScriptsStore = exports.ScriptsStore = (_class2 = function () {function ScriptsStore() {_classCallCheck(this, ScriptsStore);_initDefineProp(this, 'scripts', _descriptor, this);_initDefineProp(this, 'template_scripts', _descriptor2, this);_initDefineProp(this, 'available_scripts', _descriptor3, this);_initDefineProp(this, 'filter_by_name', _descriptor4, this);_initDefineProp(this, 'filter_by_project', _descriptor5, this);_initDefineProp(this, 'creating_name', _descriptor6, this);_initDefineProp(this, 'creating_project', _descriptor7, this);_initDefineProp(this, 'creating_template', _descriptor8, this);_initDefineProp(this, 'editing', _descriptor9, this);}_createClass(ScriptsStore, [{ key: 'updateScripts', value: function updateScripts(
 	
 	
 	
@@ -86507,20 +86484,38 @@
 	
 	
 	
-	        {var _this = this;
+	
+	
+	
+	
+	        usersStore, update_cloning_tasks) {var _this = this;
 	            _jquery2.default.ajax({
 	                method: 'GET',
 	                url: document.body.getAttribute('data-scripts-url'),
+	                data: update_cloning_tasks ? { update_cloning_tasks: true } : null,
 	                success: function success(res) {
 	                    _this.scripts = res.scripts;
+	                    if (usersStore) {
+	                        usersStore.session_user = res.session_user;
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
 	                } });
 	
-	        } }, { key: 'createCloningProcess', value: function createCloningProcess()
-	        {
-	            this.scripts = [new EmptyInactiveScript()].concat(_toConsumableArray(this.scripts));
+	        } }, { key: 'createCloningProcess', value: function createCloningProcess(
+	        length) {
+	            if (length) {
+	                var empty_scripts = [];
+	                for (var i = 0; i < length; i++) {
+	                    empty_scripts.push(new EmptyInactiveScript());
+	                }
+	                this.scripts = [].concat(empty_scripts, _toConsumableArray(this.scripts));
+	            } else {
+	                this.scripts = this.scripts.filter(function (script) {
+	                    return !script.cloning_process;
+	                });
+	            }
 	        } }, { key: 'filteredScripts', value: function filteredScripts(
 	        available) {var _this2 = this;
 	            var scripts = void 0;

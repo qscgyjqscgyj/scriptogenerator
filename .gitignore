@@ -19,6 +19,7 @@ celerybeat.pid
 local.py
 static/*
 media/*
+celery_state
 
 #Node.js
 node_modules/

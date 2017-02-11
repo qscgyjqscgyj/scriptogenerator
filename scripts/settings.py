@@ -10,11 +10,6 @@ MAIN_APPS_NAME = basename(MAIN_APPS_PATH)
 PROJECT_PATH = split(MAIN_APPS_PATH)[0]
 PROJECT_NAME = basename(PROJECT_PATH)
 
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
-CELERY_IMPORTS = ('scripts.tasks', 'payment.tasks', 'main.tasks')
-BROKER_URL = 'amqp://scripts:scripts@localhost:5672/scripts'
-
 FILE_UPLOAD_PERMISSIONS = 0644
 
 DEBUG = True
@@ -41,6 +36,20 @@ TIME_ZONE = 'Asia/Krasnoyarsk'
 LANGUAGE_CODE = 'RU-ru'
 USE_I18N = True
 USE_L10N = True
+
+BROKER_URL = 'amqp://scripts:scripts@localhost:5672/scripts'
+CELERY_RESULT_BACKEND = 'amqp'
+CELERY_RESULT_PERSISTENT = True
+CELERY_AMQP_TASK_RESULT_EXPIRES = 18000
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERYD_STATE_DB = join(PROJECT_PATH, 'celery_state')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_IGNORE_RESULT = False
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERY_IMPORTS = ('scripts.tasks', 'payment.tasks', 'main.tasks')
 
 STATIC_ROOT = join(PROJECT_PATH, 'static')
 STATIC_URL = '/static/'
@@ -100,6 +109,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'registration',
     'djcelery',
+    'kombu.transport.django',
     'constance',
     'constance.backends.database',
 )

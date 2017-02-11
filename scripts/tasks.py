@@ -12,22 +12,6 @@ EXCLUDE_RELATION_FIELDS = ['parent', 'to_link']
 
 @app.task
 @transaction.atomic
-def clone_save_links(clone_script_pk):
-    clone_script = get_model('main', 'Script').objects.get(pk=clone_script_pk)
-    clone_links = clone_script.links(parent=True)
-
-    for link in clone_links:
-        if link.to_link:
-            to_link = get_model('main', 'Link').objects.get(parent__pk=link.to_link.pk, category__table__table__script__pk=link.category.table.table.script.pk)
-            link.to_link = to_link
-            link.save()
-        link.clone_save()
-        clone_script.active = True
-        return clone_script.save()
-
-
-@app.task
-@transaction.atomic
 def clone_script_with_relations(script_pk, clone_script_values=[]):
     """
     :param script_pk - if of cloning script:
@@ -43,6 +27,8 @@ def clone_script_with_relations(script_pk, clone_script_values=[]):
     clone_script.is_present = False
     clone_script.parent = current_script
     clone_script.save()
+
+    clone_links = []
 
     for current_table in get_model('main', 'Table').objects.filter(script=current_script):
         clone_table = deepcopy(current_table)
@@ -65,5 +51,12 @@ def clone_script_with_relations(script_pk, clone_script_values=[]):
                     clone_link.pk = None
                     clone_link.category = clone_category
                     clone_link.parent = current_link
+
+                    if clone_link.to_link:
+                        to_link = get_model('main', 'Link').objects.get(parent__pk=clone_link.to_link.pk, category__table__table__script__pk=clone_link.category.table.table.script.pk)
+                        clone_link.to_link = to_link
                     clone_link.clone_save()
-    return clone_save_links.delay(clone_script.pk)
+                    clone_links.append(clone_link)
+
+    clone_script.active = True
+    return clone_script.save()

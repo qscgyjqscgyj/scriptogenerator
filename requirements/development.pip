@@ -1,8 +1,8 @@
-amqp==1.4.6
+amqp==2.1.4
 ansicolors==1.0.2
 anyjson==0.3.3
-billiard==3.3.0.20
-celery==3.1.18
+billiard==3.5.0.2
+celery==4.0.2
 configparser==3.5.0
 Django==1.8.6
 django-appconf==1.0.2
@@ -14,13 +14,14 @@ django-picklefield==0.3.2
 django-registration-redux==1.4
 django-require==1.0.8
 django-secretballot==0.5.0
+django-transaction-hooks==0.2
 djangorestframework==3.4.6
 ecdsa==0.13
 env-tools==2.0.0
 Fabric==1.10.2
 future==0.15.2
 futures==3.0.5
-kombu==3.0.30
+kombu==4.0.2
 mollie-api-python==1.1.1
 MySQL-python==1.2.5
 paramiko==1.16.0

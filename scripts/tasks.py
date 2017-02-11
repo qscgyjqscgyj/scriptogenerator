@@ -52,9 +52,12 @@ def clone_script_with_relations(script_pk, clone_script_values=[]):
                     clone_link.category = clone_category
                     clone_link.parent = current_link
 
-                    if clone_link.to_link:
-                        to_link = get_model('main', 'Link').objects.get(parent__pk=clone_link.to_link.pk, category__table__table__script__pk=clone_link.category.table.table.script.pk)
-                        clone_link.to_link = to_link
+                    try:
+                        if clone_link.to_link:
+                            to_link = get_model('main', 'Link').objects.get(parent__pk=clone_link.to_link.pk, category__table__table__script__pk=clone_link.category.table.table.script.pk)
+                            clone_link.to_link = to_link
+                    except Exception as e:
+                        continue
                     clone_link.clone_save()
                     clone_links.append(clone_link)
 

@@ -54,17 +54,17 @@ class ScriptsView(View):
             request.user.update_cloning_scripts_tasks()
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
-            'session_user': UserSerializer(request.user).data
+            'session_user': UserSerializer(CustomUser.objects.get(pk=request.user.pk)).data
         })
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         script = ScriptSerializer(data=data)
         if script.is_valid():
-            is_template = script.create(data)
+            script.create(data)
             return JSONResponse({
                 'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
-                'session_user': UserSerializer(request.user).data
+                'session_user': UserSerializer(CustomUser.objects.get(pk=request.user.pk)).data
             })
         return JSONResponse(script.errors, status=400)
 
@@ -334,7 +334,7 @@ class CloneScriptView(View):
         )
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
-            'session_user': UserSerializer(request.user).data
+            'session_user': UserSerializer(CustomUser.objects.get(pk=request.user.pk)).data
         })
 
 

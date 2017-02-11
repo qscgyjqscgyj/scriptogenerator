@@ -67,15 +67,13 @@ class ScriptSerializer(serializers.ModelSerializer):
         return script.get_client_view_url()
 
     def create(self, validated_data):
-        owner = self.initial_data.pop('owner', None)
-        owner = get_model('users', 'CustomUser').objects.get(pk=int(owner['id']))
-        validated_data['owner'] = owner
+        owner = get_model('users', 'CustomUser').objects.get(pk=int(self.initial_data.get('owner')['id']))
 
         template = self.initial_data.get('template')
         if template:
             template_script = Script.objects.get(pk=int(template['id']))
             owner.insert_cloning_script_task(
-                clone_script_with_relations.delay(template_script.pk, [('name', validated_data.get('name')), ('active', False), ('owner', owner)]).task_id
+                clone_script_with_relations.delay(template_script.pk, [('name', validated_data.get('name')), ('active', False), ('owner__pk', owner.pk)]).task_id
             )
         else:
             del validated_data['template']

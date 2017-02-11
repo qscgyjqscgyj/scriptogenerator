@@ -39,16 +39,17 @@ export class ScriptsStore {
         });
     }
     @action createCloningProcess(length) {
+        let scripts = this.scripts.filter(script => {
+            return !script.cloning_process;
+        });
         if(length) {
             let empty_scripts = [];
             for(let i = 0; i < length; i++) {
                 empty_scripts.push(new EmptyInactiveScript());
             }
-            this.scripts = [...empty_scripts, ...this.scripts];
+            this.scripts = [...empty_scripts, ...scripts];
         } else {
-            this.scripts = this.scripts.filter(script => {
-                return !script.cloning_process;
-            });
+            this.scripts = scripts;
         }
     }
     filteredScripts(available) {

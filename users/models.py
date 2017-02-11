@@ -50,7 +50,6 @@ class CustomUser(AbstractUser):
             user_cloning_tasks = json.loads(user_cloning_tasks)
             if isinstance(user_cloning_tasks, list):
                 for i, task in enumerate(user_cloning_tasks):
-                    print(AsyncResult(task).status)
                     if AsyncResult(task).ready():
                         del user_cloning_tasks[i]
                 self.cloning_tasks = json.dumps(user_cloning_tasks) if user_cloning_tasks else None

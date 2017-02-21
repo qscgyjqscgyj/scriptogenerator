@@ -128,6 +128,9 @@ class LinkCategory(models.Model):
     def __unicode__(self):
         return self.name
 
+    def links(self):
+        return Link.objects.filter(category=self)
+
     class Meta:
         ordering = ('order',)
 

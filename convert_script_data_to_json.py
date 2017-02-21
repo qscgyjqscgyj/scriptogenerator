@@ -22,83 +22,107 @@ def get_empty_table():
         'colls': []
     }
 
+
 def get_empty_coll():
     return {
         'id': current_milli_time(),
-        'name': '',
+        'name': 'Новый блок',
         'size': 100,
         'position': 1,
         'categories': []
     }
 
 
+def get_empty_category():
+    return {
+        'id': current_milli_time(),
+        'name': 'Новая категория',
+        'hidden': False,
+        'order': 1,
+        'opened': False,
+        'links': []
+    }
+
+
+def get_empty_link():
+    return {
+        'id': current_milli_time(),
+        'name': 'Новая ссылка',
+        'to_link': None,
+        'text': None,
+        'order': 1,
+        'opened': False,
+    }
+
+
 def new_object(object, empty_object):
     for attr in dir(object):
-        if attr in empty_object.keys() and not attr == 'id':
-            empty_object[attr] = getattr(object, attr)
+        if attr in empty_object.keys() and not attr == 'id' and not callable(getattr(object, attr)):
+            if type(getattr(object, attr)) is datetime.datetime:
+                empty_object[attr] = getattr(object, attr).isoformat()
+            else:
+                empty_object[attr] = getattr(object, attr)
     return empty_object
 
 
 def convert():
     scripts = Script.objects.all()
     for i, script in enumerate(scripts):
-        print('All scripts: %s' + str(len(scripts)))
-        print('Now script: %s' + str(i))
-        data = json.loads(script.data)
-        if not len(data) > 0:
-            tables = script.tables()
-            for table in tables:
-                converted_table = new_object(table, get_empty_table())
-                colls = table.colls()
-                for coll in colls:
-                    converted_coll = new_object(coll, get_empty_coll())
-                    # converted_table['colls'].append(converted_coll)
-                    for category in coll.categories():
+        data = []
+        for table in script.tables():
+            converted_table = new_object(table, get_empty_table())
+            for coll in table.colls():
+                converted_coll = new_object(coll, get_empty_coll())
+                for category in coll.categories():
+                    converted_category = new_object(category, get_empty_category())
+                    for link in category.links():
+                        converted_link = new_object(link, get_empty_link())
+                        converted_category['links'].append(converted_link)
+                    converted_coll['categories'].append(converted_category)
+                converted_table['colls'].append(converted_coll)
+            data.append(converted_table)
+        script.data = json.dumps(data)
+        script.save()
+        print('Done: %s/%s' % (str(i + 1), str(len(scripts))))
 
-                data.append(converted_table)
-
-
-convert()
-
-
-'''
-SCRIPT DATA SCHEMA
-[
-    {
-        id: current_milli_time(),
-        name: 'Table name',
-        text_coll_name: 'Name of the text column',
-        text_coll_size: 100 (%),
-        text_coll_position: 1 (0, 1, 2 ...),
-        date: Created datetime,
-        date_mod: Mode datetime,
-        colls: [
-            {
-                id: current_milli_time(),
-                name: 'Coll name',
-                size: 100 (%),
-                position: 1 (0, 1, 2 ...),
-                categories: [
-                    {
-                        id: current_milli_time(),
-                        name: 'Link category name',
-                        hidden: True/False,
-                        order: 1 (0, 1, 2 ...),
-                        opened: True/False,
-                        links: [
-                            {
-                                id: current_milli_time(),
-                                name: 'Link name',
-                                to_link: Another table link id (should be: current_milli_time()),
-                                text: Draft.js json data,
-                                order: 1 (0, 1, 2 ...),
-                                opened: True/False,
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
-    }
-]
-'''
+# '''
+# SCRIPT DATA SCHEMA
+# [
+#     {
+#         id: current_milli_time(),
+#         name: 'Table name',
+#         text_coll_name: 'Name of the text column',
+#         text_coll_size: 100 (%),
+#         text_coll_position: 1 (0, 1, 2 ...),
+#         date: Created datetime,
+#         date_mod: Mode datetime,
+#         colls: [
+#             {
+#                 id: current_milli_time(),
+#                 name: 'Coll name',
+#                 size: 100 (%),
+#                 position: 1 (0, 1, 2 ...),
+#                 categories: [
+#                     {
+#                         id: current_milli_time(),
+#                         name: 'Link category name',
+#                         hidden: True/False,
+#                         order: 1 (0, 1, 2 ...),
+#                         opened: True/False,
+#                         links: [
+#                             {
+#                                 id: current_milli_time(),
+#                                 name: 'Link name',
+#                                 to_link: Another table link id (should be: current_milli_time()),
+#                                 text: Draft.js json data,
+#                                 order: 1 (0, 1, 2 ...),
+#                                 opened: True/False,
+#                             },
+#                         ],
+#                     },
+#                 ],
+#             },
+#         ],
+#     }
+# ]
+# '''

@@ -9,6 +9,7 @@ class Script(models.Model):
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='script_parent_script', blank=True, null=True)
     owner = models.ForeignKey(CustomUser, related_name='script_owner_custom_user')
     project = models.ForeignKey('Project', on_delete=models.SET_NULL, related_name='script_project_project', blank=True, null=True)
+    data = models.TextField(default='[]')
     date = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
     date_mod = models.DateTimeField(auto_now=True)
@@ -94,6 +95,9 @@ class Table(models.Model):
         colls = [coll.pk for coll in TableLinksColl.objects.filter(table=self)]
         return Link.objects.filter(category__table__pk__in=colls)
 
+    def colls(self):
+        return TableLinksColl.objects.filter(table=self)
+
     def __unicode__(self):
         return self.name
 
@@ -106,6 +110,9 @@ class TableLinksColl(models.Model):
 
     def __unicode__(self):
         return self.table.__unicode__()
+
+    def categories(self):
+        return LinkCategory.objects.filter(table=self)
 
     class Meta:
         ordering = ('position',)

@@ -13,6 +13,7 @@ def current_milli_time():
 def get_empty_table():
     return {
         'id': current_milli_time(),
+        'old_id': None,
         'name': 'Новая таблица',
         'text_coll_name': 'Блок с текстом',
         'text_coll_size': 50,
@@ -26,6 +27,7 @@ def get_empty_table():
 def get_empty_coll():
     return {
         'id': current_milli_time(),
+        'old_id': None,
         'name': 'Новый блок',
         'size': 100,
         'position': 1,
@@ -36,6 +38,7 @@ def get_empty_coll():
 def get_empty_category():
     return {
         'id': current_milli_time(),
+        'old_id': None,
         'name': 'Новая категория',
         'hidden': False,
         'order': 1,
@@ -47,6 +50,7 @@ def get_empty_category():
 def get_empty_link():
     return {
         'id': current_milli_time(),
+        'old_id': None,
         'name': 'Новая ссылка',
         'to_link': None,
         'text': None,
@@ -57,9 +61,14 @@ def get_empty_link():
 
 def new_object(object, empty_object):
     for attr in dir(object):
-        if attr in empty_object.keys() and not attr == 'id' and not callable(getattr(object, attr)):
+        if attr in empty_object.keys() and not callable(getattr(object, attr)):
             if type(getattr(object, attr)) is datetime.datetime:
                 empty_object[attr] = getattr(object, attr).isoformat()
+            elif attr == 'id':
+                empty_object['old_id'] = getattr(object, attr)
+            elif attr == 'to_link':
+                to_link = getattr(object, attr)
+                empty_object['to_link'] = {'attr': 'old_id', 'id': to_link.pk} if to_link else to_link
             else:
                 empty_object[attr] = getattr(object, attr)
     return empty_object

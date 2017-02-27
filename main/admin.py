@@ -3,7 +3,7 @@ from main.models import *
 
 
 class ScriptAdmin(admin.ModelAdmin):
-    list_display = ('name', 'owner', 'active', 'data')
+    list_display = ('name', 'owner', 'active',)
     search_fields = ('owner__email',)
     list_filter = ('active',)
 

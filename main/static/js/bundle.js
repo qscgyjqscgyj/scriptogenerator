@@ -59056,73 +59056,21 @@
 /* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AvailableTables = exports.Tables = undefined;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3, _class4;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AvailableTables = exports.Tables = undefined;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	var _mobxReact = __webpack_require__(561);
 	var _modal = __webpack_require__(584);
-	var _tablesStore = __webpack_require__(617);
 	var _reactRouter = __webpack_require__(476);
-	var _sort = __webpack_require__(618);
-	var _access = __webpack_require__(619);
-	var _confirm = __webpack_require__(597);var _confirm2 = _interopRequireDefault(_confirm);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _sort = __webpack_require__(617);
+	var _access = __webpack_require__(618);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
-	Tables = exports.Tables = (0, _mobxReact.observer)(_class = function (_AccessableComponent) {_inherits(Tables, _AccessableComponent);function Tables() {_classCallCheck(this, Tables);return _possibleConstructorReturn(this, (Tables.__proto__ || Object.getPrototypeOf(Tables)).apply(this, arguments));}_createClass(Tables, [{ key: 'componentWillMount', value: function componentWillMount()
-	        {var
-	            tablesStore = this.props.tablesStore;
-	            tablesStore.pullTables(this.props.params.script);
-	        } }, { key: 'createTable', value: function createTable(
-	        e) {var _props =
-	            this.props,modalStore = _props.modalStore,tablesStore = _props.tablesStore,scriptsStore = _props.scriptsStore;
-	            e.preventDefault();
-	            if (tablesStore.creating_name) {
-	                _jquery2.default.ajax({
-	                    method: 'POST',
-	                    url: document.body.getAttribute('data-tables-url'),
-	                    data: JSON.stringify({
-	                        name: tablesStore.creating_name,
-	                        colls: tablesStore.creating_colls,
-	                        text_coll_name: tablesStore.creating_text_coll_name,
-	                        text_coll_size: tablesStore.creating_text_coll_size,
-	                        text_coll_position: tablesStore.creating_text_coll_position,
-	                        script: tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)
-	                        //script: scriptsStore.script((tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)))
-	                    }),
-	                    success: function success(res) {
-	                        tablesStore.tables = res.tables;
-	                        modalStore.modal = false;
-	                    },
-	                    error: function error(res) {
-	                        console.log(res);
-	                    } });
 	
-	            }
-	        } }, { key: 'deleteTable', value: function deleteTable(
-	        table) {var
-	            tablesStore = this.props.tablesStore;
-	            (0, _confirm2.default)("Вы действительно хотите удалить таблицу: " + table.name).then(
-	            function (result) {
-	                _jquery2.default.ajax({
-	                    method: 'DELETE',
-	                    url: document.body.getAttribute('data-tables-url'),
-	                    data: JSON.stringify(table),
-	                    success: function success(res) {
-	                        tablesStore.tables = res.tables;
-	                    },
-	                    error: function error(res) {
-	                        console.log(res);
-	                    } });
-	
-	            },
-	            function (result) {
-	                console.log('cancel called');
-	            });
-	
-	        } }, { key: 'render', value: function render()
-	        {var _this2 = this;var _props2 =
-	            this.props,projectsStore = _props2.projectsStore,scriptsStore = _props2.scriptsStore,tablesStore = _props2.tablesStore,modalStore = _props2.modalStore,usersStore = _props2.usersStore;
+	Tables = exports.Tables = (0, _mobxReact.observer)(_class = function (_AccessableComponent) {_inherits(Tables, _AccessableComponent);function Tables() {_classCallCheck(this, Tables);return _possibleConstructorReturn(this, (Tables.__proto__ || Object.getPrototypeOf(Tables)).apply(this, arguments));}_createClass(Tables, [{ key: 'render', value: function render()
+	        {var _this2 = this;var _props =
+	            this.props,scriptsStore = _props.scriptsStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
 	            if (usersStore.session_user) {var _ret = function () {
 	                    var script = scriptsStore.script(_this2.props.params.script);
 	                    var access = _this2.access(usersStore, script);
@@ -59133,13 +59081,7 @@
 	                                React.createElement('div', null,
 	                                    React.createElement('div', { className: 'col-md-2' },
 	                                        React.createElement('button', { onClick: function onClick() {
-	                                                    modalStore.modal = true;
-	                                                    modalStore.component = React.createElement(CreatingTable, {
-	                                                        tablesStore: tablesStore,
-	                                                        modalStore: modalStore,
-	                                                        createTable: _this2.createTable.bind(_this2),
-	                                                        updateTable: function updateTable(e) {tablesStore.updateTable(e, modalStore);} });
-	
+	                                                    scriptsStore.createTable(script);
 	                                                }, className: 'btn btn-success' }, '+ \u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0442\u0430\u0431\u043B\u0438\u0446\u0443')),
 	
 	                                    React.createElement('div', { className: 'col-md-7' },
@@ -59156,29 +59098,28 @@
 	
 	
 	                                            React.createElement('tbody', null,
-	                                                tablesStore.tables.map(function (table, key) {
+	                                                script.data.map(function (table, key) {
 	                                                    return (
 	                                                        React.createElement('tr', { key: key },
 	                                                            React.createElement('td', null,
-	                                                                React.createElement(_reactRouter.Link, { to: table.view_url }, table.name)),
+	                                                                React.createElement(_reactRouter.Link, { to: script.url + 'table/' + table.id + '/share/' }, table.name)),
 	
 	                                                            React.createElement('td', { className: 'text-right' },
 	                                                                access.edit ?
 	                                                                React.createElement('button', { className: 'btn btn-default', onClick: function onClick() {
-	                                                                            tablesStore.editing = table;
+	                                                                            scriptsStore.editing = table;
 	                                                                            modalStore.modal = true;
 	                                                                            modalStore.component = React.createElement(EditingTable, {
-	                                                                                tablesStore: tablesStore,
-	                                                                                modalStore: modalStore,
-	                                                                                createTable: _this2.createTable.bind(_this2),
-	                                                                                updateTable: function updateTable(e) {tablesStore.updateTable(e, modalStore);} });
+	                                                                                scriptsStore: scriptsStore,
+	                                                                                script: script,
+	                                                                                modalStore: modalStore });
 	
 	                                                                        } }, '\u0420\u0435\u0434.') :
 	                                                                null),
 	
 	                                                            React.createElement('td', { className: 'text-right' },
 	                                                                access.edit ?
-	                                                                React.createElement('button', { className: 'btn btn-danger btn-xs', onClick: function onClick() {_this2.deleteTable(table);} }, '\u0423\u0434\u0430\u043B\u0438\u0442\u044C') :
+	                                                                React.createElement('button', { className: 'btn btn-danger btn-xs', onClick: function onClick() {scriptsStore.deleteTable(script, table);} }, '\u0423\u0434\u0430\u043B\u0438\u0442\u044C') :
 	                                                                null)));
 	
 	
@@ -59188,7 +59129,7 @@
 	
 	
 	
-	                                React.createElement(_modal.ModalWrapper, { stores: [projectsStore, scriptsStore, tablesStore], modalStore: modalStore })) };
+	                                React.createElement(_modal.ModalWrapper, { stores: [scriptsStore], modalStore: modalStore })) };
 	
 	
 	                    }
@@ -59199,50 +59140,24 @@
 	
 	
 	
-	CreatingTable = (0, _mobxReact.observer)(_class2 = function (_React$Component) {_inherits(CreatingTable, _React$Component);function CreatingTable() {_classCallCheck(this, CreatingTable);return _possibleConstructorReturn(this, (CreatingTable.__proto__ || Object.getPrototypeOf(CreatingTable)).apply(this, arguments));}_createClass(CreatingTable, [{ key: 'render', value: function render()
-	        {var _this4 = this;var
-	            tablesStore = this.props.tablesStore;
-	            return (
-	                React.createElement('div', { className: 'row' },
-	                    React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this4.props.createTable(e);} },
-	                        React.createElement('div', { className: 'col-md-12' },
-	                            React.createElement('div', { className: 'form-group' },
-	                                React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return tablesStore.creating_name = e.target.value;}, value: tablesStore.creating_name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0442\u0430\u0431\u043B\u0438\u0446\u044B' }))),
-	
-	
-	
-	                        React.createElement(CollsCreating, { tablesStore: tablesStore }),
-	
-	                        React.createElement('div', { className: 'col-md-12' },
-	                            React.createElement('div', { className: 'form-group' },
-	                                React.createElement('button', { className: 'btn btn-success', disabled: tablesStore.colls_creating_error_message, type: 'submit' }, '\u0421\u043E\u0437\u0434\u0430\u0442\u044C'))))));
-	
-	
-	
-	
-	
-	        } }]);return CreatingTable;}(React.Component)) || _class2;var
-	
-	
-	
-	EditingTable = (0, _mobxReact.observer)(_class3 = function (_React$Component2) {_inherits(EditingTable, _React$Component2);function EditingTable() {_classCallCheck(this, EditingTable);return _possibleConstructorReturn(this, (EditingTable.__proto__ || Object.getPrototypeOf(EditingTable)).apply(this, arguments));}_createClass(EditingTable, [{ key: 'render', value: function render()
-	        {var _this6 = this;var
-	            tablesStore = this.props.tablesStore;
-	            if (tablesStore.editing) {
+	EditingTable = (0, _mobxReact.observer)(_class2 = function (_React$Component) {_inherits(EditingTable, _React$Component);function EditingTable() {_classCallCheck(this, EditingTable);return _possibleConstructorReturn(this, (EditingTable.__proto__ || Object.getPrototypeOf(EditingTable)).apply(this, arguments));}_createClass(EditingTable, [{ key: 'render', value: function render()
+	        {var _props2 =
+	            this.props,script = _props2.script,scriptsStore = _props2.scriptsStore,modalStore = _props2.modalStore;
+	            if (scriptsStore.editing) {
 	                return (
 	                    React.createElement('div', { className: 'row' },
-	                        React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this6.props.updateTable(e);} },
+	                        React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return scriptsStore.updateTable(script, scriptsStore.editing, modalStore, e);} },
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('div', { className: 'form-group' },
-	                                    React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return tablesStore.editing.name = e.target.value;}, value: tablesStore.editing.name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0442\u0430\u0431\u043B\u0438\u0446\u044B' }))),
+	                                    React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return scriptsStore.editing.name = e.target.value;}, value: scriptsStore.editing.name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0442\u0430\u0431\u043B\u0438\u0446\u044B' }))),
 	
 	
 	
-	                            React.createElement(CollsCreating, { tablesStore: tablesStore }),
+	                            React.createElement(CollsCreating, { scriptsStore: scriptsStore, script: script }),
 	
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('div', { className: 'form-group' },
-	                                    React.createElement('button', { className: 'btn btn-success', disabled: tablesStore.colls_creating_error_message, type: 'submit' }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))))));
+	                                    React.createElement('button', { className: 'btn btn-success', disabled: scriptsStore.editing.colls_creating_error_message, type: 'submit' }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))))));
 	
 	
 	
@@ -59250,92 +59165,62 @@
 	
 	            }
 	            return null;
-	        } }]);return EditingTable;}(React.Component)) || _class3;var
+	        } }]);return EditingTable;}(React.Component)) || _class2;var
 	
 	
 	
-	CollsCreating = (0, _mobxReact.observer)(_class4 = function (_React$Component3) {_inherits(CollsCreating, _React$Component3);function CollsCreating() {_classCallCheck(this, CollsCreating);return _possibleConstructorReturn(this, (CollsCreating.__proto__ || Object.getPrototypeOf(CollsCreating)).apply(this, arguments));}_createClass(CollsCreating, [{ key: 'deleteColl', value: function deleteColl(
-	        colls, coll, i) {var
-	            tablesStore = this.props.tablesStore;
-	            (0, _confirm2.default)("Вы действительно хотите удалить столбец: " + coll.name).then(
-	            function (result) {
-	                _jquery2.default.ajax({
-	                    method: 'DELETE',
-	                    url: document.body.getAttribute('data-colls-url'),
-	                    data: JSON.stringify(coll),
-	                    success: function success(res) {
-	                        tablesStore.tables = res.tables;
-	                        colls.splice(i, 1);
-	                    },
-	                    error: function error(res) {
-	                        console.log(res);
-	                    } });
-	
-	            },
-	            function (result) {
-	                console.log('cancel called');
-	            });
-	
-	        } }, { key: 'onSort', value: function onSort(
-	        items) {var
-	            tablesStore = this.props.tablesStore;
+	CollsCreating = (0, _mobxReact.observer)(_class3 = function (_React$Component2) {_inherits(CollsCreating, _React$Component2);function CollsCreating() {_classCallCheck(this, CollsCreating);return _possibleConstructorReturn(this, (CollsCreating.__proto__ || Object.getPrototypeOf(CollsCreating)).apply(this, arguments));}_createClass(CollsCreating, [{ key: 'onSort', value: function onSort(
+	        items) {var _props3 =
+	            this.props,script = _props3.script,scriptsStore = _props3.scriptsStore;
 	            items.map(function (item, key) {
 	                if (item.props.text) {
-	                    if (tablesStore.editing) {
-	                        tablesStore.editing.text_coll_position = key;
-	                    } else {
-	                        tablesStore.creating_text_coll_position = key;
+	                    if (scriptsStore.editing) {
+	                        scriptsStore.editing.text_coll_position = key;
 	                    }
 	                } else {
 	                    item.props.coll.position = key;
 	                }
 	            });
-	            tablesStore.updateTable(null, false);
+	            scriptsStore.updateTable(script, scriptsStore.editing);
 	        } }, { key: 'onSizeChange', value: function onSizeChange()
 	        {var
-	            tablesStore = this.props.tablesStore;
-	            var colls = tablesStore.editing ? tablesStore.editing.colls : tablesStore.creating_colls;
-	            var full_size = parseInt(tablesStore.editing ? tablesStore.editing.text_coll_size : tablesStore.creating_text_coll_size);
+	            scriptsStore = this.props.scriptsStore;
+	            var colls = scriptsStore.editing ? scriptsStore.editing.colls : null;
+	            if (colls) {(function () {
+	                    var full_size = parseInt(scriptsStore.editing.text_coll_size);
 	
-	            colls.map(function (coll) {
-	                full_size = full_size + parseInt(coll.size);
-	            });
-	            if (full_size > 100) {
-	                tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна превышать 100%';
-	            } else if (full_size < 100) {
-	                tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна быть меньше 100%';
-	            } else if (tablesStore.colls_creating_error_message) {
-	                tablesStore.colls_creating_error_message = null;
+	                    colls.map(function (coll) {
+	                        full_size = full_size + parseInt(coll.size);
+	                    });
+	                    if (full_size > 100) {
+	                        scriptsStore.editing.colls_creating_error_message = 'Общая ширина блоков не должна превышать 100%';
+	                    } else if (full_size < 100) {
+	                        scriptsStore.editing.colls_creating_error_message = 'Общая ширина блоков не должна быть меньше 100%';
+	                    } else if (scriptsStore.editing.colls_creating_error_message) {
+	                        scriptsStore.editing.colls_creating_error_message = null;
+	                    }})();
 	            }
 	        } }, { key: 'render', value: function render()
-	        {var _this8 = this;var
-	            tablesStore = this.props.tablesStore;
-	            var colls = tablesStore.editing ? tablesStore.editing.colls : tablesStore.creating_colls;
-	            var text_coll_name = tablesStore.editing ? tablesStore.editing.text_coll_name : tablesStore.creating_text_coll_name;
-	            var text_coll_size = tablesStore.editing ? tablesStore.editing.text_coll_size : tablesStore.creating_text_coll_size;
-	            var text_coll_position = tablesStore.editing ? tablesStore.editing.text_coll_position : tablesStore.creating_text_coll_position;
-	
+	        {var _this5 = this;var _props4 =
+	            this.props,script = _props4.script,scriptsStore = _props4.scriptsStore;
+	            var colls = scriptsStore.editing ? scriptsStore.editing.colls : null;
 	            var colls_inputs = [];
 	            colls_inputs.push(
 	            React.createElement(CollInput, {
 	                key: colls_inputs.length,
-	                name: text_coll_name,
-	                size: text_coll_size,
-	                position: text_coll_position,
+	                name: scriptsStore.editing.text_coll_name,
+	                size: scriptsStore.editing.text_coll_size,
+	                position: scriptsStore.editing.text_coll_position,
 	                text: true,
 	                onChangeSize: function onChangeSize(e) {
-	                    if (tablesStore.editing) {
-	                        tablesStore.editing.text_coll_size = e.target.value;
-	                    } else {
-	                        tablesStore.creating_text_coll_size = e.target.value;
+	                    if (scriptsStore.editing) {
+	                        scriptsStore.editing.text_coll_size = e.target.value;
 	                    }
-	                    return _this8.onSizeChange();
+	                    return _this5.onSizeChange();
 	                },
 	                onChangeName: function onChangeName(e) {
-	                    if (tablesStore.editing) {
-	                        tablesStore.editing.text_coll_name = e.target.value;
-	                    } else {
-	                        tablesStore.creating_text_coll_name = e.target.value;
+	                    if (scriptsStore.editing) {
+	                        scriptsStore.editing.text_coll_name = e.target.value;
 	                    }
 	                } }));
 	
@@ -59350,8 +59235,8 @@
 	                    text: false,
 	                    coll: coll,
 	                    colls: colls,
-	                    deleteColl: _this8.deleteColl.bind(_this8),
-	                    onChangeSize: function onChangeSize(e) {coll.size = e.target.value;return _this8.onSizeChange();},
+	                    deleteColl: function deleteColl() {scriptsStore.deleteColl(script, scriptsStore.editing, colls, coll, key);},
+	                    onChangeSize: function onChangeSize(e) {coll.size = e.target.value;return _this5.onSizeChange();},
 	                    onChangeName: function onChangeName(e) {coll.name = e.target.value;} }));
 	
 	            });
@@ -59373,27 +59258,27 @@
 	                        React.createElement('div', { className: 'form-group' },
 	                            React.createElement('button', { className: 'btn btn-info', type: 'button', onClick: function onClick(e) {
 	                                        e.preventDefault();
-	                                        colls.push(new _tablesStore.Coll(tablesStore.editing));
-	                                        return _this8.onSizeChange();
+	                                        scriptsStore.createColl(script, scriptsStore.editing);
+	                                        return _this5.onSizeChange();
 	                                    } }, '+ \u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u0442\u043E\u043B\u0431\u0435\u0446'))),
 	
 	
-	                    tablesStore.colls_creating_error_message ?
+	                    scriptsStore.editing.colls_creating_error_message ?
 	                    React.createElement('div', { className: 'col-md-12' },
 	                        React.createElement('div', { className: 'alert alert-danger', role: 'alert' },
 	                            React.createElement('span', { className: 'glyphicon glyphicon-exclamation-sign' }),
 	                            React.createElement('span', { className: 'sr-only' }, '\u041E\u0448\u0438\u0431\u043A\u0430:'),
-	                            tablesStore.colls_creating_error_message)) :
+	                            scriptsStore.editing.colls_creating_error_message)) :
 	
 	
 	                    null));
 	
 	
-	        } }]);return CollsCreating;}(React.Component)) || _class4;var
+	        } }]);return CollsCreating;}(React.Component)) || _class3;var
 	
 	
-	CollInput = function (_React$Component4) {_inherits(CollInput, _React$Component4);function CollInput() {_classCallCheck(this, CollInput);return _possibleConstructorReturn(this, (CollInput.__proto__ || Object.getPrototypeOf(CollInput)).apply(this, arguments));}_createClass(CollInput, [{ key: 'render', value: function render()
-	        {var _this10 = this;var
+	CollInput = function (_React$Component3) {_inherits(CollInput, _React$Component3);function CollInput() {_classCallCheck(this, CollInput);return _possibleConstructorReturn(this, (CollInput.__proto__ || Object.getPrototypeOf(CollInput)).apply(this, arguments));}_createClass(CollInput, [{ key: 'render', value: function render()
+	        {var _this7 = this;var
 	            coll = this.props.coll;
 	            var links = [];
 	            if (coll && coll.categories && coll.categories.length > 0) {
@@ -59437,10 +59322,10 @@
 	                            'aria-hidden': 'true',
 	                            onClick: function onClick(e) {
 	                                e.preventDefault();
-	                                if (_this10.props.coll.id) {
-	                                    _this10.props.deleteColl(_this10.props.colls, _this10.props.coll, _this10.props.index);
+	                                if (_this7.props.coll.id) {
+	                                    _this7.props.deleteColl();
 	                                } else {
-	                                    _this10.props.colls.splice(_this10.props.index, 1);
+	                                    _this7.props.colls.splice(_this7.props.index, 1);
 	                                }
 	                            } })) :
 	
@@ -59450,13 +59335,123 @@
 	        } }]);return CollInput;}(React.Component);var
 	
 	
-	AvailableTables = exports.AvailableTables = function (_React$Component5) {_inherits(AvailableTables, _React$Component5);function AvailableTables() {_classCallCheck(this, AvailableTables);return _possibleConstructorReturn(this, (AvailableTables.__proto__ || Object.getPrototypeOf(AvailableTables)).apply(this, arguments));}_createClass(AvailableTables, [{ key: 'render', value: function render()
+	AvailableTables = exports.AvailableTables = function (_React$Component4) {_inherits(AvailableTables, _React$Component4);function AvailableTables() {_classCallCheck(this, AvailableTables);return _possibleConstructorReturn(this, (AvailableTables.__proto__ || Object.getPrototypeOf(AvailableTables)).apply(this, arguments));}_createClass(AvailableTables, [{ key: 'render', value: function render()
 	        {
 	            return React.cloneElement(React.createElement(Tables, this.props), { available: true });
 	        } }]);return AvailableTables;}(React.Component);
 
 /***/ },
 /* 617 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Sort = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;exports.
+	
+	
+	
+	moveInArray = moveInArray;var _react = __webpack_require__(300);var _react2 = _interopRequireDefault(_react);var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);var _mobxReact = __webpack_require__(561);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}function moveInArray(arr, old_index, new_index) {
+	    if (new_index >= arr.length) {
+	        var k = new_index - arr.length;
+	        while (k-- + 1) {
+	            arr.push(undefined);
+	        }
+	    }
+	    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+	    return arr;
+	}var
+	
+	
+	Sort = exports.Sort = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Sort, _React$Component);
+	    function Sort(props) {_classCallCheck(this, Sort);var _this = _possibleConstructorReturn(this, (Sort.__proto__ || Object.getPrototypeOf(Sort)).call(this,
+	        props));
+	        _this.state = {
+	            items: props.children };return _this;
+	
+	    }_createClass(Sort, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
+	        props) {
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { items: { $set: props.children } }));
+	        } }, { key: 'moveItem', value: function moveItem(
+	        index, new_index) {var _this2 = this;var
+	            items = this.state.items;
+	            items = moveInArray(items, index, new_index);
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { items: { $set: items } }), function () {
+	                return _this2.props.onSort(items);
+	            });
+	        } }, { key: 'render', value: function render()
+	        {var _this3 = this;var _state =
+	            this.state,items = _state.items,itemUp = _state.itemUp,itemDown = _state.itemDown;
+	            return (
+	                _react2.default.createElement('div', null,
+	                    items.map(function (item, key) {
+	                        if (_this3.props.sortStoreItems) {
+	                            return (
+	                                _react2.default.createElement('div', { key: key },
+	                                    item));
+	
+	
+	                        }
+	                        return (
+	                            _react2.default.createElement('div', { key: key, className: 'sort_block' },
+	                                !_this3.props.left ?
+	                                _react2.default.createElement('div', { className: 'sort_item' },
+	                                    item) :
+	
+	                                null,
+	                                _react2.default.createElement('div', { className: 'sort_icons' },
+	                                    key !== 0 ?
+	                                    _react2.default.createElement('i', {
+	                                        className: 'glyphicon glyphicon-triangle-top',
+	                                        'aria-hidden': 'true',
+	                                        onClick: function onClick() {_this3.moveItem(key, key - 1);} }) : null,
+	                                    key + 1 !== _this3.props.children.length ?
+	                                    _react2.default.createElement('i', {
+	                                        className: 'glyphicon glyphicon-triangle-bottom',
+	                                        'aria-hidden': 'true',
+	                                        onClick: function onClick() {_this3.moveItem(key, key + 1);} }) : null),
+	
+	                                _this3.props.left ?
+	                                _react2.default.createElement('div', { className: 'sort_item' },
+	                                    item) :
+	
+	                                null));
+	
+	
+	                    })));
+	
+	
+	        } }]);return Sort;}(_react2.default.Component)) || _class;
+
+/***/ },
+/* 618 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AccessableComponent = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
+	var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);
+	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
+	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+	var _mobxReact = __webpack_require__(561);
+	var _modal = __webpack_require__(584);
+	var _tablesStore = __webpack_require__(619);
+	var _reactRouter = __webpack_require__(476);
+	var _sort = __webpack_require__(617);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	
+	
+	AccessableComponent = exports.AccessableComponent = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(AccessableComponent, _React$Component);function AccessableComponent() {_classCallCheck(this, AccessableComponent);return _possibleConstructorReturn(this, (AccessableComponent.__proto__ || Object.getPrototypeOf(AccessableComponent)).apply(this, arguments));}_createClass(AccessableComponent, [{ key: 'access', value: function access(
+	        usersStore, script) {
+	            if (script && usersStore) {
+	                var access = void 0;
+	                var script_access = script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;});
+	                if (usersStore.session_user.id === script.owner.id) {
+	                    access = { edit: true };
+	                } else if (script_access && script_access.active) {
+	                    access = script_access;
+	                }
+	                return access;
+	            }
+	            return false;
+	        } }]);return AccessableComponent;}(React.Component)) || _class;
+
+/***/ },
+/* 619 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TablesStore = exports.Coll = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _desc2, _value2, _class3, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15;var _mobx = __webpack_require__(562);
@@ -59566,116 +59561,6 @@
 	new TablesStore();
 
 /***/ },
-/* 618 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Sort = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;exports.
-	
-	
-	
-	moveInArray = moveInArray;var _react = __webpack_require__(300);var _react2 = _interopRequireDefault(_react);var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);var _mobxReact = __webpack_require__(561);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}function moveInArray(arr, old_index, new_index) {
-	    if (new_index >= arr.length) {
-	        var k = new_index - arr.length;
-	        while (k-- + 1) {
-	            arr.push(undefined);
-	        }
-	    }
-	    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-	    return arr;
-	}var
-	
-	
-	Sort = exports.Sort = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Sort, _React$Component);
-	    function Sort(props) {_classCallCheck(this, Sort);var _this = _possibleConstructorReturn(this, (Sort.__proto__ || Object.getPrototypeOf(Sort)).call(this,
-	        props));
-	        _this.state = {
-	            items: props.children };return _this;
-	
-	    }_createClass(Sort, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
-	        props) {
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { items: { $set: props.children } }));
-	        } }, { key: 'moveItem', value: function moveItem(
-	        index, new_index) {var _this2 = this;var
-	            items = this.state.items;
-	            items = moveInArray(items, index, new_index);
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { items: { $set: items } }), function () {
-	                return _this2.props.onSort(items);
-	            });
-	        } }, { key: 'render', value: function render()
-	        {var _this3 = this;var _state =
-	            this.state,items = _state.items,itemUp = _state.itemUp,itemDown = _state.itemDown;
-	            return (
-	                _react2.default.createElement('div', null,
-	                    items.map(function (item, key) {
-	                        if (_this3.props.sortStoreItems) {
-	                            return (
-	                                _react2.default.createElement('div', { key: key },
-	                                    item));
-	
-	
-	                        }
-	                        return (
-	                            _react2.default.createElement('div', { key: key, className: 'sort_block' },
-	                                !_this3.props.left ?
-	                                _react2.default.createElement('div', { className: 'sort_item' },
-	                                    item) :
-	
-	                                null,
-	                                _react2.default.createElement('div', { className: 'sort_icons' },
-	                                    key !== 0 ?
-	                                    _react2.default.createElement('i', {
-	                                        className: 'glyphicon glyphicon-triangle-top',
-	                                        'aria-hidden': 'true',
-	                                        onClick: function onClick() {_this3.moveItem(key, key - 1);} }) : null,
-	                                    key + 1 !== _this3.props.children.length ?
-	                                    _react2.default.createElement('i', {
-	                                        className: 'glyphicon glyphicon-triangle-bottom',
-	                                        'aria-hidden': 'true',
-	                                        onClick: function onClick() {_this3.moveItem(key, key + 1);} }) : null),
-	
-	                                _this3.props.left ?
-	                                _react2.default.createElement('div', { className: 'sort_item' },
-	                                    item) :
-	
-	                                null));
-	
-	
-	                    })));
-	
-	
-	        } }]);return Sort;}(_react2.default.Component)) || _class;
-
-/***/ },
-/* 619 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AccessableComponent = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
-	var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);
-	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
-	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
-	var _mobxReact = __webpack_require__(561);
-	var _modal = __webpack_require__(584);
-	var _tablesStore = __webpack_require__(617);
-	var _reactRouter = __webpack_require__(476);
-	var _sort = __webpack_require__(618);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
-	
-	
-	AccessableComponent = exports.AccessableComponent = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(AccessableComponent, _React$Component);function AccessableComponent() {_classCallCheck(this, AccessableComponent);return _possibleConstructorReturn(this, (AccessableComponent.__proto__ || Object.getPrototypeOf(AccessableComponent)).apply(this, arguments));}_createClass(AccessableComponent, [{ key: 'access', value: function access(
-	        usersStore, script) {
-	            if (script && usersStore) {
-	                var access = void 0;
-	                var script_access = script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;});
-	                if (usersStore.session_user.id === script.owner.id) {
-	                    access = { edit: true };
-	                } else if (script_access && script_access.active) {
-	                    access = script_access;
-	                }
-	                return access;
-	            }
-	            return false;
-	        } }]);return AccessableComponent;}(React.Component)) || _class;
-
-/***/ },
 /* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -59685,14 +59570,14 @@
 	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	var _mobxReact = __webpack_require__(561);
 	var _modal = __webpack_require__(584);
-	var _tablesStore = __webpack_require__(617);
+	var _tablesStore = __webpack_require__(619);
 	var _editor = __webpack_require__(621);
 	var _reactRouter = __webpack_require__(476);
 	var _clipboard = __webpack_require__(769);var _clipboard2 = _interopRequireDefault(_clipboard);
 	var _draftJs = __webpack_require__(622);
 	var _draftJsExportHtml = __webpack_require__(750);
-	var _sort = __webpack_require__(618);
-	var _access = __webpack_require__(619);
+	var _sort = __webpack_require__(617);
+	var _access = __webpack_require__(618);
 	var _confirm = __webpack_require__(597);var _confirm2 = _interopRequireDefault(_confirm);
 	var _reactSelect = __webpack_require__(585);var _reactSelect2 = _interopRequireDefault(_reactSelect);
 	var _mobx = __webpack_require__(562);
@@ -60556,7 +60441,7 @@
 	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	var _mobxReact = __webpack_require__(561);
 	var _modal = __webpack_require__(584);
-	var _tablesStore = __webpack_require__(617);
+	var _tablesStore = __webpack_require__(619);
 	var _draftJs = __webpack_require__(622);
 	var _draftJsExportHtml = __webpack_require__(750);
 	var _draftJsImportHtml = __webpack_require__(762);
@@ -86166,15 +86051,13 @@
 	var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
 	var _nav = __webpack_require__(778);
-	var _projectsStore = __webpack_require__(779);var _projectsStore2 = _interopRequireDefault(_projectsStore);
-	var _modalStore = __webpack_require__(780);var _modalStore2 = _interopRequireDefault(_modalStore);
-	var _scriptsStore = __webpack_require__(781);var _scriptsStore2 = _interopRequireDefault(_scriptsStore);
-	var _tablesStore = __webpack_require__(617);var _tablesStore2 = _interopRequireDefault(_tablesStore);
-	var _usersStore = __webpack_require__(782);var _usersStore2 = _interopRequireDefault(_usersStore);
-	var _paymentStore = __webpack_require__(783);var _paymentStore2 = _interopRequireDefault(_paymentStore);
-	var _tooltipStore = __webpack_require__(784);var _tooltipStore2 = _interopRequireDefault(_tooltipStore);
+	var _modalStore = __webpack_require__(779);var _modalStore2 = _interopRequireDefault(_modalStore);
+	var _scriptsStore = __webpack_require__(780);var _scriptsStore2 = _interopRequireDefault(_scriptsStore);
+	var _usersStore = __webpack_require__(781);var _usersStore2 = _interopRequireDefault(_usersStore);
+	var _paymentStore = __webpack_require__(782);var _paymentStore2 = _interopRequireDefault(_paymentStore);
+	var _tooltipStore = __webpack_require__(783);var _tooltipStore2 = _interopRequireDefault(_tooltipStore);
 	
-	var _noMoney = __webpack_require__(785);
+	var _noMoney = __webpack_require__(784);
 	var _mobxReact = __webpack_require__(561);
 	var _scripts = __webpack_require__(557);
 	var _tables = __webpack_require__(616);
@@ -86184,13 +86067,11 @@
 	
 	App = exports.App = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(App, _React$Component);function App() {_classCallCheck(this, App);return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));}_createClass(App, [{ key: 'componentWillMount', value: function componentWillMount()
 	        {var _props =
-	            this.props,projectsStore = _props.projectsStore,scriptsStore = _props.scriptsStore,usersStore = _props.usersStore,paymentStore = _props.paymentStore;
+	            this.props,scriptsStore = _props.scriptsStore,usersStore = _props.usersStore,paymentStore = _props.paymentStore;
 	            _jquery2.default.ajax({
 	                method: 'GET',
 	                url: document.body.getAttribute('data-init-url'),
 	                success: function success(res) {
-	                    projectsStore.createProjects(res.projects);
-	
 	                    scriptsStore.scripts = res.scripts;
 	                    scriptsStore.template_scripts = res.template_scripts;
 	                    scriptsStore.available_scripts = res.available_scripts;
@@ -86208,7 +86089,7 @@
 	
 	        } }, { key: 'render', value: function render()
 	        {var _props2 =
-	            this.props,usersStore = _props2.usersStore,tablesStore = _props2.tablesStore,scriptsStore = _props2.scriptsStore;
+	            this.props,usersStore = _props2.usersStore,scriptsStore = _props2.scriptsStore;
 	            var PAYMENT_REQUIRED_COMPONENTS = [_scripts.Scripts, _tables.Tables, _table.TableEdit, _table.TableShare];
 	            var script = this.props.params.script ? scriptsStore.script(this.props.params.script) : null;
 	            var payment_required_children = this.props.children.filter(function (child) {
@@ -86241,7 +86122,7 @@
 	            if (usersStore.session_user) {
 	                return (
 	                    React.createElement('div', null,
-	                        React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params, usersStore: usersStore, tablesStore: tablesStore }),
+	                        React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params, usersStore: usersStore, scriptsStore: scriptsStore }),
 	
 	                        React.createElement('div', { className: 'container-fluid', id: 'main_container' },
 	                            payment_required_children.length > 0 ?
@@ -86263,9 +86144,7 @@
 	
 	AppWrapper = exports.AppWrapper = function (_React$Component2) {_inherits(AppWrapper, _React$Component2);function AppWrapper() {_classCallCheck(this, AppWrapper);return _possibleConstructorReturn(this, (AppWrapper.__proto__ || Object.getPrototypeOf(AppWrapper)).apply(this, arguments));}_createClass(AppWrapper, [{ key: 'render', value: function render()
 	        {
-	            var projectsStore = _projectsStore2.default;
 	            var scriptsStore = _scriptsStore2.default;
-	            var tablesStore = _tablesStore2.default;
 	            var modalStore = _modalStore2.default;
 	            var usersStore = _usersStore2.default;
 	            var paymentStore = _paymentStore2.default;
@@ -86273,9 +86152,7 @@
 	
 	            var childrenWithProps = React.Children.map(this.props.children,
 	            function (child) {return React.cloneElement(child, {
-	                    projectsStore: projectsStore,
 	                    scriptsStore: scriptsStore,
-	                    tablesStore: tablesStore,
 	                    modalStore: modalStore,
 	                    usersStore: usersStore,
 	                    paymentStore: paymentStore,
@@ -86287,8 +86164,6 @@
 	                    modalStore: modalStore,
 	                    usersStore: usersStore,
 	                    scriptsStore: scriptsStore,
-	                    projectsStore: projectsStore,
-	                    tablesStore: tablesStore,
 	                    paymentStore: paymentStore,
 	                    tooltipStore: tooltipStore,
 	                    children: childrenWithProps,
@@ -86311,9 +86186,9 @@
 	
 	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);function Nav() {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));}_createClass(Nav, [{ key: 'render', value: function render()
 	        {var _this2 = this;var _props =
-	            this.props,usersStore = _props.usersStore,tablesStore = _props.tablesStore;
+	            this.props,usersStore = _props.usersStore,scriptsStore = _props.scriptsStore;
 	            var script_id = parseInt(this.props.params.script);
-	            var script_tables = tablesStore.script_tables(script_id);
+	            var script_tables = scriptsStore.scripts.find(function (script) {return script.id === script_id;}).data;
 	            var edit = this.props.location.pathname.includes('edit');
 	            return (
 	                React.createElement('nav', { className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
@@ -86412,46 +86287,6 @@
 /* 779 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ProjectsStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
-	
-	Project =
-	function Project(project) {_classCallCheck(this, Project);
-	    this.__proto__ = Object.create(project);
-	};var
-	
-	
-	ProjectsStore = exports.ProjectsStore = (_class = function () {function ProjectsStore() {_classCallCheck(this, ProjectsStore);_initDefineProp(this, 'projects', _descriptor, this);_initDefineProp(this, 'filter_by_name', _descriptor2, this);_initDefineProp(this, 'creating_name', _descriptor3, this);_initDefineProp(this, 'editing', _descriptor4, this);}_createClass(ProjectsStore, [{ key: 'project', value: function project(
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	        id) {
-	            return this.projects.find(function (project) {return parseInt(project.id) === parseInt(id);});
-	        } }, { key: 'createProjects', value: function createProjects(
-	        projects) {
-	            //this.projects = [];
-	            //projects.map(project => this.projects.push(new Project(project)));
-	            this.projects = projects;
-	        } }, { key: 'resetCreating', value: function resetCreating()
-	        {
-	            this.creating_name = '';
-	        } }, { key: 'filteredProjects', get: function get() {var _this = this;var matches_by_name = new RegExp(this.filter_by_name, 'i');return this.projects.filter(function (project) {return !_this.filter_by_name || matches_by_name.test(project.name);});} }, { key: 'owner', get: function get() {return this.projects.length > 0 ? this.projects[0].owner : parseInt(document.body.getAttribute('data-user-id'));} }]);return ProjectsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'projects', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class.prototype, 'filteredProjects', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'filteredProjects'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'owner', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'owner'), _class.prototype)), _class);exports.default =
-	
-	
-	new ProjectsStore();
-
-/***/ },
-/* 780 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ModalStore = undefined;var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
 	ModalStore = exports.ModalStore = (_class = function ModalStore() {_classCallCheck(this, ModalStore);_initDefineProp(this, 'modal', _descriptor, this);_initDefineProp(this, 'component', _descriptor2, this);}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'modal', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
@@ -86462,11 +86297,13 @@
 	new ModalStore();
 
 /***/ },
-/* 781 */
+/* 780 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ScriptsStore = undefined;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;var _mobx = __webpack_require__(562);
-	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;} else {return Array.from(arr);}}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
+	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
+	var _confirm = __webpack_require__(597);var _confirm2 = _interopRequireDefault(_confirm);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;} else {return Array.from(arr);}}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
+	
 	
 	EmptyInactiveScript = function EmptyInactiveScript() {_classCallCheck(this, EmptyInactiveScript);this.
 	    id = null;this.
@@ -86534,13 +86371,119 @@
 	        {
 	            this.creating_name = '';
 	            this.creating_project = null;
-	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype)), _class2);exports.default =
+	        } }, { key: 'createTable', value: function createTable(
+	
+	        script) {
+	            _jquery2.default.ajax({
+	                method: 'POST',
+	                url: document.body.getAttribute('data-tables-url'),
+	                data: JSON.stringify({
+	                    script: script.id }),
+	
+	                success: function success(res) {
+	                    console.log(res);
+	                    script.data = res.data;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
+	        } }, { key: 'updateTable', value: function updateTable(
+	        script, table, modalStore, e) {var _this3 = this;
+	            if (e) {e.preventDefault();}
+	            _jquery2.default.ajax({
+	                method: 'PUT',
+	                url: document.body.getAttribute('data-tables-url'),
+	                data: JSON.stringify({
+	                    script: script.id,
+	                    table: table }),
+	
+	                success: function success(res) {
+	                    script.data = res.data;
+	                    if (modalStore) {
+	                        modalStore.modal = false;
+	                        _this3.editing = null;
+	                    }
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
+	        } }, { key: 'deleteTable', value: function deleteTable(
+	        script, table) {
+	            (0, _confirm2.default)("Вы действительно хотите удалить таблицу: " + table.name).then(
+	            function (result) {
+	                _jquery2.default.ajax({
+	                    method: 'DELETE',
+	                    url: document.body.getAttribute('data-tables-url'),
+	                    data: JSON.stringify({
+	                        script: script.id,
+	                        table: table.id }),
+	
+	                    success: function success(res) {
+	                        script.data = res.data;
+	                    },
+	                    error: function error(res) {
+	                        console.log(res);
+	                    } });
+	
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	            });
+	
+	        } }, { key: 'createColl', value: function createColl(
+	        script, table) {var _this4 = this;
+	            _jquery2.default.ajax({
+	                method: 'POST',
+	                url: document.body.getAttribute('data-colls-url'),
+	                data: JSON.stringify({
+	                    script: script.id,
+	                    table: table.id }),
+	
+	                success: function success(res) {
+	                    script.data = res.data;
+	                    if (_this4.editing && _this4.editing.colls) {
+	                        _this4.editing.colls.push(res.new_coll);
+	                    }
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
+	        } }, { key: 'deleteColl', value: function deleteColl(
+	        script, table, colls, coll, i) {
+	            (0, _confirm2.default)("Вы действительно хотите удалить столбец: " + coll.name).then(
+	            function (result) {
+	                _jquery2.default.ajax({
+	                    method: 'DELETE',
+	                    url: document.body.getAttribute('data-colls-url'),
+	                    data: JSON.stringify({
+	                        script: script.id,
+	                        table: table.id,
+	                        coll: coll.id }),
+	
+	                    success: function success(res) {
+	                        script.data = res.data;
+	                        colls.splice(i, 1);
+	                    },
+	                    error: function error(res) {
+	                        console.log(res);
+	                    } });
+	
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	            });
+	
+	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteColl'), _class2.prototype)), _class2);exports.default =
+	
 	
 	
 	new ScriptsStore();
 
 /***/ },
-/* 782 */
+/* 781 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;var _mobx = __webpack_require__(562);
@@ -86583,7 +86526,7 @@
 	new UsersStore();
 
 /***/ },
-/* 783 */
+/* 782 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.PaymentStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}
@@ -86684,7 +86627,7 @@
 	new PaymentStore();
 
 /***/ },
-/* 784 */
+/* 783 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TooltipStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
@@ -86702,7 +86645,7 @@
 	new TooltipStore();
 
 /***/ },
-/* 785 */
+/* 784 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.NoAccess = exports.NoScriptOwnerMoney = exports.NoMoney = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);

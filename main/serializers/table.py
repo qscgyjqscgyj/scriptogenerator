@@ -25,45 +25,45 @@ class TableLinksCollSerializer(serializers.ModelSerializer):
 
 class CollsField(serializers.Field):
     def to_representation(self, table):
-        return TableLinksCollSerializer(TableLinksColl.objects.filter(table=table), many=True).data
+        return table['colls']
 
     def get_attribute(self, colls):
         return colls
 
     def to_internal_value(self, colls):
-        for c in colls:
-            if not c.get('table'):
-                if self.root.initial_data.get('colls'):
-                    del self.root.initial_data['colls']
-                try:
-                    self.root.initial_data['script'] = Script.objects.get(pk=int(self.root.initial_data['script']))
-                except TypeError:
-                    pass
-                table, created = Table.objects.get_or_create(**self.root.initial_data)
-                c['table'] = table
-            elif isinstance(c.get('table'), int):
-                c['table'] = Table.objects.get(pk=c.get('table'))
-            if c.get('id'):
-                coll = TableLinksColl.objects.get(pk=int(c.get('id')))
-                coll.name = c['name']
-                coll.position = c['position']
-                coll.size = c['size']
-                coll.save()
-            else:
-                TableLinksColl.objects.create(**c)
+        # for c in colls:
+        #     if not c.get('table'):
+        #         if self.root.initial_data.get('colls'):
+        #             del self.root.initial_data['colls']
+        #         try:
+        #             self.root.initial_data['script'] = Script.objects.get(pk=int(self.root.initial_data['script']))
+        #         except TypeError:
+        #             pass
+        #         table, created = Table.objects.get_or_create(**self.root.initial_data)
+        #         c['table'] = table
+        #     elif isinstance(c.get('table'), int):
+        #         c['table'] = Table.objects.get(pk=c.get('table'))
+        #     if c.get('id'):
+        #         coll = TableLinksColl.objects.get(pk=int(c.get('id')))
+        #         coll.name = c['name']
+        #         coll.position = c['position']
+        #         coll.size = c['size']
+        #         coll.save()
+        #     else:
+        #         TableLinksColl.objects.create(**c)
         return colls
 
 
-class TableSerializer(serializers.ModelSerializer):
+class TableSerializer(serializers.Serializer):
+    id = serializers.IntegerField(required=True)
+    old_id = serializers.IntegerField(allow_null=True)
+    name = serializers.CharField(required=True)
+    text_coll_name = serializers.CharField(required=True)
+    text_coll_size = serializers.IntegerField(required=True)
+    text_coll_position = serializers.IntegerField(required=True)
+    date = serializers.DateTimeField(required=True)
+    date_mod = serializers.DateTimeField(required=True)
     colls = CollsField()
-    url = serializers.SerializerMethodField()
-    view_url = serializers.SerializerMethodField()
-
-    def get_url(self, table):
-        return table.get_client_url()
-
-    def get_view_url(self, table):
-        return table.get_client_view_url()
 
     def create(self, validated_data):
         if validated_data.get('colls'):
@@ -79,8 +79,7 @@ class TableSerializer(serializers.ModelSerializer):
         return instance
 
     class Meta:
-        model = Table
-        fields = ('id', 'name', 'script', 'text_coll_name', 'text_coll_size', 'text_coll_position', 'date', 'date_mod', 'colls', 'url', 'view_url')
+        fields = ('id', 'old_id', 'name', 'text_coll_name', 'text_coll_size', 'text_coll_position', 'date', 'date_mod', 'colls')
 
 
 class ScriptTablesField(serializers.Field):

@@ -1,3 +1,5 @@
+import json
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.loading import get_model
 from rest_framework import serializers
@@ -52,11 +54,23 @@ class ScriptAvailableField(serializers.Field):
         return available
 
 
+class ScriptDataField(serializers.Field):
+    def to_representation(self, script):
+        return json.loads(script.data)
+
+    def get_attribute(self, data):
+        return data
+
+    def to_internal_value(self, data):
+        return data
+
+
 class ScriptSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
     accesses = ScriptAccessField(required=False)
     template = ScriptTemplateField(required=False, allow_null=True)
     available = ScriptAvailableField(read_only=True, allow_null=True)
+    data = ScriptDataField(required=False)
     url = serializers.SerializerMethodField()
     view_url = serializers.SerializerMethodField()
 
@@ -91,7 +105,7 @@ class ScriptSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Script
-        fields = ('id', 'name', 'owner', 'date', 'date_mod', 'accesses', 'active', 'template', 'available', 'url', 'view_url')
+        fields = ('id', 'name', 'owner', 'date', 'date_mod', 'accesses', 'active', 'template', 'available', 'url', 'view_url', 'data')
 
 
 class ScriptAccessSerializer(serializers.ModelSerializer):

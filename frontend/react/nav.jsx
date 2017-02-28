@@ -8,9 +8,9 @@ const STATIC_URL = document.body.getAttribute('data-static-url');
 @observer
 export class Nav extends React.Component {
     render() {
-        const {usersStore, tablesStore} = this.props;
+        const {usersStore, scriptsStore} = this.props;
         let script_id = parseInt(this.props.params.script);
-        let script_tables = tablesStore.script_tables(script_id);
+        let script_tables = scriptsStore.scripts.find(script => {return script.id === script_id}).data;
         let edit = this.props.location.pathname.includes('edit');
         return(
             <nav className={"navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '')}>

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+
 from django.db import models
 
 from users.models import CustomUser
@@ -23,24 +25,53 @@ class Script(models.Model):
         result = '/tables/' + str(self.pk) + '/'
         tables = self.tables()
         if tables:
-            result += 'table/' + str(tables[0].pk) + '/'
-            links = tables[0].links()
+            result += 'table/' + str(tables[0]['id']) + '/'
+            links = self.links(table_id=tables[0]['id'])
             if links:
-                result += 'link/' + str(links[0].pk) + '/share/'
+                result += 'link/' + str(links[0]['id']) + '/share/'
         return result
 
     def accesses(self):
         return ScriptAccess.objects.filter(script=self)
 
-    def tables(self):
-        return Table.objects.filter(script=self)
+    def tables(self, table_id=None):
+        data = json.loads(self.data)
+        if table_id:
+            return [{'data': table, 'index': i} for i, table in enumerate(data) if table['id'] == table_id][0]
+        return data
 
-    def links(self, parent=False):
-        tables = [table.pk for table in self.tables()]
-        if not parent:
-            return Link.objects.filter(category__table__table__pk__in=tables)
+    def replace_table(self, table, index):
+        data = json.loads(self.data)
+        data[index] = table
+        self.data = json.dumps(data)
+        self.save()
+
+    def colls(self, table_id=None, coll_id=None):
+        data = json.loads(self.data)
+        if table_id:
+            table_data = self.tables(table_id=table_id)
+            if coll_id:
+                return [{'data': coll, 'index': i} for i, coll in enumerate(table_data['data']['colls']) if coll['id'] == coll_id][0]
+            else:
+                return data['colls']
         else:
-            return Link.objects.filter(category__table__table__pk__in=tables, parent__isnull=False)
+            result = []
+            for table in data:
+                for coll in table['colls']:
+                    result.append(coll)
+            return result
+
+    def links(self, table_id=None):
+        tables = self.tables(table_id=table_id)['data']
+        if not isinstance(tables, list):
+            tables = [tables]
+        links = []
+        for table in tables:
+            for coll in table['colls']:
+                for category in coll['categories']:
+                    for link in category['links']:
+                        links.append(link)
+        return links
 
     def __unicode__(self):
         return self.name

@@ -4,67 +4,15 @@ import $ from 'jquery';
 import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
-import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
 import {Sort} from './sort';
 import {AccessableComponent} from './access';
-import confirm from './confirm';
+
 
 @observer
 export class Tables extends AccessableComponent {
-    componentWillMount() {
-        const {tablesStore} = this.props;
-        tablesStore.pullTables(this.props.params.script);
-    }
-    createTable(e) {
-        const {modalStore, tablesStore, scriptsStore} = this.props;
-        e.preventDefault();
-				if(tablesStore.creating_name) {
-						$.ajax({
-		            method: 'POST',
-		            url: document.body.getAttribute('data-tables-url'),
-		            data: JSON.stringify({
-		                name: tablesStore.creating_name,
-		                colls: tablesStore.creating_colls,
-		                text_coll_name: tablesStore.creating_text_coll_name,
-		                text_coll_size: tablesStore.creating_text_coll_size,
-		                text_coll_position: tablesStore.creating_text_coll_position,
-		                script: tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)
-		                //script: scriptsStore.script((tablesStore.creating_script ? tablesStore.creating_script : parseInt(this.props.params.script)))
-		            }),
-		            success: (res) => {
-		                tablesStore.tables = res.tables;
-		                modalStore.modal = false;
-		            },
-		            error: (res) => {
-		                console.log(res);
-		            }
-		        });
-				}
-    }
-    deleteTable(table) {
-        const {tablesStore} = this.props;
-        confirm("Вы действительно хотите удалить таблицу: " + table.name).then(
-            (result) => {
-                $.ajax({
-                    method: 'DELETE',
-                    url: document.body.getAttribute('data-tables-url'),
-                    data: JSON.stringify(table),
-                    success: (res) => {
-                        tablesStore.tables = res.tables;
-                    },
-                    error: (res) => {
-                        console.log(res);
-                    }
-                });
-            },
-            (result) => {
-                console.log('cancel called');
-            }
-        )
-    }
     render() {
-        const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
+        const {scriptsStore, modalStore, usersStore} = this.props;
         if(usersStore.session_user) {
             let script = scriptsStore.script(this.props.params.script);
             let access = this.access(usersStore, script);
@@ -75,13 +23,7 @@ export class Tables extends AccessableComponent {
                             <div>
                                 <div className="col-md-2">
                                     <button onClick={() => {
-                                        modalStore.modal = true;
-                                        modalStore.component = React.createElement(CreatingTable, {
-                                            tablesStore: tablesStore,
-                                            modalStore: modalStore,
-                                            createTable: this.createTable.bind(this),
-                                            updateTable: (e) => {tablesStore.updateTable(e, modalStore)}
-                                        });
+                                        scriptsStore.createTable(script);
                                     }} className="btn btn-success">+ Создать таблицу</button>
                                 </div>
                                 <div className="col-md-7">
@@ -98,29 +40,28 @@ export class Tables extends AccessableComponent {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {tablesStore.tables.map((table, key)=>{
+                                        {script.data.map((table, key)=>{
                                             return (
                                                 <tr key={key}>
                                                     <td>
-                                                        <Link to={table.view_url}>{table.name}</Link>
+                                                        <Link to={script.url + 'table/' + table.id + '/share/'}>{table.name}</Link>
                                                     </td>
                                                     <td className="text-right">
                                                         {access.edit ?
                                                             <button className="btn btn-default" onClick={()=>{
-                                                                tablesStore.editing = table;
+                                                                scriptsStore.editing = table;
                                                                 modalStore.modal = true;
                                                                 modalStore.component = React.createElement(EditingTable, {
-                                                                    tablesStore: tablesStore,
+                                                                    scriptsStore: scriptsStore,
+                                                                    script: script,
                                                                     modalStore: modalStore,
-                                                                    createTable: this.createTable.bind(this),
-                                                                    updateTable: (e) => {tablesStore.updateTable(e, modalStore)}
                                                                 });
                                                             }}>Ред.</button>
                                                         : null}
                                                     </td>
                                                     <td className="text-right">
                                                         {access.edit ?
-                                                            <button className="btn btn-danger btn-xs" onClick={()=>{this.deleteTable(table)}}>Удалить</button>
+                                                            <button className="btn btn-danger btn-xs" onClick={()=>{scriptsStore.deleteTable(script, table)}}>Удалить</button>
                                                         : null}
                                                     </td>
                                                 </tr>
@@ -130,7 +71,7 @@ export class Tables extends AccessableComponent {
                                 </table>
                             </div>
                         </div>
-                        <ModalWrapper stores={[projectsStore, scriptsStore, tablesStore]} modalStore={modalStore}/>
+                        <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>
                     </div>
                 );
             }
@@ -141,50 +82,24 @@ export class Tables extends AccessableComponent {
 }
 
 @observer
-class CreatingTable extends React.Component {
-    render() {
-        const {tablesStore} = this.props;
-        return (
-            <div className="row">
-                <form action="" onSubmit={(e) => this.props.createTable(e)}>
-                    <div className="col-md-12">
-                        <div className="form-group">
-                            <input className="form-control" onChange={(e) => tablesStore.creating_name = e.target.value} value={tablesStore.creating_name} type="text" name="name" placeholder="Имя таблицы"/>
-                        </div>
-                    </div>
-
-                    <CollsCreating tablesStore={tablesStore}/>
-
-                    <div className="col-md-12">
-                        <div className="form-group">
-                            <button className="btn btn-success" disabled={tablesStore.colls_creating_error_message} type="submit">Создать</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        )
-    }
-}
-
-@observer
 class EditingTable extends React.Component {
     render() {
-        const {tablesStore} = this.props;
-        if(tablesStore.editing) {
+        const {script, scriptsStore, modalStore} = this.props;
+        if(scriptsStore.editing) {
             return (
                 <div className="row">
-                    <form action="" onSubmit={(e) => this.props.updateTable(e)}>
+                    <form action="" onSubmit={(e) => scriptsStore.updateTable(script, scriptsStore.editing, modalStore, e)}>
                         <div className="col-md-12">
                             <div className="form-group">
-                                <input className="form-control" onChange={(e) => tablesStore.editing.name = e.target.value} value={tablesStore.editing.name} type="text" name="name" placeholder="Имя таблицы"/>
+                                <input className="form-control" onChange={(e) => scriptsStore.editing.name = e.target.value} value={scriptsStore.editing.name} type="text" name="name" placeholder="Имя таблицы"/>
                             </div>
                         </div>
 
-                        <CollsCreating tablesStore={tablesStore}/>
+                        <CollsCreating scriptsStore={scriptsStore} script={script}/>
 
                         <div className="col-md-12">
                             <div className="form-group">
-                                <button className="btn btn-success" disabled={tablesStore.colls_creating_error_message} type="submit">Сохранить</button>
+                                <button className="btn btn-success" disabled={scriptsStore.editing.colls_creating_error_message} type="submit">Сохранить</button>
                             </div>
                         </div>
                     </form>
@@ -197,87 +112,57 @@ class EditingTable extends React.Component {
 
 @observer
 class CollsCreating extends React.Component {
-    deleteColl(colls, coll, i) {
-        const {tablesStore} = this.props;
-        confirm("Вы действительно хотите удалить столбец: " + coll.name).then(
-            (result) => {
-                $.ajax({
-                    method: 'DELETE',
-                    url: document.body.getAttribute('data-colls-url'),
-                    data: JSON.stringify(coll),
-                    success: (res) => {
-                        tablesStore.tables = res.tables;
-                        colls.splice(i, 1);
-                    },
-                    error: (res) => {
-                        console.log(res);
-                    }
-                });
-            },
-            (result) => {
-                console.log('cancel called');
-            }
-        );
-    }
     onSort(items) {
-        let {tablesStore} = this.props;
+        let {script, scriptsStore} = this.props;
         items.map((item, key) => {
             if(item.props.text) {
-                if(tablesStore.editing) {
-                    tablesStore.editing.text_coll_position = key;
-                } else {
-                    tablesStore.creating_text_coll_position = key;
+                if(scriptsStore.editing) {
+                    scriptsStore.editing.text_coll_position = key;
                 }
             } else {
                 item.props.coll.position = key;
             }
         });
-        tablesStore.updateTable(null, false);
+        scriptsStore.updateTable(script, scriptsStore.editing);
     }
     onSizeChange() {
-        const {tablesStore} = this.props;
-        let colls = tablesStore.editing ? tablesStore.editing.colls : tablesStore.creating_colls;
-        let full_size = parseInt(tablesStore.editing ? tablesStore.editing.text_coll_size : tablesStore.creating_text_coll_size);
+        const {scriptsStore} = this.props;
+        let colls = scriptsStore.editing ? scriptsStore.editing.colls : null;
+        if(colls) {
+            let full_size = parseInt(scriptsStore.editing.text_coll_size);
 
-        colls.map((coll) => {
-            full_size = full_size + parseInt(coll.size);
-        });
-        if(full_size > 100) {
-            tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна превышать 100%';
-				} else if(full_size < 100) {
-            tablesStore.colls_creating_error_message = 'Общая ширина блоков не должна быть меньше 100%';
-        } else if(tablesStore.colls_creating_error_message) {
-            tablesStore.colls_creating_error_message = null;
+            colls.map((coll) => {
+                full_size = full_size + parseInt(coll.size);
+            });
+            if(full_size > 100) {
+                scriptsStore.editing.colls_creating_error_message = 'Общая ширина блоков не должна превышать 100%';
+                    } else if(full_size < 100) {
+                scriptsStore.editing.colls_creating_error_message = 'Общая ширина блоков не должна быть меньше 100%';
+            } else if(scriptsStore.editing.colls_creating_error_message) {
+                scriptsStore.editing.colls_creating_error_message = null;
+            }
         }
     }
     render() {
-        const {tablesStore} = this.props;
-        let colls = tablesStore.editing ? tablesStore.editing.colls : tablesStore.creating_colls;
-        let text_coll_name = tablesStore.editing ? tablesStore.editing.text_coll_name : tablesStore.creating_text_coll_name;
-        let text_coll_size = tablesStore.editing ? tablesStore.editing.text_coll_size : tablesStore.creating_text_coll_size;
-        let text_coll_position = tablesStore.editing ? tablesStore.editing.text_coll_position : tablesStore.creating_text_coll_position;
-
+        const {script, scriptsStore} = this.props;
+        let colls = scriptsStore.editing ? scriptsStore.editing.colls : null;
         let colls_inputs = [];
         colls_inputs.push(
             <CollInput
                 key={colls_inputs.length}
-                name={text_coll_name}
-                size={text_coll_size}
-                position={text_coll_position}
+                name={scriptsStore.editing.text_coll_name}
+                size={scriptsStore.editing.text_coll_size}
+                position={scriptsStore.editing.text_coll_position}
                 text={true}
                 onChangeSize={(e) => {
-                    if(tablesStore.editing) {
-                        tablesStore.editing.text_coll_size = e.target.value;
-                    } else {
-                        tablesStore.creating_text_coll_size = e.target.value;
+                    if(scriptsStore.editing) {
+                        scriptsStore.editing.text_coll_size = e.target.value;
                     }
                     return this.onSizeChange();
                 }}
                 onChangeName={(e) => {
-                    if(tablesStore.editing) {
-                        tablesStore.editing.text_coll_name = e.target.value;
-                    } else {
-                        tablesStore.creating_text_coll_name = e.target.value;
+                    if(scriptsStore.editing) {
+                        scriptsStore.editing.text_coll_name = e.target.value;
                     }
                 }}/>
         );
@@ -292,7 +177,7 @@ class CollsCreating extends React.Component {
                     text={false}
                     coll={coll}
                     colls={colls}
-                    deleteColl={this.deleteColl.bind(this)}
+                    deleteColl={() => {scriptsStore.deleteColl(script, scriptsStore.editing, colls, coll, key)}}
                     onChangeSize={(e) => {coll.size = e.target.value; return this.onSizeChange()}}
                     onChangeName={(e) => {coll.name = e.target.value}}/>
             )
@@ -315,17 +200,17 @@ class CollsCreating extends React.Component {
                     <div className="form-group">
                         <button className="btn btn-info" type="button" onClick={(e) => {
                             e.preventDefault();
-                            colls.push(new Coll(tablesStore.editing));
+                            scriptsStore.createColl(script, scriptsStore.editing);
                             return this.onSizeChange();
                         }}>+ Добавить столбец</button>
                     </div>
                 </div>
-                {tablesStore.colls_creating_error_message ?
+                {scriptsStore.editing.colls_creating_error_message ?
                     <div className="col-md-12">
                         <div className="alert alert-danger" role="alert">
                             <span className="glyphicon glyphicon-exclamation-sign"/>
                             <span className="sr-only">Ошибка:</span>
-                            {tablesStore.colls_creating_error_message}
+                            {scriptsStore.editing.colls_creating_error_message}
                         </div>
                     </div>
                 : null}
@@ -380,7 +265,7 @@ class CollInput extends React.Component {
                             onClick={(e)=>{
                                 e.preventDefault();
                                 if(this.props.coll.id) {
-                                    this.props.deleteColl(this.props.colls, this.props.coll, this.props.index);
+                                    this.props.deleteColl();
                                 } else {
                                     this.props.colls.splice(this.props.index, 1);
                                 }

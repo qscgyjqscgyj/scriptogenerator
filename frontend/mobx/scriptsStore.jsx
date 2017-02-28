@@ -1,5 +1,7 @@
 import {computed, observable, action} from 'mobx';
 import $ from 'jquery';
+import confirm from '../react/confirm';
+
 
 class EmptyInactiveScript {
     id = null;
@@ -68,6 +70,112 @@ export class ScriptsStore {
         this.creating_name = '';
         this.creating_project = null;
     }
+
+    @action createTable(script) {
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-tables-url'),
+            data: JSON.stringify({
+                script: script.id
+            }),
+            success: (res) => {
+                console.log(res);
+                script.data = res.data;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+    @action updateTable(script, table, modalStore, e) {
+        if(e) {e.preventDefault()}
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-tables-url'),
+            data: JSON.stringify({
+                script: script.id,
+                table: table
+            }),
+            success: (res) => {
+                script.data = res.data;
+                if(modalStore) {
+                    modalStore.modal = false;
+                    this.editing = null;
+                }
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+    @action deleteTable(script, table) {
+        confirm("Вы действительно хотите удалить таблицу: " + table.name).then(
+            (result) => {
+                $.ajax({
+                    method: 'DELETE',
+                    url: document.body.getAttribute('data-tables-url'),
+                    data: JSON.stringify({
+                        script: script.id,
+                        table: table.id
+                    }),
+                    success: (res) => {
+                        script.data = res.data;
+                    },
+                    error: (res) => {
+                        console.log(res);
+                    }
+                });
+            },
+            (result) => {
+                console.log('cancel called');
+            }
+        )
+    }
+    @action createColl(script, table) {
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-colls-url'),
+            data: JSON.stringify({
+                script: script.id,
+                table: table.id
+            }),
+            success: (res) => {
+                script.data = res.data;
+                if(this.editing && this.editing.colls) {
+                    this.editing.colls.push(res.new_coll);
+                }
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+    @action deleteColl(script, table, colls, coll, i) {
+        confirm("Вы действительно хотите удалить столбец: " + coll.name).then(
+            (result) => {
+                $.ajax({
+                    method: 'DELETE',
+                    url: document.body.getAttribute('data-colls-url'),
+                    data: JSON.stringify({
+                        script: script.id,
+                        table: table.id,
+                        coll: coll.id
+                    }),
+                    success: (res) => {
+                        script.data = res.data;
+                        colls.splice(i, 1);
+                    },
+                    error: (res) => {
+                        console.log(res);
+                    }
+                });
+            },
+            (result) => {
+                console.log('cancel called');
+            }
+        );
+    }
+
 }
 
 export default new ScriptsStore

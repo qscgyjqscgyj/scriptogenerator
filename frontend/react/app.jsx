@@ -2,10 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import $ from 'jquery';
 import {Nav} from './nav';
-import ProjectsStore from '../mobx/projectsStore';
 import ModalStore from '../mobx/modalStore';
 import ScriptsStore from '../mobx/scriptsStore';
-import TablesStore from '../mobx/tablesStore';
 import UsersStore from '../mobx/usersStore';
 import PaymentStore from '../mobx/paymentStore';
 import TooltipStore from '../mobx/tooltipStore';
@@ -20,13 +18,11 @@ import {TableEdit, TableShare} from './table';
 @observer
 export class App extends React.Component {
     componentWillMount() {
-        const {projectsStore, scriptsStore, usersStore, paymentStore} = this.props;
+        const {scriptsStore, usersStore, paymentStore} = this.props;
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-init-url'),
             success: (res) => {
-                projectsStore.createProjects(res.projects);
-
                 scriptsStore.scripts = res.scripts;
                 scriptsStore.template_scripts = res.template_scripts;
                 scriptsStore.available_scripts = res.available_scripts;
@@ -44,7 +40,7 @@ export class App extends React.Component {
         });
     }
     render() {
-        const {usersStore, tablesStore, scriptsStore} = this.props;
+        const {usersStore, scriptsStore} = this.props;
         const PAYMENT_REQUIRED_COMPONENTS = [Scripts, Tables, TableEdit, TableShare];
         const script = this.props.params.script ? scriptsStore.script(this.props.params.script) : null;
         let payment_required_children = this.props.children.filter(child => {
@@ -77,7 +73,7 @@ export class App extends React.Component {
         if(usersStore.session_user) {
             return(
                 <div>
-                    <Nav location={this.props.location} params={this.props.params} usersStore={usersStore} tablesStore={tablesStore}/>
+                    <Nav location={this.props.location} params={this.props.params} usersStore={usersStore} scriptsStore={scriptsStore}/>
 
                     <div className="container-fluid" id="main_container">
                         {payment_required_children.length > 0 ?
@@ -99,9 +95,7 @@ export class App extends React.Component {
 
 export class AppWrapper extends React.Component {
     render() {
-        let projectsStore = ProjectsStore;
         let scriptsStore = ScriptsStore;
-        let tablesStore = TablesStore;
         let modalStore = ModalStore;
         let usersStore = UsersStore;
         let paymentStore = PaymentStore;
@@ -109,9 +103,7 @@ export class AppWrapper extends React.Component {
 
         const childrenWithProps = React.Children.map(this.props.children,
             (child) => React.cloneElement(child, {
-                projectsStore: projectsStore,
                 scriptsStore: scriptsStore,
-                tablesStore: tablesStore,
                 modalStore: modalStore,
                 usersStore: usersStore,
                 paymentStore: paymentStore,
@@ -123,8 +115,6 @@ export class AppWrapper extends React.Component {
                 modalStore={modalStore}
                 usersStore={usersStore}
                 scriptsStore={scriptsStore}
-                projectsStore={projectsStore}
-                tablesStore={tablesStore}
                 paymentStore={paymentStore}
                 tooltipStore={tooltipStore}
                 children={childrenWithProps}

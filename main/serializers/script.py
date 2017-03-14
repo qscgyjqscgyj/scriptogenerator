@@ -1,11 +1,10 @@
+# -*- coding: utf-8 -*-
 import json
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.loading import get_model
 from rest_framework import serializers
-from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
-from main.serializers.project import ProjectSerializer
-from main.serializers.table import ScriptTablesField
+from main.models import Script, ScriptAccess
+from main.serializers.table import TableSerializer
 from users.models import UserAccess
 from users.serializers import UserSerializer
 from scripts.tasks import clone_script_with_relations
@@ -56,7 +55,13 @@ class ScriptAvailableField(serializers.Field):
 
 class ScriptDataField(serializers.Field):
     def to_representation(self, script):
-        return json.loads(script.data)
+        data = json.loads(script.data)
+        validated_data = []
+        for table in data:
+            current_table = TableSerializer(data=table)
+            if current_table.is_valid(raise_exception=True):
+                validated_data.append(current_table.validated_data)
+        return validated_data
 
     def get_attribute(self, data):
         return data

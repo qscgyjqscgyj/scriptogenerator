@@ -66,6 +66,42 @@ export class ScriptsStore {
     script(id) {
         return this.scripts.concat(this.available_scripts).find(script => parseInt(script.id) === parseInt(id));
     }
+    table(script, id) {
+        return script.data.find(table => parseInt(table.id) === parseInt(id));
+    }
+    link(script, id, with_parents=false) {
+        // "with_parents=true" returns object with link and table.id
+        if(id) {
+            let all_links = [];
+            script.data.forEach(table => {
+                table.colls.forEach(coll => {
+                    coll.categories.forEach(category => {
+                        category.links.forEach(link => {
+                            if(with_parents) {
+                                all_links.push({link: link, table: table.id, coll: coll.id, category: category.id});
+                            } else {
+                                all_links.push(link);
+                            }
+                        })
+                    })
+                })
+            });
+            return all_links.find(link => parseInt(!with_parents ? link.id : link.link.id) === parseInt(id));
+        }
+        return null;
+    }
+    linkURL(script, table, link, mode='share', copy=false) {
+        function get_url(table_to=table.id, link_to=link.id) {
+            return `${!copy ? `/tables/${script.id}` : ''}/table/${table_to}/link/${link_to}/${mode}/`;
+        }
+
+        if(!link.to_link) {
+            return get_url();
+        } else {
+            let to_link = this.link(script, link.to_link, true);
+            return get_url(to_link.table, to_link.link.id);
+        }
+    }
     resetCreating() {
         this.creating_name = '';
         this.creating_project = null;
@@ -150,6 +186,23 @@ export class ScriptsStore {
             }
         });
     }
+    @action updateColl(script, table, coll) {
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-colls-url'),
+            data: JSON.stringify({
+                script: script.id,
+                table: table.id,
+                coll: coll
+            }),
+            success: (res) => {
+                script.data = res.data;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
     @action deleteColl(script, table, colls, coll, i) {
         confirm("Вы действительно хотите удалить столбец: " + coll.name).then(
             (result) => {
@@ -175,7 +228,132 @@ export class ScriptsStore {
             }
         );
     }
+    @action createLinkCategory(script, table, coll, hidden=false) {
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-link-categories-url'),
+            data: JSON.stringify({
+                script: script.id,
+                table: table.id,
+                coll: coll.id,
+                hidden: hidden
+            }),
+            success: (res) => {
+                script.data = res.data;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+    @action deleteLinkCategory(script, table, coll, category) {
+        confirm("Вы действительно хотите удалить категорию: " + category.name).then(
+            (result) => {
+                $.ajax({
+                    method: 'DELETE',
+                    url: document.body.getAttribute('data-link-categories-url'),
+                    data: JSON.stringify({
+                        script: script.id,
+                        table: table.id,
+                        coll: coll.id,
+                        category: category.id,
+                    }),
+                    success: (res) => {
+                        script.data = res.data;
+                    },
+                    error: (res) => {
+                        console.log(res);
+                    }
+                });
+            },
+            (result) => {
+                console.log('cancel called');
+            }
+        )
+    }
+    @action updateLinkCategory(script, table, coll, category) {
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-link-categories-url'),
+            data: JSON.stringify({
+                script: script.id,
+                table: table.id,
+                coll: coll.id,
+                category: category,
+            }),
+            success: (res) => {
+                script.data = res.data;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+    @action createLink(script, table, coll, category, to_link=null) {
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-links-url'),
+            data: JSON.stringify({
+                script: script.id,
+                table: table.id,
+                coll: coll.id,
+                category: category.id,
+                to_link: to_link,
+            }),
+            success: (res) => {
 
+                script.data = res.data;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+    @action deleteLink(script, table, coll, category, link) {
+        confirm("Вы действительно хотите удалить ссылку: " + link.name).then(
+            (result) => {
+                $.ajax({
+                    method: 'DELETE',
+                    url: document.body.getAttribute('data-links-url'),
+                    data: JSON.stringify({
+                        script: script.id,
+                        table: table.id,
+                        coll: coll.id,
+                        category: category.id,
+                        link: link.id,
+                    }),
+                    success: (res) => {
+                        script.data = res.data;
+                    },
+                    error: (res) => {
+                        console.log(res);
+                    }
+                });
+            },
+            (result) => {
+                console.log('cancel called');
+            }
+        )
+    }
+    @action updateLink(script, table, coll, category, link) {
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-links-url'),
+            data: JSON.stringify({
+                script: script.id ? script.id : script,
+                table: table.id ? table.id : table,
+                coll: coll.id ? coll.id : coll,
+                category: category.id ? category.id : category,
+                link: link,
+            }),
+            success: (res) => {
+                script.data = res.data;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
 }
 
 export default new ScriptsStore

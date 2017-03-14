@@ -14,12 +14,11 @@ from rest_framework.renderers import JSONRenderer
 import json
 
 from main.events import take_presents_to_user
-from main.models import Script, Project, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
+from main.models import Script, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
 from main.serializers.link import LinkCategorySerializer, LinkSerializer
-from main.serializers.project import ProjectSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
-from main.utils import create_active_user, get_empty_table, get_empty_coll
+from main.utils import create_active_user, get_empty_table, get_empty_coll, get_empty_category, get_empty_link
 from scripts.settings import DEBUG, YANDEX_SHOPID, YANDEX_SCID
 from scripts.tasks import clone_script_with_relations
 from users.models import CustomUser, UserAccess
@@ -110,48 +109,6 @@ class DelegateScriptView(View):
             return JSONResponse({'message': 'User does not exist.'}, status=400)
 
 
-class ProjectsView(View):
-    def get(self, request, *args, **kwargs):
-        return JSONResponse({
-            'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data
-        })
-
-    def post(self, request, *args, **kwargs):
-        data = json.loads(request.body)
-        project = ProjectSerializer(data=data)
-        if project.is_valid():
-            project.create(data)
-            return JSONResponse({
-                'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data
-            })
-        return JSONResponse(project.errors, status=400)
-
-    def put(self, request, *args, **kwargs):
-        data = json.loads(request.body)
-        current_project = Project.objects.get(pk=int(data['id']))
-        project = ProjectSerializer(current_project, data=data)
-        if project.is_valid():
-            project.update(current_project, data)
-
-            return JSONResponse({
-                'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
-                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
-            }, status=201)
-        return JSONResponse(project.errors, status=400)
-
-    def delete(self, request, *args, **kwargs):
-        data = json.loads(request.body)
-        try:
-            project = Project.objects.get(pk=int(data['id']))
-            project.delete()
-            return JSONResponse({
-                'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
-                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
-            }, status=201)
-        except ObjectDoesNotExist:
-            return JSONResponse({'error': 'Object does not exist.'}, status=400)
-
-
 class TablesView(View):
     def get(self, request, *args, **kwargs):
         return JSONResponse({
@@ -175,7 +132,7 @@ class TablesView(View):
         current_table = script.tables(table_id=data['table']['id'])
         new_table = TableSerializer(data=data['table'])
         if new_table.is_valid():
-            script.replace_table(new_table.data, current_table['index'])
+            script.replace_table(data['table'], current_table['index'])
             return JSONResponse({
                 'data': json.loads(script.data)
             })
@@ -209,97 +166,120 @@ class CollsView(View):
 
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        coll = TableLinksCollSerializer(data=data['coll'])
-        coll_object = TableLinksColl.objects.get(pk=int(data['coll']['id']))
-        if coll.is_valid():
-            coll.update(coll_object, data)
+        script = Script.objects.get(pk=int(data['script']))
+        table = script.tables(table_id=data['table'])
+        current_coll = script.colls(table_id=data['table'], coll_id=data['coll']['id'])
+        new_coll = TableLinksCollSerializer(data=data['coll'])
+        if new_coll.is_valid():
+            table['data']['colls'][current_coll['index']] = new_coll.validated_data
+            script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'tables': TableSerializer(Table.objects.filter(script=coll_object.table.script), many=True).data
+                'data': json.loads(script.data)
             })
-        return JSONResponse(coll.errors, status=400)
+        return JSONResponse(new_coll.errors, status=400)
 
     def delete(self, request, *args, **kwargs):
         data = json.loads(request.body)
         script = Script.objects.get(pk=int(data['script']))
         table_data = script.tables(table_id=data['table'])
         coll_data = script.colls(table_id=data['table'], coll_id=data['coll'])
-        table_data['data']['colls'].remove(coll_data['data'])
-        script.replace_table(table_data['data'], table_data['index'])
-        return JSONResponse({
-            'data': json.loads(script.data)
-        })
+        if coll_data:
+            table_data['data']['colls'].remove(coll_data['data'])
+            script.replace_table(table_data['data'], table_data['index'])
+            return JSONResponse({
+                'data': json.loads(script.data)
+            })
+        return JSONResponse({'error': 'Coll doesn\'t exist'}, status=400)
 
 
 class LinkCategoriesView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        coll = TableLinksColl.objects.get(pk=int(data['table']))
-        category = LinkCategorySerializer(data=data)
-        if category.is_valid():
-            category.create(data)
-            return JSONResponse({
-                'tables': TableSerializer(Table.objects.filter(script=coll.table.script), many=True).data
-            })
-        return JSONResponse(category.errors, status=400)
+        script = Script.objects.get(pk=int(data['script']))
+        table_data = script.tables(table_id=data['table'])
+        coll_data = script.colls(table_id=data['table'], coll_id=data['coll'])
+        coll_data['data']['categories'].append(get_empty_category(data['hidden']))
+        table_data['data']['colls'][coll_data['index']] = coll_data['data']
+        script.replace_table(table_data['data'], table_data['index'])
+        return JSONResponse({
+            'data': json.loads(script.data)
+        })
 
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        coll = TableLinksColl.objects.get(pk=int(data['table']))
-        category = LinkCategorySerializer(data=data)
-        if category.is_valid():
-            category.update(LinkCategory.objects.get(pk=int(data['id'])), data)
+        script = Script.objects.get(pk=int(data['script']))
+        table = script.tables(table_id=data['table'])
+        coll = script.colls(table_id=data['table'], coll_id=data['coll'])
+        current_category = script.categories(table_id=data['table'], coll_id=data['coll'], category_id=data['category']['id'])
+        new_category = LinkCategorySerializer(data=data['category'])
+        if new_category.is_valid():
+            table['data']['colls'][coll['index']]['categories'][current_category['index']] = new_category.validated_data
+            script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'tables': TableSerializer(Table.objects.filter(script=coll.table.script), many=True).data
+                'data': json.loads(script.data)
             })
-        return JSONResponse(category.errors, status=400)
+        return JSONResponse(new_category.errors, status=400)
 
     def delete(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        try:
-            category = LinkCategory.objects.get(pk=int(data['category']))
-            category.delete()
-            table = Table.objects.get(pk=int(data['table']))
+        script = Script.objects.get(pk=int(data['script']))
+        table = script.tables(table_id=data['table'])
+        coll = script.colls(table_id=data['table'], coll_id=data['coll'])
+        current_category = script.categories(table_id=data['table'], coll_id=data['coll'], category_id=data['category'])
+        if current_category:
+            table['data']['colls'][coll['index']]['categories'].remove(current_category['data'])
+            script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'tables': TableSerializer(Table.objects.filter(script=table.script), many=True).data
+                'data': json.loads(script.data)
             })
-        except ObjectDoesNotExist:
-            return JSONResponse({'error': 'Object does not exist.'}, status=400)
+        return JSONResponse({'error': 'Category doesn\'t exist'}, status=400)
 
 
 class LinkView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        category = LinkCategory.objects.get(pk=int(data['category']))
-        link = LinkSerializer(data=data)
-        if link.is_valid():
-            link.create(data)
-            return JSONResponse({
-                'tables': TableSerializer(Table.objects.filter(script=category.table.table.script), many=True).data
-            })
-        return JSONResponse(link.errors, status=400)
+        script = Script.objects.get(pk=int(data['script']))
+        table_data = script.tables(table_id=data['table'])
+        coll_data = script.colls(table_id=data['table'], coll_id=data['coll'])
+        category_data = script.categories(table_id=data['table'], coll_id=data['coll'], category_id=data['category'])
+        category_data['data']['links'].append(get_empty_link(to_link=data['to_link']))
+        coll_data['data']['categories'][category_data['index']] = category_data['data']
+        table_data['data']['colls'][coll_data['index']] = coll_data['data']
+        script.replace_table(table_data['data'], table_data['index'])
+        return JSONResponse({
+            'data': json.loads(script.data)
+        })
 
     def put(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        category = LinkCategory.objects.get(pk=int(data['category']))
-        link = LinkSerializer(data=data)
-        if link.is_valid():
-            link.update(Link.objects.get(pk=int(data['id'])), data)
+        script = Script.objects.get(pk=int(data['script']))
+        table = script.tables(table_id=data['table'])
+        coll = script.colls(table_id=data['table'], coll_id=data['coll'])
+        category = script.categories(table_id=data['table'], coll_id=data['coll'], category_id=data['category'])
+        current_link = script.links(table_id=data['table'], coll_id=data['coll'], category_id=data['category'], link_id=data['link']['id'])
+        new_link = LinkSerializer(data=data['link'])
+        if new_link.is_valid():
+            table['data']['colls'][coll['index']]['categories'][category['index']]['links'][current_link['index']] = new_link.validated_data
+            script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'tables': TableSerializer(Table.objects.filter(script=category.table.table.script), many=True).data
+                'data': json.loads(script.data)
             })
-        return JSONResponse(link.errors, status=400)
+        return JSONResponse(new_link.errors, status=400)
 
     def delete(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        try:
-            link = Link.objects.get(pk=int(data['link']))
-            link.delete()
-            table = Table.objects.get(pk=int(data['table']))
+        script = Script.objects.get(pk=int(data['script']))
+        table = script.tables(table_id=data['table'])
+        coll = script.colls(table_id=data['table'], coll_id=data['coll'])
+        category = script.categories(table_id=data['table'], coll_id=data['coll'], category_id=data['category'])
+        current_link = script.links(table_id=data['table'], coll_id=data['coll'], category_id=data['category'], link_id=data['link'])
+        if current_link:
+            table['data']['colls'][coll['index']]['categories'][category['index']]['links'].remove(current_link['data'])
+            script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'tables': TableSerializer(Table.objects.filter(script=table.script), many=True).data
+                'data': json.loads(script.data)
             })
-        except ObjectDoesNotExist:
-            return JSONResponse({'error': 'Object does not exist.'}, status=400)
+        return JSONResponse({'error': 'Link doesn\'t exist'}, status=400)
 
 
 class ScriptAccessView(View):
@@ -351,7 +331,6 @@ class InitView(View):
         for access in ScriptAccess.objects.filter(user=request.user):
             access_scripts_ids.append(access.script.pk)
         return JSONResponse({
-            # 'projects': ProjectSerializer(Project.objects.filter(owner=request.user), many=True).data,
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
             'template_scripts': ScriptSerializer(Script.objects.filter(is_template=True), many=True).data,
             'available_scripts': ScriptSerializer(Script.objects.filter(pk__in=access_scripts_ids), many=True).data,

@@ -158,7 +158,7 @@ export class Scripts extends React.Component {
         });
     }
     render() {
-        const {scriptsStore, modalStore, projectsStore, usersStore, tablesStore, available} = this.props;
+        const {scriptsStore, modalStore, usersStore, tablesStore, available} = this.props;
         if(usersStore.session_user) {
             return(
                 <div className="col-md-12">
@@ -168,7 +168,6 @@ export class Scripts extends React.Component {
                                 <button onClick={() => {
                                     modalStore.modal = true;
                                     modalStore.component = React.createElement(CreatingScript, {
-                                        projectsStore: projectsStore,
                                         scriptsStore: scriptsStore,
                                         modalStore: modalStore,
                                         createScript: this.createScript.bind(this),
@@ -200,7 +199,6 @@ export class Scripts extends React.Component {
                                                                 scriptsStore.editing = script;
                                                                 modalStore.modal = true;
                                                                 modalStore.component = React.createElement(EditingScript, {
-                                                                    projectsStore: projectsStore,
                                                                     scriptsStore: scriptsStore,
                                                                     modalStore: modalStore,
                                                                     createScript: this.createScript.bind(this),
@@ -280,7 +278,7 @@ export class Scripts extends React.Component {
                         })}
                     </div>
                     <ReactTooltip place="top" type="dark" effect="solid"/>
-                    <ModalWrapper stores={[projectsStore, scriptsStore, tablesStore]} modalStore={modalStore}/>
+                    <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>
                 </div>
             );
         }
@@ -291,7 +289,7 @@ export class Scripts extends React.Component {
 @observer
 class CreatingScript extends React.Component {
     render() {
-        const {projectsStore, scriptsStore} = this.props;
+        const {scriptsStore} = this.props;
         return (
             <div className="row">
                 <form action="" onSubmit={(e) => this.props.createScript(e)}>
@@ -345,7 +343,7 @@ class CreatingScript extends React.Component {
 @observer
 class EditingScript extends React.Component {
     render() {
-        const {projectsStore, scriptsStore, available} = this.props;
+        const {scriptsStore, available} = this.props;
         if(scriptsStore.editing) {
             return (
                 <div className="row">

@@ -34,17 +34,17 @@ class Script(models.Model):
     def accesses(self):
         return ScriptAccess.objects.filter(script=self)
 
-    def tables(self, table_id=None):
-        data = json.loads(self.data)
-        if table_id:
-            return [{'data': table, 'index': i} for i, table in enumerate(data) if table['id'] == table_id][0]
-        return data
-
     def replace_table(self, table, index):
         data = json.loads(self.data)
         data[index] = table
         self.data = json.dumps(data)
         self.save()
+
+    def tables(self, table_id=None):
+        data = json.loads(self.data)
+        if table_id:
+            return [{'data': table, 'index': i} for i, table in enumerate(data) if table['id'] == table_id][0]
+        return data
 
     def colls(self, table_id=None, coll_id=None):
         data = json.loads(self.data)
@@ -61,17 +61,38 @@ class Script(models.Model):
                     result.append(coll)
             return result
 
-    def links(self, table_id=None):
-        tables = self.tables(table_id=table_id)['data']
-        if not isinstance(tables, list):
-            tables = [tables]
-        links = []
-        for table in tables:
-            for coll in table['colls']:
-                for category in coll['categories']:
-                    for link in category['links']:
-                        links.append(link)
-        return links
+    def categories(self, table_id=None, coll_id=None, category_id=None):
+        data = json.loads(self.data)
+        if table_id and coll_id:
+            coll_data = self.colls(table_id=table_id, coll_id=coll_id)
+            if category_id:
+                return [{'data': category, 'index': i} for i, category in enumerate(coll_data['data']['categories']) if category['id'] == category_id][0]
+            else:
+                return coll_data['categories']
+        else:
+            result = []
+            for table in data:
+                for coll in table['colls']:
+                    for category in coll['categories']:
+                        result.append(category)
+            return result
+
+    def links(self, table_id=None, coll_id=None, category_id=None, link_id=None):
+        data = json.loads(self.data)
+        if table_id and coll_id and category_id:
+            category_data = self.categories(table_id=table_id, coll_id=coll_id, category_id=category_id)
+            if link_id:
+                return [{'data': link, 'index': i} for i, link in enumerate(category_data['data']['links']) if link['id'] == link_id][0]
+            else:
+                return category_data['links']
+        else:
+            result = []
+            for table in data:
+                for coll in table['colls']:
+                    for category in coll['categories']:
+                        for link in category['links']:
+                            result.append(link)
+            return result
 
     def __unicode__(self):
         return self.name

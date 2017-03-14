@@ -36620,7 +36620,7 @@
 	            });
 	        } }, { key: 'render', value: function render()
 	        {var _this4 = this;var _props7 =
-	            this.props,scriptsStore = _props7.scriptsStore,modalStore = _props7.modalStore,projectsStore = _props7.projectsStore,usersStore = _props7.usersStore,tablesStore = _props7.tablesStore,available = _props7.available;
+	            this.props,scriptsStore = _props7.scriptsStore,modalStore = _props7.modalStore,usersStore = _props7.usersStore,tablesStore = _props7.tablesStore,available = _props7.available;
 	            if (usersStore.session_user) {
 	                return (
 	                    React.createElement('div', { className: 'col-md-12' },
@@ -36630,7 +36630,6 @@
 	                                React.createElement('button', { onClick: function onClick() {
 	                                            modalStore.modal = true;
 	                                            modalStore.component = React.createElement(CreatingScript, {
-	                                                projectsStore: projectsStore,
 	                                                scriptsStore: scriptsStore,
 	                                                modalStore: modalStore,
 	                                                createScript: _this4.createScript.bind(_this4),
@@ -36662,7 +36661,6 @@
 	                                                            scriptsStore.editing = script;
 	                                                            modalStore.modal = true;
 	                                                            modalStore.component = React.createElement(EditingScript, {
-	                                                                projectsStore: projectsStore,
 	                                                                scriptsStore: scriptsStore,
 	                                                                modalStore: modalStore,
 	                                                                createScript: _this4.createScript.bind(_this4),
@@ -36742,7 +36740,7 @@
 	                            })),
 	
 	                        React.createElement(_reactTooltip2.default, { place: 'top', type: 'dark', effect: 'solid' }),
-	                        React.createElement(_modal.ModalWrapper, { stores: [projectsStore, scriptsStore, tablesStore], modalStore: modalStore })));
+	                        React.createElement(_modal.ModalWrapper, { stores: [scriptsStore], modalStore: modalStore })));
 	
 	
 	            }
@@ -36752,8 +36750,8 @@
 	
 	
 	CreatingScript = (0, _mobxReact.observer)(_class2 = function (_React$Component2) {_inherits(CreatingScript, _React$Component2);function CreatingScript() {_classCallCheck(this, CreatingScript);return _possibleConstructorReturn(this, (CreatingScript.__proto__ || Object.getPrototypeOf(CreatingScript)).apply(this, arguments));}_createClass(CreatingScript, [{ key: 'render', value: function render()
-	        {var _this6 = this;var _props8 =
-	            this.props,projectsStore = _props8.projectsStore,scriptsStore = _props8.scriptsStore;
+	        {var _this6 = this;var
+	            scriptsStore = this.props.scriptsStore;
 	            return (
 	                React.createElement('div', { className: 'row' },
 	                    React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this6.props.createScript(e);} },
@@ -36806,8 +36804,8 @@
 	
 	
 	EditingScript = (0, _mobxReact.observer)(_class3 = function (_React$Component3) {_inherits(EditingScript, _React$Component3);function EditingScript() {_classCallCheck(this, EditingScript);return _possibleConstructorReturn(this, (EditingScript.__proto__ || Object.getPrototypeOf(EditingScript)).apply(this, arguments));}_createClass(EditingScript, [{ key: 'render', value: function render()
-	        {var _this8 = this;var _props9 =
-	            this.props,projectsStore = _props9.projectsStore,scriptsStore = _props9.scriptsStore,available = _props9.available;
+	        {var _this8 = this;var _props8 =
+	            this.props,scriptsStore = _props8.scriptsStore,available = _props8.available;
 	            if (scriptsStore.editing) {
 	                return (
 	                    React.createElement('div', { className: 'row' },
@@ -59564,13 +59562,11 @@
 /* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TableShare = exports.TableEdit = exports.Table = undefined;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
-	var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TableShare = exports.TableEdit = exports.Table = undefined;var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	var _mobxReact = __webpack_require__(561);
 	var _modal = __webpack_require__(584);
-	var _tablesStore = __webpack_require__(619);
 	var _editor = __webpack_require__(621);
 	var _reactRouter = __webpack_require__(476);
 	var _clipboard = __webpack_require__(769);var _clipboard2 = _interopRequireDefault(_clipboard);
@@ -59578,7 +59574,6 @@
 	var _draftJsExportHtml = __webpack_require__(750);
 	var _sort = __webpack_require__(617);
 	var _access = __webpack_require__(618);
-	var _confirm = __webpack_require__(597);var _confirm2 = _interopRequireDefault(_confirm);
 	var _reactSelect = __webpack_require__(585);var _reactSelect2 = _interopRequireDefault(_reactSelect);
 	var _mobx = __webpack_require__(562);
 	var _reactTooltip = __webpack_require__(601);var _reactTooltip2 = _interopRequireDefault(_reactTooltip);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _asyncToGenerator(fn) {return function () {var gen = fn.apply(this, arguments);return new Promise(function (resolve, reject) {function step(key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {return Promise.resolve(value).then(function (value) {step("next", value);}, function (err) {step("throw", err);});}}return step("next");});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
@@ -59592,62 +59587,7 @@
 	            key: null,
 	            clipboard: null };return _this;
 	
-	    }_createClass(Table, [{ key: 'fixClipboard', value: function fixClipboard(
-	        onInit, onDestroy) {var
-	            clipboard = this.state.clipboard;var
-	            tablesStore = this.props.tablesStore;
-	            var new_clipboard = new _clipboard2.default('.copy_icon', {
-	                text: function text(trigger) {
-	                    if (tablesStore.pressed_key == 17) {
-	                        return trigger.getAttribute('data-link');
-	                    } else if ((0, _jquery2.default)(trigger).hasClass('enable_copy_icon')) {
-	                        return trigger.getAttribute('data-link');
-	                    }
-	                } });
-	
-	
-	            if (this.state.clipboard) {
-	                clipboard.destroy();
-	                this.setState((0, _reactAddonsUpdate2.default)(this.state, { clipboard: {
-	                        $set: null } }),
-	                function () {
-	                    onDestroy ? onDestroy() : null;
-	                });
-	            }
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { clipboard: {
-	                    $set: new_clipboard } }),
-	            function () {
-	                return onInit ? onInit() : null;
-	            });
-	        } }, { key: 'componentWillMount', value: function componentWillMount()
-	        {var
-	            tablesStore = this.props.tablesStore;
-	            this.fixClipboard();
-	            tablesStore.pullTables(this.props.params.script);
-	        } }, { key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
-	        props) {var
-	            tablesStore = props.tablesStore;
-	            tablesStore.pullTables(props.params.script);
-	        } }, { key: 'componentDidMount', value: function componentDidMount()
-	        {
-	            (0, _jquery2.default)(document.body).on('keydown', this.handleKeyDown.bind(this));
-	            (0, _jquery2.default)(document.body).on('keyup', this.handleKeyUp.bind(this));
-	        } }, { key: 'componentWillUnmount', value: function componentWillUnmount()
-	        {
-	            (0, _jquery2.default)(document.body).off('keydown', this.handleKeyDown.bind(this));
-	            (0, _jquery2.default)(document.body).off('keyup', this.handleKeyUp.bind(this));
-	        } }, { key: 'handleKeyDown', value: function handleKeyDown(
-	        e) {var
-	            tablesStore = this.props.tablesStore;
-	            // 17 - CTRL, 16 - SHIFT
-	            if (e.keyCode === 17 || e.keyCode === 16) {
-	                tablesStore.pressed_key = e.keyCode;
-	            }
-	        } }, { key: 'handleKeyUp', value: function handleKeyUp(
-	        e) {var
-	            tablesStore = this.props.tablesStore;
-	            tablesStore.pressed_key = null;
-	        } }, { key: 'componentDidUpdate', value: function componentDidUpdate()
+	    }_createClass(Table, [{ key: 'fixHeight', value: function fixHeight()
 	        {
 	            var content_height = screen.height - 200;
 	            var scroll_links = [].slice.call(document.getElementsByClassName('scroll_links'));
@@ -59655,135 +59595,57 @@
 	                (0, _jquery2.default)(el).css('min-height', content_height + 'px');
 	                (0, _jquery2.default)(el).css('max-height', content_height + 'px');
 	            });
-	        } }, { key: 'updateTableLinksColl', value: function updateTableLinksColl(
-	        coll, opened_category, opened_link) {var update_sate = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;var
-	            tablesStore = this.props.tablesStore;
-	            _jquery2.default.ajax({
-	                method: 'PUT',
-	                url: document.body.getAttribute('data-colls-url'),
-	                data: JSON.stringify({
-	                    coll: coll,
-	                    opened_category: opened_category,
-	                    opened_link: opened_link }),
-	
-	                success: function success(res) {
-	                    if (update_sate) {
-	                        tablesStore.tables = res.tables;
-	                    }
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
-	
-	        } }, { key: 'createLinkCategory', value: function createLinkCategory(
-	        coll, hidden) {var
-	            tablesStore = this.props.tablesStore;
-	            _jquery2.default.ajax({
-	                method: 'POST',
-	                url: document.body.getAttribute('data-link-categories-url'),
-	                data: JSON.stringify({ name: 'Пустой раздел', table: coll.id, hidden: hidden }),
-	                success: function success(res) {
-	                    tablesStore.tables = res.tables;
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
-	
-	        } }, { key: 'deleteLinkCategory', value: function deleteLinkCategory(
-	        category) {var _this2 = this;var
-	            tablesStore = this.props.tablesStore;
-	            (0, _confirm2.default)("Вы действительно хотите удалить категорию: " + category.name).then(
-	            function (result) {
-	                _jquery2.default.ajax({
-	                    method: 'DELETE',
-	                    url: document.body.getAttribute('data-link-categories-url'),
-	                    data: JSON.stringify({ category: category.id, table: _this2.props.params.table }),
-	                    success: function success(res) {
-	                        tablesStore.tables = res.tables;
-	                    },
-	                    error: function error(res) {
-	                        console.log(res);
+	        } }, { key: 'fixClipboard', value: function fixClipboard()
+	        {var clear = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;var
+	            clipboard = this.state.clipboard;var
+	            usersStore = this.props.usersStore;
+	            if (clipboard) {
+	                clipboard.destroy();
+	            }
+	            if (!clear) {
+	                var new_clipboard = new _clipboard2.default('.copy_icon', {
+	                    text: function text(trigger) {
+	                        if (usersStore.pressed_key == 17) {
+	                            return trigger.getAttribute('data-link');
+	                        } else if ((0, _jquery2.default)(trigger).hasClass('enable_copy_icon')) {
+	                            return trigger.getAttribute('data-link');
+	                        }
 	                    } });
 	
-	            },
-	            function (result) {
-	                console.log('cancel called');
-	            });
+	                this.setState((0, _reactAddonsUpdate2.default)(this.state, { clipboard: {
+	                        $set: new_clipboard } }));
 	
-	        } }, { key: 'updateLinkCategory', value: function updateLinkCategory(
-	        category) {var
-	            tablesStore = this.props.tablesStore;
-	            _jquery2.default.ajax({
-	                method: 'PUT',
-	                url: document.body.getAttribute('data-link-categories-url'),
-	                data: JSON.stringify(category),
-	                success: function success(res) {
-	                    tablesStore.tables = res.tables;
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
-	
-	        } }, { key: 'createLink', value: function createLink(
-	        category, to_link) {var
-	            tablesStore = this.props.tablesStore;
-	            _jquery2.default.ajax({
-	                method: 'POST',
-	                url: document.body.getAttribute('data-links-url'),
-	                data: JSON.stringify({
-	                    name: to_link ? to_link.name : 'Ссылка',
-	                    category: category.id,
-	                    text: to_link ? to_link.text : 'Текст ссылки',
-	                    to_link: to_link ? to_link.id : null }),
-	
-	                success: function success(res) {
-	                    tablesStore.tables = res.tables;
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
-	
-	        } }, { key: 'deleteLink', value: function deleteLink(
-	        link) {var _this3 = this;var
-	            tablesStore = this.props.tablesStore;
-	            (0, _confirm2.default)("Вы действительно хотите удалить ссылку: " + link.name).then(
-	            function (result) {
-	                _jquery2.default.ajax({
-	                    method: 'DELETE',
-	                    url: document.body.getAttribute('data-links-url'),
-	                    data: JSON.stringify({ link: link.id, table: _this3.props.params.table }),
-	                    success: function success(res) {
-	                        tablesStore.tables = res.tables;
-	                    },
-	                    error: function error(res) {
-	                        console.log(res);
-	                    } });
-	
-	            },
-	            function (result) {
-	                console.log('cancel called');
-	            });
-	
-	        } }, { key: 'updateLink', value: function updateLink(
-	        link) {var update_state = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;var
-	            tablesStore = this.props.tablesStore;
-	            _jquery2.default.ajax({
-	                method: 'PUT',
-	                url: document.body.getAttribute('data-links-url'),
-	                data: JSON.stringify(link),
-	                success: function success(res) {
-	                    if (update_state) {
-	                        tablesStore.tables = res.tables;
-	                    }
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
-	
+	            }
+	        } }, { key: 'componentDidMount', value: function componentDidMount()
+	        {
+	            this.fixHeight();
+	            this.fixClipboard();
+	            (0, _jquery2.default)(document.body).on('keydown', this.handleKeyDown.bind(this));
+	            (0, _jquery2.default)(document.body).on('keyup', this.handleKeyUp.bind(this));
+	        } }, { key: 'componentWillUnmount', value: function componentWillUnmount()
+	        {
+	            this.fixClipboard(true);
+	            (0, _jquery2.default)(document.body).off('keydown', this.handleKeyDown.bind(this));
+	            (0, _jquery2.default)(document.body).off('keyup', this.handleKeyUp.bind(this));
+	        } }, { key: 'handleKeyDown', value: function handleKeyDown(
+	        e) {var
+	            usersStore = this.props.usersStore;
+	            // 17 - CTRL, 16 - SHIFT
+	            if (e.keyCode === 17 || e.keyCode === 16) {
+	                usersStore.pressed_key = e.keyCode;
+	            }
+	        } }, { key: 'handleKeyUp', value: function handleKeyUp(
+	        e) {var
+	            usersStore = this.props.usersStore;
+	            usersStore.pressed_key = null;
+	        } }, { key: 'componentDidUpdate', value: function componentDidUpdate()
+	        {
+	            this.fixHeight();
 	        } }, { key: 'sortedColls', value: function sortedColls()
 	        {var
-	            tablesStore = this.props.tablesStore;
-	            var table = tablesStore.table(this.props.params.table);
+	            scriptsStore = this.props.scriptsStore;
+	            var script = scriptsStore.script(this.props.params.script);
+	            var table = scriptsStore.table(script, this.props.params.table);
 	            if (table) {var _ret = function () {
 	                    var sorted_colls = [];
 	                    sorted_colls.push({ position: table.text_coll_position, text: true });
@@ -59803,43 +59665,45 @@
 	
 	            }
 	        } }, { key: 'copyLink', value: function copyLink(
-	        link) {
-	            if (!link.to_link) {
-	                return (
-	                    '/tables/' + this.props.params.script +
-	                    '/table/' + this.props.params.table +
-	                    '/link/' + link.id +
-	                    '/share/');
-	
-	            } else {
-	                return (
-	                    link.to_link.href + '/share/');
-	
-	            }
-	        } }, { key: 'onCategorySort', value: function () {var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(
-	            coll) {var categories;return regeneratorRuntime.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
-	                                    coll.categories.map(function (category, key) {
-	                                        category.order = key;
-	                                        return category;
-	                                    }));case 2:categories = _context.sent;return _context.abrupt('return',
-	                                this.updateTableLinksColl(coll));case 4:case 'end':return _context.stop();}}}, _callee, this);}));function onCategorySort(_x3) {return _ref.apply(this, arguments);}return onCategorySort;}() }, { key: 'onLinkSort', value: function () {var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(
-	
-	            category) {var links;return regeneratorRuntime.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
-	                                    category.links.map(function (link, key) {
-	                                        link.order = key;
-	                                    }));case 2:links = _context2.sent;return _context2.abrupt('return',
-	                                this.updateLinkCategory(category));case 4:case 'end':return _context2.stop();}}}, _callee2, this);}));function onLinkSort(_x4) {return _ref2.apply(this, arguments);}return onLinkSort;}() }, { key: 'createToLink', value: function createToLink(
-	
-	        category, link, cb) {
-	            this.createLink(category, link);
+	        link) {var
+	            scriptsStore = this.props.scriptsStore;
+	            var script = scriptsStore.script(this.props.params.script);
+	            var table = scriptsStore.table(script, this.props.params.table);
+	            return scriptsStore.linkURL(script, table, link, 'share', true);
+	        } }, { key: 'onCategorySort', value: function onCategorySort(
+	        coll) {var
+	            scriptsStore = this.props.scriptsStore;
+	            var script = scriptsStore.script(this.props.params.script);
+	            var table = scriptsStore.table(script, this.props.params.table);
+	            coll.categories.forEach(function (category, key) {
+	                category.order = key;
+	            });
+	            return scriptsStore.updateColl(script, table, coll);
+	        } }, { key: 'onLinkSort', value: function onLinkSort(
+	        coll, category) {var
+	            scriptsStore = this.props.scriptsStore;
+	            var script = scriptsStore.script(this.props.params.script);
+	            var table = scriptsStore.table(script, this.props.params.table);
+	            category.links.forEach(function (link, key) {
+	                link.order = key;
+	            });
+	            return scriptsStore.updateColl(script, table, coll);
+	        } }, { key: 'createToLink', value: function createToLink(
+	        script, table, coll, category, link, cb) {var
+	            scriptsStore = this.props.scriptsStore;
+	            scriptsStore.createLink(script, table, coll, category, link.id);
 	            return cb();
 	        } }]);return Table;}(_access.AccessableComponent)) || _class;var
 	
 	
 	
-	TableEdit = exports.TableEdit = (0, _mobxReact.observer)(_class2 = function (_Table) {_inherits(TableEdit, _Table);function TableEdit() {_classCallCheck(this, TableEdit);return _possibleConstructorReturn(this, (TableEdit.__proto__ || Object.getPrototypeOf(TableEdit)).apply(this, arguments));}_createClass(TableEdit, [{ key: 'openCategory', value: function () {var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(
-	            coll, category) {var categories;return regeneratorRuntime.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
-	                                category.opened = !category.opened;_context3.next = 3;return (
+	TableEdit = exports.TableEdit = (0, _mobxReact.observer)(_class2 = function (_Table) {_inherits(TableEdit, _Table);function TableEdit() {_classCallCheck(this, TableEdit);return _possibleConstructorReturn(this, (TableEdit.__proto__ || Object.getPrototypeOf(TableEdit)).apply(this, arguments));}_createClass(TableEdit, [{ key: 'openCategory', value: function () {var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(
+	            coll, category) {var scriptsStore, script, table, categories;return regeneratorRuntime.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+	                                scriptsStore = this.props.scriptsStore;
+	                                script = scriptsStore.script(this.props.params.script);
+	                                table = scriptsStore.table(script, this.props.params.table);
+	
+	                                category.opened = !category.opened;_context.next = 6;return (
 	                                    coll.categories.map(function (cat) {
 	                                        if (cat.id !== category.id) {
 	                                            cat.opened = false;
@@ -59848,11 +59712,15 @@
 	                                            link.opened = false;
 	                                        });
 	                                        return cat;
-	                                    }));case 3:categories = _context3.sent;
-	                                this.updateTableLinksColl(coll, category, null, false);case 5:case 'end':return _context3.stop();}}}, _callee3, this);}));function openCategory(_x5, _x6) {return _ref3.apply(this, arguments);}return openCategory;}() }, { key: 'openLink', value: function () {var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(
+	                                    }));case 6:categories = _context.sent;
+	                                scriptsStore.updateColl(script, table, coll);case 8:case 'end':return _context.stop();}}}, _callee, this);}));function openCategory(_x2, _x3) {return _ref.apply(this, arguments);}return openCategory;}() }, { key: 'openLink', value: function () {var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(
 	
-	            coll, link) {var categories;return regeneratorRuntime.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
-	                                link.opened = !link.opened;_context4.next = 3;return (
+	            coll, link) {var scriptsStore, script, table, categories;return regeneratorRuntime.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+	                                scriptsStore = this.props.scriptsStore;
+	                                script = scriptsStore.script(this.props.params.script);
+	                                table = scriptsStore.table(script, this.props.params.table);
+	
+	                                link.opened = !link.opened;_context2.next = 6;return (
 	                                    coll.categories.map(function (cat) {
 	                                        cat.opened = false;
 	                                        cat.links.map(function (ln) {
@@ -59861,18 +59729,18 @@
 	                                            }
 	                                        });
 	                                        return cat;
-	                                    }));case 3:categories = _context4.sent;
-	                                this.updateTableLinksColl(coll, null, link, false);case 5:case 'end':return _context4.stop();}}}, _callee4, this);}));function openLink(_x7, _x8) {return _ref4.apply(this, arguments);}return openLink;}() }, { key: 'render', value: function render()
+	                                    }));case 6:categories = _context2.sent;
+	                                scriptsStore.updateColl(script, table, coll);case 8:case 'end':return _context2.stop();}}}, _callee2, this);}));function openLink(_x4, _x5) {return _ref2.apply(this, arguments);}return openLink;}() }, { key: 'render', value: function render()
 	
-	        {var _this5 = this;var _props =
-	            this.props,projectsStore = _props.projectsStore,scriptsStore = _props.scriptsStore,tablesStore = _props.tablesStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
-	            var table = tablesStore.table(this.props.params.table);
-	            var active_link = tablesStore.link(this.props.params.table, this.props.params.link);
+	        {var _this3 = this;var _props =
+	            this.props,scriptsStore = _props.scriptsStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
+	            var script = scriptsStore.script(this.props.params.script);
+	            var table = scriptsStore.table(script, this.props.params.table);
+	            var active_link = scriptsStore.link(script, this.props.params.link, true);
 	            var sorted_colls = this.sortedColls();
 	            var coll_name = void 0,coll_size = void 0;
 	
 	            if (usersStore.session_user) {
-	                var script = scriptsStore.script(this.props.params.script);
 	                var access = this.access(usersStore, script);
 	                if (table && access.edit) {
 	                    return (
@@ -59886,17 +59754,17 @@
 	                                                React.createElement('div', null,
 	                                                    React.createElement('div', { className: 'row' },
 	                                                        React.createElement('div', { className: 'col-md-12' },
-	                                                            React.createElement('h4', { className: 'table_header_text' }, active_link.name))),
+	                                                            React.createElement('h4', { className: 'table_header_text' }, active_link.link.name))),
 	
 	
 	                                                    React.createElement('div', { className: 'link_text_editor' },
-	                                                        React.createElement(_editor.CustomEditor, { object: active_link, value: active_link.text,
+	                                                        React.createElement(_editor.CustomEditor, { object: active_link.link, value: active_link.link.text,
 	                                                            onChange: function onChange(value) {
-	                                                                active_link.text = value;
+	                                                                active_link.link.text = value;
 	                                                            },
 	                                                            onBlur: function onBlur(value) {
-	                                                                active_link.text = value;
-	                                                                _this5.updateLink(active_link, false);
+	                                                                active_link.link.text = value;
+	                                                                scriptsStore.updateLink(script, active_link.table, active_link.coll, active_link.category, active_link.link, false);
 	                                                            } }))) :
 	
 	
@@ -59911,11 +59779,11 @@
 	                                            React.createElement('div', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
 	                                                React.createElement('div', { className: 'row' },
 	                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, false);} })),
+	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {scriptsStore.createLinkCategory(script, table, coll);} })),
 	
 	
 	                                                    React.createElement('div', { className: 'col-md-1' },
-	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043A\u0440\u044B\u0442\u044B\u0439 \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {_this5.createLinkCategory(coll, true);} }))),
+	                                                        React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043A\u0440\u044B\u0442\u044B\u0439 \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon red_icon glyphicon glyphicon-plus', onClick: function onClick() {scriptsStore.createLinkCategory(script, table, coll, true);} }))),
 	
 	
 	                                                coll.categories.map(function (category, key) {
@@ -59924,14 +59792,14 @@
 	                                                            React.createElement('div', { className: 'row' },
 	                                                                React.createElement('div', { className: "col-md-12 inline_elements edit_icon_handler hovered_list_item " + (category.opened ? 'opened' : null) },
 	                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
-	                                                                        onClick: function onClick() {_this5.openCategory(coll, category);} }),
+	                                                                        onClick: function onClick() {_this3.openCategory(coll, category);} }),
 	                                                                    React.createElement('span', { className: 'table_header_text inline_element' },
 	                                                                        React.createElement(EditableText, {
 	                                                                            text: category.name,
 	                                                                            field: 'name',
-	                                                                            submitHandler: function submitHandler(category) {return _this5.updateLinkCategory(category);},
+	                                                                            submitHandler: function submitHandler(category) {return scriptsStore.updateLinkCategory(script, table, coll, category);},
 	                                                                            onClick: function onClick(category) {
-	                                                                                if (tablesStore.pressed_key === 16) {
+	                                                                                if (usersStore.pressed_key === 16) {
 	                                                                                    category.edit = true;
 	                                                                                }
 	                                                                            },
@@ -59949,17 +59817,20 @@
 	                                                                    React.createElement('div', { className: 'col-md-12 opened_toolbar' },
 	                                                                        React.createElement('div', { className: 'btn-toolbar', role: 'toolbar' },
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443', className: 'btn btn-default', onClick: function onClick() {_this5.createLink(category);} },
+	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443', className: 'btn btn-default', onClick: function onClick() {scriptsStore.createLink(script, table, coll, category);} },
 	                                                                                    React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-plus' })),
 	
 	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0434\u0440\u0443\u0433\u0443\u044E \u0442\u0430\u0431\u043B\u0438\u0446\u0443', className: 'btn btn-default',
 	                                                                                        onClick: function onClick() {
 	                                                                                            modalStore.modal = true;
-	                                                                                            modalStore.component = React.createElement(ToLink, {
-	                                                                                                category: category,
-	                                                                                                tablesStore: tablesStore,
-	                                                                                                createToLink: _this5.createToLink.bind(_this5),
-	                                                                                                modalStore: modalStore });
+	                                                                                            modalStore.component = React.createElement(ToLink, _extends({},
+	                                                                                            _this3.props, {
+	                                                                                                createToLink: _this3.createToLink.bind(_this3),
+	                                                                                                modalStore: modalStore,
+	                                                                                                script: script,
+	                                                                                                table: table,
+	                                                                                                coll: coll,
+	                                                                                                category: category }));
 	
 	                                                                                        } },
 	                                                                                    React.createElement('i', { className: 'icon add_icon_blue glyphicon glyphicon-plus' }))),
@@ -59973,7 +59844,7 @@
 	
 	
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', style: { color: '#fff' }, onClick: function onClick() {_this5.deleteLinkCategory(category);}, className: 'btn btn-danger' },
+	                                                                                React.createElement('button', { 'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', style: { color: '#fff' }, onClick: function onClick() {scriptsStore.deleteLinkCategory(script, table, coll, category);}, className: 'btn btn-danger' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
 	
 	
@@ -59983,7 +59854,7 @@
 	                                                                                React.createElement('button', {
 	                                                                                        onClick: function onClick() {
 	                                                                                            coll.categories = (0, _sort.moveInArray)(coll.categories, key, key - 1);
-	                                                                                            _this5.onCategorySort(coll);
+	                                                                                            _this3.onCategorySort(coll);
 	                                                                                        },
 	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u0432\u0435\u0440\u0445',
 	                                                                                        className: 'btn btn-default' },
@@ -59994,7 +59865,7 @@
 	                                                                                React.createElement('button', {
 	                                                                                        onClick: function onClick() {
 	                                                                                            coll.categories = (0, _sort.moveInArray)(coll.categories, key, key + 1);
-	                                                                                            _this5.onCategorySort(coll);
+	                                                                                            _this3.onCategorySort(coll);
 	                                                                                        },
 	                                                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0437',
 	                                                                                        className: 'btn btn-default' },
@@ -60013,27 +59884,21 @@
 	                                                                    React.createElement('div', { key: key },
 	                                                                        React.createElement('div', { className: 'row' },
 	                                                                            React.createElement('div', { className: "col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null) },
-	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {_this5.openLink(coll, link);} }),
-	                                                                                React.createElement('span', { 'data-link': _this5.copyLink(link),
-	                                                                                        className: "inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null) },
+	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {_this3.openLink(coll, link);} }),
+	                                                                                React.createElement('span', { 'data-link': _this3.copyLink(link),
+	                                                                                        className: "inline_element link" + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null) },
 	                                                                                    React.createElement(EditableText, {
 	                                                                                        text: link.name,
 	                                                                                        field: 'name',
 	                                                                                        onClick: function onClick(link) {
-	                                                                                            if (!tablesStore.pressed_key) {
-	                                                                                                _this5.props.router.push(
-	                                                                                                !link.to_link ?
-	                                                                                                link.edit_url :
-	
-	                                                                                                link.to_link.href + '/edit/');
-	
-	
-	                                                                                            } else if (tablesStore.pressed_key === 16) {
+	                                                                                            if (!usersStore.pressed_key) {
+	                                                                                                _this3.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));
+	                                                                                            } else if (usersStore.pressed_key === 16) {
 	                                                                                                link.edit = true;
-	                                                                                                _this5.fixClipboard();
+	                                                                                                _this3.fixClipboard();
 	                                                                                            }
 	                                                                                        },
-	                                                                                        submitHandler: function submitHandler(link) {return _this5.updateLink(link);},
+	                                                                                        submitHandler: function submitHandler(link) {return scriptsStore.updateLink(script, table, coll, category, link);},
 	                                                                                        object: link,
 	                                                                                        edit: link.edit,
 	                                                                                        settings: {
@@ -60048,9 +59913,9 @@
 	                                                                                        React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
 	                                                                                            React.createElement('button', {
 	                                                                                                    'data-tip': '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0430\u0434\u0440\u0435\u0441 \u0441\u0441\u044B\u043B\u043A\u0438 (Ctrl + \u043A\u043B\u0438\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E \u0441\u0441\u044B\u043B\u043A\u0438)',
-	                                                                                                    'data-link': _this5.copyLink(link),
+	                                                                                                    'data-link': _this3.copyLink(link),
 	                                                                                                    onClick: function onClick() {}, className: 'btn btn-default copy_icon enable_copy_icon' },
-	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-copy copy_icon enable_copy_icon', 'data-link': _this5.copyLink(link) }))),
+	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-copy copy_icon enable_copy_icon', 'data-link': _this3.copyLink(link) }))),
 	
 	
 	
@@ -60067,7 +59932,7 @@
 	                                                                                            React.createElement('button', {
 	                                                                                                    'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443',
 	                                                                                                    style: { color: '#fff' },
-	                                                                                                    onClick: function onClick() {_this5.deleteLink(link);},
+	                                                                                                    onClick: function onClick() {scriptsStore.deleteLink(script, table, coll, category, link);},
 	                                                                                                    className: 'btn btn-danger btn-xs' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
 	
@@ -60079,7 +59944,7 @@
 	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u0432\u0435\u0440\u0445',
 	                                                                                                    onClick: function onClick() {
 	                                                                                                        category.links = (0, _sort.moveInArray)(category.links, key, key - 1);
-	                                                                                                        _this5.onLinkSort(category);
+	                                                                                                        _this3.onLinkSort(coll, category);
 	                                                                                                    },
 	                                                                                                    className: 'btn btn-default' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-triangle-top' })) :
@@ -60090,7 +59955,7 @@
 	                                                                                                    'data-tip': '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0432\u043D\u0438\u0437',
 	                                                                                                    onClick: function onClick() {
 	                                                                                                        category.links = (0, _sort.moveInArray)(category.links, key, key + 1);
-	                                                                                                        _this5.onLinkSort(category);
+	                                                                                                        _this3.onLinkSort(coll, category);
 	                                                                                                    },
 	                                                                                                    className: 'btn btn-default' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-triangle-bottom' })) :
@@ -60105,18 +59970,6 @@
 	
 	
 	
-	                                                                {/*return (*/}
-	                                                                {/*<div key={key} category={category} link={link}>*/}
-	                                                                {/*<div className="row">*/}
-	                                                                {/*<div className="col-md-9 link_name">*/}
-	                                                                {/*</div>*/}
-	                                                                {/*<div className="col-md-1"></div>*/}
-	                                                                {/*<div className="col-md-1">*/}
-	                                                                {/*<span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>*/}
-	                                                                {/*</div>*/}
-	                                                                {/*</div>*/}
-	                                                                {/*</div>*/}
-	                                                                {/*)*/}
 	                                                            })));
 	
 	
@@ -60126,7 +59979,7 @@
 	                                    }
 	                                })),
 	
-	                            React.createElement(_modal.ModalWrapper, { stores: [projectsStore, tablesStore, scriptsStore], modalStore: modalStore })));
+	                            React.createElement(_modal.ModalWrapper, { stores: [scriptsStore], modalStore: modalStore })));
 	
 	
 	                }
@@ -60138,10 +59991,11 @@
 	
 	
 	TableShare = exports.TableShare = (0, _mobxReact.observer)(_class3 = function (_Table2) {_inherits(TableShare, _Table2);function TableShare() {_classCallCheck(this, TableShare);return _possibleConstructorReturn(this, (TableShare.__proto__ || Object.getPrototypeOf(TableShare)).apply(this, arguments));}_createClass(TableShare, [{ key: 'componentDidMount', value: function componentDidMount()
-	        {var _this7 = this;
+	        {var _this5 = this;
+	            this.fixHeight();
 	            (0, _jquery2.default)(document).on("click", "#link_text_block a", function (e) {
 	                e.preventDefault();var
-	                router = _this7.props.router;
+	                router = _this5.props.router;
 	
 	                if (e.target.tagName !== 'A') {
 	                    return router.push((0, _jquery2.default)(e.target).closest('a').attr('href'));
@@ -60153,13 +60007,13 @@
 	            (0, _jquery2.default)('#link_text_block a').off('click');
 	        } }, { key: 'render', value: function render()
 	        {var _props2 =
-	            this.props,projectsStore = _props2.projectsStore,scriptsStore = _props2.scriptsStore,tablesStore = _props2.tablesStore,modalStore = _props2.modalStore,usersStore = _props2.usersStore;
-	            var table = tablesStore.table(this.props.params.table);
-	            var active_link = tablesStore.link(this.props.params.table, this.props.params.link);
+	            this.props,scriptsStore = _props2.scriptsStore,usersStore = _props2.usersStore;
+	            var script = scriptsStore.script(this.props.params.script);
+	            var table = scriptsStore.table(script, this.props.params.table);
+	            var active_link = scriptsStore.link(script, this.props.params.link);
 	            var sorted_colls = this.sortedColls();
 	            var coll_name = void 0,coll_size = void 0;
 	            if (usersStore.session_user) {
-	                var script = scriptsStore.script(this.props.params.script);
 	                var access = this.access(usersStore, script);
 	                if (table && access) {
 	                    return (
@@ -60168,15 +60022,27 @@
 	                                sorted_colls.map(function (coll, key) {
 	                                    if (coll.text) {
 	                                        var text = void 0;
-	                                        try {
-	                                            var options = {
-	                                                inlineStyles: {
-	                                                    red: { style: _editor.styleMap.red },
-	                                                    gray: { style: _editor.styleMap.gray } } };
+	                                        try {(function () {
+	                                                var options = {
+	                                                    inlineStyles: {
+	                                                        red: { style: _editor.styleMap.red },
+	                                                        gray: { style: _editor.styleMap.gray } } };
 	
 	
-	                                            var editorState = _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(JSON.parse(active_link.text)), _editor.DECORATORS);
-	                                            text = (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent(), options);
+	
+	                                                {/*TODO: FIX THIS SHIT (MIDDLEWARE)*/}
+	                                                var active_link_json = JSON.parse(active_link.text);
+	                                                var active_link_entities_list = _jquery2.default.map(active_link_json.entityMap, function (value, index) {
+	                                                    return [value];
+	                                                });
+	                                                active_link_entities_list.forEach(function (entity, i) {
+	                                                    if (entity.type === 'LINK' && entity.data.url.includes('/table/') && !entity.data.url.includes('/tables/')) {
+	                                                        active_link_json.entityMap[String(i)].data.url = '/tables/' + script.id + entity.data.url;
+	                                                    }
+	                                                });
+	
+	                                                var editorState = _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(active_link_json));
+	                                                text = (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent(), options);})();
 	                                        } catch (err) {
 	                                            text = '';
 	                                        }
@@ -60212,12 +60078,7 @@
 	                                                                        React.createElement('div', { key: key },
 	                                                                            React.createElement('div', { className: 'row' },
 	                                                                                React.createElement('div', { className: 'col-md-12 link_name' },
-	                                                                                    React.createElement(_reactRouter.Link, { to: !link.to_link ?
-	                                                                                            link.share_url :
-	
-	                                                                                            link.to_link.href + '/share/' },
-	
-	                                                                                        link.name)))));
+	                                                                                    React.createElement(_reactRouter.Link, { to: scriptsStore.linkURL(script, table, link) }, link.name)))));
 	
 	
 	
@@ -60242,24 +60103,24 @@
 	
 	
 	ToLink = function (_React$Component) {_inherits(ToLink, _React$Component);
-	    function ToLink(props) {_classCallCheck(this, ToLink);var _this8 = _possibleConstructorReturn(this, (ToLink.__proto__ || Object.getPrototypeOf(ToLink)).call(this,
+	    function ToLink(props) {_classCallCheck(this, ToLink);var _this6 = _possibleConstructorReturn(this, (ToLink.__proto__ || Object.getPrototypeOf(ToLink)).call(this,
 	        props));
 	
-	        _this8.state = {
+	        _this6.state = {
 	            table: null,
 	            category: null,
-	            link: null };return _this8;
+	            link: null };return _this6;
 	
 	    }_createClass(ToLink, [{ key: 'onChange', value: function onChange(
-	        select, selector) {var
-	            tablesStore = this.props.tablesStore;var _state =
+	        select, selector) {var _props3 =
+	            this.props,scriptsStore = _props3.scriptsStore,script = _props3.script;var _state =
 	            this.state,table = _state.table,category = _state.category,link = _state.link;
 	            var selected_table = void 0,selected_category = void 0,selected_link = void 0;
 	
 	            if (selector === 'table') {
 	                selected_table = null;
 	                if (select)
-	                selected_table = tablesStore.table(select.value);
+	                selected_table = scriptsStore.table(script, select.value);
 	                selected_category = null;
 	                selected_link = null;
 	            } else if (selector === 'category') {
@@ -60269,8 +60130,8 @@
 	                    selected_category = null;
 	                    if (select) {(function () {
 	                            var categories = [];
-	                            table.colls.map(function (coll) {
-	                                coll.categories.map(function (category) {
+	                            table.colls.forEach(function (coll) {
+	                                coll.categories.forEach(function (category) {
 	                                    categories.push(category);
 	                                });
 	                            });
@@ -60292,8 +60153,9 @@
 	
 	        } }, { key: 'tablesOptions', value: function tablesOptions()
 	        {var
-	            tablesStore = this.props.tablesStore;
-	            return tablesStore.tables.map(function (table) {
+	            scriptsStore = this.props.scriptsStore;
+	            var script = scriptsStore.script(this.props.params.script);
+	            return script.data.map(function (table) {
 	                return { value: table.id, label: table.name };
 	            });
 	        } }, { key: 'categoriesOptions', value: function categoriesOptions()
@@ -60319,8 +60181,8 @@
 	            }
 	            return result;
 	        } }, { key: 'render', value: function render()
-	        {var _this9 = this;var
-	            modalStore = this.props.modalStore;var _state2 =
+	        {var _this7 = this;var _props4 =
+	            this.props,scriptsStore = _props4.scriptsStore,modalStore = _props4.modalStore;var _state2 =
 	            this.state,table = _state2.table,category = _state2.category,link = _state2.link;
 	            return (
 	                React.createElement('div', { className: 'row row-centered' },
@@ -60330,7 +60192,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0442\u0430\u0431\u043B\u0438\u0446\u0443',
 	                            value: table ? table.id : null,
 	                            options: this.tablesOptions(),
-	                            onChange: function onChange(select) {_this9.onChange(select, 'table');} })),
+	                            onChange: function onChange(select) {_this7.onChange(select, 'table');} })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
 	                        React.createElement(_reactSelect2.default, {
@@ -60338,7 +60200,7 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044E',
 	                            value: category ? category.id : null,
 	                            options: this.categoriesOptions(),
-	                            onChange: function onChange(select) {_this9.onChange(select, 'category');},
+	                            onChange: function onChange(select) {_this7.onChange(select, 'category');},
 	                            disabled: !table })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
@@ -60347,18 +60209,24 @@
 	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0441\u044B\u043B\u043A\u0443',
 	                            value: link ? link.id : null,
 	                            options: this.linksOptions(),
-	                            onChange: function onChange(select) {_this9.onChange(select, 'link');},
+	                            onChange: function onChange(select) {_this7.onChange(select, 'link');},
 	                            disabled: !table || !category })),
 	
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
 	                        React.createElement('button', {
 	                                className: 'btn btn-success ' + (!link ? 'disabled' : null),
 	                                onClick: function onClick() {var
-	                                    link = _this9.state.link;
+	                                    link = _this7.state.link;
 	                                    if (link) {
-	                                        return _this9.props.createToLink(_this9.props.category, link, function () {
+	                                        return _this7.props.createToLink(
+	                                        _this7.props.script,
+	                                        _this7.props.table,
+	                                        _this7.props.coll,
+	                                        _this7.props.category,
+	                                        link, function () {
 	                                            modalStore.modal = false;
 	                                        });
+	
 	                                    }
 	                                } }, '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C'))));
 	
@@ -60370,18 +60238,18 @@
 	
 	
 	EditableText = function (_React$Component2) {_inherits(EditableText, _React$Component2);
-	    function EditableText(props) {_classCallCheck(this, EditableText);var _this10 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
+	    function EditableText(props) {_classCallCheck(this, EditableText);var _this8 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
 	        props));
 	
-	        _this10.delay = 50;
+	        _this8.delay = 50;
 	
-	        _this10.state = {
-	            text: _this10.props.text,
+	        _this8.state = {
+	            text: _this8.props.text,
 	            edit: props.edit ? props.edit : false,
 	            key: null,
 	
 	            click_timer: null,
-	            prevent: false };return _this10;
+	            prevent: false };return _this8;
 	
 	    }_createClass(EditableText, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -60409,7 +60277,7 @@
 	                this.props.onClick(this.props.object);
 	            }
 	        } }, { key: 'render', value: function render()
-	        {var _this11 = this;var
+	        {var _this9 = this;var
 	            settings = this.props.settings;
 	            return (
 	                React.createElement('div', null,
@@ -60418,7 +60286,7 @@
 	
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
-	                            onChange: function onChange(e) {_this11.setState((0, _reactAddonsUpdate2.default)(_this11.state, { text: { $set: e.target.value } }));},
+	                            onChange: function onChange(e) {_this9.setState((0, _reactAddonsUpdate2.default)(_this9.state, { text: { $set: e.target.value } }));},
 	                            autoFocus: true,
 	                            onBlur: this.submitHandler.bind(this),
 	                            placeholder: settings.placeholder,
@@ -86188,7 +86056,10 @@
 	        {var _this2 = this;var _props =
 	            this.props,usersStore = _props.usersStore,scriptsStore = _props.scriptsStore;
 	            var script_id = parseInt(this.props.params.script);
-	            var script_tables = scriptsStore.scripts.find(function (script) {return script.id === script_id;}).data;
+	            var script_tables = void 0;
+	            if (script_id) {
+	                script_tables = scriptsStore.scripts.find(function (script) {return script.id === script_id;}).data;
+	            }
 	            var edit = this.props.location.pathname.includes('edit');
 	            return (
 	                React.createElement('nav', { className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
@@ -86202,7 +86073,7 @@
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/available/' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
 	                            React.createElement('li', null, React.createElement('a', { href: 'http://lp.scriptogenerator.ru/info', target: '_blank' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F')),
 	
-	                            script_tables.length > 0 ?
+	                            script_tables && script_tables.length > 0 ?
 	                            React.createElement('li', { className: 'dropdown' },
 	                                React.createElement('a', { href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
 	                                    React.createElement('span', { className: 'caret' })),
@@ -86367,6 +86238,42 @@
 	        } }, { key: 'script', value: function script(
 	        id) {
 	            return this.scripts.concat(this.available_scripts).find(function (script) {return parseInt(script.id) === parseInt(id);});
+	        } }, { key: 'table', value: function table(
+	        script, id) {
+	            return script.data.find(function (table) {return parseInt(table.id) === parseInt(id);});
+	        } }, { key: 'link', value: function link(
+	        script, id) {var with_parents = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	            // "with_parents=true" returns object with link and table.id
+	            if (id) {var _ret2 = function () {
+	                    var all_links = [];
+	                    script.data.forEach(function (table) {
+	                        table.colls.forEach(function (coll) {
+	                            coll.categories.forEach(function (category) {
+	                                category.links.forEach(function (link) {
+	                                    if (with_parents) {
+	                                        all_links.push({ link: link, table: table.id, coll: coll.id, category: category.id });
+	                                    } else {
+	                                        all_links.push(link);
+	                                    }
+	                                });
+	                            });
+	                        });
+	                    });
+	                    return { v: all_links.find(function (link) {return parseInt(!with_parents ? link.id : link.link.id) === parseInt(id);}) };}();if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+	            }
+	            return null;
+	        } }, { key: 'linkURL', value: function linkURL(
+	        script, table, link) {var mode = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'share';var copy = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+	            function get_url() {var table_to = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : table.id;var link_to = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : link.id;
+	                return (!copy ? '/tables/' + script.id : '') + '/table/' + table_to + '/link/' + link_to + '/' + mode + '/';
+	            }
+	
+	            if (!link.to_link) {
+	                return get_url();
+	            } else {
+	                var to_link = this.link(script, link.to_link, true);
+	                return get_url(to_link.table, to_link.link.id);
+	            }
 	        } }, { key: 'resetCreating', value: function resetCreating()
 	        {
 	            this.creating_name = '';
@@ -86451,6 +86358,23 @@
 	                    console.log(res);
 	                } });
 	
+	        } }, { key: 'updateColl', value: function updateColl(
+	        script, table, coll) {
+	            _jquery2.default.ajax({
+	                method: 'PUT',
+	                url: document.body.getAttribute('data-colls-url'),
+	                data: JSON.stringify({
+	                    script: script.id,
+	                    table: table.id,
+	                    coll: coll }),
+	
+	                success: function success(res) {
+	                    script.data = res.data;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
 	        } }, { key: 'deleteColl', value: function deleteColl(
 	        script, table, colls, coll, i) {
 	            (0, _confirm2.default)("Вы действительно хотите удалить столбец: " + coll.name).then(
@@ -86476,8 +86400,133 @@
 	                console.log('cancel called');
 	            });
 	
-	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteColl'), _class2.prototype)), _class2);exports.default =
+	        } }, { key: 'createLinkCategory', value: function createLinkCategory(
+	        script, table, coll) {var hidden = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+	            _jquery2.default.ajax({
+	                method: 'POST',
+	                url: document.body.getAttribute('data-link-categories-url'),
+	                data: JSON.stringify({
+	                    script: script.id,
+	                    table: table.id,
+	                    coll: coll.id,
+	                    hidden: hidden }),
 	
+	                success: function success(res) {
+	                    script.data = res.data;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
+	        } }, { key: 'deleteLinkCategory', value: function deleteLinkCategory(
+	        script, table, coll, category) {
+	            (0, _confirm2.default)("Вы действительно хотите удалить категорию: " + category.name).then(
+	            function (result) {
+	                _jquery2.default.ajax({
+	                    method: 'DELETE',
+	                    url: document.body.getAttribute('data-link-categories-url'),
+	                    data: JSON.stringify({
+	                        script: script.id,
+	                        table: table.id,
+	                        coll: coll.id,
+	                        category: category.id }),
+	
+	                    success: function success(res) {
+	                        script.data = res.data;
+	                    },
+	                    error: function error(res) {
+	                        console.log(res);
+	                    } });
+	
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	            });
+	
+	        } }, { key: 'updateLinkCategory', value: function updateLinkCategory(
+	        script, table, coll, category) {
+	            _jquery2.default.ajax({
+	                method: 'PUT',
+	                url: document.body.getAttribute('data-link-categories-url'),
+	                data: JSON.stringify({
+	                    script: script.id,
+	                    table: table.id,
+	                    coll: coll.id,
+	                    category: category }),
+	
+	                success: function success(res) {
+	                    script.data = res.data;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
+	        } }, { key: 'createLink', value: function createLink(
+	        script, table, coll, category) {var to_link = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+	            _jquery2.default.ajax({
+	                method: 'POST',
+	                url: document.body.getAttribute('data-links-url'),
+	                data: JSON.stringify({
+	                    script: script.id,
+	                    table: table.id,
+	                    coll: coll.id,
+	                    category: category.id,
+	                    to_link: to_link }),
+	
+	                success: function success(res) {
+	
+	                    script.data = res.data;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
+	        } }, { key: 'deleteLink', value: function deleteLink(
+	        script, table, coll, category, link) {
+	            (0, _confirm2.default)("Вы действительно хотите удалить ссылку: " + link.name).then(
+	            function (result) {
+	                _jquery2.default.ajax({
+	                    method: 'DELETE',
+	                    url: document.body.getAttribute('data-links-url'),
+	                    data: JSON.stringify({
+	                        script: script.id,
+	                        table: table.id,
+	                        coll: coll.id,
+	                        category: category.id,
+	                        link: link.id }),
+	
+	                    success: function success(res) {
+	                        script.data = res.data;
+	                    },
+	                    error: function error(res) {
+	                        console.log(res);
+	                    } });
+	
+	            },
+	            function (result) {
+	                console.log('cancel called');
+	            });
+	
+	        } }, { key: 'updateLink', value: function updateLink(
+	        script, table, coll, category, link) {
+	            _jquery2.default.ajax({
+	                method: 'PUT',
+	                url: document.body.getAttribute('data-links-url'),
+	                data: JSON.stringify({
+	                    script: script.id ? script.id : script,
+	                    table: table.id ? table.id : table,
+	                    coll: coll.id ? coll.id : coll,
+	                    category: category.id ? category.id : category,
+	                    link: link }),
+	
+	                success: function success(res) {
+	                    script.data = res.data;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
+	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLink'), _class2.prototype)), _class2);exports.default =
 	
 	
 	new ScriptsStore();
@@ -86486,10 +86535,12 @@
 /* 781 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;var _mobx = __webpack_require__(562);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10;var _mobx = __webpack_require__(562);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
-	UsersStore = exports.UsersStore = (_class = function () {function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'team', _descriptor2, this);_initDefineProp(this, 'local_payments', _descriptor3, this);_initDefineProp(this, 'session_user', _descriptor4, this);_initDefineProp(this, 'creating_teammate_email', _descriptor5, this);_initDefineProp(this, 'creating_teammate_first_name', _descriptor6, this);_initDefineProp(this, 'creating_teammate_last_name', _descriptor7, this);_initDefineProp(this, 'creating_teammate_middle_name', _descriptor8, this);_initDefineProp(this, 'creating_teammate_phone', _descriptor9, this);}_createClass(UsersStore, [{ key: 'getData', value: function getData()
+	UsersStore = exports.UsersStore = (_class = function () {function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'team', _descriptor2, this);_initDefineProp(this, 'local_payments', _descriptor3, this);_initDefineProp(this, 'session_user', _descriptor4, this);_initDefineProp(this, 'creating_teammate_email', _descriptor5, this);_initDefineProp(this, 'creating_teammate_first_name', _descriptor6, this);_initDefineProp(this, 'creating_teammate_last_name', _descriptor7, this);_initDefineProp(this, 'creating_teammate_middle_name', _descriptor8, this);_initDefineProp(this, 'creating_teammate_phone', _descriptor9, this);_initDefineProp(this, 'pressed_key', _descriptor10, this);}_createClass(UsersStore, [{ key: 'getData', value: function getData()
+	
+	
 	
 	
 	
@@ -86520,7 +86571,7 @@
 	            this.creating_teammate_first_name = '';
 	            this.creating_teammate_middle_name = '';
 	            this.creating_teammate_phone = '';
-	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'local_payments', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_first_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_last_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_middle_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_phone', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _applyDecoratedDescriptor(_class.prototype, 'getData', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getData'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
+	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'local_payments', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_first_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_last_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_middle_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_phone', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, 'pressed_key', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class.prototype, 'getData', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getData'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
 	
 	
 	new UsersStore();

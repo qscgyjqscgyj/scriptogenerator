@@ -10,7 +10,10 @@ export class Nav extends React.Component {
     render() {
         const {usersStore, scriptsStore} = this.props;
         let script_id = parseInt(this.props.params.script);
-        let script_tables = scriptsStore.scripts.find(script => {return script.id === script_id}).data;
+        let script_tables;
+        if(script_id) {
+            script_tables = scriptsStore.scripts.find(script => {return script.id === script_id}).data;
+        }
         let edit = this.props.location.pathname.includes('edit');
         return(
             <nav className={"navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '')}>
@@ -24,7 +27,7 @@ export class Nav extends React.Component {
                         <li><Link to='/scripts/available/'>Доступные скрипты</Link></li>
                         <li><a href='http://lp.scriptogenerator.ru/info' target="_blank">Инструкция</a></li>
 
-                        {script_tables.length > 0 ?
+                        {script_tables && script_tables.length > 0 ?
                             <li className="dropdown">
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     Таблицы <span className="caret"/>

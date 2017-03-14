@@ -13,6 +13,8 @@ export class UsersStore {
     @observable creating_teammate_middle_name = '';
     @observable creating_teammate_phone = '';
 
+    @observable pressed_key = null;
+
     @action getData() {
         $.ajax({
             method: 'GET',

@@ -45,7 +45,6 @@ def current_milli_time():
 def get_empty_table():
     return {
         'id': current_milli_time(),
-        'old_id': None,
         'name': u'Новая таблица',
         'text_coll_name': u'Блок с текстом',
         'text_coll_size': 50,
@@ -59,7 +58,6 @@ def get_empty_table():
 def get_empty_coll():
     return {
         'id': current_milli_time(),
-        'old_id': None,
         'name': u'Новый блок',
         'size': 10,
         'position': 1,
@@ -67,24 +65,22 @@ def get_empty_coll():
     }
 
 
-def get_empty_category():
+def get_empty_category(hidden=False):
     return {
         'id': current_milli_time(),
-        'old_id': None,
         'name': u'Новая категория',
-        'hidden': False,
+        'hidden': hidden,
         'order': 1,
         'opened': False,
         'links': []
     }
 
 
-def get_empty_link():
+def get_empty_link(to_link=None):
     return {
         'id': current_milli_time(),
-        'old_id': None,
         'name': u'Новая ссылка',
-        'to_link': None,
+        'to_link': to_link,
         'text': None,
         'order': 1,
         'opened': False,

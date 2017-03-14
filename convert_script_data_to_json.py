@@ -12,11 +12,9 @@ def new_object(object, empty_object):
         if attr in empty_object.keys() and not callable(getattr(object, attr)):
             if type(getattr(object, attr)) is datetime.datetime:
                 empty_object[attr] = getattr(object, attr).isoformat()
-            elif attr == 'id':
-                empty_object['old_id'] = getattr(object, attr)
             elif attr == 'to_link':
                 to_link = getattr(object, attr)
-                empty_object['to_link'] = {'attr': 'old_id', 'id': to_link.pk} if to_link else to_link
+                empty_object['to_link'] = to_link.pk if to_link else None
             else:
                 empty_object[attr] = getattr(object, attr)
     return empty_object

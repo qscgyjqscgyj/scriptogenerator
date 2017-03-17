@@ -510,15 +510,18 @@ export class TableShare extends Table {
                                                                 </div>
                                                             </span>
                                                             {category.links.map((link, key) => {
-                                                                return (
-                                                                    <div key={key}>
-                                                                        <div className="row">
-                                                                            <div className="col-md-12 link_name">
-                                                                                <Link to={scriptsStore.linkURL(script, table, link)}>{link.name}</Link>
+                                                                let link_url = scriptsStore.linkURL(script, table, link);
+                                                                if(link_url) {
+                                                                    return (
+                                                                        <div key={key}>
+                                                                            <div className="row">
+                                                                                <div className="col-md-12 link_name">
+                                                                                    <Link to={link_url}>{link.name}</Link>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                )
+                                                                    )
+                                                                }
                                                             })}
                                                         </div>
                                                     )

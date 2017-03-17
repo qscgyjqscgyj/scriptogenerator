@@ -99,7 +99,7 @@ export class ScriptsStore {
             return get_url();
         } else {
             let to_link = this.link(script, link.to_link, true);
-            return get_url(to_link.table, to_link.link.id);
+            return to_link ? get_url(to_link.table, to_link.link.id) : null;
         }
     }
     resetCreating() {

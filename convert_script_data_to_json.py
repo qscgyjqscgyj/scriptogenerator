@@ -15,6 +15,16 @@ def new_object(object, empty_object):
             elif attr == 'to_link':
                 to_link = getattr(object, attr)
                 empty_object['to_link'] = to_link.pk if to_link else None
+            elif attr == 'text' and getattr(object, attr):
+                try:
+                    text = json.loads(getattr(object, attr))
+                    if text.get('entityMap'):
+                        for key, value in text.get('entityMap').items():
+                            if value['type'] == 'LINK' and '/table/' in value['data']['url'] and not '/tables/' in value['data']['url']:
+                                text['entityMap'][str(key)]['data']['url'] = '/' + '/'.join(value['data']['url'].split('/')[3:])
+                    empty_object[attr] = json.dumps(text)
+                except ValueError:
+                    pass
             else:
                 empty_object[attr] = getattr(object, attr)
     return empty_object

@@ -60074,15 +60074,18 @@
 	
 	
 	                                                                category.links.map(function (link, key) {
-	                                                                    return (
-	                                                                        React.createElement('div', { key: key },
-	                                                                            React.createElement('div', { className: 'row' },
-	                                                                                React.createElement('div', { className: 'col-md-12 link_name' },
-	                                                                                    React.createElement(_reactRouter.Link, { to: scriptsStore.linkURL(script, table, link) }, link.name)))));
+	                                                                    var link_url = scriptsStore.linkURL(script, table, link);
+	                                                                    if (link_url) {
+	                                                                        return (
+	                                                                            React.createElement('div', { key: key },
+	                                                                                React.createElement('div', { className: 'row' },
+	                                                                                    React.createElement('div', { className: 'col-md-12 link_name' },
+	                                                                                        React.createElement(_reactRouter.Link, { to: link_url }, link.name)))));
 	
 	
 	
 	
+	                                                                    }
 	                                                                })));
 	
 	
@@ -86272,7 +86275,7 @@
 	                return get_url();
 	            } else {
 	                var to_link = this.link(script, link.to_link, true);
-	                return get_url(to_link.table, to_link.link.id);
+	                return to_link ? get_url(to_link.table, to_link.link.id) : null;
 	            }
 	        } }, { key: 'resetCreating', value: function resetCreating()
 	        {

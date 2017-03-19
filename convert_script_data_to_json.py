@@ -20,7 +20,7 @@ def new_object(object, empty_object):
                     text = json.loads(getattr(object, attr))
                     if text.get('entityMap'):
                         for key, value in text.get('entityMap').items():
-                            if value['type'] == 'LINK' and '/table/' in value['data']['url'] and not '/tables/' in value['data']['url']:
+                            if value['type'] == 'LINK' and '/table/' in value['data']['url'] and '/tables/' in value['data']['url']:
                                 text['entityMap'][str(key)]['data']['url'] = '/' + '/'.join(value['data']['url'].split('/')[3:])
                     empty_object[attr] = json.dumps(text)
                 except ValueError:

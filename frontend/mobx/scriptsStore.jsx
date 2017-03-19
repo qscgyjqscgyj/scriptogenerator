@@ -1,4 +1,4 @@
-import {computed, observable, action} from 'mobx';
+import {computed, observable, action, map} from 'mobx';
 import $ from 'jquery';
 import confirm from '../react/confirm';
 
@@ -56,7 +56,7 @@ export class ScriptsStore {
     }
     filteredScripts(available) {
         let scripts;
-        if (this.scripts.length > 0) {
+        if (this.scripts && this.scripts.length > 0) {
             let matches_by_name = new RegExp(this.filter_by_name, 'i');
             scripts = (available ? this.available_scripts : this.scripts).filter(script => !this.filter_by_name || matches_by_name.test(script.name));
             return scripts.filter(script => !this.filter_by_project || (script.project ? script.project.id === this.filter_by_project : false));
@@ -107,6 +107,47 @@ export class ScriptsStore {
         this.creating_project = null;
     }
 
+    @action getInitialData() {
+        $.ajax({
+            method: 'GET',
+            url: document.body.getAttribute('data-scripts-url'),
+            success: (res) => {
+                this.scripts = res.scripts;
+                this.template_scripts = res.template_scripts;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+    @action getAvailableScripts() {
+        $.ajax({
+            method: 'GET',
+            url: document.body.getAttribute('data-scripts-url'),
+            data: JSON.stringify({
+                available_scripts: true
+            }),
+            success: (res) => {
+                this.available_scripts = res.available_scripts;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+    @action getScriptData(script) {
+        $.ajax({
+            method: 'GET',
+            url: document.body.getAttribute('data-scripts-url'),
+            data: {script: script.id},
+            success: (res) => {
+                script.data = res.script.data;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
     @action createTable(script) {
         $.ajax({
             method: 'POST',

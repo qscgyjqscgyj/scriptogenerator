@@ -8,15 +8,21 @@ import {Link} from 'react-router';
 import {Sort} from './sort';
 import {AccessableComponent} from './access';
 
-
 @observer
-export class Tables extends AccessableComponent {
+class Tables extends AccessableComponent {
+    componentWillMount() {
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        if(script) {
+            scriptsStore.getScriptData(script);
+        }
+    }
     render() {
         const {scriptsStore, modalStore, usersStore} = this.props;
         if(usersStore.session_user) {
             let script = scriptsStore.script(this.props.params.script);
             let access = this.access(usersStore, script);
-            if(script && access) {
+            if(script && script.data && access) {
                 return(
                     <div className="col-md-12">
                         {access.edit ?
@@ -78,6 +84,13 @@ export class Tables extends AccessableComponent {
             return null;
         }
         return null;
+    }
+}
+
+@observer
+class AvailableTables extends React.Component {
+    render() {
+        return React.cloneElement(React.createElement(Tables, this.props), {available: true});
     }
 }
 
@@ -277,8 +290,24 @@ class CollInput extends React.Component {
     }
 }
 
-export class AvailableTables extends React.Component {
+@observer
+export class TablesWrapper extends React.Component {
     render() {
-        return React.cloneElement(React.createElement(Tables, this.props), {available: true});
+        const {scriptsStore} = this.props;
+        if(scriptsStore.scripts && scriptsStore.scripts.length > 0) {
+            return React.createElement(Tables, this.props);
+        }
+        return null;
+    }
+}
+
+@observer
+export class AvailableTablesWrapper extends React.Component {
+    render() {
+        const {scriptsStore} = this.props;
+        if(scriptsStore.scripts && scriptsStore.scripts.length > 0) {
+            return React.createElement(AvailableTables, this.props);
+        }
+        return null;
     }
 }

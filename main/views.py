@@ -48,13 +48,39 @@ class JSONResponse(HttpResponse):
 
 
 class ScriptsView(View):
+    def user_accessable_scripts_ids(self, request):
+        access_scripts_ids = []
+        for access in ScriptAccess.objects.filter(user=request.user):
+            access_scripts_ids.append(access.script.pk)
+        return access_scripts_ids
+
     def get(self, request, *args, **kwargs):
-        if request.GET.get('update_cloning_tasks'):
-            request.user.update_cloning_scripts_tasks()
-        return JSONResponse({
-            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
-            'session_user': UserSerializer(CustomUser.objects.get(pk=request.user.pk)).data
-        })
+        if not request.GET.get('script'):
+            result = {
+                'template_scripts': ScriptSerializer(Script.objects.filter(is_template=True), many=True, empty_data=True).data,
+            }
+
+            if request.GET.get('update_cloning_tasks'):
+                request.user.update_cloning_scripts_tasks()
+
+            if not request.GET.get('available_scripts'):
+                result['scripts'] = ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
+            else:
+                result['available_scripts'] = ScriptSerializer(Script.objects.filter(pk__in=self.user_accessable_scripts_ids(request)), many=True, empty_data=True).data
+            return JSONResponse(result)
+        else:
+            script = Script.objects.get(pk=int(request.GET['script']))
+            if not script.owner == request.user:
+                if int(request.GET['script']) in self.user_accessable_scripts_ids(request):
+                    return JSONResponse({
+                        'script': ScriptSerializer(script).data
+                    })
+                else:
+                    return JSONResponse({'error': 'This scripts is not available for you.'}, status=403)
+            else:
+                return JSONResponse({
+                    'script': ScriptSerializer(script).data
+                })
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
@@ -327,16 +353,10 @@ class CloneScriptView(View):
 
 class InitView(View):
     def get(self, request, *args, **kwargs):
-        access_scripts_ids = []
-        for access in ScriptAccess.objects.filter(user=request.user):
-            access_scripts_ids.append(access.script.pk)
         return JSONResponse({
-            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
-            'template_scripts': ScriptSerializer(Script.objects.filter(is_template=True), many=True).data,
-            'available_scripts': ScriptSerializer(Script.objects.filter(pk__in=access_scripts_ids), many=True).data,
-            'users': UserSerializer(CustomUser.objects.all().exclude(pk=request.user.pk), many=True).data,
+            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data,
+            # 'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data,
             'session_user': UserSerializer(request.user).data,
-            'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data,
             'shopId': YANDEX_SHOPID,
             'scid': YANDEX_SCID,
         }, status=201)

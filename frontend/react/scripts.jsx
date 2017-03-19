@@ -60,7 +60,6 @@ export class Scripts extends React.Component {
             data: JSON.stringify({name: scriptsStore.creating_name, owner: usersStore.session_user, template: scriptsStore.creating_template}),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
-                usersStore.session_user = res.session_user;
                 modalStore.modal = false;
                 this.checkingCloningScripts();
             },
@@ -502,17 +501,11 @@ class MultiSelectField extends React.Component {
 
 @observer
 export class AvailableScripts extends React.Component {
+    componentWillMount() {
+        const {scriptsStore} = this.props;
+        scriptsStore.getAvailableScripts();
+    }
     render() {
         return React.cloneElement(React.createElement(Scripts, this.props), {available: true});
     }
 }
-
-
-                                            //     (script.available ?
-                                            //         <td>
-                                            //             {access.edit ? 'Редактирование' : 'Просмотр'}
-                                            //         </td>
-                                            //     :
-                                            //         <td className="red_text">У создателя скрипта отрицательный баланс.</td>
-                                            //     )
-                                            // }

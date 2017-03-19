@@ -55,13 +55,15 @@ class ScriptAvailableField(serializers.Field):
 
 class ScriptDataField(serializers.Field):
     def to_representation(self, script):
-        data = json.loads(script.data)
-        validated_data = []
-        for table in data:
-            current_table = TableSerializer(data=table)
-            if current_table.is_valid(raise_exception=True):
-                validated_data.append(current_table.validated_data)
-        return validated_data
+        if not self.parent.empty_data:
+            data = json.loads(script.data)
+            validated_data = []
+            for table in data:
+                current_table = TableSerializer(data=table)
+                if current_table.is_valid(raise_exception=True):
+                    validated_data.append(current_table.validated_data)
+            return validated_data
+        return []
 
     def get_attribute(self, data):
         return data
@@ -78,6 +80,11 @@ class ScriptSerializer(serializers.ModelSerializer):
     data = ScriptDataField(required=False)
     url = serializers.SerializerMethodField()
     view_url = serializers.SerializerMethodField()
+
+    def __init__(self, *args, **kwargs):
+        empty_data = kwargs.pop('empty_data', None)
+        super(ScriptSerializer, self).__init__(*args, **kwargs)
+        self.empty_data = empty_data
 
     def get_url(self, script):
         return script.get_client_url()
@@ -101,10 +108,7 @@ class ScriptSerializer(serializers.ModelSerializer):
         return template
 
     def update(self, instance, validated_data):
-        # project = validated_data.pop('project', None)
-
         instance.name = validated_data.get('name', instance.name)
-        # instance.project = Project.objects.get(**project)
         instance.save()
         return instance
 

@@ -9,10 +9,10 @@ const STATIC_URL = document.body.getAttribute('data-static-url');
 export class Nav extends React.Component {
     render() {
         const {usersStore, scriptsStore} = this.props;
-        let script_id = parseInt(this.props.params.script);
+        let script = scriptsStore.script(this.props.params.script);
         let script_tables;
-        if(script_id) {
-            script_tables = scriptsStore.scripts.find(script => {return script.id === script_id}).data;
+        if(script && script.data) {
+            script_tables = scriptsStore.scripts.find(script => {return script.id === script.id}).data;
         }
         let edit = this.props.location.pathname.includes('edit');
         return(

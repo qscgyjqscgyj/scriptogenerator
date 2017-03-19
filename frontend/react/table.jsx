@@ -15,7 +15,7 @@ import {extendObservable} from 'mobx';
 import ReactTooltip from 'react-tooltip';
 
 @observer
-export class Table extends AccessableComponent {
+class Table extends AccessableComponent {
     constructor(props) {
         super(props);
 
@@ -51,6 +51,13 @@ export class Table extends AccessableComponent {
             this.setState(update(this.state, {clipboard: {
                 $set: new_clipboard
             }}));
+        }
+    }
+    componentWillMount() {
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        if(script) {
+            scriptsStore.getScriptData(script);
         }
     }
     componentDidMount() {
@@ -133,7 +140,7 @@ export class Table extends AccessableComponent {
 }
 
 @observer
-export class TableEdit extends Table {
+class TableEdit extends Table {
     async openCategory(coll, category) {
         const {scriptsStore} = this.props;
         const script = scriptsStore.script(this.props.params.script);
@@ -426,7 +433,7 @@ export class TableEdit extends Table {
 }
 
 @observer
-export class TableShare extends Table {
+class TableShare extends Table {
     componentDidMount() {
         this.fixHeight();
         $(document).on("click", "#link_text_block a", (e) => {
@@ -736,5 +743,27 @@ class EditableText extends React.Component {
                 }
             </div>
         )
+    }
+}
+
+@observer
+export class TableShareWrapper extends React.Component {
+    render() {
+        const {scriptsStore} = this.props;
+        if(scriptsStore.scripts && scriptsStore.scripts.length > 0) {
+            return React.createElement(TableShare, this.props);
+        }
+        return null;
+    }
+}
+
+@observer
+export class TableEditWrapper extends React.Component {
+    render() {
+        const {scriptsStore} = this.props;
+        if(scriptsStore.scripts && scriptsStore.scripts.length > 0) {
+            return React.createElement(TableEdit, this.props);
+        }
+        return null;
     }
 }

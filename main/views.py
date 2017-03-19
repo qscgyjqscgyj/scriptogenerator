@@ -88,7 +88,7 @@ class ScriptsView(View):
         if script.is_valid():
             script.create(data)
             return JSONResponse({
-                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
+                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data,
                 'session_user': UserSerializer(CustomUser.objects.get(pk=request.user.pk)).data
             })
         return JSONResponse(script.errors, status=400)
@@ -100,7 +100,7 @@ class ScriptsView(View):
         if script.is_valid():
             script.update(current_script, data)
             return JSONResponse({
-                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+                'script': ScriptSerializer(current_script, many=True).data
             })
         return JSONResponse(script.errors, status=400)
 
@@ -110,7 +110,7 @@ class ScriptsView(View):
             script = Script.objects.get(pk=int(data['id']))
             script.delete()
             return JSONResponse({
-                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
             })
         except ObjectDoesNotExist:
             return JSONResponse({'error': 'Object does not exist.'}, status=400)
@@ -129,7 +129,7 @@ class DelegateScriptView(View):
             for access in script.accesses():
                 access.delete()
             return JSONResponse({
-                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
             })
         except ObjectDoesNotExist:
             return JSONResponse({'message': 'User does not exist.'}, status=400)
@@ -334,20 +334,19 @@ class ScriptAccessView(View):
         else:
             delete_accesses(script.accesses())
         return JSONResponse({
-            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data
+            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
         })
 
 
 class CloneScriptView(View):
     def post(self, request, *args, **kwargs):
-        data = json.loads(request.body)
-        current_script = Script.objects.get(pk=int(data['id']))
-        request.user.insert_cloning_script_task(
-            clone_script_with_relations.delay(current_script.pk, [('name', current_script.name + u'  (копия)'), ('active', False)]).task_id
-        )
+        current_script = Script.objects.get(pk=int(request.POST.get('script')))
+        clone_script_with_relations(current_script.pk, [('name', current_script.name + u'  (копия)'), ('active', False)])
+        # request.user.insert_cloning_script_task(
+        #     clone_script_with_relations.delay(current_script.pk, [('name', current_script.name + u'  (копия)'), ('active', False)]).task_id
+        # )
         return JSONResponse({
-            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True).data,
-            'session_user': UserSerializer(CustomUser.objects.get(pk=request.user.pk)).data
+            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
         })
 
 
@@ -355,7 +354,6 @@ class InitView(View):
     def get(self, request, *args, **kwargs):
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data,
-            # 'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data,
             'session_user': UserSerializer(request.user).data,
             'shopId': YANDEX_SHOPID,
             'scid': YANDEX_SCID,

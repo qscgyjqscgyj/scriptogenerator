@@ -31,9 +31,6 @@ export class ScriptsStore {
             data: (update_cloning_tasks ? {update_cloning_tasks: true} : null),
             success: (res) => {
                 this.scripts = res.scripts;
-                if(usersStore) {
-                    usersStore.session_user = res.session_user;
-                }
             },
             error: (res) => {
                 console.log(res);

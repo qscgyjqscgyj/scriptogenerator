@@ -36544,7 +36544,7 @@
 	                url: document.body.getAttribute('data-scripts-url'),
 	                data: JSON.stringify(script ? script : scriptsStore.editing),
 	                success: function success(res) {
-	                    scriptsStore.scripts = res.scripts;
+	                    script = res.script;
 	                    modalStore.modal = false;
 	                },
 	                error: function error(res) {
@@ -36612,10 +36612,9 @@
 	                _jquery2.default.ajax({
 	                    method: 'POST',
 	                    url: document.body.getAttribute('data-clone-script-url'),
-	                    data: JSON.stringify(script),
+	                    data: { script: script.id },
 	                    success: function success(res) {
 	                        scriptsStore.scripts = res.scripts;
-	                        usersStore.session_user = res.session_user;
 	                        _this3.checkingCloningScripts();
 	                    },
 	                    error: function error(res) {
@@ -85690,9 +85689,6 @@
 	                data: update_cloning_tasks ? { update_cloning_tasks: true } : null,
 	                success: function success(res) {
 	                    _this.scripts = res.scripts;
-	                    if (usersStore) {
-	                        usersStore.session_user = res.session_user;
-	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);

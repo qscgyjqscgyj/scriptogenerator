@@ -76,7 +76,7 @@ export class Scripts extends React.Component {
             url: document.body.getAttribute('data-scripts-url'),
             data: JSON.stringify((script ? script : scriptsStore.editing)),
             success: (res) => {
-                scriptsStore.scripts = res.scripts;
+                script = res.script;
                 modalStore.modal = false;
             },
             error: (res) => {
@@ -144,10 +144,9 @@ export class Scripts extends React.Component {
             $.ajax({
                 method: 'POST',
                 url: document.body.getAttribute('data-clone-script-url'),
-                data: JSON.stringify(script),
+                data: {script: script.id},
                 success: (res) => {
                     scriptsStore.scripts = res.scripts;
-                    usersStore.session_user = res.session_user;
                     this.checkingCloningScripts();
                 },
                 error: (res) => {

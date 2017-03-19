@@ -140,6 +140,7 @@ export class Scripts extends React.Component {
     }
     cloneScript(script) {
         const {scriptsStore, usersStore} = this.props;
+        scriptsStore.createCloningProcess(1);
         this.setState(update(this.state, {cloning: {$set: script}}), () => {
             $.ajax({
                 method: 'POST',
@@ -147,7 +148,6 @@ export class Scripts extends React.Component {
                 data: {script: script.id},
                 success: (res) => {
                     scriptsStore.scripts = res.scripts;
-                    this.checkingCloningScripts();
                 },
                 error: (res) => {
                     console.log(res);

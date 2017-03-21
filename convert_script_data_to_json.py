@@ -47,5 +47,6 @@ def convert():
                 converted_table['colls'].append(converted_coll)
             data.append(converted_table)
         script.data = json.dumps(data)
-        script.save()
+        if data:
+            script.save()
         print('Done: %s/%s' % (str(i + 1), str(len(scripts))))

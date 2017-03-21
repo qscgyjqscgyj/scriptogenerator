@@ -49,4 +49,33 @@ def convert():
         script.data = json.dumps(data)
         if data:
             script.save()
-        print('Done: %s/%s' % (str(i + 1), str(len(scripts))))
+        print('Done: %s/%s - %s' % (str(i + 1), str(len(scripts)), str(script.id)))
+
+
+def fix_tables():
+    scripts = Script.objects.all()
+    for script_index, script in enumerate(scripts):
+        try:
+            data = json.loads(script.data)
+            if data:
+                for table_index, table in enumerate(data):
+                    for coll_index, coll in enumerate(table['colls']):
+                        for category_index, category in enumerate(coll['categories']):
+                            for link_index, link in enumerate(category['links']):
+                                if link['text']:
+                                    text = json.loads(link['text'])
+                                    if text and text.get('entityMap'):
+                                        for key, value in text.get('entityMap').items():
+                                            if value['type'] == 'LINK' and '/table/' in value['data']['url'] and '/tables/' in value['data']['url']:
+                                                try:
+                                                    data[table_index]['colls'][coll_index]['categories'][category_index]['links'][link_index]['text']['entityMap'][str(key)]['data']['url'] = '/' + '/'.join(value['data']['url'].split('/')[3:])
+                                                except TypeError:
+                                                    print('TypeError with script %s' % str(script.id))
+                script.data = json.dumps(data)
+                script.save()
+            print('Done: %s/%s - %s' % (str(script_index + 1), str(len(scripts)), str(script.id)))
+        except ValueError:
+            data = script.data
+            script.data = data.replace('"', "'")
+            script.save()
+            print('ValueError with script %s' % str(script.id))

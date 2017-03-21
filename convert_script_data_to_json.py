@@ -32,7 +32,6 @@ def new_object(object, empty_object):
     return empty_object
 
 
-@transaction.atomic
 def convert():
     scripts = Script.objects.all()
     for i, script in enumerate(scripts):
@@ -55,7 +54,6 @@ def convert():
         print('Done: %s/%s - %s' % (str(i + 1), str(len(scripts)), str(script.id)))
 
 
-@transaction.atomic
 def fix_tables():
     scripts = Script.objects.all()
     for script_index, script in enumerate(scripts):
@@ -71,8 +69,13 @@ def fix_tables():
                                     if text and text.get('entityMap'):
                                         for key, value in text.get('entityMap').items():
                                             if value['type'] == 'LINK' and '/table/' in value['data']['url'] and '/tables/' in value['data']['url']:
+                                                value['data']['url'] = value['data']['url'].replace('https://scriptogenerator.ru/#', '')
+                                                value['data']['url'] = value['data']['url'].replace('https://scriptogenerator.ru', '')
+                                                value['data']['url'] = value['data']['url'].replace('/#/', '/')
+                                                fixed_url = '/' + '/'.join(value['data']['url'].split('/')[3:])
+                                                text['entityMap'][str(key)]['data']['url'] = fixed_url
                                                 try:
-                                                    data[table_index]['colls'][coll_index]['categories'][category_index]['links'][link_index]['text']['entityMap'][str(key)]['data']['url'] = '/' + '/'.join(value['data']['url'].split('/')[3:])
+                                                    data[table_index]['colls'][coll_index]['categories'][category_index]['links'][link_index]['text'] = json.dumps(text)
                                                 except TypeError:
                                                     print('TypeError with script %s' % str(script.id))
                 script.data = json.dumps(data)

@@ -3,6 +3,8 @@ import json
 
 import datetime
 
+from django.db import transaction
+
 from main.models import Script, Table, TableLinksColl, LinkCategory, Link
 from main.utils import get_empty_table, get_empty_coll, get_empty_category, get_empty_link
 
@@ -30,6 +32,7 @@ def new_object(object, empty_object):
     return empty_object
 
 
+@transaction.atomic
 def convert():
     scripts = Script.objects.all()
     for i, script in enumerate(scripts):
@@ -52,6 +55,7 @@ def convert():
         print('Done: %s/%s - %s' % (str(i + 1), str(len(scripts)), str(script.id)))
 
 
+@transaction.atomic
 def fix_tables():
     scripts = Script.objects.all()
     for script_index, script in enumerate(scripts):
@@ -75,7 +79,4 @@ def fix_tables():
                 script.save()
             print('Done: %s/%s - %s' % (str(script_index + 1), str(len(scripts)), str(script.id)))
         except ValueError:
-            data = script.data
-            script.data = data.replace('"', "'")
-            script.save()
             print('ValueError with script %s' % str(script.id))

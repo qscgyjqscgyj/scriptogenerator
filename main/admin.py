@@ -17,6 +17,7 @@ class LinkAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Script, ScriptAdmin)
+admin.site.register(ScriptData)
 admin.site.register(ScriptAccess)
 admin.site.register(Project)
 admin.site.register(Table, TableAdmin)

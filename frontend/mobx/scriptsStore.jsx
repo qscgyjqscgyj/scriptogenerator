@@ -104,38 +104,39 @@ export class ScriptsStore {
         this.creating_project = null;
     }
 
-    @action getInitialData() {
+    @action getScripts(data={page: 1}, success) {
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-scripts-url'),
-            success: (res) => {
-                this.scripts = res.scripts;
-                this.template_scripts = res.template_scripts;
-            },
+            data: data,
+            success: success,
             error: (res) => {
                 console.log(res);
             }
         });
     }
-    @action getAvailableScripts() {
-        $.ajax({
-            method: 'GET',
-            url: document.body.getAttribute('data-scripts-url'),
-            data: JSON.stringify({
-                available_scripts: true
-            }),
-            success: (res) => {
-                this.available_scripts = res.available_scripts;
-            },
-            error: (res) => {
-                console.log(res);
+    @action getInitialData() {
+        function success(res) {
+            res.scripts.forEach(script => this.scripts.push(script));
+            if(res.next_page) {
+                this.getScripts({page: parseInt(res.page) + 1}, success.bind(this));
             }
-        });
+        }
+        this.getScripts({page: 1}, success.bind(this));
+    }
+    @action getAvailableScripts() {
+        function success(res) {
+            res.scripts.forEach(script => this.available_scripts.push(script));
+            if(res.next_page) {
+                this.getScripts({page: parseInt(res.page) + 1, available_scripts: true}, success.bind(this));
+            }
+        }
+        this.getScripts({page: 1, available_scripts: true}, success.bind(this));
     }
     @action getScriptData(script) {
         $.ajax({
             method: 'GET',
-            url: document.body.getAttribute('data-scripts-url'),
+            url: document.body.getAttribute('data-script-url'),
             data: {script: script.id},
             success: (res) => {
                 script.data = res.script.data;

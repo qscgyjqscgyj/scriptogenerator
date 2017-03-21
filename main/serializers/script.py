@@ -56,7 +56,7 @@ class ScriptAvailableField(serializers.Field):
 class ScriptDataField(serializers.Field):
     def to_representation(self, script):
         if not self.parent.empty_data:
-            data = json.loads(script.data)
+            data = json.loads(script.data())
             validated_data = []
             for table in data:
                 current_table = TableSerializer(data=table)
@@ -78,19 +78,11 @@ class ScriptSerializer(serializers.ModelSerializer):
     template = ScriptTemplateField(required=False, allow_null=True)
     available = ScriptAvailableField(read_only=True, allow_null=True)
     data = ScriptDataField(required=False)
-    url = serializers.SerializerMethodField()
-    view_url = serializers.SerializerMethodField()
 
     def __init__(self, *args, **kwargs):
         empty_data = kwargs.pop('empty_data', None)
         super(ScriptSerializer, self).__init__(*args, **kwargs)
         self.empty_data = empty_data
-
-    def get_url(self, script):
-        return script.get_client_url()
-
-    def get_view_url(self, script):
-        return script.get_client_view_url()
 
     def create(self, validated_data):
         owner = get_model('users', 'CustomUser').objects.get(pk=int(self.initial_data.get('owner')['id']))
@@ -114,7 +106,7 @@ class ScriptSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Script
-        fields = ('id', 'name', 'owner', 'date', 'date_mod', 'accesses', 'active', 'template', 'available', 'url', 'view_url', 'data')
+        fields = ('id', 'name', 'owner', 'date', 'date_mod', 'accesses', 'active', 'template', 'available', 'data')
 
 
 class ScriptAccessSerializer(serializers.ModelSerializer):

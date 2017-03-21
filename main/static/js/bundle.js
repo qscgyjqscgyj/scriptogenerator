@@ -85884,9 +85884,11 @@
 	                url: document.body.getAttribute('data-init-url'),
 	                success: function success(res) {
 	                    usersStore.session_user = res.session_user;
-	                    scriptsStore.scripts = res.scripts;
+	                    scriptsStore.template_scripts = res.template_scripts;
 	                    paymentStore.shopId = res.shopId;
 	                    paymentStore.scid = res.scid;
+	
+	                    scriptsStore.getInitialData();
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -86212,40 +86214,41 @@
 	        {
 	            this.creating_name = '';
 	            this.creating_project = null;
+	        } }, { key: 'getScripts', value: function getScripts()
+	
+	        {var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { page: 1 };var success = arguments[1];
+	            _jquery2.default.ajax({
+	                method: 'GET',
+	                url: document.body.getAttribute('data-scripts-url'),
+	                data: data,
+	                success: success,
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
 	        } }, { key: 'getInitialData', value: function getInitialData()
-	
-	        {var _this3 = this;
-	            _jquery2.default.ajax({
-	                method: 'GET',
-	                url: document.body.getAttribute('data-scripts-url'),
-	                success: function success(res) {
-	                    _this3.scripts = res.scripts;
-	                    _this3.template_scripts = res.template_scripts;
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
-	
+	        {
+	            function success(res) {var _this3 = this;
+	                res.scripts.forEach(function (script) {return _this3.scripts.push(script);});
+	                if (res.next_page) {
+	                    this.getScripts({ page: parseInt(res.page) + 1 }, success.bind(this));
+	                }
+	            }
+	            this.getScripts({ page: 1 }, success.bind(this));
 	        } }, { key: 'getAvailableScripts', value: function getAvailableScripts()
-	        {var _this4 = this;
-	            _jquery2.default.ajax({
-	                method: 'GET',
-	                url: document.body.getAttribute('data-scripts-url'),
-	                data: JSON.stringify({
-	                    available_scripts: true }),
-	
-	                success: function success(res) {
-	                    _this4.available_scripts = res.available_scripts;
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
-	
+	        {
+	            function success(res) {var _this4 = this;
+	                res.scripts.forEach(function (script) {return _this4.available_scripts.push(script);});
+	                if (res.next_page) {
+	                    this.getScripts({ page: parseInt(res.page) + 1, available_scripts: true }, success.bind(this));
+	                }
+	            }
+	            this.getScripts({ page: 1, available_scripts: true }, success.bind(this));
 	        } }, { key: 'getScriptData', value: function getScriptData(
 	        script) {
 	            _jquery2.default.ajax({
 	                method: 'GET',
-	                url: document.body.getAttribute('data-scripts-url'),
+	                url: document.body.getAttribute('data-script-url'),
 	                data: { script: script.id },
 	                success: function success(res) {
 	                    script.data = res.script.data;
@@ -86501,7 +86504,7 @@
 	                    console.log(res);
 	                } });
 	
-	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getInitialData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getInitialData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getAvailableScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getAvailableScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScriptData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScriptData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLink'), _class2.prototype)), _class2);exports.default =
+	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getInitialData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getInitialData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getAvailableScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getAvailableScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScriptData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScriptData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLink'), _class2.prototype)), _class2);exports.default =
 	
 	
 	new ScriptsStore();

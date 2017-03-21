@@ -11,7 +11,6 @@ class Script(models.Model):
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='script_parent_script', blank=True, null=True)
     owner = models.ForeignKey(CustomUser, related_name='script_owner_custom_user')
     project = models.ForeignKey('Project', on_delete=models.SET_NULL, related_name='script_project_project', blank=True, null=True)
-    data = models.TextField(default='[]')
     date = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
     date_mod = models.DateTimeField(auto_now=True)
@@ -20,6 +19,10 @@ class Script(models.Model):
 
     def get_client_url(self):
         return '/tables/' + str(self.pk) + '/'
+
+    def data(self):
+        data, created = ScriptData.objects.get_or_create(script=self)
+        return data.data
 
     def get_client_view_url(self):
         result = '/tables/' + str(self.pk) + '/'
@@ -41,13 +44,13 @@ class Script(models.Model):
         self.save()
 
     def tables(self, table_id=None):
-        data = json.loads(self.data)
+        data = json.loads(self.data())
         if table_id:
             return [{'data': table, 'index': i} for i, table in enumerate(data) if table['id'] == table_id][0]
         return data
 
     def colls(self, table_id=None, coll_id=None):
-        data = json.loads(self.data)
+        data = json.loads(self.data())
         if table_id:
             table_data = self.tables(table_id=table_id)
             if coll_id:
@@ -62,7 +65,7 @@ class Script(models.Model):
             return result
 
     def categories(self, table_id=None, coll_id=None, category_id=None):
-        data = json.loads(self.data)
+        data = json.loads(self.data())
         if table_id and coll_id:
             coll_data = self.colls(table_id=table_id, coll_id=coll_id)
             if category_id:
@@ -78,7 +81,7 @@ class Script(models.Model):
             return result
 
     def links(self, table_id=None, coll_id=None, category_id=None, link_id=None):
-        data = json.loads(self.data)
+        data = json.loads(self.data())
         if table_id and coll_id and category_id:
             category_data = self.categories(table_id=table_id, coll_id=coll_id, category_id=category_id)
             if link_id:
@@ -99,6 +102,14 @@ class Script(models.Model):
 
     class Meta:
         ordering = ('-pk',)
+
+
+class ScriptData(models.Model):
+    script = models.OneToOneField(Script, primary_key=True)
+    data = models.TextField(default='[]')
+
+    def __unicode__(self):
+        return self.script.__unicode__()
 
 
 class ScriptAccess(models.Model):

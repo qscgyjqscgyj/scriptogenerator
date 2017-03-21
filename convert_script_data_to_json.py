@@ -5,7 +5,7 @@ import datetime
 
 from django.db import transaction
 
-from main.models import Script, Table, TableLinksColl, LinkCategory, Link
+from main.models import Script, Table, TableLinksColl, LinkCategory, Link, ScriptData
 from main.utils import get_empty_table, get_empty_coll, get_empty_category, get_empty_link
 
 
@@ -23,7 +23,11 @@ def new_object(object, empty_object):
                     if text.get('entityMap'):
                         for key, value in text.get('entityMap').items():
                             if value['type'] == 'LINK' and '/table/' in value['data']['url'] and '/tables/' in value['data']['url']:
-                                text['entityMap'][str(key)]['data']['url'] = '/' + '/'.join(value['data']['url'].split('/')[3:])
+                                value['data']['url'] = value['data']['url'].replace('https://scriptogenerator.ru/#', '')
+                                value['data']['url'] = value['data']['url'].replace('https://scriptogenerator.ru', '')
+                                value['data']['url'] = value['data']['url'].replace('/#/', '/')
+                                fixed_url = '/' + '/'.join(value['data']['url'].split('/')[3:])
+                                text['entityMap'][str(key)]['data']['url'] = fixed_url
                     empty_object[attr] = json.dumps(text)
                 except ValueError:
                     pass
@@ -35,6 +39,7 @@ def new_object(object, empty_object):
 def convert():
     scripts = Script.objects.all()
     for i, script in enumerate(scripts):
+        script_data, created = ScriptData.objects.get_or_create(script=script)
         data = []
         for table in Table.objects.filter(script=script):
             converted_table = new_object(table, get_empty_table())
@@ -48,9 +53,9 @@ def convert():
                     converted_coll['categories'].append(converted_category)
                 converted_table['colls'].append(converted_coll)
             data.append(converted_table)
-        script.data = json.dumps(data)
+            script_data.data = json.dumps(data)
         if data:
-            script.save()
+            script_data.save()
         print('Done: %s/%s - %s' % (str(i + 1), str(len(scripts)), str(script.id)))
 
 

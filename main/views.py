@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
+from django.core.paginator import Paginator
 from django.db.models.loading import get_model
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -55,32 +58,29 @@ class ScriptsView(View):
         return access_scripts_ids
 
     def get(self, request, *args, **kwargs):
-        if not request.GET.get('script'):
-            result = {
-                'template_scripts': ScriptSerializer(Script.objects.filter(is_template=True), many=True, empty_data=True).data,
-            }
+        # if request.GET.get('update_cloning_tasks'):
+        #     request.user.update_cloning_scripts_tasks()
 
-            if request.GET.get('update_cloning_tasks'):
-                request.user.update_cloning_scripts_tasks()
-
-            if not request.GET.get('available_scripts'):
-                result['scripts'] = ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
-            else:
-                result['available_scripts'] = ScriptSerializer(Script.objects.filter(pk__in=self.user_accessable_scripts_ids(request)), many=True, empty_data=True).data
-            return JSONResponse(result)
+        if not request.GET.get('available_scripts'):
+            scripts = ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
         else:
-            script = Script.objects.get(pk=int(request.GET['script']))
-            if not script.owner == request.user:
-                if int(request.GET['script']) in self.user_accessable_scripts_ids(request):
-                    return JSONResponse({
-                        'script': ScriptSerializer(script).data
-                    })
-                else:
-                    return JSONResponse({'error': 'This scripts is not available for you.'}, status=403)
-            else:
-                return JSONResponse({
-                    'script': ScriptSerializer(script).data
-                })
+            scripts = ScriptSerializer(Script.objects.filter(pk__in=self.user_accessable_scripts_ids(request)), many=True, empty_data=True).data
+
+        paginator = Paginator(scripts, 3)
+        page = request.GET.get('page')
+
+        try:
+            scripts = paginator.page(page)
+        except PageNotAnInteger:
+            scripts = paginator.page(1)
+        except EmptyPage:
+            scripts = paginator.page(paginator.num_pages)
+
+        return JSONResponse({
+            'scripts': scripts.object_list,
+            'page': page,
+            'next_page': scripts.has_next()
+        })
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
@@ -114,6 +114,22 @@ class ScriptsView(View):
             })
         except ObjectDoesNotExist:
             return JSONResponse({'error': 'Object does not exist.'}, status=400)
+
+
+class ScriptView(ScriptsView):
+    def get(self, request, *args, **kwargs):
+        script = Script.objects.get(pk=int(request.GET['script']))
+        if not script.owner == request.user:
+            if int(request.GET['script']) in self.user_accessable_scripts_ids(request):
+                return JSONResponse({
+                    'script': ScriptSerializer(script).data
+                })
+            else:
+                return JSONResponse({'error': 'This scripts is not available for you.'}, status=403)
+        else:
+            return JSONResponse({
+                'script': ScriptSerializer(script).data
+            })
 
 
 class DelegateScriptView(View):
@@ -354,6 +370,7 @@ class InitView(View):
     def get(self, request, *args, **kwargs):
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data,
+            'template_scripts': ScriptSerializer(Script.objects.filter(is_template=True), many=True, empty_data=True).data,
             'session_user': UserSerializer(request.user).data,
             'shopId': YANDEX_SHOPID,
             'scid': YANDEX_SCID,

@@ -3,6 +3,8 @@ import json
 
 import datetime
 
+from django.db import transaction
+
 from main.models import Script, Table, TableLinksColl, LinkCategory, Link
 from main.utils import get_empty_table, get_empty_coll, get_empty_category, get_empty_link
 
@@ -47,5 +49,37 @@ def convert():
                 converted_table['colls'].append(converted_coll)
             data.append(converted_table)
         script.data = json.dumps(data)
-        script.save()
-        print('Done: %s/%s' % (str(i + 1), str(len(scripts))))
+        if data:
+            script.save()
+        print('Done: %s/%s - %s' % (str(i + 1), str(len(scripts)), str(script.id)))
+
+
+def fix_tables():
+    scripts = Script.objects.all()
+    for script_index, script in enumerate(scripts):
+        try:
+            data = json.loads(script.data)
+            if data:
+                for table_index, table in enumerate(data):
+                    for coll_index, coll in enumerate(table['colls']):
+                        for category_index, category in enumerate(coll['categories']):
+                            for link_index, link in enumerate(category['links']):
+                                if link['text']:
+                                    text = json.loads(link['text'])
+                                    if text and text.get('entityMap'):
+                                        for key, value in text.get('entityMap').items():
+                                            if value['type'] == 'LINK' and '/table/' in value['data']['url'] and '/tables/' in value['data']['url']:
+                                                value['data']['url'] = value['data']['url'].replace('https://scriptogenerator.ru/#', '')
+                                                value['data']['url'] = value['data']['url'].replace('https://scriptogenerator.ru', '')
+                                                value['data']['url'] = value['data']['url'].replace('/#/', '/')
+                                                fixed_url = '/' + '/'.join(value['data']['url'].split('/')[3:])
+                                                text['entityMap'][str(key)]['data']['url'] = fixed_url
+                                                try:
+                                                    data[table_index]['colls'][coll_index]['categories'][category_index]['links'][link_index]['text'] = json.dumps(text)
+                                                except TypeError:
+                                                    print('TypeError with script %s' % str(script.id))
+                script.data = json.dumps(data)
+                script.save()
+            print('Done: %s/%s - %s' % (str(script_index + 1), str(len(scripts)), str(script.id)))
+        except ValueError:
+            print('ValueError with script %s' % str(script.id))

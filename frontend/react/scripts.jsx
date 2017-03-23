@@ -206,7 +206,7 @@ export class Scripts extends React.Component {
                                                             }}/>
                                                     : null}
 
-                                                    <Link className="inline_element" to={script.url}>{script.name}</Link>
+                                                    <Link className="inline_element" to={scriptsStore.scriptUrl(script)}>{script.name}</Link>
                                                 </span>
                                             :
                                                 <span className="inline_elements">
@@ -233,13 +233,15 @@ export class Scripts extends React.Component {
                                                     <button className="btn btn-default btn-xs"
                                                             data-tip="Права доступа к скрипту"
                                                             onClick={() => {
-                                                                modalStore.modal = true;
-                                                                modalStore.component = React.createElement(Accesses, {
-                                                                    script: script,
-                                                                    usersStore: usersStore,
-                                                                    setAccesses: this.setAccesses.bind(this),
-                                                                    delegateScript: this.delegateScript.bind(this)
-                                                                })
+                                                                scriptsStore.getScriptData(script, () => {
+                                                                    modalStore.modal = true;
+                                                                    modalStore.component = React.createElement(Accesses, {
+                                                                        script: script,
+                                                                        usersStore: usersStore,
+                                                                        setAccesses: this.setAccesses.bind(this),
+                                                                        delegateScript: this.delegateScript.bind(this)
+                                                                    })
+                                                                });
                                                             }}>
                                                         <i className="glyphicon glyphicon-user"/>
                                                     </button>
@@ -251,13 +253,13 @@ export class Scripts extends React.Component {
                                                         <i className="glyphicon glyphicon-edit"/>
                                                     </button>
                                                 : null}
-                                                <button className="btn btn-default btn-xs"
-                                                        data-tip="Просмотр скрипта"
-                                                        onClick={() => {
-                                                            this.props.router.push(script.view_url);
-                                                        }}>
-                                                    <i className="glyphicon glyphicon-eye-open"/>
-                                                </button>
+                                                {/*<button className="btn btn-default btn-xs"*/}
+                                                        {/*data-tip="Просмотр скрипта"*/}
+                                                        {/*onClick={() => {*/}
+                                                            {/*this.props.router.push(script.view_url);*/}
+                                                        {/*}}>*/}
+                                                    {/*<i className="glyphicon glyphicon-eye-open"/>*/}
+                                                {/*</button>*/}
                                                 {!available ?
                                                     <button className="btn btn-danger btn-xs"
                                                             data-tip="Удалить скрипт"

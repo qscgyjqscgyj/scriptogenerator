@@ -50,7 +50,7 @@ class Tables extends AccessableComponent {
                                             return (
                                                 <tr key={key}>
                                                     <td>
-                                                        <Link to={script.url + 'table/' + table.id + '/share/'}>{table.name}</Link>
+                                                        <Link to={scriptsStore.tableUrl(script, table)}>{table.name}</Link>
                                                     </td>
                                                     <td className="text-right">
                                                         {access.edit ?

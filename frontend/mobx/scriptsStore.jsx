@@ -24,13 +24,17 @@ export class ScriptsStore {
     @observable creating_template = null;
     @observable editing = null;
 
+    @observable loading = false;
+
     @action updateScripts(usersStore, update_cloning_tasks) {
+        this.loading = true;
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-scripts-url'),
             data: (update_cloning_tasks ? {update_cloning_tasks: true} : null),
             success: (res) => {
                 this.scripts = res.scripts;
+                this.loading = false;
             },
             error: (res) => {
                 console.log(res);
@@ -87,6 +91,12 @@ export class ScriptsStore {
         }
         return null;
     }
+    scriptUrl(script) {
+        return `/tables/${script.id}/`;
+    }
+    tableUrl(script, table, mode='share') {
+        return `${this.scriptUrl(script)}table/${table.id}/${mode}/`;
+    }
     linkURL(script, table, link, mode='share', copy=false) {
         function get_url(table_to=table.id, link_to=link.id) {
             return `${!copy ? `/tables/${script.id}` : ''}/table/${table_to}/link/${link_to}/${mode}/`;
@@ -116,30 +126,42 @@ export class ScriptsStore {
         });
     }
     @action getInitialData() {
+        this.loading = true;
         function success(res) {
             res.scripts.forEach(script => this.scripts.push(script));
             if(res.next_page) {
                 this.getScripts({page: parseInt(res.page) + 1}, success.bind(this));
+            } else {
+                this.loading = false;
             }
         }
         this.getScripts({page: 1}, success.bind(this));
     }
     @action getAvailableScripts() {
+        this.loading = true;
         function success(res) {
             res.scripts.forEach(script => this.available_scripts.push(script));
             if(res.next_page) {
                 this.getScripts({page: parseInt(res.page) + 1, available_scripts: true}, success.bind(this));
+            } else {
+                this.loading = false;
             }
         }
         this.getScripts({page: 1, available_scripts: true}, success.bind(this));
     }
-    @action getScriptData(script) {
+    @action getScriptData(script, cb) {
+        this.loading = true;
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-script-url'),
             data: {script: script.id},
             success: (res) => {
                 script.data = res.script.data;
+                script.accesses = res.script.accesses;
+                this.loading = false;
+                if(cb) {
+                    return cb();
+                }
             },
             error: (res) => {
                 console.log(res);

@@ -66,7 +66,7 @@ class ScriptsView(View):
         else:
             scripts = ScriptSerializer(Script.objects.filter(pk__in=self.user_accessable_scripts_ids(request)), many=True, empty_data=True).data
 
-        paginator = Paginator(scripts, 3)
+        paginator = Paginator(scripts, 10)
         page = request.GET.get('page')
 
         try:

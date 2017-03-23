@@ -12,15 +12,17 @@ from scripts.tasks import clone_script_with_relations
 
 class ScriptAccessField(serializers.Field):
     def to_representation(self, script):
-        team = UserAccess.objects.filter(owner=script.owner)
-        accesses = ScriptAccessSerializer(ScriptAccess.objects.filter(script=script), many=True).data
-        for i, access in enumerate(accesses):
-            try:
-                teammate = team.get(user=int(access['user']['id']))
-                accesses[i]['active'] = teammate.active
-            except ObjectDoesNotExist:
-                accesses[i]['active'] = False
-        return accesses
+        if not self.parent.empty_data:
+            team = UserAccess.objects.filter(owner=script.owner)
+            accesses = ScriptAccessSerializer(ScriptAccess.objects.filter(script=script), many=True).data
+            for i, access in enumerate(accesses):
+                try:
+                    teammate = team.get(user=int(access['user']['id']))
+                    accesses[i]['active'] = teammate.active
+                except ObjectDoesNotExist:
+                    accesses[i]['active'] = False
+            return accesses
+        return []
 
     def get_attribute(self, accesses):
         return accesses

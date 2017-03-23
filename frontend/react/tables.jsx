@@ -7,6 +7,7 @@ import {ModalWrapper} from './modal';
 import {Link} from 'react-router';
 import {Sort} from './sort';
 import {AccessableComponent} from './access';
+import {scriptsIsLoaded} from './scriptsIsLoaded';
 
 @observer
 class Tables extends AccessableComponent {
@@ -293,21 +294,13 @@ class CollInput extends React.Component {
 @observer
 export class TablesWrapper extends React.Component {
     render() {
-        const {scriptsStore} = this.props;
-        if(scriptsStore.scripts && scriptsStore.scripts.length > 0) {
-            return React.createElement(Tables, this.props);
-        }
-        return null;
+        return React.createElement(scriptsIsLoaded, {...this.props, renderComponent: Tables});
     }
 }
 
 @observer
 export class AvailableTablesWrapper extends React.Component {
     render() {
-        const {scriptsStore} = this.props;
-        if(scriptsStore.scripts && scriptsStore.scripts.length > 0) {
-            return React.createElement(AvailableTables, this.props);
-        }
-        return null;
+        return React.createElement(scriptsIsLoaded, {...this.props, renderComponent: AvailableTables});
     }
 }

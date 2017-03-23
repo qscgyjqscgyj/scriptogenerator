@@ -13,6 +13,7 @@ import {AccessableComponent} from './access';
 import Select from 'react-select';
 import {extendObservable} from 'mobx';
 import ReactTooltip from 'react-tooltip';
+import {scriptsIsLoaded} from './scriptsIsLoaded';
 
 @observer
 class Table extends AccessableComponent {
@@ -749,21 +750,13 @@ class EditableText extends React.Component {
 @observer
 export class TableShareWrapper extends React.Component {
     render() {
-        const {scriptsStore} = this.props;
-        if(scriptsStore.scripts && scriptsStore.scripts.length > 0) {
-            return React.createElement(TableShare, this.props);
-        }
-        return null;
+        return React.createElement(scriptsIsLoaded, {...this.props, renderComponent: TableShare});
     }
 }
 
 @observer
 export class TableEditWrapper extends React.Component {
     render() {
-        const {scriptsStore} = this.props;
-        if(scriptsStore.scripts && scriptsStore.scripts.length > 0) {
-            return React.createElement(TableEdit, this.props);
-        }
-        return null;
+        return React.createElement(scriptsIsLoaded, {...this.props, renderComponent: TableEdit});
     }
 }

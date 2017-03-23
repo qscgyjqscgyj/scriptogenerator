@@ -17,7 +17,7 @@ from rest_framework.renderers import JSONRenderer
 import json
 
 from main.events import take_presents_to_user
-from main.models import Script, Table, TableLinksColl, LinkCategory, Link, ScriptAccess
+from main.models import Script, Table, TableLinksColl, LinkCategory, Link, ScriptAccess, ScriptData
 from main.serializers.link import LinkCategorySerializer, LinkSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
@@ -66,7 +66,7 @@ class ScriptsView(View):
         else:
             scripts = ScriptSerializer(Script.objects.filter(pk__in=self.user_accessable_scripts_ids(request)), many=True, empty_data=True).data
 
-        paginator = Paginator(scripts, 10)
+        paginator = Paginator(scripts, 3)
         page = request.GET.get('page')
 
         try:
@@ -160,12 +160,13 @@ class TablesView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         script = Script.objects.get(pk=int(data['script']))
-        script_data = json.loads(script.data)
+        script_data_object, created = ScriptData.objects.get_or_create(script=script)
+        script_data = json.loads(script_data_object.data)
         script_data.append(get_empty_table())
-        script.data = json.dumps(script_data)
-        script.save()
+        script_data_object.data = json.dumps(script_data)
+        script_data_object.save()
         return JSONResponse({
-            'data': json.loads(script.data)
+            'data': json.loads(script.data())
         })
 
     def put(self, request, *args, **kwargs):
@@ -176,7 +177,7 @@ class TablesView(View):
         if new_table.is_valid():
             script.replace_table(data['table'], current_table['index'])
             return JSONResponse({
-                'data': json.loads(script.data)
+                'data': json.loads(script.data())
             })
         else:
             return JSONResponse(new_table.errors, status=500)
@@ -184,12 +185,13 @@ class TablesView(View):
     def delete(self, request, *args, **kwargs):
         data = json.loads(request.body)
         script = Script.objects.get(pk=int(data['script']))
-        script_data = json.loads(script.data)
+        script_data_object = ScriptData.objects.get(script=script)
+        script_data = json.loads(script_data_object.data)
         script_data.remove(script.tables(table_id=int(data['table']))['data'])
-        script.data = json.dumps(script_data)
-        script.save()
+        script_data_object.data = json.dumps(script_data)
+        script_data_object.save()
         return JSONResponse({
-            'data': json.loads(script.data)
+            'data': json.loads(script.data())
         })
 
 
@@ -202,7 +204,7 @@ class CollsView(View):
         table_data['data']['colls'].append(new_coll)
         script.replace_table(table_data['data'], table_data['index'])
         return JSONResponse({
-            'data': json.loads(script.data),
+            'data': json.loads(script.data()),
             'new_coll': new_coll
         })
 
@@ -216,7 +218,7 @@ class CollsView(View):
             table['data']['colls'][current_coll['index']] = new_coll.validated_data
             script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'data': json.loads(script.data)
+                'data': json.loads(script.data())
             })
         return JSONResponse(new_coll.errors, status=400)
 
@@ -229,7 +231,7 @@ class CollsView(View):
             table_data['data']['colls'].remove(coll_data['data'])
             script.replace_table(table_data['data'], table_data['index'])
             return JSONResponse({
-                'data': json.loads(script.data)
+                'data': json.loads(script.data())
             })
         return JSONResponse({'error': 'Coll doesn\'t exist'}, status=400)
 
@@ -244,7 +246,7 @@ class LinkCategoriesView(View):
         table_data['data']['colls'][coll_data['index']] = coll_data['data']
         script.replace_table(table_data['data'], table_data['index'])
         return JSONResponse({
-            'data': json.loads(script.data)
+            'data': json.loads(script.data())
         })
 
     def put(self, request, *args, **kwargs):
@@ -258,7 +260,7 @@ class LinkCategoriesView(View):
             table['data']['colls'][coll['index']]['categories'][current_category['index']] = new_category.validated_data
             script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'data': json.loads(script.data)
+                'data': json.loads(script.data())
             })
         return JSONResponse(new_category.errors, status=400)
 
@@ -272,7 +274,7 @@ class LinkCategoriesView(View):
             table['data']['colls'][coll['index']]['categories'].remove(current_category['data'])
             script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'data': json.loads(script.data)
+                'data': json.loads(script.data())
             })
         return JSONResponse({'error': 'Category doesn\'t exist'}, status=400)
 
@@ -289,7 +291,7 @@ class LinkView(View):
         table_data['data']['colls'][coll_data['index']] = coll_data['data']
         script.replace_table(table_data['data'], table_data['index'])
         return JSONResponse({
-            'data': json.loads(script.data)
+            'data': json.loads(script.data())
         })
 
     def put(self, request, *args, **kwargs):
@@ -304,7 +306,7 @@ class LinkView(View):
             table['data']['colls'][coll['index']]['categories'][category['index']]['links'][current_link['index']] = new_link.validated_data
             script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'data': json.loads(script.data)
+                'data': json.loads(script.data())
             })
         return JSONResponse(new_link.errors, status=400)
 
@@ -319,7 +321,7 @@ class LinkView(View):
             table['data']['colls'][coll['index']]['categories'][category['index']]['links'].remove(current_link['data'])
             script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'data': json.loads(script.data)
+                'data': json.loads(script.data())
             })
         return JSONResponse({'error': 'Link doesn\'t exist'}, status=400)
 

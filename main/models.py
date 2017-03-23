@@ -38,10 +38,11 @@ class Script(models.Model):
         return ScriptAccess.objects.filter(script=self)
 
     def replace_table(self, table, index):
-        data = json.loads(self.data)
+        script_data = ScriptData.objects.get(script=self)
+        data = json.loads(script_data.data)
         data[index] = table
-        self.data = json.dumps(data)
-        self.save()
+        script_data.data = json.dumps(data)
+        script_data.save()
 
     def tables(self, table_id=None):
         data = json.loads(self.data())

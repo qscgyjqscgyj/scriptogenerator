@@ -86135,10 +86135,6 @@
 	        {var _this2 = this;var _props =
 	            this.props,usersStore = _props.usersStore,scriptsStore = _props.scriptsStore;
 	            var script = scriptsStore.script(this.props.params.script);
-	            var script_tables = void 0;
-	            if (script && script.data) {
-	                script_tables = scriptsStore.scripts.find(function (script) {return script.id === script.id;}).data;
-	            }
 	            var edit = this.props.location.pathname.includes('edit');
 	            return (
 	                React.createElement('nav', { className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
@@ -86152,13 +86148,13 @@
 	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/available/' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
 	                            React.createElement('li', null, React.createElement('a', { href: 'http://lp.scriptogenerator.ru/info', target: '_blank' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F')),
 	
-	                            script_tables && script_tables.length > 0 ?
+	                            script && script.data.length > 0 ?
 	                            React.createElement('li', { className: 'dropdown' },
 	                                React.createElement('a', { href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
 	                                    React.createElement('span', { className: 'caret' })),
 	
 	                                React.createElement('ul', { className: 'dropdown-menu' },
-	                                    script_tables.map(function (table, key) {
+	                                    script.data.map(function (table, key) {
 	                                        return (
 	                                            React.createElement('li', { key: key, className: table.id === parseInt(_this2.props.params.table) ? 'active' : null },
 	                                                React.createElement(_reactRouter.Link, { to:

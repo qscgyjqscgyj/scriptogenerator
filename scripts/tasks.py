@@ -18,6 +18,7 @@ def clone_script_with_relations(script_pk, clone_script_values=[]):
     :param clone_script_values - defferent values for new script. Format: [('key', value), ...]:
     """
     current_script = get_model('main', 'Script').objects.get(pk=script_pk)
+    current_script_data, created = get_model('main', 'ScriptData').objects.get_or_create(script=current_script)
 
     clone_script = deepcopy(current_script)
     for value in clone_script_values:
@@ -27,5 +28,11 @@ def clone_script_with_relations(script_pk, clone_script_values=[]):
     clone_script.is_present = False
     clone_script.parent = current_script
     clone_script.active = True
-    return clone_script.save()
+    clone_script.save()
+
+    clone_script_data = deepcopy(current_script_data)
+    clone_script_data.pk = None
+    clone_script_data.script = clone_script
+    clone_script_data.save()
+    return True
 

@@ -26,12 +26,11 @@ export class ScriptsStore {
 
     @observable loading = false;
 
-    @action updateScripts(usersStore, update_cloning_tasks) {
+    @action updateScripts(usersStore) {
         this.loading = true;
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-scripts-url'),
-            data: (update_cloning_tasks ? {update_cloning_tasks: true} : null),
             success: (res) => {
                 this.scripts = res.scripts;
                 this.loading = false;
@@ -111,7 +110,7 @@ export class ScriptsStore {
     }
     resetCreating() {
         this.creating_name = '';
-        this.creating_project = null;
+        this.creating_template = null;
     }
 
     @action getScripts(data={page: 1}, success) {

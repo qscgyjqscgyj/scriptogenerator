@@ -88,13 +88,12 @@ class ScriptSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         owner = get_model('users', 'CustomUser').objects.get(pk=int(self.initial_data.get('owner')['id']))
+        validated_data['owner'] = owner
 
         template = self.initial_data.get('template')
         if template:
             template_script = Script.objects.get(pk=int(template['id']))
-            owner.insert_cloning_script_task(
-                clone_script_with_relations.delay(template_script.pk, [('name', validated_data.get('name')), ('active', False), ('owner__pk', owner.pk)]).task_id
-            )
+            clone_script_with_relations(template_script.pk, [('name', validated_data.get('name')), ('active', False), ('owner', owner)])
         else:
             del validated_data['template']
             script = Script(**validated_data)

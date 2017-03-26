@@ -13,9 +13,7 @@ def take_presents_to_user(user, sum=PRESENT_SUM, title=u'Подарок при �
     if present_script:
         present_scripts = get_model('main', 'Script').objects.filter(is_present=True)
         if present_scripts:
-            user.insert_cloning_script_task(
-                clone_script_with_relations.delay(present_scripts[0].pk, [('owner', user), ('active', False)]).task_id
-            )
+            clone_script_with_relations(present_scripts[0].pk, [('owner', user), ('active', False)])
         else:
             print('Present script does not found.')
     payment = get_model('payment', 'UserPayment')(

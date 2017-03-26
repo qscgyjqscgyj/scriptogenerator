@@ -9,7 +9,7 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'last_name', 'first_name', 'phone', 'date_joined', 'balance_total', 'is_active')
     fieldsets = UserAdmin.fieldsets + (
         (None, {
-            'fields': ('middle_name', 'balance_real', 'balance_total', 'utm', 'cloning_tasks')}
+            'fields': ('middle_name', 'balance_real', 'balance_total', 'utm')}
         ),
     )
 

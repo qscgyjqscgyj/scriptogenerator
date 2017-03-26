@@ -58,9 +58,6 @@ class ScriptsView(View):
         return access_scripts_ids
 
     def get(self, request, *args, **kwargs):
-        # if request.GET.get('update_cloning_tasks'):
-        #     request.user.update_cloning_scripts_tasks()
-
         if not request.GET.get('available_scripts'):
             scripts = ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
         else:
@@ -360,9 +357,6 @@ class CloneScriptView(View):
     def post(self, request, *args, **kwargs):
         current_script = Script.objects.get(pk=int(request.POST.get('script')))
         clone_script_with_relations(current_script.pk, [('name', current_script.name + u'  (копия)'), ('active', False)])
-        # request.user.insert_cloning_script_task(
-        #     clone_script_with_relations.delay(current_script.pk, [('name', current_script.name + u'  (копия)'), ('active', False)]).task_id
-        # )
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
         })

@@ -37,9 +37,9 @@ export class Scripts extends React.Component {
     checkingCloningScripts() {
         const {scriptsStore, usersStore} = this.props;
         const {interval} = this.state;
-        const cloning_tasks = usersStore.session_user.cloning_tasks;
-        if(cloning_tasks && cloning_tasks.length > 0) {
-            scriptsStore.createCloningProcess(cloning_tasks.length);
+        const inactive_scripts = scriptsStore.scripts.filter(script => !script.active);
+        if(inactive_scripts && inactive_scripts.length > 0) {
+            scriptsStore.createCloningProcess(inactive_scripts.length);
             if(!interval) {
                 this.setState(update(this.state, {interval: {
                     $set: setInterval(function() {
@@ -47,19 +47,21 @@ export class Scripts extends React.Component {
                     }, 2000)
                 }}));
             }
-        } else if(!cloning_tasks && interval){
+        } else if(!inactive_scripts && interval){
             this.clearInterval()
         }
     }
     createScript(e) {
         const {scriptsStore, modalStore, usersStore} = this.props;
         e.preventDefault();
+        scriptsStore.createCloningProcess(1);
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-scripts-url'),
             data: JSON.stringify({name: scriptsStore.creating_name, owner: usersStore.session_user, template: scriptsStore.creating_template}),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
+                scriptsStore.resetCreating();
                 modalStore.modal = false;
                 this.checkingCloningScripts();
             },

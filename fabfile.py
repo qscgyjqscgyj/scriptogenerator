@@ -4,8 +4,7 @@ from fabric.api import env, cd, run, prefix, sudo
 from fabric.operations import local
 from scripts.settings import LOCAL_APPS
 
-env.hosts = ['root@alpateks.ru:22']
-# local_prefix = prefix('source /home/aliestarten/Env/scripts/bin/activate')
+env.hosts = ['root@new.scriptogenerator.ru:22']
 server_prefix = prefix('source /home/Env/scripts/bin/activate')
 server_project_dir = '/home/Django/scripts'
 
@@ -13,14 +12,13 @@ server_project_dir = '/home/Django/scripts'
 def deploy():
     with cd(server_project_dir):
         try:
-            # local('gulp build --production')
             local('git add .')
             local('git commit -a -m "deploy: %s"' % datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-            local('git push origin master')
+            local('git push origin script_json_data')
         except Exception as e:
             print(e)
         with server_prefix:
-            run('git pull')
+            run('git pull origin script_json_data')
             run('pip install -r requirements/development.pip')
             run('python ./manage.py syncdb')
             run('python ./manage.py makemigrations --merge')
@@ -28,6 +26,8 @@ def deploy():
             run('python ./manage.py collectstatic --noinput')
             sudo('service nginx restart')
             sudo('supervisorctl restart scripts')
+            sudo('supervisorctl restart scripts.celeryd')
+            sudo('supervisorctl restart scripts.celerybeat')
 
 
 def restart_celery():

@@ -51,6 +51,8 @@ class JSONResponse(HttpResponse):
 
 
 class ScriptsView(View):
+    http_method_names = ['get', 'post', 'put', 'delete']
+
     def user_accessable_scripts_ids(self, request):
         access_scripts_ids = []
         for access in ScriptAccess.objects.filter(user=request.user):
@@ -61,7 +63,7 @@ class ScriptsView(View):
         if not request.GET.get('available_scripts'):
             scripts = ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
         else:
-            scripts = ScriptSerializer(Script.objects.filter(pk__in=self.user_accessable_scripts_ids(request)), many=True, empty_data=True).data
+            scripts = ScriptSerializer(Script.objects.filter(pk__in=self.user_accessable_scripts_ids(request)), many=True).data
 
         paginator = Paginator(scripts, 20)
         page = request.GET.get('page')
@@ -97,7 +99,7 @@ class ScriptsView(View):
         if script.is_valid():
             script.update(current_script, data)
             return JSONResponse({
-                'script': ScriptSerializer(current_script, many=True).data
+                'script': ScriptSerializer(current_script).data
             })
         return JSONResponse(script.errors, status=400)
 
@@ -114,6 +116,8 @@ class ScriptsView(View):
 
 
 class ScriptView(ScriptsView):
+    http_method_names = ['get']
+
     def get(self, request, *args, **kwargs):
         script = Script.objects.get(pk=int(request.GET['script']))
         if not script.owner == request.user:
@@ -362,11 +366,14 @@ class CloneScriptView(View):
         })
 
 
-class InitView(View):
+class InitView(ScriptsView):
+    http_method_names = ['get']
+
     def get(self, request, *args, **kwargs):
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data,
             'template_scripts': ScriptSerializer(Script.objects.filter(is_template=True), many=True, empty_data=True).data,
+            'available_scripts': ScriptSerializer(Script.objects.filter(pk__in=self.user_accessable_scripts_ids(request)), many=True).data,
             'session_user': UserSerializer(request.user).data,
             'shopId': YANDEX_SHOPID,
             'scid': YANDEX_SCID,

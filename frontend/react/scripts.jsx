@@ -158,7 +158,7 @@ export class Scripts extends React.Component {
         });
     }
     render() {
-        const {scriptsStore, modalStore, usersStore, tablesStore, available} = this.props;
+        const {scriptsStore, modalStore, usersStore, available} = this.props;
         if(usersStore.session_user) {
             return(
                 <div className="col-md-12">
@@ -290,13 +290,36 @@ export class Scripts extends React.Component {
 
 @observer
 class CreatingScript extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            error: null
+        }
+    }
+    setError(error) {
+        this.setState(update(this.state, {error: {$set: error}}))
+    }
+    submitScript(e) {
+        e.preventDefault();
+        const {scriptsStore} = this.props;
+        if(scriptsStore.creating_name) {
+            this.props.createScript(e)
+        } else {
+            this.setError('Введите имя скрипта');
+        }
+    }
     render() {
         const {scriptsStore} = this.props;
+        const {error} = this.state;
         return (
             <div className="row">
-                <form action="" onSubmit={(e) => this.props.createScript(e)}>
+                <form action="" onSubmit={this.submitScript.bind(this)}>
                     <div className="col-md-12">
-                        <div className="form-group">
+                        <div className={`form-group ${error ? 'has-error' : ''}`}>
+                            {error ?
+                                <label className="control-label">{error}</label>
+                            : null}
                             <input className="form-control" onChange={(e) => {scriptsStore.creating_name = e.target.value}} value={scriptsStore.creating_name} type="text" name="name" placeholder="Имя скрипта"/>
                         </div>
                     </div>

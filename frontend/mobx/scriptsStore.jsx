@@ -26,6 +26,12 @@ export class ScriptsStore {
 
     @observable loading = false;
 
+    @action setLoading(loading=true) {
+        if(!this.loading) {
+            this.loading = loading;
+        }
+    }
+
     @action updateScripts(usersStore) {
         this.loading = true;
         $.ajax({
@@ -125,27 +131,31 @@ export class ScriptsStore {
         });
     }
     @action getInitialData() {
-        this.loading = true;
-        function success(res) {
-            res.scripts.forEach(script => this.scripts.push(script));
-            this.loading = false;
-            if(res.next_page) {
-                this.getScripts({page: parseInt(res.page) + 1}, success.bind(this));
+        if(this.scripts.length === 0) {
+            this.loading = true;
+            function success(res) {
+                res.scripts.forEach(script => this.scripts.push(script));
+                this.loading = false;
+                if(res.next_page) {
+                    this.getScripts({page: parseInt(res.page) + 1}, success.bind(this));
+                }
             }
+            this.getScripts({page: 1}, success.bind(this));
         }
-        this.getScripts({page: 1}, success.bind(this));
     }
     @action getAvailableScripts() {
-        this.loading = true;
-        function success(res) {
-            res.scripts.forEach(script => this.available_scripts.push(script));
-            if(res.next_page) {
-                this.getScripts({page: parseInt(res.page) + 1, available_scripts: true}, success.bind(this));
-            } else {
-                this.loading = false;
+        if(this.scripts.length === 0) {
+            this.loading = true;
+            function success(res) {
+                res.scripts.forEach(script => this.available_scripts.push(script));
+                if(res.next_page) {
+                    this.getScripts({page: parseInt(res.page) + 1, available_scripts: true}, success.bind(this));
+                } else {
+                    this.loading = false;
+                }
             }
+            this.getScripts({page: 1, available_scripts: true}, success.bind(this));
         }
-        this.getScripts({page: 1, available_scripts: true}, success.bind(this));
     }
     @action getScriptData(script, cb) {
         this.loading = true;

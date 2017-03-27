@@ -36819,7 +36819,7 @@
 	            });
 	        } }, { key: 'render', value: function render()
 	        {var _this3 = this;var _props7 =
-	            this.props,scriptsStore = _props7.scriptsStore,modalStore = _props7.modalStore,usersStore = _props7.usersStore,tablesStore = _props7.tablesStore,available = _props7.available;
+	            this.props,scriptsStore = _props7.scriptsStore,modalStore = _props7.modalStore,usersStore = _props7.usersStore,available = _props7.available;
 	            if (usersStore.session_user) {
 	                return (
 	                    React.createElement('div', { className: 'col-md-12' },
@@ -36950,14 +36950,37 @@
 	
 	
 	
-	CreatingScript = (0, _mobxReact.observer)(_class2 = function (_React$Component2) {_inherits(CreatingScript, _React$Component2);function CreatingScript() {_classCallCheck(this, CreatingScript);return _possibleConstructorReturn(this, (CreatingScript.__proto__ || Object.getPrototypeOf(CreatingScript)).apply(this, arguments));}_createClass(CreatingScript, [{ key: 'render', value: function render()
-	        {var _this5 = this;var
+	CreatingScript = (0, _mobxReact.observer)(_class2 = function (_React$Component2) {_inherits(CreatingScript, _React$Component2);
+	    function CreatingScript(props) {_classCallCheck(this, CreatingScript);var _this4 = _possibleConstructorReturn(this, (CreatingScript.__proto__ || Object.getPrototypeOf(CreatingScript)).call(this,
+	        props));
+	
+	        _this4.state = {
+	            error: null };return _this4;
+	
+	    }_createClass(CreatingScript, [{ key: 'setError', value: function setError(
+	        error) {
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { error: { $set: error } }));
+	        } }, { key: 'submitScript', value: function submitScript(
+	        e) {
+	            e.preventDefault();var
 	            scriptsStore = this.props.scriptsStore;
+	            if (scriptsStore.creating_name) {
+	                this.props.createScript(e);
+	            } else {
+	                this.setError('Введите имя скрипта');
+	            }
+	        } }, { key: 'render', value: function render()
+	        {var
+	            scriptsStore = this.props.scriptsStore;var
+	            error = this.state.error;
 	            return (
 	                React.createElement('div', { className: 'row' },
-	                    React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this5.props.createScript(e);} },
+	                    React.createElement('form', { action: '', onSubmit: this.submitScript.bind(this) },
 	                        React.createElement('div', { className: 'col-md-12' },
-	                            React.createElement('div', { className: 'form-group' },
+	                            React.createElement('div', { className: 'form-group ' + (error ? 'has-error' : '') },
+	                                error ?
+	                                React.createElement('label', { className: 'control-label' }, error) :
+	                                null,
 	                                React.createElement('input', { className: 'form-control', onChange: function onChange(e) {scriptsStore.creating_name = e.target.value;}, value: scriptsStore.creating_name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
 	
 	
@@ -37005,12 +37028,12 @@
 	
 	
 	EditingScript = (0, _mobxReact.observer)(_class3 = function (_React$Component3) {_inherits(EditingScript, _React$Component3);function EditingScript() {_classCallCheck(this, EditingScript);return _possibleConstructorReturn(this, (EditingScript.__proto__ || Object.getPrototypeOf(EditingScript)).apply(this, arguments));}_createClass(EditingScript, [{ key: 'render', value: function render()
-	        {var _this7 = this;var _props8 =
+	        {var _this6 = this;var _props8 =
 	            this.props,scriptsStore = _props8.scriptsStore,available = _props8.available;
 	            if (scriptsStore.editing) {
 	                return (
 	                    React.createElement('div', { className: 'row' },
-	                        React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this7.props.updateScript(e);} },
+	                        React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this6.props.updateScript(e);} },
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('div', { className: 'form-group' },
 	                                    React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return scriptsStore.editing.name = e.target.value;}, value: scriptsStore.editing.name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
@@ -37036,12 +37059,12 @@
 	
 	
 	Accesses = (0, _mobxReact.observer)(_class4 = function (_React$Component4) {_inherits(Accesses, _React$Component4);
-	    function Accesses(props) {_classCallCheck(this, Accesses);var _this8 = _possibleConstructorReturn(this, (Accesses.__proto__ || Object.getPrototypeOf(Accesses)).call(this,
+	    function Accesses(props) {_classCallCheck(this, Accesses);var _this7 = _possibleConstructorReturn(this, (Accesses.__proto__ || Object.getPrototypeOf(Accesses)).call(this,
 	        props));
 	
-	        _this8.state = {
-	            accesses: _this8.formatAccesses(props.script.accesses),
-	            delegate_email: null };return _this8;
+	        _this7.state = {
+	            accesses: _this7.formatAccesses(props.script.accesses),
+	            delegate_email: null };return _this7;
 	
 	    }_createClass(Accesses, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -37054,7 +37077,7 @@
 	                return { value: access.user.id, label: access.user.email, selected: true, edit: access.edit };
 	            });
 	        } }, { key: 'onSelect', value: function onSelect(
-	        selects, edit) {var _this9 = this;var
+	        selects, edit) {var _this8 = this;var
 	            script = this.props.script;var
 	            accesses = this.state.accesses;
 	            var new_accesses = accesses.filter(function (access) {return access.edit !== edit;});
@@ -37064,7 +37087,7 @@
 	
 	            });
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { accesses: { $set: new_accesses } }), function () {
-	                _this9.props.setAccesses(new_accesses.map(function (access) {
+	                _this8.props.setAccesses(new_accesses.map(function (access) {
 	                    return { user_id: access.value, edit: access.edit };
 	                }), script);
 	            });
@@ -37092,7 +37115,7 @@
 	            this.props.delegateScript(this.props.script, delegate_email);
 	            return this.setState((0, _reactAddonsUpdate2.default)(this.state, { delegate_email: { $set: null } }));
 	        } }, { key: 'render', value: function render()
-	        {var _this10 = this;var
+	        {var _this9 = this;var
 	            delegate_email = this.state.delegate_email;
 	            return (
 	                React.createElement('div', { className: 'row' },
@@ -37103,14 +37126,14 @@
 	                            React.createElement(MultiSelectField, {
 	                                className: 'form-control',
 	                                options: this.getOptions(true),
-	                                onChange: function onChange(selects) {_this10.onSelect(selects, true);} })),
+	                                onChange: function onChange(selects) {_this9.onSelect(selects, true);} })),
 	
 	                        React.createElement('div', { className: 'form-group' },
 	                            React.createElement('label', null, '\u041E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u044B'),
 	                            React.createElement(MultiSelectField, {
 	                                className: 'form-control',
 	                                options: this.getOptions(false),
-	                                onChange: function onChange(selects) {_this10.onSelect(selects, false);} })),
+	                                onChange: function onChange(selects) {_this9.onSelect(selects, false);} })),
 	
 	                        React.createElement('hr', null)),
 	
@@ -37119,11 +37142,11 @@
 	                        React.createElement('div', { className: 'form-group' },
 	                            React.createElement('label', null, 'Email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430'),
 	                            React.createElement('input', { type: 'text', name: 'email', className: 'form-control', placeholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430', onChange: function onChange(e) {
-	                                    _this10.setState((0, _reactAddonsUpdate2.default)(_this10.state, { delegate_email: { $set: e.target.value } }));
+	                                    _this9.setState((0, _reactAddonsUpdate2.default)(_this9.state, { delegate_email: { $set: e.target.value } }));
 	                                } })),
 	
 	                        React.createElement('button', { className: 'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled'), onClick: function onClick(e) {
-	                                    validateEmail(delegate_email) ? _this10.delegateScript() : null;
+	                                    validateEmail(delegate_email) ? _this9.delegateScript() : null;
 	                                } }, '\u0414\u0435\u043B\u0435\u0433\u0438\u0440\u043E\u0432\u0430\u0442\u044C'))));
 	
 	
@@ -37132,13 +37155,13 @@
 	
 	
 	MultiSelectField = function (_React$Component5) {_inherits(MultiSelectField, _React$Component5);
-	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this11 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
+	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this10 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
 	        props));
 	
-	        _this11.displayName = 'MultiSelect';
-	        _this11.state = {
+	        _this10.displayName = 'MultiSelect';
+	        _this10.state = {
 	            options: props.options,
-	            value: props.options.filter(function (i) {return i.selected;}) };return _this11;
+	            value: props.options.filter(function (i) {return i.selected;}) };return _this10;
 	
 	    }_createClass(MultiSelectField, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
@@ -37147,7 +37170,7 @@
 	                value: props.options.filter(function (i) {return i.selected;}) });
 	
 	        } }, { key: 'render', value: function render()
-	        {var _this12 = this;
+	        {var _this11 = this;
 	            return (
 	                React.createElement(_reactSelect2.default, {
 	                    multi: true,
@@ -37155,8 +37178,8 @@
 	                    placeholder: '\u0414\u0430\u0442\u044C \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
 	                    options: this.state.options,
 	                    onChange: function onChange(e) {
-	                        _this12.setState((0, _reactAddonsUpdate2.default)(_this12.state, { value: { $set: e } }), function () {
-	                            _this12.props.onChange(e);
+	                        _this11.setState((0, _reactAddonsUpdate2.default)(_this11.state, { value: { $set: e } }), function () {
+	                            _this11.props.onChange(e);
 	                        });
 	                    } }));
 	
@@ -85900,6 +85923,7 @@
 	                success: function success(res) {
 	                    usersStore.session_user = res.session_user;
 	                    scriptsStore.template_scripts = res.template_scripts;
+	                    scriptsStore.available_scripts = res.available_scripts;
 	                    paymentStore.shopId = res.shopId;
 	                    paymentStore.scid = res.scid;
 	
@@ -86139,7 +86163,7 @@
 	    cloning_process = true;};var
 	
 	
-	ScriptsStore = exports.ScriptsStore = (_class2 = function () {function ScriptsStore() {_classCallCheck(this, ScriptsStore);_initDefineProp(this, 'scripts', _descriptor, this);_initDefineProp(this, 'template_scripts', _descriptor2, this);_initDefineProp(this, 'available_scripts', _descriptor3, this);_initDefineProp(this, 'filter_by_name', _descriptor4, this);_initDefineProp(this, 'filter_by_project', _descriptor5, this);_initDefineProp(this, 'creating_name', _descriptor6, this);_initDefineProp(this, 'creating_project', _descriptor7, this);_initDefineProp(this, 'creating_template', _descriptor8, this);_initDefineProp(this, 'editing', _descriptor9, this);_initDefineProp(this, 'loading', _descriptor10, this);}_createClass(ScriptsStore, [{ key: 'updateScripts', value: function updateScripts(
+	ScriptsStore = exports.ScriptsStore = (_class2 = function () {function ScriptsStore() {_classCallCheck(this, ScriptsStore);_initDefineProp(this, 'scripts', _descriptor, this);_initDefineProp(this, 'template_scripts', _descriptor2, this);_initDefineProp(this, 'available_scripts', _descriptor3, this);_initDefineProp(this, 'filter_by_name', _descriptor4, this);_initDefineProp(this, 'filter_by_project', _descriptor5, this);_initDefineProp(this, 'creating_name', _descriptor6, this);_initDefineProp(this, 'creating_project', _descriptor7, this);_initDefineProp(this, 'creating_template', _descriptor8, this);_initDefineProp(this, 'editing', _descriptor9, this);_initDefineProp(this, 'loading', _descriptor10, this);}_createClass(ScriptsStore, [{ key: 'setLoading', value: function setLoading()
 	
 	
 	
@@ -86153,6 +86177,12 @@
 	
 	
 	
+	
+	        {var loading = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+	            if (!this.loading) {
+	                this.loading = loading;
+	            }
+	        } }, { key: 'updateScripts', value: function updateScripts(
 	
 	        usersStore) {var _this = this;
 	            this.loading = true;
@@ -86253,27 +86283,31 @@
 	
 	        } }, { key: 'getInitialData', value: function getInitialData()
 	        {
-	            this.loading = true;
-	            function success(res) {var _this3 = this;
-	                res.scripts.forEach(function (script) {return _this3.scripts.push(script);});
-	                this.loading = false;
-	                if (res.next_page) {
-	                    this.getScripts({ page: parseInt(res.page) + 1 }, success.bind(this));
-	                }
+	            if (this.scripts.length === 0) {var
+	
+	                _success = function _success(res) {var _this3 = this;
+	                    res.scripts.forEach(function (script) {return _this3.scripts.push(script);});
+	                    this.loading = false;
+	                    if (res.next_page) {
+	                        this.getScripts({ page: parseInt(res.page) + 1 }, _success.bind(this));
+	                    }
+	                };this.loading = true;
+	                this.getScripts({ page: 1 }, _success.bind(this));
 	            }
-	            this.getScripts({ page: 1 }, success.bind(this));
 	        } }, { key: 'getAvailableScripts', value: function getAvailableScripts()
 	        {
-	            this.loading = true;
-	            function success(res) {var _this4 = this;
-	                res.scripts.forEach(function (script) {return _this4.available_scripts.push(script);});
-	                if (res.next_page) {
-	                    this.getScripts({ page: parseInt(res.page) + 1, available_scripts: true }, success.bind(this));
-	                } else {
-	                    this.loading = false;
-	                }
+	            if (this.scripts.length === 0) {var
+	
+	                _success2 = function _success2(res) {var _this4 = this;
+	                    res.scripts.forEach(function (script) {return _this4.available_scripts.push(script);});
+	                    if (res.next_page) {
+	                        this.getScripts({ page: parseInt(res.page) + 1, available_scripts: true }, _success2.bind(this));
+	                    } else {
+	                        this.loading = false;
+	                    }
+	                };this.loading = true;
+	                this.getScripts({ page: 1, available_scripts: true }, _success2.bind(this));
 	            }
-	            this.getScripts({ page: 1, available_scripts: true }, success.bind(this));
 	        } }, { key: 'getScriptData', value: function getScriptData(
 	        script, cb) {var _this5 = this;
 	            this.loading = true;
@@ -86540,7 +86574,7 @@
 	                    console.log(res);
 	                } });
 	
-	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'loading', [_mobx.observable], { enumerable: true, initializer: function initializer() {return false;} }), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getInitialData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getInitialData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getAvailableScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getAvailableScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScriptData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScriptData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLink'), _class2.prototype)), _class2);exports.default =
+	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'loading', [_mobx.observable], { enumerable: true, initializer: function initializer() {return false;} }), _applyDecoratedDescriptor(_class2.prototype, 'setLoading', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'setLoading'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getInitialData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getInitialData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getAvailableScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getAvailableScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScriptData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScriptData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLink'), _class2.prototype)), _class2);exports.default =
 	
 	
 	new ScriptsStore();

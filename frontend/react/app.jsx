@@ -25,6 +25,7 @@ export class App extends React.Component {
             success: (res) => {
                 usersStore.session_user = res.session_user;
                 scriptsStore.template_scripts = res.template_scripts;
+                scriptsStore.available_scripts = res.available_scripts;
                 paymentStore.shopId = res.shopId;
                 paymentStore.scid = res.scid;
 

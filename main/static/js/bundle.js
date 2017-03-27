@@ -58931,7 +58931,7 @@
 	        {var
 	            scriptsStore = this.props.scriptsStore;
 	            var script = scriptsStore.script(this.props.params.script);
-	            if (script) {
+	            if (script && !script.data.length > 0) {
 	                scriptsStore.getScriptData(script);
 	            }
 	        } }, { key: 'render', value: function render()
@@ -59529,7 +59529,7 @@
 	        {var
 	            scriptsStore = this.props.scriptsStore;
 	            var script = scriptsStore.script(this.props.params.script);
-	            if (script) {
+	            if (script && !script.data.length > 0) {
 	                scriptsStore.getScriptData(script);
 	            }
 	        } }, { key: 'componentDidMount', value: function componentDidMount()
@@ -86256,10 +86256,9 @@
 	            this.loading = true;
 	            function success(res) {var _this3 = this;
 	                res.scripts.forEach(function (script) {return _this3.scripts.push(script);});
+	                this.loading = false;
 	                if (res.next_page) {
 	                    this.getScripts({ page: parseInt(res.page) + 1 }, success.bind(this));
-	                } else {
-	                    this.loading = false;
 	                }
 	            }
 	            this.getScripts({ page: 1 }, success.bind(this));

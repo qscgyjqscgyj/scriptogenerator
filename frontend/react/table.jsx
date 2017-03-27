@@ -57,7 +57,7 @@ class Table extends AccessableComponent {
     componentWillMount() {
         const {scriptsStore} = this.props;
         const script = scriptsStore.script(this.props.params.script);
-        if(script) {
+        if(script && !script.data.length > 0) {
             scriptsStore.getScriptData(script);
         }
     }

@@ -286,7 +286,9 @@
 #YA_FORM {
     visibility: hidden;
 }
-
+.invisible {
+    visibility: hidden;
+}
 .profile_payment__bonus_title {
     font-size: 17px;
     font-weight: bold;

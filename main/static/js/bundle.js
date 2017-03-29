@@ -36671,7 +36671,7 @@
 	                                        }, className: 'form-control', type: 'text', placeholder: '\u041F\u043E\u0438\u0441\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E' }))),
 	
 	
-	                            scripts_data.pages && scripts_data.scripts.length > 20 ?
+	                            scripts_data.pages > 1 ?
 	                            React.createElement('div', { className: 'col-md-5' },
 	                                React.createElement(_pagination.Paginator, {
 	                                    pages: scripts_data.pages,
@@ -36780,7 +36780,7 @@
 	                                }
 	                            }),
 	
-	                            scripts_data.pages && scripts_data.scripts.length > 20 ?
+	                            scripts_data.pages > 1 ?
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement(_pagination.Paginator, {
 	                                    pages: scripts_data.pages,

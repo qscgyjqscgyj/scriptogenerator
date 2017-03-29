@@ -36907,7 +36907,7 @@
 	
 	                                                        } }) :
 	
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit invisible' }),
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element invisible' }),
 	
 	
 	                                                    React.createElement(_reactRouter.Link, { className: 'inline_element', to: scriptsStore.scriptUrl(script) }, script.name)) :

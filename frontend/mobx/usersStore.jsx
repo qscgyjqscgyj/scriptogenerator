@@ -28,6 +28,21 @@ export class UsersStore {
         });
     }
 
+    @action getTeam() {
+        if(this.team.length === 0) {
+            $.ajax({
+                method: 'GET',
+                url: document.body.getAttribute('data-team-url'),
+                success: (res) => {
+                    this.team = res.team;
+                },
+                error: (res) => {
+                    console.log(res);
+                }
+            });
+        }
+    }
+
     @action resetCreating() {
         this.creating_teammate_email = '';
         this.creating_teammate_last_name = '';

@@ -274,6 +274,7 @@ export class Scripts extends React.Component {
                                                     <button className="btn btn-default btn-xs"
                                                             data-tip="Права доступа к скрипту"
                                                             onClick={() => {
+                                                                usersStore.getTeam();
                                                                 scriptsStore.getScriptData(script, () => {
                                                                     modalStore.modal = true;
                                                                     modalStore.component = React.createElement(Accesses, {

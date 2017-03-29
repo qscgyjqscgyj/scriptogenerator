@@ -19,16 +19,7 @@ export class Team extends React.Component {
     }
     componentWillMount() {
         const {usersStore} = this.props;
-        $.ajax({
-            method: 'GET',
-            url: document.body.getAttribute('data-team-url'),
-            success: (res) => {
-                usersStore.team = res.team;
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
+        usersStore.getTeam();
     }
     createTeammate(e) {
         e.preventDefault();

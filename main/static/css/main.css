@@ -334,3 +334,6 @@
 }
 .logo {
  }
+.pagination>li:first-child>a, .pagination>li:first-child>span {
+    z-index: 0;
+}

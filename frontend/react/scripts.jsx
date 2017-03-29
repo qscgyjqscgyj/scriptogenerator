@@ -578,10 +578,6 @@ class MultiSelectField extends React.Component {
 
 @observer
 export class AvailableScripts extends React.Component {
-    componentWillMount() {
-        const {scriptsStore} = this.props;
-        scriptsStore.getAvailableScripts();
-    }
     render() {
         return React.cloneElement(React.createElement(Scripts, this.props), {available: true});
     }

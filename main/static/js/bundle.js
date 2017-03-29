@@ -37238,11 +37238,7 @@
 	
 	
 	
-	AvailableScripts = exports.AvailableScripts = (0, _mobxReact.observer)(_class5 = function (_React$Component6) {_inherits(AvailableScripts, _React$Component6);function AvailableScripts() {_classCallCheck(this, AvailableScripts);return _possibleConstructorReturn(this, (AvailableScripts.__proto__ || Object.getPrototypeOf(AvailableScripts)).apply(this, arguments));}_createClass(AvailableScripts, [{ key: 'componentWillMount', value: function componentWillMount()
-	        {var
-	            scriptsStore = this.props.scriptsStore;
-	            scriptsStore.getAvailableScripts();
-	        } }, { key: 'render', value: function render()
+	AvailableScripts = exports.AvailableScripts = (0, _mobxReact.observer)(_class5 = function (_React$Component6) {_inherits(AvailableScripts, _React$Component6);function AvailableScripts() {_classCallCheck(this, AvailableScripts);return _possibleConstructorReturn(this, (AvailableScripts.__proto__ || Object.getPrototypeOf(AvailableScripts)).apply(this, arguments));}_createClass(AvailableScripts, [{ key: 'render', value: function render()
 	        {
 	            return React.cloneElement(React.createElement(Scripts, this.props), { available: true });
 	        } }]);return AvailableScripts;}(React.Component)) || _class5;

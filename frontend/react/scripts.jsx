@@ -209,7 +209,7 @@ export class Scripts extends React.Component {
                                     }} className="form-control" type="text" placeholder="Поиск по названию"/>
                                 </div>
                             </div>
-                            {scripts_data.pages ?
+                            {scripts_data.pages && scripts_data.scripts.length > 20 ?
                                 <div className="col-md-5">
                                     <Paginator
                                         pages={scripts_data.pages}
@@ -318,7 +318,7 @@ export class Scripts extends React.Component {
                             }
                         })}
 
-                        {scripts_data.pages ?
+                        {scripts_data.pages && scripts_data.scripts.length > 20 ?
                             <div className="col-md-12">
                                 <Paginator
                                     pages={scripts_data.pages}

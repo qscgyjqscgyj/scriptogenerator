@@ -114,7 +114,7 @@ class TeamView(View):
             user.save()
         except ObjectDoesNotExist:
             user = create_active_user(request=request, email=email, last_name=last_name, first_name=first_name, middle_name=middle_name, phone=phone)
-        data['user'] = user
+        data['user'] = user['user']
         data['owner'] = request.user
         access = UserAccessSerializer(data=data)
         if access.is_valid():

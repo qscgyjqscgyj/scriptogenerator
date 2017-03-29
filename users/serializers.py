@@ -45,7 +45,6 @@ class UserAccessSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
     def create(self, validated_data):
-        validated_data['owner'] = CustomUser.objects.get(pk=validated_data['owner'].pk)
         return UserAccess.objects.create(**validated_data)
 
     def update(self, instance, validated_data):

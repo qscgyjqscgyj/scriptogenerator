@@ -7,6 +7,7 @@ import Modal from 'react-modal';
 import {ModalWrapper} from './modal';
 import {Link} from 'react-router';
 import Select from 'react-select';
+import {Paginator} from './pagination';
 import confirm from './confirm';
 import ReactTooltip from 'react-tooltip';
 
@@ -18,7 +19,8 @@ export class Scripts extends React.Component {
         super(props);
         this.state = {
             cloning: null,
-            interval: null
+            interval: null,
+            page: 0,
         }
     }
     componentDidMount() {
@@ -157,9 +159,32 @@ export class Scripts extends React.Component {
             });
         });
     }
+    setPage(page) {
+        this.setState(update(this.state, {page: {$set: page}}));
+    }
+    getScriptsData() {
+        const {scriptsStore, available} = this.props;
+        let scripts = scriptsStore.filteredScripts(available);
+        if(scripts && scripts.length > 0) {
+            let chunked_scripts = [];
+            let i, j, chunk = 20;
+            for (i = 0, j = scripts.length; i < j; i += chunk) {
+                chunked_scripts.push(scripts.slice(i, i + chunk));
+            }
+            return {
+                scripts: chunked_scripts[this.state.page],
+                pages: chunked_scripts.length
+            };
+        }
+        return {
+            scripts: scripts,
+            pages: 0
+        }
+    }
     render() {
         const {scriptsStore, modalStore, usersStore, available} = this.props;
-        if(usersStore.session_user) {
+        let scripts_data = this.getScriptsData();
+        if(usersStore.session_user && scriptsStore.scripts) {
             return(
                 <div className="col-md-12">
                     {!available ?
@@ -178,13 +203,27 @@ export class Scripts extends React.Component {
                             </div>
                             <div className="col-md-3">
                                 <div className="form-group">
-                                    <input onChange={(e) => scriptsStore.filter_by_name = e.target.value} className="form-control" type="text" placeholder="Поиск по названию"/>
+                                    <input onChange={(e) => {
+                                        scriptsStore.filter_by_name = e.target.value;
+                                        this.setPage(0);
+                                    }} className="form-control" type="text" placeholder="Поиск по названию"/>
                                 </div>
                             </div>
+                            {scripts_data.pages ?
+                                <div className="col-md-5">
+                                    <Paginator
+                                        pages={scripts_data.pages}
+                                        current_page={this.state.page}
+                                        objects_length={scripts_data.scripts.length}
+                                        setPage={this.setPage.bind(this)}
+                                        unmargin={true}
+                                        />
+                                </div>
+                            : null}
                         </div>
                     : null}
                     <div className="row">
-                        {scriptsStore.filteredScripts(available).map((script, key)=>{
+                        {scripts_data.scripts.map((script, key)=>{
                             let access = (available ? script.accesses.find(access => {return access.user.id === usersStore.session_user.id}) : null);
                             if(access ? access.active || !access : true) {
                                 return (
@@ -278,6 +317,17 @@ export class Scripts extends React.Component {
                                 )
                             }
                         })}
+
+                        {scripts_data.pages ?
+                            <div className="col-md-12">
+                                <Paginator
+                                    pages={scripts_data.pages}
+                                    current_page={this.state.page}
+                                    objects_length={scripts_data.scripts.length}
+                                    setPage={this.setPage.bind(this)}
+                                    />
+                            </div>
+                        : null}
                     </div>
                     <ReactTooltip place="top" type="dark" effect="solid"/>
                     <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>

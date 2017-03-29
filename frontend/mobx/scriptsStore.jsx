@@ -135,9 +135,10 @@ export class ScriptsStore {
             this.loading = true;
             function success(res) {
                 res.scripts.forEach(script => this.scripts.push(script));
-                this.loading = false;
                 if(res.next_page) {
                     this.getScripts({page: parseInt(res.page) + 1}, success.bind(this));
+                } else {
+                    this.loading = false;
                 }
             }
             this.getScripts({page: 1}, success.bind(this));

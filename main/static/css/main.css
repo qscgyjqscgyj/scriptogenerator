@@ -11,6 +11,10 @@
     /* inline-block space fix */
     margin-right:-4px;
 }
+.unmargin {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
 .inline_elements .inline_element {
     display:inline-block;
 }

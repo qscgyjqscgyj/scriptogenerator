@@ -29,7 +29,7 @@ export class Paginator extends React.Component {
                     )
                 })}
 
-                {current_page + 1 < objects_length ?
+                {current_page < objects_length ?
                     <li>
                         <a href="#" onClick={() => {this.props.setPage(current_page + 1)}}>
                             <span aria-hidden="true">&raquo;</span>

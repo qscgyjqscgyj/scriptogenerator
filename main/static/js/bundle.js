@@ -56328,7 +56328,7 @@
 	
 	                    }),
 	
-	                    current_page + 1 < objects_length ?
+	                    current_page < objects_length ?
 	                    React.createElement('li', null,
 	                        React.createElement('a', { href: '#', onClick: function onClick() {_this2.props.setPage(current_page + 1);} },
 	                            React.createElement('span', { 'aria-hidden': 'true' }, '\xBB'))) :

@@ -245,7 +245,9 @@ export class Scripts extends React.Component {
                                                                     available: available
                                                                 });
                                                             }}/>
-                                                    : null}
+                                                    :
+                                                        <i className="glyphicon glyphicon-edit hidden"/>
+                                                    }
 
                                                     <Link className="inline_element" to={scriptsStore.scriptUrl(script)}>{script.name}</Link>
                                                 </span>

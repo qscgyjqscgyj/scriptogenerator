@@ -36906,7 +36906,9 @@
 	                                                                available: available });
 	
 	                                                        } }) :
-	                                                    null,
+	
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit hidden' }),
+	
 	
 	                                                    React.createElement(_reactRouter.Link, { className: 'inline_element', to: scriptsStore.scriptUrl(script) }, script.name)) :
 	

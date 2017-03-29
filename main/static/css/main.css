@@ -112,6 +112,11 @@
 .edit_icon_handler:hover .edit_icon {
     visibility: visible;
 }
+.hidden_edit_icon {
+    margin-right: 10px;
+    font-size: 12px;
+    visibility: hidden;
+}
 .edit_icon {
     color: #46b8da;
     margin-right: 10px;

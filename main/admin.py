@@ -8,6 +8,11 @@ class ScriptAdmin(admin.ModelAdmin):
     list_filter = ('active',)
 
 
+class ScriptDataAdmin(admin.ModelAdmin):
+    list_display = ('script',)
+    search_fields = ('script__pk',)
+
+
 class TableAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent')
 
@@ -17,7 +22,7 @@ class LinkAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Script, ScriptAdmin)
-admin.site.register(ScriptData)
+admin.site.register(ScriptData, ScriptDataAdmin)
 admin.site.register(ScriptAccess)
 admin.site.register(Project)
 admin.site.register(Table, TableAdmin)

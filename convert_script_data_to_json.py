@@ -63,7 +63,8 @@ def fix_tables():
     scripts = Script.objects.all()
     for script_index, script in enumerate(scripts):
         try:
-            data = json.loads(script.data)
+            script_data = ScriptData.objects.get(script=script)
+            data = json.loads(script_data.data)
             if data:
                 for table_index, table in enumerate(data):
                     for coll_index, coll in enumerate(table['colls']):
@@ -83,8 +84,8 @@ def fix_tables():
                                                     data[table_index]['colls'][coll_index]['categories'][category_index]['links'][link_index]['text'] = json.dumps(text)
                                                 except TypeError:
                                                     print('TypeError with script %s' % str(script.id))
-                script.data = json.dumps(data)
-                script.save()
+                script_data.data = json.dumps(data)
+                script_data.save()
             print('Done: %s/%s - %s' % (str(script_index + 1), str(len(scripts)), str(script.id)))
         except ValueError:
             print('ValueError with script %s' % str(script.id))

@@ -185,8 +185,9 @@ export class ScriptsStore {
                 script: script.id
             }),
             success: (res) => {
-                console.log(res);
-                script.data = res.data;
+                if(script.data !== res.data) {
+                    script.data = res.data;
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -203,7 +204,9 @@ export class ScriptsStore {
                 table: table
             }),
             success: (res) => {
-                script.data = res.data;
+                if(script.data !== res.data) {
+                    script.data = res.data;
+                }
                 if(modalStore) {
                     modalStore.modal = false;
                     this.editing = null;
@@ -225,7 +228,9 @@ export class ScriptsStore {
                         table: table.id
                     }),
                     success: (res) => {
-                        script.data = res.data;
+                        if(script.data !== res.data) {
+                            script.data = res.data;
+                        }
                     },
                     error: (res) => {
                         console.log(res);
@@ -246,7 +251,9 @@ export class ScriptsStore {
                 table: table.id
             }),
             success: (res) => {
-                script.data = res.data;
+                if(script.data !== res.data) {
+                    script.data = res.data;
+                }
                 if(this.editing && this.editing.colls) {
                     this.editing.colls.push(res.new_coll);
                 }
@@ -266,7 +273,9 @@ export class ScriptsStore {
                 coll: coll
             }),
             success: (res) => {
-                script.data = res.data;
+                if(script.data !== res.data) {
+                    script.data = res.data;
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -285,7 +294,9 @@ export class ScriptsStore {
                         coll: coll.id
                     }),
                     success: (res) => {
-                        script.data = res.data;
+                        if(script.data !== res.data) {
+                            script.data = res.data;
+                        }
                         colls.splice(i, 1);
                     },
                     error: (res) => {
@@ -309,7 +320,9 @@ export class ScriptsStore {
                 hidden: hidden
             }),
             success: (res) => {
-                script.data = res.data;
+                if(script.data !== res.data) {
+                    script.data = res.data;
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -329,7 +342,9 @@ export class ScriptsStore {
                         category: category.id,
                     }),
                     success: (res) => {
-                        script.data = res.data;
+                        if(script.data !== res.data) {
+                            script.data = res.data;
+                        }
                     },
                     error: (res) => {
                         console.log(res);
@@ -352,7 +367,9 @@ export class ScriptsStore {
                 category: category,
             }),
             success: (res) => {
-                script.data = res.data;
+                if(script.data !== res.data) {
+                    script.data = res.data;
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -371,8 +388,9 @@ export class ScriptsStore {
                 to_link: to_link,
             }),
             success: (res) => {
-
-                script.data = res.data;
+                if(script.data !== res.data) {
+                    script.data = res.data;
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -393,7 +411,9 @@ export class ScriptsStore {
                         link: link.id,
                     }),
                     success: (res) => {
-                        script.data = res.data;
+                        if(script.data !== res.data) {
+                            script.data = res.data;
+                        }
                     },
                     error: (res) => {
                         console.log(res);

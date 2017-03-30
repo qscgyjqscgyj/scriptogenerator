@@ -59594,7 +59594,7 @@
 	var _reactSelect = __webpack_require__(575);var _reactSelect2 = _interopRequireDefault(_reactSelect);
 	var _mobx = __webpack_require__(562);
 	var _reactTooltip = __webpack_require__(593);var _reactTooltip2 = _interopRequireDefault(_reactTooltip);
-	var _scriptsIsLoaded = __webpack_require__(614);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _asyncToGenerator(fn) {return function () {var gen = fn.apply(this, arguments);return new Promise(function (resolve, reject) {function step(key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {return Promise.resolve(value).then(function (value) {step("next", value);}, function (err) {step("throw", err);});}}return step("next");});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _scriptsIsLoaded = __webpack_require__(614);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	Table = (0, _mobxReact.observer)(_class = function (_AccessableComponent) {_inherits(Table, _AccessableComponent);
@@ -59722,41 +59722,39 @@
 	
 	
 	
-	TableEdit = (0, _mobxReact.observer)(_class2 = function (_Table) {_inherits(TableEdit, _Table);function TableEdit() {_classCallCheck(this, TableEdit);return _possibleConstructorReturn(this, (TableEdit.__proto__ || Object.getPrototypeOf(TableEdit)).apply(this, arguments));}_createClass(TableEdit, [{ key: 'openCategory', value: function () {var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(
-	            coll, category) {var scriptsStore, script, table, categories;return regeneratorRuntime.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-	                                scriptsStore = this.props.scriptsStore;
-	                                script = scriptsStore.script(this.props.params.script);
-	                                table = scriptsStore.table(script, this.props.params.table);
+	TableEdit = (0, _mobxReact.observer)(_class2 = function (_Table) {_inherits(TableEdit, _Table);function TableEdit() {_classCallCheck(this, TableEdit);return _possibleConstructorReturn(this, (TableEdit.__proto__ || Object.getPrototypeOf(TableEdit)).apply(this, arguments));}_createClass(TableEdit, [{ key: 'openCategory', value: function openCategory(
+	        coll, category) {var
+	            scriptsStore = this.props.scriptsStore;
+	            var script = scriptsStore.script(this.props.params.script);
+	            var table = scriptsStore.table(script, this.props.params.table);
 	
-	                                category.opened = !category.opened;_context.next = 6;return (
-	                                    coll.categories.map(function (cat) {
-	                                        if (cat.id !== category.id) {
-	                                            cat.opened = false;
-	                                        }
-	                                        cat.links.map(function (link) {
-	                                            link.opened = false;
-	                                        });
-	                                        return cat;
-	                                    }));case 6:categories = _context.sent;
-	                                scriptsStore.updateColl(script, table, coll);case 8:case 'end':return _context.stop();}}}, _callee, this);}));function openCategory(_x2, _x3) {return _ref.apply(this, arguments);}return openCategory;}() }, { key: 'openLink', value: function () {var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(
+	            category.opened = !category.opened;
+	            coll.categories.forEach(function (cat) {
+	                if (cat.id !== category.id) {
+	                    cat.opened = false;
+	                }
+	                cat.links.forEach(function (link) {
+	                    link.opened = false;
+	                });
+	            });
+	            scriptsStore.updateColl(script, table, coll);
+	        } }, { key: 'openLink', value: function openLink(
+	        coll, link) {var
+	            scriptsStore = this.props.scriptsStore;
+	            var script = scriptsStore.script(this.props.params.script);
+	            var table = scriptsStore.table(script, this.props.params.table);
 	
-	            coll, link) {var scriptsStore, script, table, categories;return regeneratorRuntime.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
-	                                scriptsStore = this.props.scriptsStore;
-	                                script = scriptsStore.script(this.props.params.script);
-	                                table = scriptsStore.table(script, this.props.params.table);
-	
-	                                link.opened = !link.opened;_context2.next = 6;return (
-	                                    coll.categories.map(function (cat) {
-	                                        cat.opened = false;
-	                                        cat.links.map(function (ln) {
-	                                            if (ln.id !== link.id) {
-	                                                ln.opened = false;
-	                                            }
-	                                        });
-	                                        return cat;
-	                                    }));case 6:categories = _context2.sent;
-	                                scriptsStore.updateColl(script, table, coll);case 8:case 'end':return _context2.stop();}}}, _callee2, this);}));function openLink(_x4, _x5) {return _ref2.apply(this, arguments);}return openLink;}() }, { key: 'render', value: function render()
-	
+	            link.opened = !link.opened;
+	            coll.categories.forEach(function (cat) {
+	                cat.opened = false;
+	                cat.links.forEach(function (ln) {
+	                    if (ln.id !== link.id) {
+	                        ln.opened = false;
+	                    }
+	                });
+	            });
+	            scriptsStore.updateColl(script, table, coll);
+	        } }, { key: 'render', value: function render()
 	        {var _this3 = this;var _props =
 	            this.props,scriptsStore = _props.scriptsStore,modalStore = _props.modalStore,usersStore = _props.usersStore;
 	            var script = scriptsStore.script(this.props.params.script);
@@ -59820,16 +59818,20 @@
 	                                                                        onClick: function onClick() {_this3.openCategory(coll, category);} }),
 	                                                                    React.createElement('span', { className: 'table_header_text inline_element' },
 	                                                                        React.createElement(EditableText, {
-	                                                                            text: category.name,
-	                                                                            field: 'name',
-	                                                                            submitHandler: function submitHandler(category) {return scriptsStore.updateLinkCategory(script, table, coll, category);},
-	                                                                            onClick: function onClick(category) {
+	                                                                            usersStore: usersStore,
+	                                                                            textClickHandler: function textClickHandler(e) {
 	                                                                                if (usersStore.pressed_key === 16) {
 	                                                                                    category.edit = true;
 	                                                                                }
 	                                                                            },
+	                                                                            submitHandler:
+	                                                                            function submitHandler(text) {
+	                                                                                category.name = text;
+	                                                                                category.edit = false;
+	                                                                                scriptsStore.updateLinkCategory(script, table, coll, category);
+	                                                                            },
 	
-	                                                                            object: category,
+	                                                                            text: category.name,
 	                                                                            edit: category.edit,
 	                                                                            settings: {
 	                                                                                placeholder: 'Имя категории',
@@ -59863,7 +59865,7 @@
 	
 	
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', onClick: function onClick() {category.edit = !category.edit;}, className: 'btn btn-default' },
+	                                                                                React.createElement('button', { 'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B (Shift + \u043A\u043B\u0438\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E \u0440\u0430\u0437\u0434\u0435\u043B\u0430)', onClick: function onClick() {category.edit = !category.edit;}, className: 'btn btn-default' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' }))),
 	
 	
@@ -59913,18 +59915,25 @@
 	                                                                                React.createElement('span', { 'data-link': _this3.copyLink(link),
 	                                                                                        className: "inline_element link" + (category.hidden ? ' hidden_links' : ' link_name') + ' ' + (!link.edit ? 'copy_icon' : null) },
 	                                                                                    React.createElement(EditableText, {
-	                                                                                        text: link.name,
-	                                                                                        field: 'name',
+	                                                                                        usersStore: usersStore,
+	                                                                                        textClickHandler: function textClickHandler(e) {
+	                                                                                            if (usersStore.pressed_key === 16) {
+	                                                                                                link.edit = true;
+	                                                                                            }
+	                                                                                        },
+	                                                                                        submitHandler:
+	                                                                                        function submitHandler(text) {
+	                                                                                            link.name = text;
+	                                                                                            category.edit = false;
+	                                                                                            scriptsStore.updateLink(script, table, coll, category, link);
+	                                                                                        },
+	
 	                                                                                        onClick: function onClick(link) {
 	                                                                                            if (!usersStore.pressed_key) {
 	                                                                                                _this3.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));
-	                                                                                            } else if (usersStore.pressed_key === 16) {
-	                                                                                                link.edit = true;
-	                                                                                                _this3.fixClipboard();
 	                                                                                            }
 	                                                                                        },
-	                                                                                        submitHandler: function submitHandler(link) {return scriptsStore.updateLink(script, table, coll, category, link);},
-	                                                                                        object: link,
+	                                                                                        text: link.name,
 	                                                                                        edit: link.edit,
 	                                                                                        settings: {
 	                                                                                            placeholder: 'Имя ссылки',
@@ -60269,48 +60278,24 @@
 	    function EditableText(props) {_classCallCheck(this, EditableText);var _this8 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
 	        props));
 	
-	        _this8.delay = 50;
-	
 	        _this8.state = {
 	            text: _this8.props.text,
-	            edit: props.edit ? props.edit : false,
-	            key: null,
-	
-	            click_timer: null,
-	            prevent: false };return _this8;
+	            edit: _this8.props.edit };return _this8;
 	
 	    }_createClass(EditableText, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
-	            this.setState({ text: props.text, edit: props.edit ? props.edit : false });
-	        } }, { key: 'clearTimer', value: function clearTimer()
-	        {
-	            var timer = this.state.timer;
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { timer: { $set: null } }), function () {
-	                clearTimeout(timer);
-	            });
+	            this.setState({ text: props.text, edit: props.edit });
 	        } }, { key: 'submitHandler', value: function submitHandler(
 	        e) {
 	            e.preventDefault();
-	            var object = this.props.object;
-	            object[this.props.field] = this.state.text;
-	            this.setEdit(false);
-	            return this.props.submitHandler(object);
-	        } }, { key: 'setEdit', value: function setEdit(
-	        edit) {
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { edit: { $set: edit } }));
-	        } }, { key: 'doClickAction', value: function doClickAction()
-	        {
-	            this.clearTimer();
-	            if (this.props.onClick) {
-	                this.props.onClick(this.props.object);
-	            }
+	            return this.props.submitHandler(this.state.text);
 	        } }, { key: 'render', value: function render()
 	        {var _this9 = this;var
 	            settings = this.props.settings;
 	            return (
 	                React.createElement('div', null,
 	                    !this.state.edit ?
-	                    React.createElement('span', { onClick: this.doClickAction.bind(this) }, this.props.text) :
+	                    React.createElement('span', { onClick: this.props.textClickHandler.bind(this) }, this.props.text) :
 	
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
@@ -86423,8 +86408,9 @@
 	                    script: script.id }),
 	
 	                success: function success(res) {
-	                    console.log(res);
-	                    script.data = res.data;
+	                    if (script.data !== res.data) {
+	                        script.data = res.data;
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -86441,7 +86427,9 @@
 	                    table: table }),
 	
 	                success: function success(res) {
-	                    script.data = res.data;
+	                    if (script.data !== res.data) {
+	                        script.data = res.data;
+	                    }
 	                    if (modalStore) {
 	                        modalStore.modal = false;
 	                        _this6.editing = null;
@@ -86463,7 +86451,9 @@
 	                        table: table.id }),
 	
 	                    success: function success(res) {
-	                        script.data = res.data;
+	                        if (script.data !== res.data) {
+	                            script.data = res.data;
+	                        }
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);
@@ -86484,7 +86474,9 @@
 	                    table: table.id }),
 	
 	                success: function success(res) {
-	                    script.data = res.data;
+	                    if (script.data !== res.data) {
+	                        script.data = res.data;
+	                    }
 	                    if (_this7.editing && _this7.editing.colls) {
 	                        _this7.editing.colls.push(res.new_coll);
 	                    }
@@ -86504,7 +86496,9 @@
 	                    coll: coll }),
 	
 	                success: function success(res) {
-	                    script.data = res.data;
+	                    if (script.data !== res.data) {
+	                        script.data = res.data;
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -86523,7 +86517,9 @@
 	                        coll: coll.id }),
 	
 	                    success: function success(res) {
-	                        script.data = res.data;
+	                        if (script.data !== res.data) {
+	                            script.data = res.data;
+	                        }
 	                        colls.splice(i, 1);
 	                    },
 	                    error: function error(res) {
@@ -86547,7 +86543,9 @@
 	                    hidden: hidden }),
 	
 	                success: function success(res) {
-	                    script.data = res.data;
+	                    if (script.data !== res.data) {
+	                        script.data = res.data;
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -86567,7 +86565,9 @@
 	                        category: category.id }),
 	
 	                    success: function success(res) {
-	                        script.data = res.data;
+	                        if (script.data !== res.data) {
+	                            script.data = res.data;
+	                        }
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);
@@ -86590,7 +86590,9 @@
 	                    category: category }),
 	
 	                success: function success(res) {
-	                    script.data = res.data;
+	                    if (script.data !== res.data) {
+	                        script.data = res.data;
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -86609,8 +86611,9 @@
 	                    to_link: to_link }),
 	
 	                success: function success(res) {
-	
-	                    script.data = res.data;
+	                    if (script.data !== res.data) {
+	                        script.data = res.data;
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -86631,7 +86634,9 @@
 	                        link: link.id }),
 	
 	                    success: function success(res) {
-	                        script.data = res.data;
+	                        if (script.data !== res.data) {
+	                            script.data = res.data;
+	                        }
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);

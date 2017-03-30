@@ -142,37 +142,35 @@ class Table extends AccessableComponent {
 
 @observer
 class TableEdit extends Table {
-    async openCategory(coll, category) {
+    openCategory(coll, category) {
         const {scriptsStore} = this.props;
         const script = scriptsStore.script(this.props.params.script);
         const table = scriptsStore.table(script, this.props.params.table);
 
         category.opened = !category.opened;
-        let categories = await coll.categories.map((cat) => {
+        coll.categories.forEach((cat) => {
             if(cat.id !== category.id) {
                cat.opened = false;
             }
-            cat.links.map((link) => {
+            cat.links.forEach((link) => {
                link.opened = false;
             });
-            return cat;
         });
         scriptsStore.updateColl(script, table, coll);
     }
-    async openLink(coll, link) {
+    openLink(coll, link) {
         const {scriptsStore} = this.props;
         const script = scriptsStore.script(this.props.params.script);
         const table = scriptsStore.table(script, this.props.params.table);
 
         link.opened = !link.opened;
-        let categories = await coll.categories.map((cat) => {
+        coll.categories.forEach((cat) => {
             cat.opened = false;
-            cat.links.map((ln) => {
+            cat.links.forEach((ln) => {
                 if(ln.id !== link.id) {
                     ln.opened = false;
                 }
             });
-            return cat;
         });
         scriptsStore.updateColl(script, table, coll);
     }
@@ -239,16 +237,20 @@ class TableEdit extends Table {
                                                                    onClick={() => {this.openCategory(coll, category)}}/>
                                                                 <span className="table_header_text inline_element">
                                                                     <EditableText
-                                                                        text={category.name}
-                                                                        field={'name'}
-                                                                        submitHandler={(category) => scriptsStore.updateLinkCategory(script, table, coll, category)}
-                                                                        onClick={(category) => {
+                                                                        usersStore={usersStore}
+                                                                        textClickHandler={(e) => {
                                                                             if(usersStore.pressed_key === 16) {
                                                                                 category.edit = true;
                                                                             }
                                                                         }}
-
-                                                                        object={category}
+                                                                        submitHandler={
+                                                                            (text) => {
+                                                                                category.name = text;
+                                                                                category.edit = false;
+                                                                                scriptsStore.updateLinkCategory(script, table, coll, category);
+                                                                            }
+                                                                        }
+                                                                        text={category.name}
                                                                         edit={category.edit}
                                                                         settings={{
                                                                             placeholder: 'Имя категории',
@@ -282,7 +284,7 @@ class TableEdit extends Table {
                                                                             </div>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Переименовать раздел" onClick={()=>{category.edit = !category.edit}} className="btn btn-default">
+                                                                                <button data-tip="Переименовать раздел (Shift + клик по названию раздела)" onClick={()=>{category.edit = !category.edit}} className="btn btn-default">
                                                                                     <i className="glyphicon glyphicon-edit"/>
                                                                                 </button>
                                                                             </div>
@@ -332,18 +334,25 @@ class TableEdit extends Table {
                                                                             <span data-link={this.copyLink(link)}
                                                                                   className={"inline_element link" + (category.hidden ? ' hidden_links' : ' link_name') + ' ' + (!link.edit ? 'copy_icon' : null)}>
                                                                                 <EditableText
-                                                                                    text={link.name}
-                                                                                    field={'name'}
+                                                                                    usersStore={usersStore}
+                                                                                    textClickHandler={(e) => {
+                                                                                        if(usersStore.pressed_key === 16) {
+                                                                                            link.edit = true;
+                                                                                        }
+                                                                                    }}
+                                                                                    submitHandler={
+                                                                                        (text) => {
+                                                                                            link.name = text;
+                                                                                            category.edit = false;
+                                                                                            scriptsStore.updateLink(script, table, coll, category, link)
+                                                                                        }
+                                                                                    }
                                                                                     onClick={(link) => {
                                                                                         if(!usersStore.pressed_key) {
                                                                                             this.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));
-                                                                                        } else if(usersStore.pressed_key === 16) {
-                                                                                            link.edit = true;
-                                                                                            this.fixClipboard();
                                                                                         }
                                                                                     }}
-                                                                                    submitHandler={(link) => scriptsStore.updateLink(script, table, coll, category, link)}
-                                                                                    object={link}
+                                                                                    text={link.name}
                                                                                     edit={link.edit}
                                                                                     settings={{
                                                                                         placeholder: 'Имя ссылки',
@@ -688,48 +697,24 @@ class EditableText extends React.Component {
     constructor(props) {
         super(props);
 
-        this.delay = 50;
-
         this.state = {
             text: this.props.text,
-            edit: props.edit ? props.edit : false,
-            key: null,
-
-            click_timer: null,
-            prevent: false
+            edit: this.props.edit
         }
     }
     componentWillReceiveProps(props) {
-        this.setState({text: props.text, edit: props.edit ? props.edit : false})
-    }
-    clearTimer() {
-        let timer = this.state.timer;
-        this.setState(update(this.state, {timer: {$set: null}}), () => {
-            clearTimeout(timer);
-        });
+        this.setState({text: props.text, edit: props.edit})
     }
     submitHandler(e) {
         e.preventDefault();
-        let object = this.props.object;
-        object[this.props.field] = this.state.text;
-        this.setEdit(false);
-        return this.props.submitHandler(object);
-    }
-    setEdit(edit) {
-        this.setState(update(this.state, {edit: {$set: edit}}))
-    }
-    doClickAction() {
-        this.clearTimer();
-        if(this.props.onClick) {
-            this.props.onClick(this.props.object)
-        }
+        return this.props.submitHandler(this.state.text);
     }
     render() {
         const {settings} = this.props;
         return (
             <div>
                 {!this.state.edit ?
-                    <span onClick={this.doClickAction.bind(this)}>{this.props.text}</span>
+                    <span onClick={this.props.textClickHandler.bind(this)}>{this.props.text}</span>
                 :
                     <form onSubmit={this.submitHandler.bind(this)}>
                         <input

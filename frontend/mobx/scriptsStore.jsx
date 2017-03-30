@@ -185,9 +185,7 @@ export class ScriptsStore {
                 script: script.id
             }),
             success: (res) => {
-                if(script.data !== res.data) {
-                    script.data = res.data;
-                }
+                script.data = res.data;
             },
             error: (res) => {
                 console.log(res);
@@ -228,9 +226,7 @@ export class ScriptsStore {
                         table: table.id
                     }),
                     success: (res) => {
-                        if(script.data !== res.data) {
-                            script.data = res.data;
-                        }
+                        script.data = res.data;
                     },
                     error: (res) => {
                         console.log(res);
@@ -251,9 +247,7 @@ export class ScriptsStore {
                 table: table.id
             }),
             success: (res) => {
-                if(script.data !== res.data) {
-                    script.data = res.data;
-                }
+                script.data = res.data;
                 if(this.editing && this.editing.colls) {
                     this.editing.colls.push(res.new_coll);
                 }
@@ -294,9 +288,7 @@ export class ScriptsStore {
                         coll: coll.id
                     }),
                     success: (res) => {
-                        if(script.data !== res.data) {
-                            script.data = res.data;
-                        }
+                        script.data = res.data;
                         colls.splice(i, 1);
                     },
                     error: (res) => {
@@ -318,6 +310,24 @@ export class ScriptsStore {
                 table: table.id,
                 coll: coll.id,
                 hidden: hidden
+            }),
+            success: (res) => {
+                script.data = res.data;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+    @action updateLinkCategory(script, table, coll, category) {
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-link-categories-url'),
+            data: JSON.stringify({
+                script: script.id,
+                table: table.id,
+                coll: coll.id,
+                category: category,
             }),
             success: (res) => {
                 if(script.data !== res.data) {
@@ -342,9 +352,7 @@ export class ScriptsStore {
                         category: category.id,
                     }),
                     success: (res) => {
-                        if(script.data !== res.data) {
-                            script.data = res.data;
-                        }
+                        script.data = res.data;
                     },
                     error: (res) => {
                         console.log(res);
@@ -355,26 +363,6 @@ export class ScriptsStore {
                 console.log('cancel called');
             }
         )
-    }
-    @action updateLinkCategory(script, table, coll, category) {
-        $.ajax({
-            method: 'PUT',
-            url: document.body.getAttribute('data-link-categories-url'),
-            data: JSON.stringify({
-                script: script.id,
-                table: table.id,
-                coll: coll.id,
-                category: category,
-            }),
-            success: (res) => {
-                if(script.data !== res.data) {
-                    script.data = res.data;
-                }
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
     }
     @action createLink(script, table, coll, category, to_link=null) {
         $.ajax({
@@ -388,9 +376,7 @@ export class ScriptsStore {
                 to_link: to_link,
             }),
             success: (res) => {
-                if(script.data !== res.data) {
-                    script.data = res.data;
-                }
+                script.data = res.data;
             },
             error: (res) => {
                 console.log(res);
@@ -411,9 +397,7 @@ export class ScriptsStore {
                         link: link.id,
                     }),
                     success: (res) => {
-                        if(script.data !== res.data) {
-                            script.data = res.data;
-                        }
+                        script.data = res.data;
                     },
                     error: (res) => {
                         console.log(res);

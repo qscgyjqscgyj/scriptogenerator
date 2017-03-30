@@ -59579,7 +59579,7 @@
 /* 615 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TableEditWrapper = exports.TableShareWrapper = undefined;var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3, _class4, _class5;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TableEditWrapper = exports.TableShareWrapper = undefined;var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3, _class4, _class5, _class6;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	var _mobxReact = __webpack_require__(561);
@@ -59832,7 +59832,7 @@
 	                                                                            },
 	
 	                                                                            text: category.name,
-	                                                                            edit: category.edit,
+	                                                                            object: category,
 	                                                                            settings: {
 	                                                                                placeholder: 'Имя категории',
 	                                                                                name: 'name' } })),
@@ -59865,7 +59865,12 @@
 	
 	
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B (Shift + \u043A\u043B\u0438\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E \u0440\u0430\u0437\u0434\u0435\u043B\u0430)', onClick: function onClick() {category.edit = !category.edit;}, className: 'btn btn-default' },
+	                                                                                React.createElement('button', { 'data-tip': '\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B (Shift + \u043A\u043B\u0438\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E \u0440\u0430\u0437\u0434\u0435\u043B\u0430)',
+	                                                                                        onClick: function onClick() {
+	                                                                                            category.edit = !category.edit;
+	                                                                                        },
+	                                                                                        className: 'btn btn-default' },
+	
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' }))),
 	
 	
@@ -59924,7 +59929,7 @@
 	                                                                                        submitHandler:
 	                                                                                        function submitHandler(text) {
 	                                                                                            link.name = text;
-	                                                                                            category.edit = false;
+	                                                                                            link.edit = false;
 	                                                                                            scriptsStore.updateLink(script, table, coll, category, link);
 	                                                                                        },
 	
@@ -59934,7 +59939,7 @@
 	                                                                                            }
 	                                                                                        },
 	                                                                                        text: link.name,
-	                                                                                        edit: link.edit,
+	                                                                                        object: link,
 	                                                                                        settings: {
 	                                                                                            placeholder: 'Имя ссылки',
 	                                                                                            name: 'name' } })),
@@ -60274,28 +60279,31 @@
 	        } }]);return ToLink;}(React.Component);var
 	
 	
-	EditableText = function (_React$Component2) {_inherits(EditableText, _React$Component2);
+	
+	EditableText = (0, _mobxReact.observer)(_class4 = function (_React$Component2) {_inherits(EditableText, _React$Component2);
 	    function EditableText(props) {_classCallCheck(this, EditableText);var _this8 = _possibleConstructorReturn(this, (EditableText.__proto__ || Object.getPrototypeOf(EditableText)).call(this,
 	        props));
 	
 	        _this8.state = {
-	            text: _this8.props.text,
-	            edit: _this8.props.edit };return _this8;
+	            text: _this8.props.text };return _this8;
 	
 	    }_createClass(EditableText, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	        props) {
-	            this.setState({ text: props.text, edit: props.edit });
+	            this.setState({ text: props.text });
 	        } }, { key: 'submitHandler', value: function submitHandler(
 	        e) {
 	            e.preventDefault();
 	            return this.props.submitHandler(this.state.text);
 	        } }, { key: 'render', value: function render()
-	        {var _this9 = this;var
-	            settings = this.props.settings;
+	        {var _this9 = this;var _props5 =
+	            this.props,settings = _props5.settings,object = _props5.object;
 	            return (
 	                React.createElement('div', null,
-	                    !this.state.edit ?
-	                    React.createElement('span', { onClick: this.props.textClickHandler.bind(this) }, this.props.text) :
+	                    !object.edit ?
+	                    React.createElement('span', {
+	                            onClick:
+	                            this.props.textClickHandler.bind(this) },
+	                        this.props.text) :
 	
 	                    React.createElement('form', { onSubmit: this.submitHandler.bind(this) },
 	                        React.createElement('input', {
@@ -60310,21 +60318,21 @@
 	
 	
 	
-	        } }]);return EditableText;}(React.Component);var
+	        } }]);return EditableText;}(React.Component)) || _class4;var
 	
 	
 	
-	TableShareWrapper = exports.TableShareWrapper = (0, _mobxReact.observer)(_class4 = function (_React$Component3) {_inherits(TableShareWrapper, _React$Component3);function TableShareWrapper() {_classCallCheck(this, TableShareWrapper);return _possibleConstructorReturn(this, (TableShareWrapper.__proto__ || Object.getPrototypeOf(TableShareWrapper)).apply(this, arguments));}_createClass(TableShareWrapper, [{ key: 'render', value: function render()
+	TableShareWrapper = exports.TableShareWrapper = (0, _mobxReact.observer)(_class5 = function (_React$Component3) {_inherits(TableShareWrapper, _React$Component3);function TableShareWrapper() {_classCallCheck(this, TableShareWrapper);return _possibleConstructorReturn(this, (TableShareWrapper.__proto__ || Object.getPrototypeOf(TableShareWrapper)).apply(this, arguments));}_createClass(TableShareWrapper, [{ key: 'render', value: function render()
 	        {
 	            return React.createElement(_scriptsIsLoaded.scriptsIsLoaded, _extends({}, this.props, { renderComponent: TableShare }));
-	        } }]);return TableShareWrapper;}(React.Component)) || _class4;var
+	        } }]);return TableShareWrapper;}(React.Component)) || _class5;var
 	
 	
 	
-	TableEditWrapper = exports.TableEditWrapper = (0, _mobxReact.observer)(_class5 = function (_React$Component4) {_inherits(TableEditWrapper, _React$Component4);function TableEditWrapper() {_classCallCheck(this, TableEditWrapper);return _possibleConstructorReturn(this, (TableEditWrapper.__proto__ || Object.getPrototypeOf(TableEditWrapper)).apply(this, arguments));}_createClass(TableEditWrapper, [{ key: 'render', value: function render()
+	TableEditWrapper = exports.TableEditWrapper = (0, _mobxReact.observer)(_class6 = function (_React$Component4) {_inherits(TableEditWrapper, _React$Component4);function TableEditWrapper() {_classCallCheck(this, TableEditWrapper);return _possibleConstructorReturn(this, (TableEditWrapper.__proto__ || Object.getPrototypeOf(TableEditWrapper)).apply(this, arguments));}_createClass(TableEditWrapper, [{ key: 'render', value: function render()
 	        {
 	            return React.createElement(_scriptsIsLoaded.scriptsIsLoaded, _extends({}, this.props, { renderComponent: TableEdit }));
-	        } }]);return TableEditWrapper;}(React.Component)) || _class5;
+	        } }]);return TableEditWrapper;}(React.Component)) || _class6;
 
 /***/ },
 /* 616 */
@@ -86408,9 +86416,7 @@
 	                    script: script.id }),
 	
 	                success: function success(res) {
-	                    if (script.data !== res.data) {
-	                        script.data = res.data;
-	                    }
+	                    script.data = res.data;
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -86451,9 +86457,7 @@
 	                        table: table.id }),
 	
 	                    success: function success(res) {
-	                        if (script.data !== res.data) {
-	                            script.data = res.data;
-	                        }
+	                        script.data = res.data;
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);
@@ -86474,9 +86478,7 @@
 	                    table: table.id }),
 	
 	                success: function success(res) {
-	                    if (script.data !== res.data) {
-	                        script.data = res.data;
-	                    }
+	                    script.data = res.data;
 	                    if (_this7.editing && _this7.editing.colls) {
 	                        _this7.editing.colls.push(res.new_coll);
 	                    }
@@ -86517,9 +86519,7 @@
 	                        coll: coll.id }),
 	
 	                    success: function success(res) {
-	                        if (script.data !== res.data) {
-	                            script.data = res.data;
-	                        }
+	                        script.data = res.data;
 	                        colls.splice(i, 1);
 	                    },
 	                    error: function error(res) {
@@ -86541,6 +86541,24 @@
 	                    table: table.id,
 	                    coll: coll.id,
 	                    hidden: hidden }),
+	
+	                success: function success(res) {
+	                    script.data = res.data;
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
+	        } }, { key: 'updateLinkCategory', value: function updateLinkCategory(
+	        script, table, coll, category) {
+	            _jquery2.default.ajax({
+	                method: 'PUT',
+	                url: document.body.getAttribute('data-link-categories-url'),
+	                data: JSON.stringify({
+	                    script: script.id,
+	                    table: table.id,
+	                    coll: coll.id,
+	                    category: category }),
 	
 	                success: function success(res) {
 	                    if (script.data !== res.data) {
@@ -86565,9 +86583,7 @@
 	                        category: category.id }),
 	
 	                    success: function success(res) {
-	                        if (script.data !== res.data) {
-	                            script.data = res.data;
-	                        }
+	                        script.data = res.data;
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);
@@ -86577,26 +86593,6 @@
 	            function (result) {
 	                console.log('cancel called');
 	            });
-	
-	        } }, { key: 'updateLinkCategory', value: function updateLinkCategory(
-	        script, table, coll, category) {
-	            _jquery2.default.ajax({
-	                method: 'PUT',
-	                url: document.body.getAttribute('data-link-categories-url'),
-	                data: JSON.stringify({
-	                    script: script.id,
-	                    table: table.id,
-	                    coll: coll.id,
-	                    category: category }),
-	
-	                success: function success(res) {
-	                    if (script.data !== res.data) {
-	                        script.data = res.data;
-	                    }
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
 	
 	        } }, { key: 'createLink', value: function createLink(
 	        script, table, coll, category) {var to_link = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
@@ -86611,9 +86607,7 @@
 	                    to_link: to_link }),
 	
 	                success: function success(res) {
-	                    if (script.data !== res.data) {
-	                        script.data = res.data;
-	                    }
+	                    script.data = res.data;
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -86634,9 +86628,7 @@
 	                        link: link.id }),
 	
 	                    success: function success(res) {
-	                        if (script.data !== res.data) {
-	                            script.data = res.data;
-	                        }
+	                        script.data = res.data;
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);
@@ -86668,7 +86660,7 @@
 	                    console.log(res);
 	                } });
 	
-	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'loading', [_mobx.observable], { enumerable: true, initializer: function initializer() {return false;} }), _applyDecoratedDescriptor(_class2.prototype, 'setLoading', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'setLoading'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getInitialData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getInitialData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getAvailableScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getAvailableScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScriptData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScriptData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLink'), _class2.prototype)), _class2);exports.default =
+	        } }]);return ScriptsStore;}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'template_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'available_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'filter_by_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'creating_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'creating_project', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'creating_template', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'editing', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'loading', [_mobx.observable], { enumerable: true, initializer: function initializer() {return false;} }), _applyDecoratedDescriptor(_class2.prototype, 'setLoading', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'setLoading'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createCloningProcess', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createCloningProcess'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getInitialData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getInitialData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getAvailableScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getAvailableScripts'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'getScriptData', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'getScriptData'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteTable', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteTable'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteColl', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteColl'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLinkCategory', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLinkCategory'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'createLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'createLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteLink'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'updateLink', [_mobx.action], Object.getOwnPropertyDescriptor(_class2.prototype, 'updateLink'), _class2.prototype)), _class2);exports.default =
 	
 	
 	new ScriptsStore();

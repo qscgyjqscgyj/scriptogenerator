@@ -72,7 +72,8 @@ def get_empty_category(hidden=False):
         'hidden': hidden,
         'order': 1,
         'opened': False,
-        'links': []
+        'links': [],
+        'edit': False
     }
 
 
@@ -84,4 +85,5 @@ def get_empty_link(to_link=None):
         'text': None,
         'order': 1,
         'opened': False,
+        'edit': False
     }

@@ -251,7 +251,7 @@ class TableEdit extends Table {
                                                                             }
                                                                         }
                                                                         text={category.name}
-                                                                        edit={category.edit}
+                                                                        object={category}
                                                                         settings={{
                                                                             placeholder: 'Имя категории',
                                                                             name: 'name'
@@ -284,7 +284,12 @@ class TableEdit extends Table {
                                                                             </div>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Переименовать раздел (Shift + клик по названию раздела)" onClick={()=>{category.edit = !category.edit}} className="btn btn-default">
+                                                                                <button data-tip="Переименовать раздел (Shift + клик по названию раздела)"
+                                                                                    onClick={()=>{
+                                                                                        category.edit = !category.edit;
+                                                                                    }}
+                                                                                    className="btn btn-default">
+
                                                                                     <i className="glyphicon glyphicon-edit"/>
                                                                                 </button>
                                                                             </div>
@@ -343,7 +348,7 @@ class TableEdit extends Table {
                                                                                     submitHandler={
                                                                                         (text) => {
                                                                                             link.name = text;
-                                                                                            category.edit = false;
+                                                                                            link.edit = false;
                                                                                             scriptsStore.updateLink(script, table, coll, category, link)
                                                                                         }
                                                                                     }
@@ -353,7 +358,7 @@ class TableEdit extends Table {
                                                                                         }
                                                                                     }}
                                                                                     text={link.name}
-                                                                                    edit={link.edit}
+                                                                                    object={link}
                                                                                     settings={{
                                                                                         placeholder: 'Имя ссылки',
                                                                                         name: 'name'
@@ -693,28 +698,31 @@ class ToLink extends React.Component {
     }
 }
 
+@observer
 class EditableText extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            text: this.props.text,
-            edit: this.props.edit
+            text: this.props.text
         }
     }
     componentWillReceiveProps(props) {
-        this.setState({text: props.text, edit: props.edit})
+        this.setState({text: props.text})
     }
     submitHandler(e) {
         e.preventDefault();
         return this.props.submitHandler(this.state.text);
     }
     render() {
-        const {settings} = this.props;
+        const {settings, object} = this.props;
         return (
             <div>
-                {!this.state.edit ?
-                    <span onClick={this.props.textClickHandler.bind(this)}>{this.props.text}</span>
+                {!object.edit ?
+                    <span
+                        onClick={
+                            this.props.textClickHandler.bind(this)
+                        }>{this.props.text}</span>
                 :
                     <form onSubmit={this.submitHandler.bind(this)}>
                         <input

@@ -417,7 +417,9 @@ export class ScriptsStore {
                 link: link,
             }),
             success: (res) => {
-                script.data = res.data;
+                if(script.data !== res.data) {
+                    script.data = res.data;
+                }
             },
             error: (res) => {
                 console.log(res);

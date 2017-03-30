@@ -330,7 +330,7 @@ class TableEdit extends Table {
                                                                         <div className={"col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null)}>
                                                                             <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {this.openLink(coll, link)}}/>
                                                                             <span data-link={this.copyLink(link)}
-                                                                                  className={"inline_element link" + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null)}>
+                                                                                  className={"inline_element link" + (category.hidden ? ' hidden_links' : ' link_name') + ' ' + (!link.edit ? 'copy_icon' : null)}>
                                                                                 <EditableText
                                                                                     text={link.name}
                                                                                     field={'name'}

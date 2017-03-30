@@ -59911,7 +59911,7 @@
 	                                                                            React.createElement('div', { className: "col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null) },
 	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {_this3.openLink(coll, link);} }),
 	                                                                                React.createElement('span', { 'data-link': _this3.copyLink(link),
-	                                                                                        className: "inline_element link" + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null) },
+	                                                                                        className: "inline_element link" + (category.hidden ? ' hidden_links' : ' link_name') + ' ' + (!link.edit ? 'copy_icon' : null) },
 	                                                                                    React.createElement(EditableText, {
 	                                                                                        text: link.name,
 	                                                                                        field: 'name',
@@ -86655,7 +86655,9 @@
 	                    link: link }),
 	
 	                success: function success(res) {
-	                    script.data = res.data;
+	                    if (script.data !== res.data) {
+	                        script.data = res.data;
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);

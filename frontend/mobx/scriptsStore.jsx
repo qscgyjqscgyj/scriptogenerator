@@ -312,7 +312,8 @@ export class ScriptsStore {
                 hidden: hidden
             }),
             success: (res) => {
-                script.data = res.data;
+                // script.data = res.data;
+                coll.categories.push(res.category);
             },
             error: (res) => {
                 console.log(res);
@@ -339,7 +340,7 @@ export class ScriptsStore {
             }
         });
     }
-    @action deleteLinkCategory(script, table, coll, category) {
+    @action deleteLinkCategory(script, table, coll, category, category_index) {
         confirm("Вы действительно хотите удалить категорию: " + category.name).then(
             (result) => {
                 $.ajax({
@@ -352,7 +353,8 @@ export class ScriptsStore {
                         category: category.id,
                     }),
                     success: (res) => {
-                        script.data = res.data;
+                        // script.data = res.data;
+                        coll.categories.splice(category_index, 1);
                     },
                     error: (res) => {
                         console.log(res);
@@ -376,14 +378,15 @@ export class ScriptsStore {
                 to_link: to_link,
             }),
             success: (res) => {
-                script.data = res.data;
+                // script.data = res.data;
+                category.links.push(res.link);
             },
             error: (res) => {
                 console.log(res);
             }
         });
     }
-    @action deleteLink(script, table, coll, category, link) {
+    @action deleteLink(script, table, coll, category, link, link_index) {
         confirm("Вы действительно хотите удалить ссылку: " + link.name).then(
             (result) => {
                 $.ajax({
@@ -397,7 +400,8 @@ export class ScriptsStore {
                         link: link.id,
                     }),
                     success: (res) => {
-                        script.data = res.data;
+                        // script.data = res.data;
+                        category.links.splice(link_index, 1);
                     },
                     error: (res) => {
                         console.log(res);

@@ -15,6 +15,7 @@ export class Profile extends React.Component {
             data: JSON.stringify(usersStore.session_user),
             success: (res) => {
                 usersStore.session_user = res.session_user;
+                alert('Данные успешно сохранены');
             },
             error: (res) => {
                 console.log(res);

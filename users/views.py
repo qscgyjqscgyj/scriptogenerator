@@ -11,6 +11,7 @@ from registration.backends.default.views import RegistrationView
 from registration.models import RegistrationProfile
 from registration.users import UserModel
 
+from main.models import Script, ScriptAccess
 from main.utils import create_active_user
 from main.views import JSONResponse
 from payment.models import LocalPayment
@@ -114,7 +115,7 @@ class TeamView(View):
             user.save()
         except ObjectDoesNotExist:
             user = create_active_user(request=request, email=email, last_name=last_name, first_name=first_name, middle_name=middle_name, phone=phone)
-        data['user'] = user['user']
+        data['user'] = user['user'] if isinstance(user, dict) else user
         data['owner'] = request.user
         access = UserAccessSerializer(data=data)
         if access.is_valid():
@@ -141,7 +142,7 @@ class TeamView(View):
         data = json.loads(request.body)
         try:
             access = UserAccess.objects.get(pk=int(data['id']))
-            access.delete()
+            access.clear_script_accesses_and_delete()
             return JSONResponse({
                 'session_user': UserSerializer(request.user).data,
                 'team': UserAccessSerializer(UserAccess.objects.filter(owner=request.user), many=True).data

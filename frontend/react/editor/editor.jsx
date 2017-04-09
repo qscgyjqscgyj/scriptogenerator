@@ -242,11 +242,11 @@ export class CustomEditor extends React.Component {
                                     editorState={editorState}
                                     onToggle={this.toggleInlineStyle}/>
                             </div>
-                            <div className="btn-group" role="group" aria-label="...">
-                                <BlockStyleControls
-                                    editorState={editorState}
-                                    onToggle={this.toggleBlockType}/>
-                            </div>
+                            {/*<div className="btn-group" role="group" aria-label="...">*/}
+                                {/*<BlockStyleControls*/}
+                                    {/*editorState={editorState}*/}
+                                    {/*onToggle={this.toggleBlockType}/>*/}
+                            {/*</div>*/}
                             <div className="btn-group" role="group" aria-label="...">
                                 <button data-tip="Вставить ссылку" id="editor_add_link" onMouseDown={this.promptForLink} style={{marginRight: 10}} className="btn btn-info">
                                     <i className="glyphicon glyphicon-link"/>

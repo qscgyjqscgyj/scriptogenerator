@@ -243,11 +243,12 @@ class LinkCategoriesView(View):
         script = Script.objects.get(pk=int(data['script']))
         table_data = script.tables(table_id=data['table'])
         coll_data = script.colls(table_id=data['table'], coll_id=data['coll'])
-        coll_data['data']['categories'].append(get_empty_category(data['hidden']))
+        new_category = get_empty_category(data['hidden'])
+        coll_data['data']['categories'].append(new_category)
         table_data['data']['colls'][coll_data['index']] = coll_data['data']
         script.replace_table(table_data['data'], table_data['index'])
         return JSONResponse({
-            'data': json.loads(script.data())
+            'category': new_category
         })
 
     def put(self, request, *args, **kwargs):
@@ -275,7 +276,7 @@ class LinkCategoriesView(View):
             table['data']['colls'][coll['index']]['categories'].remove(current_category['data'])
             script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'data': json.loads(script.data())
+                'status': 'success'
             })
         return JSONResponse({'error': 'Category doesn\'t exist'}, status=400)
 
@@ -287,12 +288,13 @@ class LinkView(View):
         table_data = script.tables(table_id=data['table'])
         coll_data = script.colls(table_id=data['table'], coll_id=data['coll'])
         category_data = script.categories(table_id=data['table'], coll_id=data['coll'], category_id=data['category'])
-        category_data['data']['links'].append(get_empty_link(to_link=data['to_link']))
+        new_link = get_empty_link(to_link=data['to_link'])
+        category_data['data']['links'].append(new_link)
         coll_data['data']['categories'][category_data['index']] = category_data['data']
         table_data['data']['colls'][coll_data['index']] = coll_data['data']
         script.replace_table(table_data['data'], table_data['index'])
         return JSONResponse({
-            'data': json.loads(script.data())
+            'link': new_link
         })
 
     def put(self, request, *args, **kwargs):
@@ -322,7 +324,7 @@ class LinkView(View):
             table['data']['colls'][coll['index']]['categories'][category['index']]['links'].remove(current_link['data'])
             script.replace_table(table['data'], table['index'])
             return JSONResponse({
-                'data': json.loads(script.data())
+                'status': 'success'
             })
         return JSONResponse({'error': 'Link doesn\'t exist'}, status=400)
 

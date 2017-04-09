@@ -57671,6 +57671,7 @@
 	                data: JSON.stringify(usersStore.session_user),
 	                success: function success(res) {
 	                    usersStore.session_user = res.session_user;
+	                    alert('Данные успешно сохранены');
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -59845,7 +59846,7 @@
 	                                                                        React.createElement('div', { className: 'btn-toolbar', role: 'toolbar' },
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
 	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443', className: 'btn btn-default', onClick: function onClick() {scriptsStore.createLink(script, table, coll, category);} },
-	                                                                                    React.createElement('i', { className: 'icon add_icon glyphicon glyphicon-plus' })),
+	                                                                                    React.createElement('i', { className: 'icon add_simple_link_icon glyphicon glyphicon-plus' })),
 	
 	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0434\u0440\u0443\u0433\u0443\u044E \u0442\u0430\u0431\u043B\u0438\u0446\u0443', className: 'btn btn-default',
 	                                                                                        onClick: function onClick() {
@@ -59860,7 +59861,7 @@
 	                                                                                                category: category }));
 	
 	                                                                                        } },
-	                                                                                    React.createElement('i', { className: 'icon add_icon_blue glyphicon glyphicon-plus' }))),
+	                                                                                    React.createElement('i', { className: 'icon add_to_link_icon glyphicon glyphicon-plus' }))),
 	
 	
 	
@@ -59876,7 +59877,7 @@
 	
 	
 	                                                                            React.createElement('div', { className: 'btn-group btn-group-xs', role: 'group' },
-	                                                                                React.createElement('button', { 'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', style: { color: '#fff' }, onClick: function onClick() {scriptsStore.deleteLinkCategory(script, table, coll, category);}, className: 'btn btn-danger' },
+	                                                                                React.createElement('button', { 'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', style: { color: '#fff' }, onClick: function onClick() {scriptsStore.deleteLinkCategory(script, table, coll, category, key);}, className: 'btn btn-danger' },
 	                                                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
 	
 	
@@ -59918,12 +59919,14 @@
 	                                                                            React.createElement('div', { className: "col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null) },
 	                                                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element', onClick: function onClick() {_this3.openLink(coll, link);} }),
 	                                                                                React.createElement('span', { 'data-link': _this3.copyLink(link),
-	                                                                                        className: "inline_element link" + (category.hidden ? ' hidden_links' : ' link_name') + ' ' + (!link.edit ? 'copy_icon' : null) },
+	                                                                                        className: 'inline_element link ' + (link.to_link ? 'to_link' : '') + ' ' + (category.hidden ? ' hidden_links' : ' link_name') + ' ' + (!link.edit ? 'copy_icon' : '') },
 	                                                                                    React.createElement(EditableText, {
 	                                                                                        usersStore: usersStore,
 	                                                                                        textClickHandler: function textClickHandler(e) {
 	                                                                                            if (usersStore.pressed_key === 16) {
 	                                                                                                link.edit = true;
+	                                                                                            } else {
+	                                                                                                _this3.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));
 	                                                                                            }
 	                                                                                        },
 	                                                                                        submitHandler:
@@ -59933,11 +59936,6 @@
 	                                                                                            scriptsStore.updateLink(script, table, coll, category, link);
 	                                                                                        },
 	
-	                                                                                        onClick: function onClick(link) {
-	                                                                                            if (!usersStore.pressed_key) {
-	                                                                                                _this3.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));
-	                                                                                            }
-	                                                                                        },
 	                                                                                        text: link.name,
 	                                                                                        object: link,
 	                                                                                        settings: {
@@ -59971,7 +59969,7 @@
 	                                                                                            React.createElement('button', {
 	                                                                                                    'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443',
 	                                                                                                    style: { color: '#fff' },
-	                                                                                                    onClick: function onClick() {scriptsStore.deleteLink(script, table, coll, category, link);},
+	                                                                                                    onClick: function onClick() {scriptsStore.deleteLink(script, table, coll, category, link, key);},
 	                                                                                                    className: 'btn btn-danger btn-xs' },
 	                                                                                                React.createElement('i', { className: 'glyphicon glyphicon-remove' }))),
 	
@@ -60582,10 +60580,10 @@
 	                                        editorState: editorState,
 	                                        onToggle: this.toggleInlineStyle })),
 	
-	                                React.createElement('div', { className: 'btn-group', role: 'group', 'aria-label': '...' },
-	                                    React.createElement(BlockStyleControls, {
-	                                        editorState: editorState,
-	                                        onToggle: this.toggleBlockType })),
+	
+	
+	
+	
 	
 	                                React.createElement('div', { className: 'btn-group', role: 'group', 'aria-label': '...' },
 	                                    React.createElement('button', { 'data-tip': '\u0412\u0441\u0442\u0430\u0432\u0438\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443', id: 'editor_add_link', onMouseDown: this.promptForLink, style: { marginRight: 10 }, className: 'btn btn-info' },
@@ -86543,7 +86541,8 @@
 	                    hidden: hidden }),
 	
 	                success: function success(res) {
-	                    script.data = res.data;
+	                    // script.data = res.data;
+	                    coll.categories.push(res.category);
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -86570,7 +86569,7 @@
 	                } });
 	
 	        } }, { key: 'deleteLinkCategory', value: function deleteLinkCategory(
-	        script, table, coll, category) {
+	        script, table, coll, category, category_index) {
 	            (0, _confirm2.default)("Вы действительно хотите удалить категорию: " + category.name).then(
 	            function (result) {
 	                _jquery2.default.ajax({
@@ -86583,7 +86582,8 @@
 	                        category: category.id }),
 	
 	                    success: function success(res) {
-	                        script.data = res.data;
+	                        // script.data = res.data;
+	                        coll.categories.splice(category_index, 1);
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);
@@ -86607,14 +86607,15 @@
 	                    to_link: to_link }),
 	
 	                success: function success(res) {
-	                    script.data = res.data;
+	                    // script.data = res.data;
+	                    category.links.push(res.link);
 	                },
 	                error: function error(res) {
 	                    console.log(res);
 	                } });
 	
 	        } }, { key: 'deleteLink', value: function deleteLink(
-	        script, table, coll, category, link) {
+	        script, table, coll, category, link, link_index) {
 	            (0, _confirm2.default)("Вы действительно хотите удалить ссылку: " + link.name).then(
 	            function (result) {
 	                _jquery2.default.ajax({
@@ -86628,7 +86629,8 @@
 	                        link: link.id }),
 	
 	                    success: function success(res) {
-	                        script.data = res.data;
+	                        // script.data = res.data;
+	                        category.links.splice(link_index, 1);
 	                    },
 	                    error: function error(res) {
 	                        console.log(res);

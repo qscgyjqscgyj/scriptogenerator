@@ -42,6 +42,12 @@ class UserAccess(models.Model):
     payed = models.DateTimeField(blank=True, null=True)
     active = models.BooleanField(default=False)
 
+    def clear_script_accesses_and_delete(self):
+        for script in get_model('main', 'Script').objects.filter(owner=self.owner):
+            for script_access in get_model('main', 'ScriptAccess').objects.filter(script=script, user=self.user):
+                script_access.delete()
+        self.delete()
+
     def active_to_pay(self):
         if not self.payed:
             return True

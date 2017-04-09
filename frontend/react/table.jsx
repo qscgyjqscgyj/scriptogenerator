@@ -264,7 +264,7 @@ class TableEdit extends Table {
                                                                         <div className="btn-toolbar" role="toolbar">
                                                                             <div className="btn-group btn-group-xs" role="group">
                                                                                 <button data-tip="Создать ссылку" className="btn btn-default" onClick={()=>{scriptsStore.createLink(script, table, coll, category)}}>
-                                                                                    <i className="icon add_icon glyphicon glyphicon-plus"/>
+                                                                                    <i className="icon add_simple_link_icon glyphicon glyphicon-plus"/>
                                                                                 </button>
                                                                                 <button data-tip="Создать ссылку на другую таблицу" className="btn btn-default"
                                                                                     onClick={() => {
@@ -279,7 +279,7 @@ class TableEdit extends Table {
                                                                                             category: category
                                                                                         });
                                                                                     }}>
-                                                                                    <i className="icon add_icon_blue glyphicon glyphicon-plus"/>
+                                                                                    <i className="icon add_to_link_icon glyphicon glyphicon-plus"/>
                                                                                 </button>
                                                                             </div>
 
@@ -295,7 +295,7 @@ class TableEdit extends Table {
                                                                             </div>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Удалить раздел" style={{color: '#fff'}} onClick={()=>{scriptsStore.deleteLinkCategory(script, table, coll, category)}} className="btn btn-danger">
+                                                                                <button data-tip="Удалить раздел" style={{color: '#fff'}} onClick={()=>{scriptsStore.deleteLinkCategory(script, table, coll, category, key)}} className="btn btn-danger">
                                                                                     <i className="glyphicon glyphicon-remove"/>
                                                                                 </button>
                                                                             </div>
@@ -337,12 +337,14 @@ class TableEdit extends Table {
                                                                         <div className={"col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null)}>
                                                                             <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {this.openLink(coll, link)}}/>
                                                                             <span data-link={this.copyLink(link)}
-                                                                                  className={"inline_element link" + (category.hidden ? ' hidden_links' : ' link_name') + ' ' + (!link.edit ? 'copy_icon' : null)}>
+                                                                                  className={`inline_element link ${link.to_link ? 'to_link' : ''} ${category.hidden ? ' hidden_links' : ' link_name'} ${!link.edit ? 'copy_icon' : ''}`}>
                                                                                 <EditableText
                                                                                     usersStore={usersStore}
                                                                                     textClickHandler={(e) => {
                                                                                         if(usersStore.pressed_key === 16) {
                                                                                             link.edit = true;
+                                                                                        } else {
+                                                                                            this.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));
                                                                                         }
                                                                                     }}
                                                                                     submitHandler={
@@ -352,11 +354,6 @@ class TableEdit extends Table {
                                                                                             scriptsStore.updateLink(script, table, coll, category, link)
                                                                                         }
                                                                                     }
-                                                                                    onClick={(link) => {
-                                                                                        if(!usersStore.pressed_key) {
-                                                                                            this.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));
-                                                                                        }
-                                                                                    }}
                                                                                     text={link.name}
                                                                                     object={link}
                                                                                     settings={{
@@ -390,7 +387,7 @@ class TableEdit extends Table {
                                                                                             <button
                                                                                                 data-tip="Удалить ссылку"
                                                                                                 style={{color: '#fff'}}
-                                                                                                onClick={()=>{scriptsStore.deleteLink(script, table, coll, category, link)}}
+                                                                                                onClick={()=>{scriptsStore.deleteLink(script, table, coll, category, link, key)}}
                                                                                                 className="btn btn-danger btn-xs">
                                                                                                 <i className="glyphicon glyphicon-remove"/>
                                                                                             </button>

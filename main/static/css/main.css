@@ -49,6 +49,9 @@
     font-size: 16px;
     color: #337ab7;
 }
+.to_link {
+    color: #944cc3; !important;
+}
 .link_name:hover {
     font-size: 16px;
 }
@@ -156,6 +159,14 @@
 .add_icon_blue {
     color: #91a8dd;
 }
+
+.add_simple_link_icon {
+    color: #337ab7;
+}
+.add_to_link_icon {
+    color: #944cc3;
+}
+
 .red_icon {
     color: #e95e42;
 }

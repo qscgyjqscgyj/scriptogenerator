@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import $ from 'jquery';
 import Modal from 'react-modal';
 import {observer} from 'mobx-react';
 

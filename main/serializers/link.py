@@ -41,7 +41,7 @@ class LinkCategoriesField(serializers.Field):
         return self.validate_categories(categories)
 
 
-class EditField(serializers.Field):
+class FalseField(serializers.Field):
     def to_representation(self, editable_object):
         return False
 
@@ -56,10 +56,10 @@ class LinkCategorySerializer(serializers.Serializer):
     id = serializers.IntegerField(required=True)
     name = serializers.CharField(required=True)
     order = serializers.IntegerField(required=True, allow_null=True)
-    opened = serializers.BooleanField(required=True)
     hidden = serializers.BooleanField(required=True)
-    edit = EditField(allow_null=True, required=False)
     links = LinksField(required=False)
+    edit = FalseField(allow_null=True, required=False)
+    opened = FalseField(allow_null=True, required=False)
 
     class Meta:
         fields = ('id', 'name', 'hidden', 'order', 'links', 'opened')
@@ -71,8 +71,8 @@ class LinkSerializer(serializers.Serializer):
     to_link = serializers.IntegerField(required=False, allow_null=True)
     text = serializers.CharField(required=False, allow_null=True)
     order = serializers.IntegerField(required=True, allow_null=True)
-    edit = EditField(allow_null=True, required=False)
-    opened = serializers.BooleanField(required=True)
+    edit = FalseField(allow_null=True, required=False)
+    opened = FalseField(allow_null=True, required=False)
 
     class Meta:
         fields = ('id', 'name', 'to_link', 'text', 'order', 'opened')

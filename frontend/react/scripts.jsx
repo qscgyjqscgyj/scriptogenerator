@@ -9,7 +9,7 @@ import {Link} from 'react-router';
 import Select from 'react-select';
 import {Paginator} from './pagination';
 import confirm from './confirm';
-import ReactTooltip from 'react-tooltip';
+import {Tooltip} from './tooltip';
 
 const STATIC_URL = document.body.getAttribute('data-static-url');
 
@@ -332,7 +332,7 @@ export class Scripts extends React.Component {
                             </div>
                         : null}
                     </div>
-                    <ReactTooltip place="top" type="dark" effect="solid"/>
+                    <Tooltip />
                     <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>
                 </div>
             );

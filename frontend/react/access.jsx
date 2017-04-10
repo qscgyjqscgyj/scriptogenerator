@@ -1,12 +1,6 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import $ from 'jquery';
-import update from 'react-addons-update';
 import {observer} from 'mobx-react';
-import {ModalWrapper} from './modal';
-import {Coll} from '../mobx/tablesStore';
 import {Link} from 'react-router';
-import {Sort} from './sort';
 
 @observer
 export class AccessableComponent extends React.Component {

@@ -12,7 +12,7 @@ import {moveInArray} from './sort';
 import {AccessableComponent} from './access';
 import Select from 'react-select';
 import {extendObservable} from 'mobx';
-import ReactTooltip from 'react-tooltip';
+import {Tooltip} from './tooltip';
 import {scriptsIsLoaded} from './scriptsIsLoaded';
 
 @observer
@@ -140,13 +140,11 @@ class Table extends AccessableComponent {
     }
 }
 
+const tooltip = <Tooltip/>;
+
 @observer
 class TableEdit extends Table {
     openCategory(coll, category) {
-        const {scriptsStore} = this.props;
-        const script = scriptsStore.script(this.props.params.script);
-        const table = scriptsStore.table(script, this.props.params.table);
-
         category.opened = !category.opened;
         coll.categories.forEach((cat) => {
             if(cat.id !== category.id) {
@@ -156,13 +154,11 @@ class TableEdit extends Table {
                link.opened = false;
             });
         });
-        scriptsStore.updateColl(script, table, coll);
+    }
+    toggleCategoryNameEditing(category) {
+        category.edit = !category.edit;
     }
     openLink(coll, link) {
-        const {scriptsStore} = this.props;
-        const script = scriptsStore.script(this.props.params.script);
-        const table = scriptsStore.table(script, this.props.params.table);
-
         link.opened = !link.opened;
         coll.categories.forEach((cat) => {
             cat.opened = false;
@@ -172,8 +168,20 @@ class TableEdit extends Table {
                 }
             });
         });
-        scriptsStore.updateColl(script, table, coll);
     }
+    toggleLinkNameEditing(link) {
+        link.edit = !link.edit;
+    }
+    linkDataEditorChangeHandler(active_link, value) {
+        active_link.link.text = value;
+    }
+    linkDataEditorBlurHandler(active_link, value) {
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        active_link.link.text = value;
+        scriptsStore.updateLink(script, active_link.table, active_link.coll, active_link.category, active_link.link, false);
+    }
+
     render() {
         const {scriptsStore, modalStore, usersStore} = this.props;
         const script = scriptsStore.script(this.props.params.script);
@@ -201,18 +209,12 @@ class TableEdit extends Table {
                                                     </div>
                                                     <div className="link_text_editor">
                                                         <CustomEditor object={active_link.link} value={active_link.link.text}
-                                                            onChange={(value) => {
-                                                                active_link.link.text = value;
-                                                            }}
-                                                            onBlur={(value) => {
-                                                                active_link.link.text = value;
-                                                                scriptsStore.updateLink(script, active_link.table, active_link.coll, active_link.category, active_link.link, false);
-                                                            }}/>
+                                                            onChange={this.linkDataEditorChangeHandler.bind(this, active_link, value)}
+                                                            onBlur={this.linkDataEditorBlurHandler.bind(this, active_link, value)}
+                                                            />
                                                     </div>
                                                 </div>
-                                                :
-                                                ''
-                                            }
+                                            : null}
                                         </div>
                                     )
                                 } else if (!coll.text) {
@@ -237,20 +239,15 @@ class TableEdit extends Table {
                                                                    onClick={() => {this.openCategory(coll, category)}}/>
                                                                 <span className="table_header_text inline_element">
                                                                     <EditableText
-                                                                        usersStore={usersStore}
                                                                         textClickHandler={(e) => {
                                                                             if(usersStore.pressed_key === 16) {
                                                                                 category.edit = true;
                                                                             }
                                                                         }}
-                                                                        submitHandler={
-                                                                            (text) => {
-                                                                                category.name = text;
-                                                                                category.edit = false;
-                                                                                scriptsStore.updateLinkCategory(script, table, coll, category);
-                                                                            }
-                                                                        }
-                                                                        text={category.name}
+                                                                        submitHandler={(category) => {
+                                                                            category.edit = false;
+                                                                            scriptsStore.updateLinkCategory(script, table, coll, category, false);
+                                                                        }}
                                                                         object={category}
                                                                         settings={{
                                                                             placeholder: 'Имя категории',
@@ -285,9 +282,7 @@ class TableEdit extends Table {
 
                                                                             <div className="btn-group btn-group-xs" role="group">
                                                                                 <button data-tip="Переименовать раздел (Shift + клик по названию раздела)"
-                                                                                    onClick={()=>{
-                                                                                        category.edit = !category.edit;
-                                                                                    }}
+                                                                                    onClick={this.toggleCategoryNameEditing.bind(this, category)}
                                                                                     className="btn btn-default">
 
                                                                                     <i className="glyphicon glyphicon-edit"/>
@@ -324,7 +319,7 @@ class TableEdit extends Table {
                                                                                     </button>
                                                                                 : null}
                                                                             </div>
-                                                                            <ReactTooltip place="top" type="dark" effect="solid"/>
+                                                                            {tooltip}
                                                                         </div>
                                                                     </div>
                                                                 : null}
@@ -339,7 +334,6 @@ class TableEdit extends Table {
                                                                             <span data-link={this.copyLink(link)}
                                                                                   className={`inline_element link ${link.to_link ? 'to_link' : ''} ${category.hidden ? ' hidden_links' : ' link_name'} ${!link.edit ? 'copy_icon' : ''}`}>
                                                                                 <EditableText
-                                                                                    usersStore={usersStore}
                                                                                     textClickHandler={(e) => {
                                                                                         if(usersStore.pressed_key === 16) {
                                                                                             link.edit = true;
@@ -347,14 +341,10 @@ class TableEdit extends Table {
                                                                                             this.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));
                                                                                         }
                                                                                     }}
-                                                                                    submitHandler={
-                                                                                        (text) => {
-                                                                                            link.name = text;
-                                                                                            link.edit = false;
-                                                                                            scriptsStore.updateLink(script, table, coll, category, link)
-                                                                                        }
-                                                                                    }
-                                                                                    text={link.name}
+                                                                                    submitHandler={(link) => {
+                                                                                        link.edit = false;
+                                                                                        scriptsStore.updateLink(script, table, coll, category, link, false)
+                                                                                    }}
                                                                                     object={link}
                                                                                     settings={{
                                                                                         placeholder: 'Имя ссылки',
@@ -377,7 +367,7 @@ class TableEdit extends Table {
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             <button
                                                                                                 data-tip="Переименовать ссылку (Shift + клик по названию ссылки)"
-                                                                                                onClick={()=>{link.edit = !link.edit}}
+                                                                                                onClick={this.toggleLinkNameEditing.bind(this, link)}
                                                                                                 className="btn btn-default">
                                                                                                 <i className="glyphicon glyphicon-edit"/>
                                                                                             </button>
@@ -417,7 +407,7 @@ class TableEdit extends Table {
                                                                                                 </button>
                                                                                             : null}
                                                                                         </div>
-                                                                                        <ReactTooltip place="top" type="dark" effect="solid"/>
+                                                                                        {tooltip}
                                                                                     </div>
                                                                                 </div>
                                                                             : null}
@@ -435,6 +425,7 @@ class TableEdit extends Table {
                             })}
                         </div>
                         <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>
+                        {tooltip}
                     </div>
                 );
             }
@@ -697,19 +688,18 @@ class ToLink extends React.Component {
 
 @observer
 class EditableText extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            text: this.props.text
-        }
-    }
-    componentWillReceiveProps(props) {
-        this.setState({text: props.text})
-    }
     submitHandler(e) {
         e.preventDefault();
-        return this.props.submitHandler(this.state.text);
+        const {object} = this.props;
+        return this.props.submitHandler(object);
+    }
+    onBlurHandler() {
+        const {object} = this.props;
+        return this.props.submitHandler(object);
+    }
+    textChangeHandler(e) {
+        const {object} = this.props;
+        object.name = e.target.value;
     }
     render() {
         const {settings, object} = this.props;
@@ -717,18 +707,16 @@ class EditableText extends React.Component {
             <div>
                 {!object.edit ?
                     <span
-                        onClick={
-                            this.props.textClickHandler.bind(this)
-                        }>{this.props.text}</span>
+                        onClick={this.props.textClickHandler.bind(this)}>{object.name}</span>
                 :
                     <form onSubmit={this.submitHandler.bind(this)}>
                         <input
-                            onChange={(e) => {this.setState(update(this.state, {text: {$set: e.target.value}}))}}
+                            onChange={this.textChangeHandler.bind(this)}
                             autoFocus={true}
-                            onBlur={this.submitHandler.bind(this)}
+                            onBlur={this.onBlurHandler.bind(this)}
                             placeholder={settings.placeholder}
                             name={settings.name}
-                            value={this.state.text}
+                            value={object.name}
                             type="text"/>
                     </form>
                 }

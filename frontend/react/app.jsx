@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import $ from 'jquery';
 import {Nav} from './nav';
 import ModalStore from '../mobx/modalStore';

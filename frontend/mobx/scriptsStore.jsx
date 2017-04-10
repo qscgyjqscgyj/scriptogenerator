@@ -320,7 +320,7 @@ export class ScriptsStore {
             }
         });
     }
-    @action updateLinkCategory(script, table, coll, category) {
+    @action updateLinkCategory(script, table, coll, category, update_data=true) {
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-link-categories-url'),
@@ -331,7 +331,7 @@ export class ScriptsStore {
                 category: category,
             }),
             success: (res) => {
-                if(script.data !== res.data) {
+                if(script.data !== res.data && update_data) {
                     script.data = res.data;
                 }
             },
@@ -413,7 +413,7 @@ export class ScriptsStore {
             }
         )
     }
-    @action updateLink(script, table, coll, category, link) {
+    @action updateLink(script, table, coll, category, link, update_data=true) {
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-links-url'),
@@ -425,7 +425,7 @@ export class ScriptsStore {
                 link: link,
             }),
             success: (res) => {
-                if(script.data !== res.data) {
+                if(script.data !== res.data && update_data) {
                     script.data = res.data;
                 }
             },

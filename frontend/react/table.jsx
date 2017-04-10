@@ -64,16 +64,26 @@ class Table extends AccessableComponent {
             scriptsStore.getScriptData(script);
         }
     }
-    componentDidMount() {
-        this.fixHeight();
-        this.fixClipboard();
+    setKeyHandlers() {
         $(document.body).on('keydown', this.handleKeyDown.bind(this));
         $(document.body).on('keyup', this.handleKeyUp.bind(this));
     }
-    componentWillUnmount() {
-        this.fixClipboard(true);
+    killKeyHandlers() {
         $(document.body).off('keydown', this.handleKeyDown.bind(this));
         $(document.body).off('keyup', this.handleKeyUp.bind(this));
+    }
+    componentDidMount() {
+        this.fixHeight();
+        this.fixClipboard();
+        this.setKeyHandlers();
+    }
+    componentWillUnmount() {
+        this.fixClipboard(true);
+        this.killKeyHandlers();
+    }
+    componentWillUpdate() {
+        this.killKeyHandlers();
+        this.setKeyHandlers();
     }
     handleKeyDown(e) {
         const {usersStore} = this.props;
@@ -174,12 +184,16 @@ class TableEdit extends Table {
     toggleLinkNameEditing(link) {
         link.edit = !link.edit;
     }
-    linkDataEditorChangeHandler(active_link, value) {
-        active_link.link.text = value;
-    }
-    linkDataEditorBlurHandler(active_link, value) {
+    linkDataEditorChangeHandler(value) {
         const {scriptsStore} = this.props;
         const script = scriptsStore.script(this.props.params.script);
+        let active_link = scriptsStore.link(script, this.props.params.link, true);
+        active_link.link.text = value;
+    }
+    linkDataEditorBlurHandler(value) {
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        let active_link = scriptsStore.link(script, this.props.params.link, true);
         active_link.link.text = value;
         scriptsStore.updateLink(script, active_link.table, active_link.coll, active_link.category, active_link.link, false);
     }
@@ -211,8 +225,8 @@ class TableEdit extends Table {
                                                     </div>
                                                     <div className="link_text_editor">
                                                         <CustomEditor object={active_link.link} value={active_link.link.text}
-                                                            onChange={this.linkDataEditorChangeHandler.bind(this, active_link, value)}
-                                                            onBlur={this.linkDataEditorBlurHandler.bind(this, active_link, value)}
+                                                            onChange={this.linkDataEditorChangeHandler.bind(this)}
+                                                            onBlur={this.linkDataEditorBlurHandler.bind(this)}
                                                             />
                                                     </div>
                                                 </div>
@@ -693,11 +707,11 @@ class EditableText extends React.Component {
     submitHandler(e) {
         e.preventDefault();
         const {object} = this.props;
-        return this.props.submitHandler(object);
+        this.props.submitHandler(object);
     }
     onBlurHandler() {
         const {object} = this.props;
-        return this.props.submitHandler(object);
+        this.props.submitHandler(object);
     }
     textChangeHandler(e) {
         const {object} = this.props;

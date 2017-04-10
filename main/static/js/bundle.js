@@ -59541,17 +59541,27 @@
 	            if (script && !script.data.length > 0) {
 	                scriptsStore.getScriptData(script);
 	            }
+	        } }, { key: 'setKeyHandlers', value: function setKeyHandlers()
+	        {
+	            (0, _jquery2.default)(document.body).on('keydown', this.handleKeyDown.bind(this));
+	            (0, _jquery2.default)(document.body).on('keyup', this.handleKeyUp.bind(this));
+	        } }, { key: 'killKeyHandlers', value: function killKeyHandlers()
+	        {
+	            (0, _jquery2.default)(document.body).off('keydown', this.handleKeyDown.bind(this));
+	            (0, _jquery2.default)(document.body).off('keyup', this.handleKeyUp.bind(this));
 	        } }, { key: 'componentDidMount', value: function componentDidMount()
 	        {
 	            this.fixHeight();
 	            this.fixClipboard();
-	            (0, _jquery2.default)(document.body).on('keydown', this.handleKeyDown.bind(this));
-	            (0, _jquery2.default)(document.body).on('keyup', this.handleKeyUp.bind(this));
+	            this.setKeyHandlers();
 	        } }, { key: 'componentWillUnmount', value: function componentWillUnmount()
 	        {
 	            this.fixClipboard(true);
-	            (0, _jquery2.default)(document.body).off('keydown', this.handleKeyDown.bind(this));
-	            (0, _jquery2.default)(document.body).off('keyup', this.handleKeyUp.bind(this));
+	            this.killKeyHandlers();
+	        } }, { key: 'componentWillUpdate', value: function componentWillUpdate()
+	        {
+	            this.killKeyHandlers();
+	            this.setKeyHandlers();
 	        } }, { key: 'handleKeyDown', value: function handleKeyDown(
 	        e) {var
 	            usersStore = this.props.usersStore;
@@ -59652,12 +59662,16 @@
 	        link) {
 	            link.edit = !link.edit;
 	        } }, { key: 'linkDataEditorChangeHandler', value: function linkDataEditorChangeHandler(
-	        active_link, value) {
-	            active_link.link.text = value;
-	        } }, { key: 'linkDataEditorBlurHandler', value: function linkDataEditorBlurHandler(
-	        active_link, value) {var
+	        value) {var
 	            scriptsStore = this.props.scriptsStore;
 	            var script = scriptsStore.script(this.props.params.script);
+	            var active_link = scriptsStore.link(script, this.props.params.link, true);
+	            active_link.link.text = value;
+	        } }, { key: 'linkDataEditorBlurHandler', value: function linkDataEditorBlurHandler(
+	        value) {var
+	            scriptsStore = this.props.scriptsStore;
+	            var script = scriptsStore.script(this.props.params.script);
+	            var active_link = scriptsStore.link(script, this.props.params.link, true);
 	            active_link.link.text = value;
 	            scriptsStore.updateLink(script, active_link.table, active_link.coll, active_link.category, active_link.link, false);
 	        } }, { key: 'render', value: function render()
@@ -59689,8 +59703,8 @@
 	
 	                                                    React.createElement('div', { className: 'link_text_editor' },
 	                                                        React.createElement(_editor.CustomEditor, { object: active_link.link, value: active_link.link.text,
-	                                                            onChange: _this3.linkDataEditorChangeHandler.bind(_this3, active_link, value),
-	                                                            onBlur: _this3.linkDataEditorBlurHandler.bind(_this3, active_link, value) }))) :
+	                                                            onChange: _this3.linkDataEditorChangeHandler.bind(_this3),
+	                                                            onBlur: _this3.linkDataEditorBlurHandler.bind(_this3) }))) :
 	
 	
 	
@@ -60171,11 +60185,11 @@
 	        e) {
 	            e.preventDefault();var
 	            object = this.props.object;
-	            return this.props.submitHandler(object);
+	            this.props.submitHandler(object);
 	        } }, { key: 'onBlurHandler', value: function onBlurHandler()
 	        {var
 	            object = this.props.object;
-	            return this.props.submitHandler(object);
+	            this.props.submitHandler(object);
 	        } }, { key: 'textChangeHandler', value: function textChangeHandler(
 	        e) {var
 	            object = this.props.object;

@@ -15,6 +15,9 @@ import {extendObservable} from 'mobx';
 import {Tooltip} from './tooltip';
 import {scriptsIsLoaded} from './scriptsIsLoaded';
 
+const ALT_CODE = 18;
+const CTRL_CODE = 17;
+
 @observer
 class Table extends AccessableComponent {
     constructor(props) {
@@ -42,7 +45,7 @@ class Table extends AccessableComponent {
         if(!clear) {
             let new_clipboard = new Clipboard('.copy_icon', {
                 text: function(trigger) {
-                    if(usersStore.pressed_key == 17) {
+                    if(usersStore.pressed_key === CTRL_CODE) {
                         return trigger.getAttribute('data-link');
                     } else if($(trigger).hasClass('enable_copy_icon')) {
                         return trigger.getAttribute('data-link');
@@ -74,8 +77,7 @@ class Table extends AccessableComponent {
     }
     handleKeyDown(e) {
         const {usersStore} = this.props;
-        // 17 - CTRL, 16 - SHIFT
-        if(e.keyCode === 17 || e.keyCode === 16) {
+        if(e.keyCode === CTRL_CODE || e.keyCode === ALT_CODE) {
             usersStore.pressed_key = e.keyCode;
         }
     }
@@ -240,7 +242,7 @@ class TableEdit extends Table {
                                                                 <span className="table_header_text inline_element">
                                                                     <EditableText
                                                                         textClickHandler={(e) => {
-                                                                            if(usersStore.pressed_key === 16) {
+                                                                            if(usersStore.pressed_key === ALT_CODE) {
                                                                                 category.edit = true;
                                                                             }
                                                                         }}
@@ -335,7 +337,7 @@ class TableEdit extends Table {
                                                                                   className={`inline_element link ${link.to_link ? 'to_link' : ''} ${category.hidden ? ' hidden_links' : ' link_name'} ${!link.edit ? 'copy_icon' : ''}`}>
                                                                                 <EditableText
                                                                                     textClickHandler={(e) => {
-                                                                                        if(usersStore.pressed_key === 16) {
+                                                                                        if(usersStore.pressed_key === ALT_CODE) {
                                                                                             link.edit = true;
                                                                                         } else {
                                                                                             this.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));

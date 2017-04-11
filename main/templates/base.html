@@ -38,7 +38,9 @@
     >
         {% block content %}
             {% if request.user.is_authenticated %}
-                <div id="content"></div>
+                <div id="content">
+                    <div class="loading">Loading&#8230;</div>
+                </div>
             {% else %}
                 <div class="container-fluid">
                     <h1>Необходимо авторизоваться</h1>

@@ -86285,6 +86285,11 @@
 	                url: document.body.getAttribute('data-script-url'),
 	                data: { script: script.id },
 	                success: function success(res) {
+	                    _this5.scripts.forEach(function (from_all_script) {
+	                        if (from_all_script.id !== script.id && from_all_script.data.length > 0) {
+	                            script.data = [];
+	                        }
+	                    });
 	                    script.data = res.script.data;
 	                    script.accesses = res.script.accesses;
 	                    _this5.loading = false;

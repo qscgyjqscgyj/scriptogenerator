@@ -165,6 +165,11 @@ export class ScriptsStore {
             url: document.body.getAttribute('data-script-url'),
             data: {script: script.id},
             success: (res) => {
+                this.scripts.forEach(from_all_script => {
+                    if(from_all_script.id !== script.id && from_all_script.data.length > 0) {
+                        script.data = [];
+                    }
+                });
                 script.data = res.script.data;
                 script.accesses = res.script.accesses;
                 this.loading = false;

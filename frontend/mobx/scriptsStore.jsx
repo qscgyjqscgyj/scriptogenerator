@@ -24,7 +24,7 @@ export class ScriptsStore {
     @observable creating_template = null;
     @observable editing = null;
 
-    @observable loading = false;
+    @observable loading = true;
 
     @action setLoading(loading=true) {
         if(!this.loading) {

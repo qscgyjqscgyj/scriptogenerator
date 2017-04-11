@@ -24,18 +24,14 @@ export class Nav extends React.Component {
 
                         {script && script.data.length > 0 ?
                             <li className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <Link to={scriptsStore.scriptUrl(script)} className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     Таблицы <span className="caret"/>
-                                </a>
+                                </Link>
                                 <ul className="dropdown-menu">
                                     {script.data.map((table, key) => {
                                         return(
                                             <li key={key} className={table.id === parseInt(this.props.params.table) ? 'active' : null}>
-                                                <Link to={
-                                                        '/tables/' + this.props.params.script +
-                                                        '/table/' + table.id +
-                                                        (edit ? '/edit/' : '/share/')
-                                                    }>{table.name}</Link>
+                                                <Link to={scriptsStore.tableUrl(script, table, (edit ? 'edit' : 'share'))}>{table.name}</Link>
                                             </li>
                                         )
                                     })}

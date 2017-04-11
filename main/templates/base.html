@@ -62,9 +62,9 @@
                 })(console.error);
             </script>
             {% if DEBUG %}
-                <script src="{% static 'js/bundle.js' %}"></script>
+                <script src="{% static 'js/build.js' %}"></script>
             {% else %}
-                <script src="{% static 'js/bundle.min.js' %}"></script>
+                <script src="{% static 'js/build.min.js' %}"></script>
             {% endif %}
         {% endif %}
         <script type="text/javascript">

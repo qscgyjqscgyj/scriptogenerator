@@ -29,7 +29,7 @@ class Table extends AccessableComponent {
         }
     }
     fixHeight() {
-        const content_height = screen.height - 200;
+        const content_height = screen.height - 150;
         let scroll_links = [].slice.call(document.getElementsByClassName('scroll_links'));
         scroll_links.map(el => {
             $(el).css('min-height', content_height + 'px');
@@ -353,7 +353,7 @@ class TableEdit extends Table {
                                                                                     textClickHandler={(e) => {
                                                                                         if(usersStore.pressed_key === ALT_CODE) {
                                                                                             link.edit = true;
-                                                                                        } else {
+                                                                                        } else if(!usersStore.pressed_key) {
                                                                                             this.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));
                                                                                         }
                                                                                     }}

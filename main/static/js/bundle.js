@@ -86022,18 +86022,14 @@
 	
 	                            script && script.data.length > 0 ?
 	                            React.createElement('li', { className: 'dropdown' },
-	                                React.createElement('a', { href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
+	                                React.createElement(_reactRouter.Link, { to: scriptsStore.scriptUrl(script), className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
 	                                    React.createElement('span', { className: 'caret' })),
 	
 	                                React.createElement('ul', { className: 'dropdown-menu' },
 	                                    script.data.map(function (table, key) {
 	                                        return (
 	                                            React.createElement('li', { key: key, className: table.id === parseInt(_this2.props.params.table) ? 'active' : null },
-	                                                React.createElement(_reactRouter.Link, { to:
-	                                                        '/tables/' + _this2.props.params.script +
-	                                                        '/table/' + table.id + (
-	                                                        edit ? '/edit/' : '/share/') },
-	                                                    table.name)));
+	                                                React.createElement(_reactRouter.Link, { to: scriptsStore.tableUrl(script, table, edit ? 'edit' : 'share') }, table.name)));
 	
 	
 	                                    }))) :

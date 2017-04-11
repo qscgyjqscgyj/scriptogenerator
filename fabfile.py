@@ -4,7 +4,7 @@ from fabric.api import env, cd, run, prefix, sudo
 from fabric.operations import local
 from scripts.settings import LOCAL_APPS
 
-env.hosts = ['root@new.scriptogenerator.ru:22']
+env.hosts = ['root@scriptogenerator.ru:22']
 server_prefix = prefix('source /home/Env/scripts/bin/activate')
 server_project_dir = '/home/Django/scripts'
 

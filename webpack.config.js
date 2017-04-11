@@ -6,7 +6,7 @@ const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 
 module.exports = {
   entry: {
-    bundle: ['babel-polyfill', './frontend/react/main'],
+    build: ['babel-polyfill', './frontend/react/main'],
     // landing: './frontend/react/landing/main'
   },
   output: {

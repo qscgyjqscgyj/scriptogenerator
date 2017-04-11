@@ -86287,7 +86287,7 @@
 	                success: function success(res) {
 	                    _this5.scripts.forEach(function (from_all_script) {
 	                        if (from_all_script.id !== script.id && from_all_script.data.length > 0) {
-	                            script.data = [];
+	                            from_all_script.data = [];
 	                        }
 	                    });
 	                    script.data = res.script.data;

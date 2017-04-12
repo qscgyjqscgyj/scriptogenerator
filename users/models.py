@@ -18,6 +18,8 @@ class CustomUser(AbstractUser):
     balance_real = models.FloatField(default=0.0)
     balance_total = models.FloatField(default=0.0)
     utm = models.TextField(blank=True, null=True)
+    last_visit = models.DateTimeField(blank=True, null=True)
+    team_length = models.IntegerField(blank=True, null=True)
 
     objects = UserManager()
 
@@ -29,6 +31,9 @@ class CustomUser(AbstractUser):
 
     def promoted(self):
         return True if get_model('payment', 'UserPayment').objects.filter(user=self, promotion=True) else False
+
+    def team(self):
+        return UserAccess.objects.filter(owner=self)
 
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'

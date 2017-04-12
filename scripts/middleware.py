@@ -1,6 +1,6 @@
 import threading
 import urllib
-
+from django.utils.timezone import now
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models.loading import get_model
@@ -36,3 +36,11 @@ class SaveAnonymousUTMs(object):
                 get_params = request.GET.urlencode()
                 if not request.session.get('get_params_utms'):
                     request.session['get_params_utms'] = get_params
+
+
+class SetLastVisitMiddleware(object):
+    def process_response(self, request, response):
+        if request.user.is_authenticated():
+            # Update last visit time after request finished processing.
+            get_model('users', 'CustomUser').objects.filter(pk=request.user.pk).update(last_visit=now())
+        return response

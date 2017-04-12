@@ -372,14 +372,15 @@ class InitView(ScriptsView):
     http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
+        available_scripts = Script.objects.filter(pk__in=self.user_accessable_scripts_ids(request))
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data,
             'template_scripts': ScriptSerializer(Script.objects.filter(is_template=True), many=True, empty_data=True).data,
-            'available_scripts': ScriptSerializer(Script.objects.filter(pk__in=self.user_accessable_scripts_ids(request)), many=True).data,
+            'available_scripts': ScriptSerializer(available_scripts, many=True).data,
             'session_user': UserSerializer(request.user).data,
             'shopId': YANDEX_SHOPID,
             'scid': YANDEX_SCID,
-        }, status=201)
+        }, status=200)
 
 
 class ExternalRegisterView(View):

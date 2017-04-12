@@ -186,7 +186,7 @@ export class Scripts extends React.Component {
     render() {
         const {scriptsStore, modalStore, usersStore, available} = this.props;
         let scripts_data = this.getScriptsData();
-        if(usersStore.session_user && scriptsStore.scripts) {
+        if(usersStore.session_user && (scriptsStore.scripts || scriptsStore.available_scripts)) {
             return(
                 <div className="col-md-12">
                     {!available ?
@@ -227,6 +227,7 @@ export class Scripts extends React.Component {
                     <div className="row">
                         {scripts_data.scripts.map((script, key)=>{
                             let access = (available ? script.accesses.find(access => {return access.user.id === usersStore.session_user.id}) : null);
+                            console.log(access);
                             if(access ? access.active || !access : true) {
                                 return (
                                     <div key={key} className="col-md-12 hovered_list_item list_item edit_icon_handler">

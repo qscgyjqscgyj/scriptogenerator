@@ -17,7 +17,7 @@ class ScriptAccessField(serializers.Field):
             accesses = ScriptAccessSerializer(ScriptAccess.objects.filter(script=script), many=True).data
             for i, access in enumerate(accesses):
                 try:
-                    teammate = team.get(user=int(access['user']['id']))
+                    teammate = team.get(user__pk=int(access['user']['id']))
                     accesses[i]['active'] = teammate.active
                 except ObjectDoesNotExist:
                     accesses[i]['active'] = False

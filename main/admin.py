@@ -23,7 +23,7 @@ class LinkAdmin(admin.ModelAdmin):
 
 class ScriptAccessAdmin(admin.ModelAdmin):
     list_display = ('script', 'user')
-    search_fields = ('user',)
+    search_fields = ('user__username',)
 
 admin.site.register(Script, ScriptAdmin)
 admin.site.register(ScriptData, ScriptDataAdmin)

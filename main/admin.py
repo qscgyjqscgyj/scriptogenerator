@@ -21,9 +21,13 @@ class LinkAdmin(admin.ModelAdmin):
     list_display = ('name', 'to_link', 'category', 'parent')
 
 
+class ScriptAccessAdmin(admin.ModelAdmin):
+    list_display = ('script', 'user')
+    search_fields = ('user',)
+
 admin.site.register(Script, ScriptAdmin)
 admin.site.register(ScriptData, ScriptDataAdmin)
-admin.site.register(ScriptAccess)
+admin.site.register(ScriptAccess, ScriptAccessAdmin)
 admin.site.register(Project)
 admin.site.register(Table, TableAdmin)
 admin.site.register(TableLinksColl)

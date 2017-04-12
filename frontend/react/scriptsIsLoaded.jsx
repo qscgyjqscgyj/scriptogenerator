@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 export class scriptsIsLoaded extends React.Component {
     render() {
         const {scriptsStore, renderComponent} = this.props;
-        if(scriptsStore.scripts && scriptsStore.scripts.length > 0) {
+        if((scriptsStore.scripts && scriptsStore.scripts.length > 0) || (scriptsStore.available_scripts && scriptsStore.available_scripts.length > 0)) {
             if(this.props.params.script) {
                 const script = scriptsStore.script(this.props.params.script);
                 if(script && script.data) {

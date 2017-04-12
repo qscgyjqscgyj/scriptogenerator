@@ -36888,7 +36888,6 @@
 	                        React.createElement('div', { className: 'row' },
 	                            scripts_data.scripts.map(function (script, key) {
 	                                var access = available ? script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;}) : null;
-	                                console.log(access);
 	                                if (access ? access.active || !access : true) {
 	                                    return (
 	                                        React.createElement('div', { key: key, className: 'col-md-12 hovered_list_item list_item edit_icon_handler' },
@@ -59462,7 +59461,7 @@
 	scriptsIsLoaded = exports.scriptsIsLoaded = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(scriptsIsLoaded, _React$Component);function scriptsIsLoaded() {_classCallCheck(this, scriptsIsLoaded);return _possibleConstructorReturn(this, (scriptsIsLoaded.__proto__ || Object.getPrototypeOf(scriptsIsLoaded)).apply(this, arguments));}_createClass(scriptsIsLoaded, [{ key: 'render', value: function render()
 	        {var _props =
 	            this.props,scriptsStore = _props.scriptsStore,renderComponent = _props.renderComponent;
-	            if (scriptsStore.scripts && scriptsStore.scripts.length > 0) {
+	            if (scriptsStore.scripts && scriptsStore.scripts.length > 0 || scriptsStore.available_scripts && scriptsStore.available_scripts.length > 0) {
 	                if (this.props.params.script) {
 	                    var script = scriptsStore.script(this.props.params.script);
 	                    if (script && script.data) {

@@ -40,7 +40,10 @@ class SaveAnonymousUTMs(object):
 
 class SetLastVisitMiddleware(object):
     def process_response(self, request, response):
-        if request.user.is_authenticated():
-            # Update last visit time after request finished processing.
-            get_model('users', 'CustomUser').objects.filter(pk=request.user.pk).update(last_visit=now())
+        try:
+            if request.user.is_authenticated():
+                # Update last visit time after request finished processing.
+                get_model('users', 'CustomUser').objects.filter(pk=request.user.pk).update(last_visit=now())
+        except AttributeError:
+            return response
         return response

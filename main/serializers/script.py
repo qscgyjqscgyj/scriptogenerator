@@ -93,7 +93,7 @@ class ScriptSerializer(serializers.ModelSerializer):
         template = self.initial_data.get('template')
         if template:
             template_script = Script.objects.get(pk=int(template['id']))
-            clone_script_with_relations(template_script.pk, [('name', validated_data.get('name')), ('active', False), ('owner', owner)])
+            clone_script_with_relations(template_script.pk, [('name', validated_data.get('name')), ('owner', owner)])
         else:
             del validated_data['template']
             script = Script(**validated_data)

@@ -362,7 +362,7 @@ class ScriptAccessView(View):
 class CloneScriptView(View):
     def post(self, request, *args, **kwargs):
         current_script = Script.objects.get(pk=int(request.POST.get('script')))
-        clone_script_with_relations(current_script.pk, [('name', current_script.name + u'  (копия)'), ('active', False)])
+        clone_script_with_relations(current_script.pk, [('name', current_script.name + u'  (копия)')])
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
         })

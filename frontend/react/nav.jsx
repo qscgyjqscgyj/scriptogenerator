@@ -62,11 +62,6 @@ export class Nav extends React.Component {
                     </ul>
                     {usersStore.session_user ?
                         <ul className="nav navbar-nav navbar-right">
-                            {!usersStore.session_user.promoted ?
-                                <li className="nav_promotion_block">
-                                    <a href="http://getproff.ru/sgt-pay-sale">Акция: год доступа за 4 990р.</a>
-                                </li>
-                            : null}
                             <li className="nav_balance_block">
                                 <a
                                     href="http://getproff.ru/sgt-pay"

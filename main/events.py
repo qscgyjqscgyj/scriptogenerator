@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.loading import get_model
 from scripts.tasks import clone_script_with_relations
 
-PRESENT_SUM = 500.0
+PRESENT_SUM = 250.0
 
 
 def take_presents_to_user(user, sum=PRESENT_SUM, title=u'Подарок при регистрации', present_script=True, promotion=False):

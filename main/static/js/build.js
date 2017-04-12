@@ -36775,9 +36775,11 @@
 	            _jquery2.default.ajax({
 	                method: 'POST',
 	                url: document.body.getAttribute('data-accesses-url'),
-	                data: JSON.stringify({ accesses: accesses, script: script }),
+	                data: JSON.stringify({ accesses: accesses, script_id: script.id }),
 	                success: function success(res) {
-	                    scriptsStore.scripts = res.scripts;
+	                    if (script.data !== res.data) {
+	                        script.data = res.data;
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);

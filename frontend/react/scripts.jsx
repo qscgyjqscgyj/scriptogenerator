@@ -114,9 +114,11 @@ export class Scripts extends React.Component {
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-accesses-url'),
-            data: JSON.stringify({accesses: accesses, script: script}),
+            data: JSON.stringify({accesses: accesses, script_id: script.id}),
             success: (res) => {
-                scriptsStore.scripts = res.scripts;
+                if(script.data !== res.data) {
+                    script.data = res.data;
+                }
             },
             error: (res) => {
                 console.log(res);

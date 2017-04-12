@@ -333,7 +333,7 @@ class ScriptAccessView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         accesses = data['accesses']
-        script = Script.objects.get(pk=int(data['script']['id']))
+        script = Script.objects.get(pk=int(data['script_id']))
 
         def delete_accesses(accesses_for_deleting):
             for access in accesses_for_deleting:
@@ -355,7 +355,7 @@ class ScriptAccessView(View):
         else:
             delete_accesses(script.accesses())
         return JSONResponse({
-            'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
+            'data': json.loads(script.data())
         })
 
 
@@ -412,7 +412,7 @@ class ExternalRegisterView(View):
 
 EXT_PAYMENT_TITLES = {
     'SG_PAY_1000': 1000.0,
-    'SG_PAY_3000': 4000.0,
+    'SG_PAY_3000': 3000.0,
     'SG_PAY_5000': 7000.0,
     'SG_PAY_YEAR': 15000.0
 }

@@ -86060,11 +86060,6 @@
 	
 	                        usersStore.session_user ?
 	                        React.createElement('ul', { className: 'nav navbar-nav navbar-right' },
-	                            !usersStore.session_user.promoted ?
-	                            React.createElement('li', { className: 'nav_promotion_block' },
-	                                React.createElement('a', { href: 'http://getproff.ru/sgt-pay-sale' }, '\u0410\u043A\u0446\u0438\u044F: \u0433\u043E\u0434 \u0434\u043E\u0441\u0442\u0443\u043F\u0430 \u0437\u0430 4 990\u0440.')) :
-	
-	                            null,
 	                            React.createElement('li', { className: 'nav_balance_block' },
 	                                React.createElement('a', {
 	                                        href: 'http://getproff.ru/sgt-pay',

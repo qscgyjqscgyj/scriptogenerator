@@ -262,7 +262,7 @@ export class ScriptsStore {
             }
         });
     }
-    @action updateColl(script, table, coll) {
+    @action updateColl(script, table, coll, update_data=true) {
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-colls-url'),
@@ -272,7 +272,7 @@ export class ScriptsStore {
                 coll: coll
             }),
             success: (res) => {
-                if(script.data !== res.data) {
+                if(script.data !== res.data && update_data) {
                     script.data = res.data;
                 }
             },

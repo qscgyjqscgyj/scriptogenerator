@@ -59612,7 +59612,7 @@
 	            coll.categories.forEach(function (category, key) {
 	                category.order = key;
 	            });
-	            return scriptsStore.updateColl(script, table, coll);
+	            return scriptsStore.updateColl(script, table, coll, false);
 	        } }, { key: 'onLinkSort', value: function onLinkSort(
 	        coll, category) {var
 	            scriptsStore = this.props.scriptsStore;
@@ -59621,7 +59621,7 @@
 	            category.links.forEach(function (link, key) {
 	                link.order = key;
 	            });
-	            return scriptsStore.updateColl(script, table, coll);
+	            return scriptsStore.updateColl(script, table, coll, false);
 	        } }, { key: 'createToLink', value: function createToLink(
 	        script, table, coll, category, link, cb) {var
 	            scriptsStore = this.props.scriptsStore;
@@ -86378,7 +86378,7 @@
 	                } });
 	
 	        } }, { key: 'updateColl', value: function updateColl(
-	        script, table, coll) {
+	        script, table, coll) {var update_data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 	            _jquery2.default.ajax({
 	                method: 'PUT',
 	                url: document.body.getAttribute('data-colls-url'),
@@ -86388,7 +86388,7 @@
 	                    coll: coll }),
 	
 	                success: function success(res) {
-	                    if (script.data !== res.data) {
+	                    if (script.data !== res.data && update_data) {
 	                        script.data = res.data;
 	                    }
 	                },

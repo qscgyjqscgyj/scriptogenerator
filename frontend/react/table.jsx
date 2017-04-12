@@ -134,7 +134,7 @@ class Table extends AccessableComponent {
         coll.categories.forEach((category, key) => {
             category.order = key;
         });
-        return scriptsStore.updateColl(script, table, coll);
+        return scriptsStore.updateColl(script, table, coll, false);
     }
     onLinkSort(coll, category) {
         const {scriptsStore} = this.props;
@@ -143,7 +143,7 @@ class Table extends AccessableComponent {
         category.links.forEach((link, key) => {
             link.order = key;
         });
-        return scriptsStore.updateColl(script, table, coll);
+        return scriptsStore.updateColl(script, table, coll, false);
     }
     createToLink(script, table, coll, category, link, cb) {
         const {scriptsStore} = this.props;

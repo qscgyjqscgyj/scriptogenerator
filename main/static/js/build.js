@@ -59509,7 +59509,7 @@
 	
 	    }_createClass(Table, [{ key: 'fixHeight', value: function fixHeight()
 	        {
-	            var content_height = screen.height - 150;
+	            var content_height = window.innerHeight - (0, _jquery2.default)('.navbar').height() - 7;
 	            var scroll_links = [].slice.call(document.getElementsByClassName('scroll_links'));
 	            scroll_links.map(function (el) {
 	                (0, _jquery2.default)(el).css('min-height', content_height + 'px');

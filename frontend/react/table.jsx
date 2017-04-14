@@ -29,7 +29,7 @@ class Table extends AccessableComponent {
         }
     }
     fixHeight() {
-        const content_height = screen.height - 150;
+        const content_height = window.innerHeight - $('.navbar').height() - 7;
         let scroll_links = [].slice.call(document.getElementsByClassName('scroll_links'));
         scroll_links.map(el => {
             $(el).css('min-height', content_height + 'px');

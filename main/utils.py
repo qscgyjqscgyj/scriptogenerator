@@ -51,7 +51,7 @@ def get_empty_table():
         'text_coll_position': 0,
         'date': datetime.datetime.now().isoformat(),
         'date_mod': datetime.datetime.now().isoformat(),
-        'colls': []
+        'colls': [get_empty_coll()]
     }
 
 
@@ -59,7 +59,7 @@ def get_empty_coll():
     return {
         'id': current_milli_time(),
         'name': u'Новый блок',
-        'size': 10,
+        'size': 50,
         'position': 1,
         'categories': []
     }

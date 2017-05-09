@@ -421,7 +421,7 @@ EXT_PAYMENT_TITLES = {
 
 class ExternalPaymentView(View):
     def get(self, request, *args, **kwargs):
-        send_mail('ExternalPaymentView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        send_mail('ExternalPaymentView.get', str(dict(request.GET.get('positions'))), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         email = request.GET.get('email')
         if email:
             try:

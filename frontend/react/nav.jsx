@@ -7,7 +7,7 @@ const STATIC_URL = document.body.getAttribute('data-static-url');
 @observer
 export class Nav extends React.Component {
     render() {
-        const {usersStore, scriptsStore} = this.props;
+        const {usersStore, scriptsStore, settingsStore} = this.props;
         let script = scriptsStore.script(this.props.params.script);
         let edit = this.props.location.pathname.includes('edit');
         return(
@@ -18,12 +18,18 @@ export class Nav extends React.Component {
                     </a>
 
                     <ul className="nav navbar-nav">
-                        <li><Link to='/scripts/user/'>Мои скрипты</Link></li>
-                        <li><Link to='/scripts/available/'>Доступные скрипты</Link></li>
-                        <li><a href='http://lp.scriptogenerator.ru/info' target="_blank">Инструкция</a></li>
+                        <li className={this.props.location.pathname.includes('/scripts/user/') || this.props.location.pathname === '/' ? 'active' : ''}>
+                            <Link to='/scripts/user/'>Мои скрипты</Link>
+                        </li>
+                        <li className={this.props.location.pathname.includes('/scripts/available/') ? 'active' : ''}>
+                            <Link to='/scripts/available/'>Доступные скрипты</Link>
+                        </li>
+                        <li>
+                            <a href='http://lp.scriptogenerator.ru/info' target="_blank">Инструкция</a>
+                        </li>
 
                         {script && script.data.length > 0 ?
-                            <li className="dropdown">
+                            <li className={`dropdown ${this.props.location.pathname.includes('/tables/') ? 'active' : ''}`}>
                                 <Link to={scriptsStore.scriptUrl(script)} className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     Таблицы <span className="caret"/>
                                 </Link>
@@ -46,7 +52,9 @@ export class Nav extends React.Component {
                                         '/table/' + this.props.params.table +
                                         (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
                                         '/share/'
-                                    }>Просмотр</Link>
+                                    } className="nav_button_link">
+                                    <button className="btn btn-success">Просмотр</button>
+                                </Link>
                             </li>
                         : null}
                         {this.props.location.pathname.includes('share') ?
@@ -56,12 +64,21 @@ export class Nav extends React.Component {
                                         '/table/' + this.props.params.table +
                                         (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
                                         '/edit/'
-                                    }>Редактирование</Link>
+                                    } className="nav_button_link">
+                                    <button className="btn btn-info">Редактирование</button>
+                                </Link>
                             </li>
                         : null}
                     </ul>
                     {usersStore.session_user ?
                         <ul className="nav navbar-nav navbar-right">
+                            {settingsStore.advertisment ?
+                                <li className="nav_balance_block">
+                                    <a target="_blank" href={settingsStore.advertisment.url}>
+                                        {settingsStore.advertisment.title}
+                                    </a>
+                                </li>
+                            : null}
                             <li className="nav_balance_block">
                                 <a
                                     href="http://getproff.ru/sgt-pay"

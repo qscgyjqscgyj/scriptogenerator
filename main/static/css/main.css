@@ -51,6 +51,10 @@ html, body
 .nav_promotion_block a {
     color: #e95e42 !important;
 }
+.nav_button_link {
+    padding-top: 7px !important;
+    padding-bottom: 5px !important;
+}
 .link:hover {
     cursor: pointer;
     text-decoration: underline;

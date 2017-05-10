@@ -36945,6 +36945,7 @@
 	                                                                    modalStore.component = React.createElement(Accesses, {
 	                                                                        script: script,
 	                                                                        usersStore: usersStore,
+	                                                                        modalStore: modalStore,
 	                                                                        setAccesses: _this3.setAccesses.bind(_this3),
 	                                                                        delegateScript: _this3.delegateScript.bind(_this3) });
 	
@@ -37169,6 +37170,10 @@
 	            delegate_email = this.state.delegate_email;
 	            this.props.delegateScript(this.props.script, delegate_email);
 	            return this.setState((0, _reactAddonsUpdate2.default)(this.state, { delegate_email: { $set: null } }));
+	        } }, { key: 'closeModal', value: function closeModal()
+	        {var
+	            modalStore = this.props.modalStore;
+	            modalStore.modal = false;
 	        } }, { key: 'render', value: function render()
 	        {var _this9 = this;var
 	            delegate_email = this.state.delegate_email;
@@ -37190,19 +37195,22 @@
 	                                options: this.getOptions(false),
 	                                onChange: function onChange(selects) {_this9.onSelect(selects, false);} })),
 	
-	                        React.createElement('hr', null)),
+	                        React.createElement('hr', null),
+	                        React.createElement('button', { className: 'btn btn-success', onClick: this.closeModal.bind(this) }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))));
 	
-	                    React.createElement('div', { className: 'col-md-12' },
-	                        React.createElement('h3', null, '\u0414\u0435\u043B\u0435\u0433\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435'),
-	                        React.createElement('div', { className: 'form-group' },
-	                            React.createElement('label', null, 'Email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430'),
-	                            React.createElement('input', { type: 'text', name: 'email', className: 'form-control', placeholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430', onChange: function onChange(e) {
-	                                    _this9.setState((0, _reactAddonsUpdate2.default)(_this9.state, { delegate_email: { $set: e.target.value } }));
-	                                } })),
 	
-	                        React.createElement('button', { className: 'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled'), onClick: function onClick(e) {
-	                                    validateEmail(delegate_email) ? _this9.delegateScript() : null;
-	                                } }, '\u0414\u0435\u043B\u0435\u0433\u0438\u0440\u043E\u0432\u0430\u0442\u044C'))));
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -85876,8 +85884,9 @@
 	var _usersStore = __webpack_require__(776);var _usersStore2 = _interopRequireDefault(_usersStore);
 	var _paymentStore = __webpack_require__(777);var _paymentStore2 = _interopRequireDefault(_paymentStore);
 	var _tooltipStore = __webpack_require__(778);var _tooltipStore2 = _interopRequireDefault(_tooltipStore);
+	var _settingsStore = __webpack_require__(779);var _settingsStore2 = _interopRequireDefault(_settingsStore);
 	
-	var _noMoney = __webpack_require__(779);
+	var _noMoney = __webpack_require__(780);
 	var _mobxReact = __webpack_require__(561);
 	var _scripts = __webpack_require__(557);
 	var _tables = __webpack_require__(611);
@@ -85887,7 +85896,7 @@
 	
 	App = exports.App = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(App, _React$Component);function App() {_classCallCheck(this, App);return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));}_createClass(App, [{ key: 'componentWillMount', value: function componentWillMount()
 	        {var _props =
-	            this.props,scriptsStore = _props.scriptsStore,usersStore = _props.usersStore,paymentStore = _props.paymentStore;
+	            this.props,scriptsStore = _props.scriptsStore,usersStore = _props.usersStore,paymentStore = _props.paymentStore,settingsStore = _props.settingsStore;
 	            _jquery2.default.ajax({
 	                method: 'GET',
 	                url: document.body.getAttribute('data-init-url'),
@@ -85897,6 +85906,7 @@
 	                    scriptsStore.available_scripts = res.available_scripts;
 	                    paymentStore.shopId = res.shopId;
 	                    paymentStore.scid = res.scid;
+	                    settingsStore.advertisment = res.advertisment;
 	
 	                    scriptsStore.getInitialData();
 	                },
@@ -85906,7 +85916,7 @@
 	
 	        } }, { key: 'render', value: function render()
 	        {var _props2 =
-	            this.props,usersStore = _props2.usersStore,scriptsStore = _props2.scriptsStore;
+	            this.props,usersStore = _props2.usersStore,scriptsStore = _props2.scriptsStore,settingsStore = _props2.settingsStore;
 	            var PAYMENT_REQUIRED_COMPONENTS = [_scripts.Scripts, _tables.Tables, _table.TableEdit, _table.TableShare];
 	            var script = this.props.params.script ? scriptsStore.script(this.props.params.script) : null;
 	            var payment_required_children = this.props.children.filter(function (child) {
@@ -85939,7 +85949,7 @@
 	            if (usersStore.session_user) {
 	                return (
 	                    React.createElement('div', null,
-	                        React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params, usersStore: usersStore, scriptsStore: scriptsStore }),
+	                        React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params, usersStore: usersStore, scriptsStore: scriptsStore, settingsStore: settingsStore }),
 	
 	                        React.createElement('div', { className: 'container-fluid', id: 'main_container' },
 	
@@ -85971,6 +85981,7 @@
 	            var usersStore = _usersStore2.default;
 	            var paymentStore = _paymentStore2.default;
 	            var tooltipStore = _tooltipStore2.default;
+	            var settingsStore = _settingsStore2.default;
 	
 	            var childrenWithProps = React.Children.map(this.props.children,
 	            function (child) {return React.cloneElement(child, {
@@ -85978,7 +85989,8 @@
 	                    modalStore: modalStore,
 	                    usersStore: usersStore,
 	                    paymentStore: paymentStore,
-	                    tooltipStore: tooltipStore });});
+	                    tooltipStore: tooltipStore,
+	                    settingsStore: settingsStore });});
 	
 	
 	            return (
@@ -85988,6 +86000,7 @@
 	                    scriptsStore: scriptsStore,
 	                    paymentStore: paymentStore,
 	                    tooltipStore: tooltipStore,
+	                    settingsStore: settingsStore,
 	                    children: childrenWithProps,
 	                    location: this.props.location,
 	                    params: this.props.params }));
@@ -86007,7 +86020,7 @@
 	
 	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);function Nav() {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));}_createClass(Nav, [{ key: 'render', value: function render()
 	        {var _this2 = this;var _props =
-	            this.props,usersStore = _props.usersStore,scriptsStore = _props.scriptsStore;
+	            this.props,usersStore = _props.usersStore,scriptsStore = _props.scriptsStore,settingsStore = _props.settingsStore;
 	            var script = scriptsStore.script(this.props.params.script);
 	            var edit = this.props.location.pathname.includes('edit');
 	            return (
@@ -86018,12 +86031,18 @@
 	
 	
 	                        React.createElement('ul', { className: 'nav navbar-nav' },
-	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/user/' }, '\u041C\u043E\u0438 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
-	                            React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/available/' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
-	                            React.createElement('li', null, React.createElement('a', { href: 'http://lp.scriptogenerator.ru/info', target: '_blank' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F')),
+	                            React.createElement('li', { className: this.props.location.pathname.includes('/scripts/user/') || this.props.location.pathname === '/' ? 'active' : '' },
+	                                React.createElement(_reactRouter.Link, { to: '/scripts/user/' }, '\u041C\u043E\u0438 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
+	
+	                            React.createElement('li', { className: this.props.location.pathname.includes('/scripts/available/') ? 'active' : '' },
+	                                React.createElement(_reactRouter.Link, { to: '/scripts/available/' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
+	
+	                            React.createElement('li', null,
+	                                React.createElement('a', { href: 'http://lp.scriptogenerator.ru/info', target: '_blank' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F')),
+	
 	
 	                            script && script.data.length > 0 ?
-	                            React.createElement('li', { className: 'dropdown' },
+	                            React.createElement('li', { className: 'dropdown ' + (this.props.location.pathname.includes('/tables/') ? 'active' : '') },
 	                                React.createElement(_reactRouter.Link, { to: scriptsStore.scriptUrl(script), className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
 	                                    React.createElement('span', { className: 'caret' })),
 	
@@ -86045,7 +86064,9 @@
 	                                        '/tables/' + this.props.params.script +
 	                                        '/table/' + this.props.params.table + (
 	                                        this.props.params.link ? '/link/' + this.props.params.link : '') +
-	                                        '/share/' }, '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440')) :
+	                                        '/share/',
+	                                        className: 'nav_button_link' },
+	                                    React.createElement('button', { className: 'btn btn-success' }, '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440'))) :
 	
 	
 	                            null,
@@ -86055,13 +86076,22 @@
 	                                        '/tables/' + this.props.params.script +
 	                                        '/table/' + this.props.params.table + (
 	                                        this.props.params.link ? '/link/' + this.props.params.link : '') +
-	                                        '/edit/' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435')) :
+	                                        '/edit/',
+	                                        className: 'nav_button_link' },
+	                                    React.createElement('button', { className: 'btn btn-info' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435'))) :
 	
 	
 	                            null),
 	
 	                        usersStore.session_user ?
 	                        React.createElement('ul', { className: 'nav navbar-nav navbar-right' },
+	                            settingsStore.advertisment ?
+	                            React.createElement('li', { className: 'nav_balance_block' },
+	                                React.createElement('a', { target: '_blank', href: settingsStore.advertisment.url },
+	                                    settingsStore.advertisment.title)) :
+	
+	
+	                            null,
 	                            React.createElement('li', { className: 'nav_balance_block' },
 	                                React.createElement('a', {
 	                                        href: 'http://getproff.ru/sgt-pay',
@@ -86736,6 +86766,18 @@
 
 /***/ },
 /* 779 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.SettingsStore = undefined;var _desc, _value, _class, _descriptor;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
+	
+	SettingsStore = exports.SettingsStore = (_class = function SettingsStore() {_classCallCheck(this, SettingsStore);_initDefineProp(this, 'advertisment', _descriptor, this);}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'advertisment', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
+	            null);} })), _class);exports.default =
+	
+	
+	new SettingsStore();
+
+/***/ },
+/* 780 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.NoAccess = exports.NoScriptOwnerMoney = exports.NoMoney = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);

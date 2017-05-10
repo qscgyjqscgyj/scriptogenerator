@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 
+from constance import config
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.core.exceptions import ObjectDoesNotExist
@@ -8,7 +9,7 @@ from django.core.mail import send_mail
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import Paginator
-from django.db.models.loading import get_model
+from constance import config
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
@@ -380,6 +381,7 @@ class InitView(ScriptsView):
             'session_user': UserSerializer(request.user).data,
             'shopId': YANDEX_SHOPID,
             'scid': YANDEX_SCID,
+            'advertisment': {'title': config.ADVERTISING_TITLE, 'url': config.ADVERTISING_URL} if config.ADVERTISING_TITLE and config.ADVERTISING_URL else None
         }, status=200)
 
 

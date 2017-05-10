@@ -170,6 +170,9 @@ CONSTANCE_IGNORE_ADMIN_VERSION_CHECK = True
 CONSTANCE_CONFIG = {
     'PAYMENT_PER_DAY': (15.0, u'Абонентская плата за день', float),
     'PAYMENT_PER_USER': (15.0, u'Абонентская плата за КАЖДОГО пользователя', float),
+
+    'ADVERTISING_TITLE': (u'Акция', u'Название акции', str),
+    'ADVERTISING_URL': (u'Ссылка', u'Ссылка на акцию', str),
 }
 
 YANDEX_SHOPID = '91593'

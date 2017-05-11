@@ -64,7 +64,7 @@ export class Scripts extends React.Component {
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
                 scriptsStore.resetCreating();
-                modalStore.modal = false;
+                modalStore.close_modal();
                 this.checkingCloningScripts();
             },
             error: (res) => {
@@ -81,7 +81,7 @@ export class Scripts extends React.Component {
             data: JSON.stringify((script ? script : scriptsStore.editing)),
             success: (res) => {
                 script = res.script;
-                modalStore.modal = false;
+                modalStore.close_modal();
             },
             error: (res) => {
                 console.log(res);
@@ -136,7 +136,7 @@ export class Scripts extends React.Component {
             }),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
-                modalStore.modal = false;
+                modalStore.close_modal();
                 alert('Скрипт "' + script.name + '" делегирован пользователю: ' + email);
             },
             error: (res) => {
@@ -193,14 +193,15 @@ export class Scripts extends React.Component {
                         <div>
                             <div className="col-md-2">
                                 <button onClick={() => {
-                                    modalStore.modal = true;
-                                    modalStore.component = React.createElement(CreatingScript, {
-                                        scriptsStore: scriptsStore,
-                                        modalStore: modalStore,
-                                        createScript: this.createScript.bind(this),
-                                        updateScript: this.updateScript.bind(this),
-                                        available: available
-                                    });
+                                    modalStore.open_modal(
+                                        React.createElement(CreatingScript, {
+                                            scriptsStore: scriptsStore,
+                                            modalStore: modalStore,
+                                            createScript: this.createScript.bind(this),
+                                            updateScript: this.updateScript.bind(this),
+                                            available: available
+                                        })
+                                    );
                                 }} className="btn btn-success">+ Создать скрипт</button>
                             </div>
                             <div className="col-md-3">
@@ -237,14 +238,15 @@ export class Scripts extends React.Component {
                                                         data-tip="Редактировать скрипт"
                                                         onClick={() => {
                                                             scriptsStore.editing = script;
-                                                            modalStore.modal = true;
-                                                            modalStore.component = React.createElement(EditingScript, {
-                                                                scriptsStore: scriptsStore,
-                                                                modalStore: modalStore,
-                                                                createScript: this.createScript.bind(this),
-                                                                updateScript: this.updateScript.bind(this),
-                                                                available: available
-                                                            });
+                                                            modalStore.open_modal(
+                                                                React.createElement(EditingScript, {
+                                                                    scriptsStore: scriptsStore,
+                                                                    modalStore: modalStore,
+                                                                    createScript: this.createScript.bind(this),
+                                                                    updateScript: this.updateScript.bind(this),
+                                                                    available: available
+                                                                })
+                                                            );
                                                         }}/>
                                                 :
                                                     <i className="glyphicon glyphicon-edit hidden_edit_icon inline_element"/>
@@ -279,14 +281,15 @@ export class Scripts extends React.Component {
                                                         onClick={() => {
                                                             usersStore.getTeam();
                                                             scriptsStore.getScriptData(script, () => {
-                                                                modalStore.modal = true;
-                                                                modalStore.component = React.createElement(Accesses, {
-                                                                    script: script,
-                                                                    usersStore: usersStore,
-                                                                    modalStore: modalStore,
-                                                                    setAccesses: this.setAccesses.bind(this),
-                                                                    delegateScript: this.delegateScript.bind(this)
-                                                                })
+                                                                modalStore.open_modal(
+                                                                    React.createElement(Accesses, {
+                                                                        script: script,
+                                                                        usersStore: usersStore,
+                                                                        modalStore: modalStore,
+                                                                        setAccesses: this.setAccesses.bind(this),
+                                                                        delegateScript: this.delegateScript.bind(this)
+                                                                    })
+                                                                )
                                                             });
                                                         }}>
                                                     <i className="glyphicon glyphicon-user"/>
@@ -510,7 +513,7 @@ class Accesses extends React.Component {
     }
     closeModal() {
         let {modalStore} = this.props;
-        modalStore.modal = false;
+        modalStore.close_modal();
     }
     render() {
         const {delegate_email} = this.state;

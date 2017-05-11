@@ -37,7 +37,7 @@ export class Team extends React.Component {
             success: (res) => {
                 usersStore.team = res.team;
                 usersStore.session_user = res.session_user;
-                modalStore.modal = false;
+                modalStore.close_modal();
             },
             error: (res) => {
                 console.log(res);
@@ -85,12 +85,21 @@ export class Team extends React.Component {
             <div className="row">
                 <div className="col-md-12">
                     <button onClick={() => {
-                        modalStore.modal = true;
-                        modalStore.component = React.createElement(CreatingTeammate, {
-                            usersStore: usersStore,
-                            modalStore: modalStore,
-                            createTeammate: this.createTeammate.bind(this)
-                        });
+                        if(usersStore.session_user.positive_balance) {
+                            modalStore.open_modal(
+                                React.createElement(CreatingTeammate, {
+                                    usersStore: usersStore,
+                                    modalStore: modalStore,
+                                    createTeammate: this.createTeammate.bind(this)
+                                })
+                            );
+                        } else {
+                            modalStore.open_modal(
+                                React.createElement(CreatingTeammateNegativeBalance, {
+                                    modalStore: modalStore,
+                                })
+                            );
+                        }
                     }} className="btn btn-success">+ Добавить сотрудника</button>
 
                 </div>
@@ -197,6 +206,21 @@ class CreatingTeammate extends React.Component {
                         </div>
                     </div>
                 </form>
+            </div>
+        )
+    }
+}
+
+
+@observer
+class CreatingTeammateNegativeBalance extends React.Component {
+    render() {
+        return (
+            <div className="row">
+                <p>Чтобы добавить сотрудника</p>
+                <a href="https://getproff.ru/pay/user">
+                    <button className="btn btn-success">Пополните баланс</button>
+                </a>
             </div>
         )
     }

@@ -29,7 +29,7 @@ export class ModalWrapper extends React.Component {
                 style={customModalStyles}
                 contentLabel=""
                 onRequestClose={() => {
-                    modalStore.modal = false;
+                    modalStore.close_modal();
                     stores.map(store => {
                         if(store.editing) {
                             store.editing = null;

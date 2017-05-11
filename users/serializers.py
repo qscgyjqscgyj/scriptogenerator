@@ -22,6 +22,10 @@ class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(read_only=True)
     email = serializers.EmailField(read_only=True)
     promoted = UserPromotedField(read_only=True)
+    positive_balance = serializers.SerializerMethodField()
+
+    def get_positive_balance(self, user):
+        return user.positive_balance()
 
     def create(self, validated_data):
         return CustomUser.objects.get(**validated_data)
@@ -37,7 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email', 'phone', 'first_name', 'middle_name', 'last_name', 'company', 'balance_total', 'promoted')
+        fields = ('id', 'username', 'email', 'phone', 'first_name', 'middle_name', 'last_name', 'company', 'balance_total', 'promoted', 'positive_balance')
 
 
 class UserAccessSerializer(serializers.ModelSerializer):

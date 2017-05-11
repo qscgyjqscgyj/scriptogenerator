@@ -36725,7 +36725,7 @@
 	                success: function success(res) {
 	                    scriptsStore.scripts = res.scripts;
 	                    scriptsStore.resetCreating();
-	                    modalStore.modal = false;
+	                    modalStore.close_modal();
 	                    _this2.checkingCloningScripts();
 	                },
 	                error: function error(res) {
@@ -36742,7 +36742,7 @@
 	                data: JSON.stringify(script ? script : scriptsStore.editing),
 	                success: function success(res) {
 	                    script = res.script;
-	                    modalStore.modal = false;
+	                    modalStore.close_modal();
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -36797,7 +36797,7 @@
 	
 	                success: function success(res) {
 	                    scriptsStore.scripts = res.scripts;
-	                    modalStore.modal = false;
+	                    modalStore.close_modal();
 	                    alert('Скрипт "' + script.name + '" делегирован пользователю: ' + email);
 	                },
 	                error: function error(res) {
@@ -36854,13 +36854,14 @@
 	                        React.createElement('div', null,
 	                            React.createElement('div', { className: 'col-md-2' },
 	                                React.createElement('button', { onClick: function onClick() {
-	                                            modalStore.modal = true;
-	                                            modalStore.component = React.createElement(CreatingScript, {
+	                                            modalStore.open_modal(
+	                                            React.createElement(CreatingScript, {
 	                                                scriptsStore: scriptsStore,
 	                                                modalStore: modalStore,
 	                                                createScript: _this3.createScript.bind(_this3),
 	                                                updateScript: _this3.updateScript.bind(_this3),
-	                                                available: available });
+	                                                available: available }));
+	
 	
 	                                        }, className: 'btn btn-success' }, '+ \u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442')),
 	
@@ -36898,13 +36899,14 @@
 	                                                    'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
 	                                                    onClick: function onClick() {
 	                                                        scriptsStore.editing = script;
-	                                                        modalStore.modal = true;
-	                                                        modalStore.component = React.createElement(EditingScript, {
+	                                                        modalStore.open_modal(
+	                                                        React.createElement(EditingScript, {
 	                                                            scriptsStore: scriptsStore,
 	                                                            modalStore: modalStore,
 	                                                            createScript: _this3.createScript.bind(_this3),
 	                                                            updateScript: _this3.updateScript.bind(_this3),
-	                                                            available: available });
+	                                                            available: available }));
+	
 	
 	                                                    } }) :
 	
@@ -36940,13 +36942,14 @@
 	                                                        onClick: function onClick() {
 	                                                            usersStore.getTeam();
 	                                                            scriptsStore.getScriptData(script, function () {
-	                                                                modalStore.modal = true;
-	                                                                modalStore.component = React.createElement(Accesses, {
+	                                                                modalStore.open_modal(
+	                                                                React.createElement(Accesses, {
 	                                                                    script: script,
 	                                                                    usersStore: usersStore,
 	                                                                    modalStore: modalStore,
 	                                                                    setAccesses: _this3.setAccesses.bind(_this3),
-	                                                                    delegateScript: _this3.delegateScript.bind(_this3) });
+	                                                                    delegateScript: _this3.delegateScript.bind(_this3) }));
+	
 	
 	                                                            });
 	                                                        } },
@@ -37171,7 +37174,7 @@
 	        } }, { key: 'closeModal', value: function closeModal()
 	        {var
 	            modalStore = this.props.modalStore;
-	            modalStore.modal = false;
+	            modalStore.close_modal();
 	        } }, { key: 'render', value: function render()
 	        {var _this9 = this;var
 	            delegate_email = this.state.delegate_email;
@@ -53603,7 +53606,7 @@
 	                        style: customModalStyles,
 	                        contentLabel: '',
 	                        onRequestClose: function onRequestClose() {
-	                            modalStore.modal = false;
+	                            modalStore.close_modal();
 	                            stores.map(function (store) {
 	                                if (store.editing) {
 	                                    store.editing = null;
@@ -58842,7 +58845,7 @@
 /* 610 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Team = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Team = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
@@ -58881,7 +58884,7 @@
 	                success: function success(res) {
 	                    usersStore.team = res.team;
 	                    usersStore.session_user = res.session_user;
-	                    modalStore.modal = false;
+	                    modalStore.close_modal();
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -58929,12 +58932,21 @@
 	                React.createElement('div', { className: 'row' },
 	                    React.createElement('div', { className: 'col-md-12' },
 	                        React.createElement('button', { onClick: function onClick() {
-	                                    modalStore.modal = true;
-	                                    modalStore.component = React.createElement(CreatingTeammate, {
-	                                        usersStore: usersStore,
-	                                        modalStore: modalStore,
-	                                        createTeammate: _this2.createTeammate.bind(_this2) });
+	                                    if (usersStore.session_user.positive_balance) {
+	                                        modalStore.open_modal(
+	                                        React.createElement(CreatingTeammate, {
+	                                            usersStore: usersStore,
+	                                            modalStore: modalStore,
+	                                            createTeammate: _this2.createTeammate.bind(_this2) }));
 	
+	
+	                                    } else {
+	                                        modalStore.open_modal(
+	                                        React.createElement(CreatingTeammateNegativeBalance, {
+	                                            modalStore: modalStore }));
+	
+	
+	                                    }
 	                                }, className: 'btn btn-success' }, '+ \u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0430')),
 	
 	
@@ -59043,7 +59055,22 @@
 	
 	
 	
-	        } }]);return CreatingTeammate;}(React.Component)) || _class2;
+	        } }]);return CreatingTeammate;}(React.Component)) || _class2;var
+	
+	
+	
+	
+	CreatingTeammateNegativeBalance = (0, _mobxReact.observer)(_class3 = function (_React$Component3) {_inherits(CreatingTeammateNegativeBalance, _React$Component3);function CreatingTeammateNegativeBalance() {_classCallCheck(this, CreatingTeammateNegativeBalance);return _possibleConstructorReturn(this, (CreatingTeammateNegativeBalance.__proto__ || Object.getPrototypeOf(CreatingTeammateNegativeBalance)).apply(this, arguments));}_createClass(CreatingTeammateNegativeBalance, [{ key: 'render', value: function render()
+	        {
+	            return (
+	                React.createElement('div', { className: 'row' },
+	                    React.createElement('p', null, '\u0427\u0442\u043E\u0431\u044B \u0434\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0430'),
+	                    React.createElement('a', { href: 'https://getproff.ru/pay/user' },
+	                        React.createElement('button', { className: 'btn btn-success' }, '\u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435 \u0431\u0430\u043B\u0430\u043D\u0441'))));
+	
+	
+	
+	        } }]);return CreatingTeammateNegativeBalance;}(React.Component)) || _class3;
 
 /***/ },
 /* 611 */
@@ -59105,11 +59132,12 @@
 	                                                            access.edit ?
 	                                                            React.createElement('button', { className: 'btn btn-default', onClick: function onClick() {
 	                                                                        scriptsStore.editing = table;
-	                                                                        modalStore.modal = true;
-	                                                                        modalStore.component = React.createElement(EditingTable, {
+	                                                                        modalStore.open_modal(
+	                                                                        React.createElement(EditingTable, {
 	                                                                            scriptsStore: scriptsStore,
 	                                                                            script: script,
-	                                                                            modalStore: modalStore });
+	                                                                            modalStore: modalStore }));
+	
 	
 	                                                                    } }, '\u0420\u0435\u0434.') :
 	                                                            null),
@@ -59768,15 +59796,16 @@
 	
 	                                                                                React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0434\u0440\u0443\u0433\u0443\u044E \u0442\u0430\u0431\u043B\u0438\u0446\u0443', className: 'btn btn-default',
 	                                                                                        onClick: function onClick() {
-	                                                                                            modalStore.modal = true;
-	                                                                                            modalStore.component = React.createElement(ToLink, _extends({},
+	                                                                                            modalStore.open_modal(
+	                                                                                            React.createElement(ToLink, _extends({},
 	                                                                                            _this3.props, {
 	                                                                                                createToLink: _this3.createToLink.bind(_this3),
 	                                                                                                modalStore: modalStore,
 	                                                                                                script: script,
 	                                                                                                table: table,
 	                                                                                                coll: coll,
-	                                                                                                category: category }));
+	                                                                                                category: category })));
+	
 	
 	                                                                                        } },
 	                                                                                    React.createElement('i', { className: 'icon add_to_link_icon glyphicon glyphicon-plus' }))),
@@ -60176,7 +60205,7 @@
 	                                        _this7.props.coll,
 	                                        _this7.props.category,
 	                                        link, function () {
-	                                            modalStore.modal = false;
+	                                            modalStore.close_modal();
 	                                        });
 	
 	                                    }
@@ -86127,11 +86156,20 @@
 /* 774 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ModalStore = undefined;var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ModalStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
-	ModalStore = exports.ModalStore = (_class = function ModalStore() {_classCallCheck(this, ModalStore);_initDefineProp(this, 'modal', _descriptor, this);_initDefineProp(this, 'component', _descriptor2, this);}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'modal', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
-	            false);} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'component', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
-	            null);} })), _class);exports.default =
+	ModalStore = exports.ModalStore = (_class = function () {function ModalStore() {_classCallCheck(this, ModalStore);_initDefineProp(this, 'modal', _descriptor, this);_initDefineProp(this, 'component', _descriptor2, this);}_createClass(ModalStore, [{ key: 'open_modal', value: function open_modal(
+	
+	
+	
+	        component) {
+	            this.modal = true;
+	            this.component = component;
+	        } }, { key: 'close_modal', value: function close_modal()
+	        {
+	            this.modal = false;
+	            this.component = null;
+	        } }]);return ModalStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'modal', [_mobx.observable], { enumerable: true, initializer: function initializer() {return false;} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'component', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class.prototype, 'open_modal', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'open_modal'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'close_modal', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'close_modal'), _class.prototype)), _class);exports.default =
 	
 	
 	new ModalStore();
@@ -86352,7 +86390,7 @@
 	                        script.data = res.data;
 	                    }
 	                    if (modalStore) {
-	                        modalStore.modal = false;
+	                        modalStore.close_modal();
 	                        _this6.editing = null;
 	                    }
 	                },

@@ -54,12 +54,13 @@ class Tables extends AccessableComponent {
                                                         {access.edit ?
                                                             <button className="btn btn-default" onClick={()=>{
                                                                 scriptsStore.editing = table;
-                                                                modalStore.modal = true;
-                                                                modalStore.component = React.createElement(EditingTable, {
-                                                                    scriptsStore: scriptsStore,
-                                                                    script: script,
-                                                                    modalStore: modalStore,
-                                                                });
+                                                                modalStore.open_modal(
+                                                                    React.createElement(EditingTable, {
+                                                                        scriptsStore: scriptsStore,
+                                                                        script: script,
+                                                                        modalStore: modalStore,
+                                                                    })
+                                                                );
                                                             }}>Ред.</button>
                                                         : null}
                                                     </td>

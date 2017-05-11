@@ -281,16 +281,17 @@ class TableEdit extends Table {
                                                                                 </button>
                                                                                 <button data-tip="Создать ссылку на другую таблицу" className="btn btn-default"
                                                                                     onClick={() => {
-                                                                                        modalStore.modal = true;
-                                                                                        modalStore.component = React.createElement(ToLink, {
-                                                                                            ...this.props,
-                                                                                            createToLink: this.createToLink.bind(this),
-                                                                                            modalStore: modalStore,
-                                                                                            script: script,
-                                                                                            table: table,
-                                                                                            coll: coll,
-                                                                                            category: category
-                                                                                        });
+                                                                                        modalStore.open_modal(
+                                                                                            React.createElement(ToLink, {
+                                                                                                ...this.props,
+                                                                                                createToLink: this.createToLink.bind(this),
+                                                                                                modalStore: modalStore,
+                                                                                                script: script,
+                                                                                                table: table,
+                                                                                                coll: coll,
+                                                                                                category: category
+                                                                                            })
+                                                                                        );
                                                                                     }}>
                                                                                     <i className="icon add_to_link_icon glyphicon glyphicon-plus"/>
                                                                                 </button>
@@ -689,7 +690,7 @@ class ToLink extends React.Component {
                                     this.props.coll,
                                     this.props.category,
                                     link, () => {
-                                        modalStore.modal = false;
+                                        modalStore.close_modal();
                                     }
                                 );
                             }

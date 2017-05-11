@@ -210,7 +210,7 @@ export class ScriptsStore {
                     script.data = res.data;
                 }
                 if(modalStore) {
-                    modalStore.modal = false;
+                    modalStore.close_modal();
                     this.editing = null;
                 }
             },

@@ -58953,6 +58953,7 @@
 	                    React.createElement('div', { className: 'row' },
 	                        React.createElement('div', { className: 'col-md-8' },
 	                            React.createElement('div', { className: 'col-md-12' },
+	                                usersStore.session_user.positive_balance ?
 	                                React.createElement('table', { className: 'table table-striped' },
 	                                    React.createElement('thead', null,
 	                                        React.createElement('tr', null,
@@ -58986,7 +58987,15 @@
 	
 	
 	                                        }) :
-	                                        null)))),
+	                                        null)) :
+	
+	
+	
+	                                React.createElement('div', null,
+	                                    React.createElement('h3', null, '\u0414\u043E\u0441\u0442\u0443\u043F \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0430\u043C \u0434\u043B\u044F \u0447\u043B\u0435\u043D\u043E\u0432 \u043A\u043E\u043C\u0430\u043D\u0434\u044B - \u0437\u0430\u043A\u0440\u044B\u0442. \u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435 \u0431\u0430\u043B\u0430\u043D\u0441, \u0447\u0442\u043E\u0431\u044B \u043E\u0442\u043A\u0440\u044B\u0442\u044C \u0434\u043E\u0441\u0442\u0443\u043F.'),
+	                                    React.createElement('a', { href: 'https://getproff.ru/pay/user' },
+	                                        React.createElement('button', { className: 'btn btn-success' }, '\u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435 \u0431\u0430\u043B\u0430\u043D\u0441'))))),
+	
 	
 	
 	
@@ -59063,10 +59072,12 @@
 	CreatingTeammateNegativeBalance = (0, _mobxReact.observer)(_class3 = function (_React$Component3) {_inherits(CreatingTeammateNegativeBalance, _React$Component3);function CreatingTeammateNegativeBalance() {_classCallCheck(this, CreatingTeammateNegativeBalance);return _possibleConstructorReturn(this, (CreatingTeammateNegativeBalance.__proto__ || Object.getPrototypeOf(CreatingTeammateNegativeBalance)).apply(this, arguments));}_createClass(CreatingTeammateNegativeBalance, [{ key: 'render', value: function render()
 	        {
 	            return (
-	                React.createElement('div', { className: 'row' },
-	                    React.createElement('p', null, '\u0427\u0442\u043E\u0431\u044B \u0434\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0430'),
-	                    React.createElement('a', { href: 'https://getproff.ru/pay/user' },
-	                        React.createElement('button', { className: 'btn btn-success' }, '\u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435 \u0431\u0430\u043B\u0430\u043D\u0441'))));
+	                React.createElement('div', { className: 'row row-centered' },
+	                    React.createElement('div', { className: 'col-md-12 col-centered' },
+	                        React.createElement('h3', null, '\u0427\u0442\u043E\u0431\u044B \u0434\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0430'),
+	                        React.createElement('a', { href: 'https://getproff.ru/pay/user' },
+	                            React.createElement('button', { className: 'btn btn-success' }, '\u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435 \u0431\u0430\u043B\u0430\u043D\u0441')))));
+	
 	
 	
 	

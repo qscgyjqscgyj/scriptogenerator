@@ -86086,7 +86086,7 @@
 	                        usersStore.session_user ?
 	                        React.createElement('ul', { className: 'nav navbar-nav navbar-right' },
 	                            settingsStore.advertisment ?
-	                            React.createElement('li', { className: 'nav_balance_block' },
+	                            React.createElement('li', { className: 'nav_promotion_block' },
 	                                React.createElement('a', { target: '_blank', href: settingsStore.advertisment.url },
 	                                    settingsStore.advertisment.title)) :
 	

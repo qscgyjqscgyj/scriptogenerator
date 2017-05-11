@@ -73,7 +73,7 @@ export class Nav extends React.Component {
                     {usersStore.session_user ?
                         <ul className="nav navbar-nav navbar-right">
                             {settingsStore.advertisment ?
-                                <li className="nav_balance_block">
+                                <li className="nav_promotion_block">
                                     <a target="_blank" href={settingsStore.advertisment.url}>
                                         {settingsStore.advertisment.title}
                                     </a>

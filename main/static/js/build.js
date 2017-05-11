@@ -58949,7 +58949,7 @@
 	                                            React.createElement('td', null, '\u0418\u043C\u044F'),
 	                                            React.createElement('td', null, '\u041E\u0442\u0447\u0435\u0441\u0442\u0432\u043E'),
 	                                            React.createElement('td', null, '\u0422\u0435\u043B\u0435\u0444\u043E\u043D'),
-	                                            React.createElement('td', null, '\u0410\u043A\u0442\u0438\u0432\u0435\u043D'),
+	
 	                                            React.createElement('td', null))),
 	
 	

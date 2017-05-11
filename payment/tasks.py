@@ -45,7 +45,7 @@ def recount_balances():
 @app.task
 def get_payment_for_user(access_pk, history=True):
     access = get_model('users', 'UserAccess').objects.get(pk=access_pk)
-    if history:
+    if history and access.owner.positive_balance():
         local_payment = get_model('payment', 'LocalPayment')(
             name=u'Списание абонентской оплаты за доступ пользователю: %(email)s' % dict(email=access.user.email),
             user=access.owner,

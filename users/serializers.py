@@ -44,17 +44,26 @@ class UserAccessSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
     user = UserSerializer(read_only=True)
 
+    # def create(self, validated_data):
+    #     return UserAccess.objects.create(**validated_data)
+
+    # def update(self, instance, validated_data):
+    #     if not instance.active and validated_data.get('active') and instance.active_to_pay():
+    #         get_payment_for_user(instance.pk)
+    #         instance.payed = datetime.datetime.today()
+    #     instance.active = validated_data.get('active')
+    #     instance.save()
+    #     return instance
+
     def create(self, validated_data):
-        return UserAccess.objects.create(**validated_data)
+        access = UserAccess.objects.create(**validated_data)
+        get_payment_for_user(access.pk)
+        access.payed = datetime.datetime.today()
+        access.save()
 
     def update(self, instance, validated_data):
-        if not instance.active and validated_data.get('active') and instance.active_to_pay():
-            get_payment_for_user(instance.pk)
-            instance.payed = datetime.datetime.today()
-        instance.active = validated_data.get('active')
-        instance.save()
         return instance
 
     class Meta:
         model = UserAccess
-        fields = ('id', 'owner', 'user', 'active')
+        fields = ('id', 'owner', 'user')

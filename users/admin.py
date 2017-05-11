@@ -25,7 +25,7 @@ class CustomUserAdmin(UserAdmin):
 
 
 class UserAccessAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'user', 'payed', 'active')
+    list_display = ('owner', 'user', 'payed')
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(UserAccess, UserAccessAdmin)

@@ -119,9 +119,9 @@ export class Team extends React.Component {
                                                     <td>{access.user.first_name}</td>
                                                     <td>{access.user.middle_name}</td>
                                                     <td>{access.user.phone}</td>
-                                                    <td>
-                                                        <input type="checkbox" defaultChecked={access.active} onChange={() => {access.active = !access.active; this.updateTeammate(access)}}/>
-                                                    </td>
+                                                    {/*<td>*/}
+                                                        {/*<input type="checkbox" defaultChecked={access.active} onChange={() => {access.active = !access.active; this.updateTeammate(access)}}/>*/}
+                                                    {/*</td>*/}
                                                     <td>
                                                         <button onClick={()=>{this.deleteTeammate(access)}} className="btn btn-danger btn-xs">
                                                             <i className="glyphicon glyphicon-remove"/>
@@ -138,7 +138,8 @@ export class Team extends React.Component {
                     <div className="col-md-4">
                         <div className="jumbotron col-md-11">
                             <h3>Абонентская плата.</h3>
-                            <p>Абонентская плата составляет 15 рублей за пользователя в день. Деньги списываются только за активных пользователей (включение/отключение пользователей находится в разделе <Link to="/profile/team/">"Команда"</Link>)</p>
+                            {/*<p>Абонентская плата составляет 15 рублей за пользователя в день. Деньги списываются только за активных пользователей (включение/отключение пользователей находится в разделе <Link to="/profile/team/">"Команда"</Link>)</p>*/}
+                            <p>Абонентская плата составляет 15 рублей за пользователя в день. При добавлении пользователя сразу списывается абонентская плата за одного пользователя. Посмотреть список пользователей можно по ссылке <Link to="/profile/team/">"Команда"</Link></p>
                         </div>
                     </div>
                 </div>

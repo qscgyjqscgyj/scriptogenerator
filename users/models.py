@@ -2,6 +2,7 @@
 import datetime
 import json
 
+from constance import config
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models.loading import get_model
@@ -29,11 +30,19 @@ class CustomUser(AbstractUser):
     def payments(self):
         return get_model('payment', 'UserPayment').objects.filter(user=self, payed__isnull=False)
 
+    def local_payments(self):
+        return get_model('payment', 'LocalPayment').objects.filter(user=self)
+
     def promoted(self):
         return True if get_model('payment', 'UserPayment').objects.filter(user=self, promotion=True) else False
 
     def team(self):
         return UserAccess.objects.filter(owner=self)
+
+    def positive_balance(self):
+        if self.balance_real > 0 and self.balance_total > config.PAYMENT_PER_DAY:
+            return True
+        return False
 
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
@@ -45,7 +54,6 @@ class UserAccess(models.Model):
     owner = models.ForeignKey(CustomUser, related_name='user_access_owner_custom_user')
     user = models.ForeignKey(CustomUser, related_name='user_access_user_custom_user')
     payed = models.DateTimeField(blank=True, null=True)
-    active = models.BooleanField(default=False)
 
     def clear_script_accesses_and_delete(self):
         for script in get_model('main', 'Script').objects.filter(owner=self.owner):

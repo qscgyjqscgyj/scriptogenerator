@@ -36888,79 +36888,78 @@
 	                        React.createElement('div', { className: 'row' },
 	                            scripts_data.scripts.map(function (script, key) {
 	                                var access = available ? script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;}) : null;
-	                                if (access ? access.active || !access : true) {
-	                                    return (
-	                                        React.createElement('div', { key: key, className: 'col-md-12 hovered_list_item list_item edit_icon_handler' },
-	                                            React.createElement('div', { className: 'col-md-6' },
-	                                                script.active && script.available ?
-	                                                React.createElement('span', { className: 'inline_elements' },
-	                                                    (available && script.available ? access.edit : true) ?
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
-	                                                        'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                return (
+	                                    React.createElement('div', { key: key, className: 'col-md-12 hovered_list_item list_item edit_icon_handler' },
+	                                        React.createElement('div', { className: 'col-md-6' },
+	                                            script.active && script.available ?
+	                                            React.createElement('span', { className: 'inline_elements' },
+	                                                (available && script.available ? access.edit : true) ?
+	                                                React.createElement('i', { className: 'glyphicon glyphicon-edit edit_icon inline_element',
+	                                                    'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                                    onClick: function onClick() {
+	                                                        scriptsStore.editing = script;
+	                                                        modalStore.modal = true;
+	                                                        modalStore.component = React.createElement(EditingScript, {
+	                                                            scriptsStore: scriptsStore,
+	                                                            modalStore: modalStore,
+	                                                            createScript: _this3.createScript.bind(_this3),
+	                                                            updateScript: _this3.updateScript.bind(_this3),
+	                                                            available: available });
+	
+	                                                    } }) :
+	
+	                                                React.createElement('i', { className: 'glyphicon glyphicon-edit hidden_edit_icon inline_element' }),
+	
+	
+	                                                React.createElement(_reactRouter.Link, { className: 'inline_element', to: scriptsStore.scriptUrl(script) }, script.name)) :
+	
+	
+	                                            React.createElement('span', { className: 'inline_elements' },
+	                                                React.createElement('i', { className: 'glyphicon glyphicon-edit hidden_icon inline_element' }),
+	                                                React.createElement('span', null, script.name))),
+	
+	
+	
+	                                        React.createElement('div', { className: 'col-md-3' },
+	                                            available ?
+	                                            React.createElement('span', null, script.owner.email) :
+	                                            null),
+	
+	                                        React.createElement('div', { className: 'col-md-3' },
+	                                            React.createElement('div', { className: 'btn-group pull-right' },
+	                                                !available ?
+	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                        'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                                        onClick: function onClick() {_this3.cloneScript(script);} },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-copy' })) :
+	
+	                                                null,
+	                                                !available ?
+	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                        'data-tip': '\u041F\u0440\u0430\u0432\u0430 \u0434\u043E\u0441\u0442\u0443\u043F\u0430 \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
 	                                                        onClick: function onClick() {
-	                                                            scriptsStore.editing = script;
-	                                                            modalStore.modal = true;
-	                                                            modalStore.component = React.createElement(EditingScript, {
-	                                                                scriptsStore: scriptsStore,
-	                                                                modalStore: modalStore,
-	                                                                createScript: _this3.createScript.bind(_this3),
-	                                                                updateScript: _this3.updateScript.bind(_this3),
-	                                                                available: available });
+	                                                            usersStore.getTeam();
+	                                                            scriptsStore.getScriptData(script, function () {
+	                                                                modalStore.modal = true;
+	                                                                modalStore.component = React.createElement(Accesses, {
+	                                                                    script: script,
+	                                                                    usersStore: usersStore,
+	                                                                    modalStore: modalStore,
+	                                                                    setAccesses: _this3.setAccesses.bind(_this3),
+	                                                                    delegateScript: _this3.delegateScript.bind(_this3) });
 	
-	                                                        } }) :
+	                                                            });
+	                                                        } },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-user' })) :
 	
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit hidden_edit_icon inline_element' }),
+	                                                null,
+	                                                (available && script.available ? access.edit : true) ?
+	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                        'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
+	                                                        onClick: function onClick() {_this3.props.router.push('/tables/' + script.id + '/');} },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' })) :
 	
-	
-	                                                    React.createElement(_reactRouter.Link, { className: 'inline_element', to: scriptsStore.scriptUrl(script) }, script.name)) :
-	
-	
-	                                                React.createElement('span', { className: 'inline_elements' },
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit hidden_icon inline_element' }),
-	                                                    React.createElement('span', null, script.name))),
-	
-	
-	
-	                                            React.createElement('div', { className: 'col-md-3' },
-	                                                available ?
-	                                                React.createElement('span', null, script.owner.email) :
-	                                                null),
-	
-	                                            React.createElement('div', { className: 'col-md-3' },
-	                                                React.createElement('div', { className: 'btn-group pull-right' },
-	                                                    !available ?
-	                                                    React.createElement('button', { className: 'btn btn-default btn-xs',
-	                                                            'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                            onClick: function onClick() {_this3.cloneScript(script);} },
-	                                                        React.createElement('i', { className: 'glyphicon glyphicon-copy' })) :
-	
-	                                                    null,
-	                                                    !available ?
-	                                                    React.createElement('button', { className: 'btn btn-default btn-xs',
-	                                                            'data-tip': '\u041F\u0440\u0430\u0432\u0430 \u0434\u043E\u0441\u0442\u0443\u043F\u0430 \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
-	                                                            onClick: function onClick() {
-	                                                                usersStore.getTeam();
-	                                                                scriptsStore.getScriptData(script, function () {
-	                                                                    modalStore.modal = true;
-	                                                                    modalStore.component = React.createElement(Accesses, {
-	                                                                        script: script,
-	                                                                        usersStore: usersStore,
-	                                                                        modalStore: modalStore,
-	                                                                        setAccesses: _this3.setAccesses.bind(_this3),
-	                                                                        delegateScript: _this3.delegateScript.bind(_this3) });
-	
-	                                                                });
-	                                                            } },
-	                                                        React.createElement('i', { className: 'glyphicon glyphicon-user' })) :
-	
-	                                                    null,
-	                                                    (available && script.available ? access.edit : true) ?
-	                                                    React.createElement('button', { className: 'btn btn-default btn-xs',
-	                                                            'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
-	                                                            onClick: function onClick() {_this3.props.router.push('/tables/' + script.id + '/');} },
-	                                                        React.createElement('i', { className: 'glyphicon glyphicon-edit' })) :
-	
-	                                                    null,
+	                                                null,
 	
 	
 	
@@ -36968,21 +36967,20 @@
 	
 	
 	
-	                                                    !available ?
-	                                                    React.createElement('button', { className: 'btn btn-danger btn-xs',
-	                                                            'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                            onClick: function onClick() {_this3.deleteScript(script);} },
-	                                                        React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
+	                                                !available ?
+	                                                React.createElement('button', { className: 'btn btn-danger btn-xs',
+	                                                        'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                                        onClick: function onClick() {_this3.deleteScript(script);} },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
 	
-	                                                    null)),
-	
-	
-	                                            !script.active ?
-	                                            React.createElement('p', { className: 'loading' }, '\u0421\u043A\u0440\u0438\u043F\u0442 \u0441\u043E\u0437\u0434\u0430\u0435\u0442\u0441\u044F ', React.createElement('img', { src: STATIC_URL + 'img/loading.gif' })) :
-	                                            null));
+	                                                null)),
 	
 	
-	                                }
+	                                        !script.active ?
+	                                        React.createElement('p', { className: 'loading' }, '\u0421\u043A\u0440\u0438\u043F\u0442 \u0441\u043E\u0437\u0434\u0430\u0435\u0442\u0441\u044F ', React.createElement('img', { src: STATIC_URL + 'img/loading.gif' })) :
+	                                        null));
+	
+	
 	                            }),
 	
 	                            scripts_data.pages > 1 ?
@@ -58965,8 +58963,8 @@
 	                                                    React.createElement('td', null, access.user.first_name),
 	                                                    React.createElement('td', null, access.user.middle_name),
 	                                                    React.createElement('td', null, access.user.phone),
-	                                                    React.createElement('td', null,
-	                                                        React.createElement('input', { type: 'checkbox', defaultChecked: access.active, onChange: function onChange() {access.active = !access.active;_this2.updateTeammate(access);} })),
+	
+	
 	
 	                                                    React.createElement('td', null,
 	                                                        React.createElement('button', { onClick: function onClick() {_this2.deleteTeammate(access);}, className: 'btn btn-danger btn-xs' },
@@ -58984,7 +58982,8 @@
 	                        React.createElement('div', { className: 'col-md-4' },
 	                            React.createElement('div', { className: 'jumbotron col-md-11' },
 	                                React.createElement('h3', null, '\u0410\u0431\u043E\u043D\u0435\u043D\u0442\u0441\u043A\u0430\u044F \u043F\u043B\u0430\u0442\u0430.'),
-	                                React.createElement('p', null, '\u0410\u0431\u043E\u043D\u0435\u043D\u0442\u0441\u043A\u0430\u044F \u043F\u043B\u0430\u0442\u0430 \u0441\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u0435\u0442 15 \u0440\u0443\u0431\u043B\u0435\u0439 \u0437\u0430 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F \u0432 \u0434\u0435\u043D\u044C. \u0414\u0435\u043D\u044C\u0433\u0438 \u0441\u043F\u0438\u0441\u044B\u0432\u0430\u044E\u0442\u0441\u044F \u0442\u043E\u043B\u044C\u043A\u043E \u0437\u0430 \u0430\u043A\u0442\u0438\u0432\u043D\u044B\u0445 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0435\u0439 (\u0432\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435/\u043E\u0442\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0435\u0439 \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u0441\u044F \u0432 \u0440\u0430\u0437\u0434\u0435\u043B\u0435 ', React.createElement(_reactRouter.Link, { to: '/profile/team/' }, '"\u041A\u043E\u043C\u0430\u043D\u0434\u0430"'), ')')))),
+	
+	                                React.createElement('p', null, '\u0410\u0431\u043E\u043D\u0435\u043D\u0442\u0441\u043A\u0430\u044F \u043F\u043B\u0430\u0442\u0430 \u0441\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u0435\u0442 15 \u0440\u0443\u0431\u043B\u0435\u0439 \u0437\u0430 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F \u0432 \u0434\u0435\u043D\u044C. \u041F\u0440\u0438 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u0438\u0438 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F \u0441\u0440\u0430\u0437\u0443 \u0441\u043F\u0438\u0441\u044B\u0432\u0430\u0435\u0442\u0441\u044F \u0430\u0431\u043E\u043D\u0435\u043D\u0442\u0441\u043A\u0430\u044F \u043F\u043B\u0430\u0442\u0430 \u0437\u0430 \u043E\u0434\u043D\u043E\u0433\u043E \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F. \u041F\u043E\u0441\u043C\u043E\u0442\u0440\u0435\u0442\u044C \u0441\u043F\u0438\u0441\u043E\u043A \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0435\u0439 \u043C\u043E\u0436\u043D\u043E \u043F\u043E \u0441\u0441\u044B\u043B\u043A\u0435 ', React.createElement(_reactRouter.Link, { to: '/profile/team/' }, '"\u041A\u043E\u043C\u0430\u043D\u0434\u0430"'))))),
 	
 	
 	
@@ -59449,7 +59448,7 @@
 	                var script_access = script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;});
 	                if (usersStore.session_user.id === script.owner.id) {
 	                    access = { edit: true };
-	                } else if (script_access && script_access.active) {
+	                } else if (script_access) {
 	                    access = script_access;
 	                }
 	                return access;

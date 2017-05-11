@@ -53,7 +53,7 @@ export class Nav extends React.Component {
                                         (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
                                         '/share/'
                                     } className="nav_button_link">
-                                    <button className="btn btn-success">Просмотр</button>
+                                    <button className="btn btn-default">Просмотр</button>
                                 </Link>
                             </li>
                         : null}
@@ -65,7 +65,7 @@ export class Nav extends React.Component {
                                         (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
                                         '/edit/'
                                     } className="nav_button_link">
-                                    <button className="btn btn-info">Редактирование</button>
+                                    <button className="btn btn-default">Редактирование</button>
                                 </Link>
                             </li>
                         : null}

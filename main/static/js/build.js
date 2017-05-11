@@ -86105,7 +86105,7 @@
 	                                        this.props.params.link ? '/link/' + this.props.params.link : '') +
 	                                        '/share/',
 	                                        className: 'nav_button_link' },
-	                                    React.createElement('button', { className: 'btn btn-success' }, '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440'))) :
+	                                    React.createElement('button', { className: 'btn btn-default' }, '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440'))) :
 	
 	
 	                            null,
@@ -86117,7 +86117,7 @@
 	                                        this.props.params.link ? '/link/' + this.props.params.link : '') +
 	                                        '/edit/',
 	                                        className: 'nav_button_link' },
-	                                    React.createElement('button', { className: 'btn btn-info' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435'))) :
+	                                    React.createElement('button', { className: 'btn btn-default' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435'))) :
 	
 	
 	                            null),

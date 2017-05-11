@@ -57,7 +57,8 @@ class ScriptsView(View):
     def user_accessable_scripts_ids(self, request):
         access_scripts_ids = []
         for access in ScriptAccess.objects.filter(user=request.user):
-            access_scripts_ids.append(access.script.pk)
+            if access.script.owner.positive_balance():
+                access_scripts_ids.append(access.script.pk)
         return access_scripts_ids
 
     def get(self, request, *args, **kwargs):

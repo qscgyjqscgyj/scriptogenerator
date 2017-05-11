@@ -105,7 +105,7 @@ export class Team extends React.Component {
                                         <td>Имя</td>
                                         <td>Отчество</td>
                                         <td>Телефон</td>
-                                        <td>Активен</td>
+                                        {/*<td>Активен</td>*/}
                                         <td/>
                                     </tr>
                                 </thead>

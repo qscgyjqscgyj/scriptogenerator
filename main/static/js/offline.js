@@ -78124,11 +78124,10 @@
 	
 	
 	App = exports.App = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(App, _React$Component);
-	    function App(props) {_classCallCheck(this, App);
+	    function App(props) {_classCallCheck(this, App);var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this,
+	        props));
 	
-	
-	        // this.script = JSON.parse($('body').attr('script-data'));
-	        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));_this.script = JSON.parse(SCRIPT_DATA);return _this;
+	        _this.script = JSON.parse(SCRIPT_DATA);return _this;
 	    }_createClass(App, [{ key: 'componentWillMount', value: function componentWillMount()
 	        {
 	        } }, { key: 'render', value: function render()

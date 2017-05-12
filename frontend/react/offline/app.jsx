@@ -12,7 +12,6 @@ export class App extends React.Component {
     constructor(props) {
         super(props);
 
-        // this.script = JSON.parse($('body').attr('script-data'));
         this.script = JSON.parse(SCRIPT_DATA);
     }
     componentWillMount() {

@@ -85998,10 +85998,6 @@
 	
 	
 	
-	
-	
-	
-	
 	                            this.props.children)));
 	
 	
@@ -86115,7 +86111,7 @@
 	                                        this.props.params.link ? '/link/' + this.props.params.link : '') +
 	                                        '/edit/',
 	                                        className: 'nav_button_link' },
-	                                    React.createElement('button', { className: 'btn btn-default' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435'))) :
+	                                    React.createElement('button', { className: 'btn btn-default' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C'))) :
 	
 	
 	                            null),

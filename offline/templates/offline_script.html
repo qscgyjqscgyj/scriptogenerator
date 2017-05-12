@@ -1,5 +1,6 @@
 {% load static %}
 {% load compress %}
+{% load jsonify %}
 
 <!DOCTYPE html>
 <html>
@@ -20,7 +21,7 @@
         <div id="content"></div>
         {% compress js inline %}
             <script type="application/javascript">
-                var SCRIPT_DATA = '{{ script }}';
+                var SCRIPT_DATA = {{ script|jsonify|safe }};
             </script>
             <script src="{% static 'js/offline.js' %}"></script>
         {% endcompress %}

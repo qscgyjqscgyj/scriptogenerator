@@ -77338,7 +77338,7 @@
 	                                        this.props.params.link ? '/link/' + this.props.params.link : '') +
 	                                        '/edit/',
 	                                        className: 'nav_button_link' },
-	                                    React.createElement('button', { className: 'btn btn-default' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435'))) :
+	                                    React.createElement('button', { className: 'btn btn-default' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C'))) :
 	
 	
 	                            null),
@@ -77853,11 +77853,11 @@
 	var RENDER_ELEMENT = document.getElementById('content');
 	
 	ReactDOM.render(
-	React.createElement(_reactRouter.Router, { history: _reactRouter.browserHistory },
-	    React.createElement(_reactRouter.Route, { path: '/offline/tables/:script/', component: _app.AppWrapper },
-	        React.createElement(_reactRouter.IndexRoute, { component: _tables.TablesWrapper }))),
-	
-	
+	React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory },
+	    React.createElement(_reactRouter.Route, { path: '/', component: _app.AppWrapper },
+	        React.createElement(_reactRouter.IndexRoute, { component: _tables.TablesWrapper }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/share/', component: _table.TableWrapper }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/link/:link/share/', component: _table.TableWrapper }))),
 	
 	
 	RENDER_ELEMENT);
@@ -78123,24 +78123,34 @@
 	
 	
 	
-	App = exports.App = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(App, _React$Component);
-	    function App(props) {_classCallCheck(this, App);var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this,
-	        props));
-	
-	        _this.script = JSON.parse(SCRIPT_DATA);return _this;
-	    }_createClass(App, [{ key: 'componentWillMount', value: function componentWillMount()
-	        {
-	        } }, { key: 'render', value: function render()
+	App = exports.App = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(App, _React$Component);function App() {_classCallCheck(this, App);return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));}_createClass(App, [{ key: 'render', value: function render()
 	        {
 	            return (
-	                this.props.children);
+	                React.createElement('div', null,
+	
+	
+	                    React.createElement('div', { className: 'container-fluid', id: 'main_container' },
+	                        this.props.children)));
+	
+	
 	
 	        } }]);return App;}(React.Component)) || _class;var
 	
 	
-	AppWrapper = exports.AppWrapper = function (_React$Component2) {_inherits(AppWrapper, _React$Component2);function AppWrapper() {_classCallCheck(this, AppWrapper);return _possibleConstructorReturn(this, (AppWrapper.__proto__ || Object.getPrototypeOf(AppWrapper)).apply(this, arguments));}_createClass(AppWrapper, [{ key: 'render', value: function render()
-	        {
-	            return React.createElement(App, _extends({}, this.props));
+	AppWrapper = exports.AppWrapper = function (_React$Component2) {_inherits(AppWrapper, _React$Component2);
+	    function AppWrapper(props) {_classCallCheck(this, AppWrapper);var _this2 = _possibleConstructorReturn(this, (AppWrapper.__proto__ || Object.getPrototypeOf(AppWrapper)).call(this,
+	        props));
+	
+	        _this2.script = SCRIPT_DATA;return _this2;
+	    }_createClass(AppWrapper, [{ key: 'render', value: function render()
+	        {var _this3 = this;
+	            var childrenWithProps = React.Children.map(this.props.children,
+	            function (child) {return React.cloneElement(child, {
+	                    script: _this3.script });});
+	
+	
+	
+	            return React.createElement(App, _extends({}, this.props, { children: childrenWithProps }));
 	        } }]);return AppWrapper;}(React.Component);
 
 /***/ }

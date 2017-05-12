@@ -75,10 +75,6 @@ export class App extends React.Component {
 
                     <div className="container-fluid" id="main_container">
 
-                        {/*{scriptsStore.loading ?*/}
-                            {/*<div className="loading">Loading&#8230;</div>*/}
-                        {/*: null}*/}
-
                         {/*{payment_required_children.length > 0 ?*/}
                             {/*(available_children.length > 0 ?*/}
                                 {/*(script.owner.balance_total > 0 ? this.props.children : <NoScriptOwnerMoney/>)*/}

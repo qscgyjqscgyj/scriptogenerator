@@ -8,6 +8,6 @@ urlpatterns = patterns('',
 
     # REACT ROUTES
     url(r'^tables/(?P<script>\d+)/$', OfflineScriptView.as_view(), name='react__offline__script'),
-    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/$', OfflineScriptView.as_view(), name='react__offline__table'),
-    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/link/(?P<link>\d+)/$', OfflineScriptView.as_view(), name='react__offline__link'),
+    url(r'^tables/(?P<script>\d+)/table/(?P<table>\d+)/$', OfflineScriptView.as_view(), name='react__offline__table'),
+    url(r'^tables/(?P<script>\d+)/table/(?P<table>\d+)/link/(?P<link>\d+)/$', OfflineScriptView.as_view(), name='react__offline__link'),
 )

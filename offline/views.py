@@ -12,7 +12,5 @@ class OfflineScriptView(View):
     def get(self, request, *args, **kwargs):
         context = {}
         script = Script.objects.get(pk=int(kwargs['script']))
-        script_json = ScriptSerializer(script).data
-        context['script'] = json.dumps(script_json, default=datetime_handler)
-        
+        context['script'] = ScriptSerializer(script).data
         return TemplateResponse(request, 'offline_script.html', context)

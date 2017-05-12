@@ -49,9 +49,7 @@ class ScriptTemplateField(serializers.Field):
 
 class ScriptAvailableField(serializers.Field):
     def to_representation(self, script):
-        if script.owner.balance_total > 0:
-            return True
-        return False
+        return script.owner.positive_balance()
 
     def get_attribute(self, available):
         return available

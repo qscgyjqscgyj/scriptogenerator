@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 from django.contrib.admin.utils import NestedObjects
 from django.db.models.fields.related import ForeignKey
 
@@ -13,6 +14,12 @@ def get_params(url):
         except IndexError:
             continue
     return result
+
+
+def datetime_handler(x):
+    if isinstance(x, datetime.datetime):
+        return x.isoformat()
+    raise TypeError("Unknown type")
 
 
 def duplicate(instance):

@@ -225,13 +225,14 @@ export class Scripts extends React.Component {
                             : null}
                         </div>
                     : null}
+
                     <div className="row">
                         {scripts_data.scripts.map((script, key)=>{
                             let access = (available ? script.accesses.find(access => {return access.user.id === usersStore.session_user.id}) : null);
                             return (
                                 <div key={key} className="col-md-12 hovered_list_item list_item edit_icon_handler">
                                     <div className="col-md-6">
-                                        {script.active && script.available ?
+                                        {script.active ?
                                             <span className="inline_elements">
                                                 {(available && script.available ? access.edit : true) ?
                                                     <i className="glyphicon glyphicon-edit edit_icon inline_element"
@@ -275,6 +276,7 @@ export class Scripts extends React.Component {
                                                     <i className="glyphicon glyphicon-copy"/>
                                                 </button>
                                             : null}
+
                                             {!available ?
                                                 <button className="btn btn-default btn-xs"
                                                         data-tip="Права доступа к скрипту"
@@ -295,6 +297,7 @@ export class Scripts extends React.Component {
                                                     <i className="glyphicon glyphicon-user"/>
                                                 </button>
                                             : null}
+
                                             {(available && script.available ? access.edit : true) ?
                                                 <button className="btn btn-default btn-xs"
                                                         data-tip="Редактировать структуру скрипта"
@@ -302,13 +305,7 @@ export class Scripts extends React.Component {
                                                     <i className="glyphicon glyphicon-edit"/>
                                                 </button>
                                             : null}
-                                            {/*<button className="btn btn-default btn-xs"*/}
-                                                    {/*data-tip="Просмотр скрипта"*/}
-                                                    {/*onClick={() => {*/}
-                                                        {/*this.props.router.push(script.view_url);*/}
-                                                    {/*}}>*/}
-                                                {/*<i className="glyphicon glyphicon-eye-open"/>*/}
-                                            {/*</button>*/}
+
                                             {!available ?
                                                 <button className="btn btn-danger btn-xs"
                                                         data-tip="Удалить скрипт"

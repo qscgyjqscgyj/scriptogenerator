@@ -147,19 +147,18 @@ export class Team extends React.Component {
                                 <div>
                                     <h3>Доступ к скриптам для членов команды - закрыт. Пополните баланс, чтобы открыть доступ.</h3>
                                     <a href="https://getproff.ru/pay/user">
-                                        <button className="btn btn-success">Пополните баланс</button>
+                                        <button className="btn btn-danger">Пополните баланс</button>
                                     </a>
                                 </div>
                             }
                         </div>
                     </div>
-                    <div className="col-md-4">
-                        <div className="jumbotron col-md-11">
-                            <h3>Абонентская плата.</h3>
-                            {/*<p>Абонентская плата составляет 15 рублей за пользователя в день. Деньги списываются только за активных пользователей (включение/отключение пользователей находится в разделе <Link to="/profile/team/">"Команда"</Link>)</p>*/}
-                            <p>Абонентская плата составляет 15 рублей за пользователя в день. При добавлении пользователя сразу списывается абонентская плата за одного пользователя. Посмотреть список пользователей можно по ссылке <Link to="/profile/team/">"Команда"</Link></p>
-                        </div>
-                    </div>
+                    {/*<div className="col-md-4">*/}
+                        {/*<div className="jumbotron col-md-11">*/}
+                            {/*<h3>Абонентская плата.</h3>*/}
+                            {/*<p>Абонентская плата составляет 15 рублей за пользователя в день. При добавлении пользователя сразу списывается абонентская плата за одного пользователя. Посмотреть список пользователей можно по ссылке <Link to="/profile/team/">"Команда"</Link></p>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
                 </div>
                 <ModalWrapper stores={[usersStore]} modalStore={modalStore}/>
             </div>
@@ -229,7 +228,7 @@ class CreatingTeammateNegativeBalance extends React.Component {
                 <div className="col-md-12 col-centered">
                     <h3>Чтобы добавить сотрудника</h3>
                     <a href="https://getproff.ru/pay/user">
-                        <button className="btn btn-success">Пополните баланс</button>
+                        <button className="btn btn-danger">Пополните баланс</button>
                     </a>
                 </div>
             </div>

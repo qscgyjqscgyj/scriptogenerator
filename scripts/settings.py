@@ -59,9 +59,13 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = ()
 TEMPLATE_DIRS = ()
 
+COMPRESS_ENABLED = True
+# COMPRESS_OFFLINE = True
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder'
 )
 
 TEMPLATE_LOADERS = (
@@ -113,12 +117,14 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     'constance',
     'constance.backends.database',
+    'compressor'
 )
 
 LOCAL_APPS = (
     'main',
     'payment',
-    'users'
+    'users',
+    'offline'
 )
 
 # A sample logging configuration. The only tangible logging

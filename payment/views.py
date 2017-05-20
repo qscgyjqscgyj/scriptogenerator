@@ -47,7 +47,7 @@ class YandexPaymentView(View):
         return JSONResponse({'success': True})
 
     def post(self, request, *args, **kwargs):
-        send_mail('YandexPaymentView.post', str(dict(request.POST)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        # send_mail('YandexPaymentView.post', str(dict(request.POST)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         action = request.POST.get('action')
         yandex_md5 = request.POST.get('md5')
         date = datetime.datetime.now(tzlocal()).isoformat()
@@ -86,7 +86,7 @@ class YandexPaymentView(View):
                     'message': 'Неверные входные параметры',
                     'techMessage': 'MD5 не совпадают'
                 }
-                send_mail('YandexPaymentView.post md5 error response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+                # send_mail('YandexPaymentView.post md5 error response', str(response), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
                 return HttpResponse(response_template.render(response, request), content_type='application/xhtml+xml')
 
             if md5.hexdigest().upper() != yandex_md5:
@@ -126,7 +126,7 @@ class PaymentSuccessView(View):
 
 class PaymentFailView(View):
     def get(self, request, *args, **kwargs):
-        send_mail('PaymentFailView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
+        # send_mail('PaymentFailView.get', str(dict(request.GET)), 'info@scriptogenerator.ru', ['aliestarten@gmail.com'])
         test_mode = request.GET.get('mode')
         if test_mode and test_mode == 'test':
             return JSONResponse({'success': True, 'test': True})

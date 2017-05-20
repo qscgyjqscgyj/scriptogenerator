@@ -18,6 +18,7 @@ def clone_script_with_relations(script_pk, clone_script_values=[]):
     :param clone_script_values - defferent values for new script. Format: [('key', value), ...]:
     """
     current_script = get_model('main', 'Script').objects.get(pk=script_pk)
+    current_script_data, created = get_model('main', 'ScriptData').objects.get_or_create(script=current_script)
 
     clone_script = deepcopy(current_script)
     for value in clone_script_values:
@@ -26,40 +27,12 @@ def clone_script_with_relations(script_pk, clone_script_values=[]):
     clone_script.is_template = False
     clone_script.is_present = False
     clone_script.parent = current_script
+    clone_script.active = True
     clone_script.save()
 
-    clone_links = []
+    clone_script_data = deepcopy(current_script_data)
+    clone_script_data.pk = None
+    clone_script_data.script = clone_script
+    clone_script_data.save()
+    return True
 
-    for current_table in get_model('main', 'Table').objects.filter(script=current_script):
-        clone_table = deepcopy(current_table)
-        clone_table.pk = None
-        clone_table.script = clone_script
-        clone_table.parent = current_table
-        clone_table.save()
-        for current_coll in get_model('main', 'TableLinksColl').objects.filter(table=current_table):
-            clone_coll = deepcopy(current_coll)
-            clone_coll.pk = None
-            clone_coll.table = clone_table
-            clone_coll.save()
-            for current_category in get_model('main', 'LinkCategory').objects.filter(table=current_coll):
-                clone_category = deepcopy(current_category)
-                clone_category.pk = None
-                clone_category.table = clone_coll
-                clone_category.save()
-                for current_link in get_model('main', 'Link').objects.filter(category=current_category):
-                    clone_link = deepcopy(current_link)
-                    clone_link.pk = None
-                    clone_link.category = clone_category
-                    clone_link.parent = current_link
-
-                    try:
-                        if clone_link.to_link:
-                            to_link = get_model('main', 'Link').objects.get(parent__pk=clone_link.to_link.pk, category__table__table__script__pk=clone_link.category.table.table.script.pk)
-                            clone_link.to_link = to_link
-                    except Exception as e:
-                        continue
-                    clone_link.clone_save()
-                    clone_links.append(clone_link)
-
-    clone_script.active = True
-    return clone_script.save()

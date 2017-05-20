@@ -7,8 +7,8 @@ import {Scripts, AvailableScripts} from './scripts';
 import {Profile} from './profile/profile';
 import {Payment} from './profile/payment';
 import {Team} from './profile/team';
-import {Tables, AvailableTables} from './tables';
-import {TableEdit, TableShare} from './table';
+import {TablesWrapper, AvailableTablesWrapper} from './tables';
+import {TableEditWrapper, TableShareWrapper} from './table';
 import {AppWrapper} from './app';
 
 const RENDER_ELEMENT = document.getElementById('content');
@@ -21,14 +21,14 @@ ReactDOM.render(
             <Route path="/scripts/user/" component={Scripts}/>
             <Route path="/scripts/available/" component={AvailableScripts}/>
 
-            <Route path="/tables/:script/" component={Tables}/>
-            <Route path="/tables/:script/available/" component={AvailableTables}/>
+            <Route path="/tables/:script/" component={TablesWrapper}/>
+            <Route path="/tables/:script/available/" component={AvailableTablesWrapper}/>
 
-            <Route path="/tables/:script/table/:table/edit/" component={TableEdit}/>
-            <Route path="/tables/:script/table/:table/link/:link/edit/" component={TableEdit}/>
+            <Route path="/tables/:script/table/:table/edit/" component={TableEditWrapper}/>
+            <Route path="/tables/:script/table/:table/link/:link/edit/" component={TableEditWrapper}/>
 
-            <Route path="/tables/:script/table/:table/share/" component={TableShare}/>
-            <Route path="/tables/:script/table/:table/link/:link/share/" component={TableShare}/>
+            <Route path="/tables/:script/table/:table/share/" component={TableShareWrapper}/>
+            <Route path="/tables/:script/table/:table/link/:link/share/" component={TableShareWrapper}/>
 
             <Route path="/profile/" component={Profile}/>
             <Route path="/profile/payment/" component={Payment}/>

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+
 from django.db import models
 
 from users.models import CustomUser
@@ -18,34 +20,97 @@ class Script(models.Model):
     def get_client_url(self):
         return '/tables/' + str(self.pk) + '/'
 
+    def data(self):
+        data, created = ScriptData.objects.get_or_create(script=self)
+        return data.data
+
     def get_client_view_url(self):
         result = '/tables/' + str(self.pk) + '/'
         tables = self.tables()
         if tables:
-            result += 'table/' + str(tables[0].pk) + '/'
-            links = tables[0].links()
+            result += 'table/' + str(tables[0]['id']) + '/'
+            links = self.links(table_id=tables[0]['id'])
             if links:
-                result += 'link/' + str(links[0].pk) + '/share/'
+                result += 'link/' + str(links[0]['id']) + '/share/'
         return result
 
     def accesses(self):
         return ScriptAccess.objects.filter(script=self)
 
-    def tables(self):
-        return Table.objects.filter(script=self)
+    def replace_table(self, table, index):
+        script_data = ScriptData.objects.get(script=self)
+        data = json.loads(script_data.data)
+        data[index] = table
+        script_data.data = json.dumps(data)
+        script_data.save()
 
-    def links(self, parent=False):
-        tables = [table.pk for table in self.tables()]
-        if not parent:
-            return Link.objects.filter(category__table__table__pk__in=tables)
+    def tables(self, table_id=None):
+        data = json.loads(self.data())
+        if table_id:
+            return [{'data': table, 'index': i} for i, table in enumerate(data) if table['id'] == table_id][0]
+        return data
+
+    def colls(self, table_id=None, coll_id=None):
+        data = json.loads(self.data())
+        if table_id:
+            table_data = self.tables(table_id=table_id)
+            if coll_id:
+                return [{'data': coll, 'index': i} for i, coll in enumerate(table_data['data']['colls']) if coll['id'] == coll_id][0]
+            else:
+                return data['colls']
         else:
-            return Link.objects.filter(category__table__table__pk__in=tables, parent__isnull=False)
+            result = []
+            for table in data:
+                for coll in table['colls']:
+                    result.append(coll)
+            return result
+
+    def categories(self, table_id=None, coll_id=None, category_id=None):
+        data = json.loads(self.data())
+        if table_id and coll_id:
+            coll_data = self.colls(table_id=table_id, coll_id=coll_id)
+            if category_id:
+                return [{'data': category, 'index': i} for i, category in enumerate(coll_data['data']['categories']) if category['id'] == category_id][0]
+            else:
+                return coll_data['categories']
+        else:
+            result = []
+            for table in data:
+                for coll in table['colls']:
+                    for category in coll['categories']:
+                        result.append(category)
+            return result
+
+    def links(self, table_id=None, coll_id=None, category_id=None, link_id=None):
+        data = json.loads(self.data())
+        if table_id and coll_id and category_id:
+            category_data = self.categories(table_id=table_id, coll_id=coll_id, category_id=category_id)
+            if link_id:
+                return [{'data': link, 'index': i} for i, link in enumerate(category_data['data']['links']) if link['id'] == link_id][0]
+            else:
+                return category_data['links']
+        else:
+            result = []
+            for table in data:
+                for coll in table['colls']:
+                    for category in coll['categories']:
+                        for link in category['links']:
+                            result.append(link)
+            return result
 
     def __unicode__(self):
         return self.name
 
     class Meta:
         ordering = ('-pk',)
+
+
+class ScriptData(models.Model):
+    script = models.OneToOneField(Script, primary_key=True)
+    data = models.TextField(default='[]')
+
+    def __unicode__(self):
+        return self.script.__unicode__()
 
 
 class ScriptAccess(models.Model):
@@ -94,6 +159,9 @@ class Table(models.Model):
         colls = [coll.pk for coll in TableLinksColl.objects.filter(table=self)]
         return Link.objects.filter(category__table__pk__in=colls)
 
+    def colls(self):
+        return TableLinksColl.objects.filter(table=self)
+
     def __unicode__(self):
         return self.name
 
@@ -106,6 +174,9 @@ class TableLinksColl(models.Model):
 
     def __unicode__(self):
         return self.table.__unicode__()
+
+    def categories(self):
+        return LinkCategory.objects.filter(table=self)
 
     class Meta:
         ordering = ('position',)
@@ -120,6 +191,9 @@ class LinkCategory(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def links(self):
+        return Link.objects.filter(category=self)
 
     class Meta:
         ordering = ('order',)

@@ -13,27 +13,27 @@ from django.db.models import Q
 def get_payment_for_users():
     today = datetime.today()
     for user in get_model('users', 'CustomUser').objects.all():
-        local_payment = get_model('payment', 'LocalPayment')(
-            name=u'Списание ежедневной абонентской платы.',
-            user=user,
-            sum=config.PAYMENT_PER_DAY
-        )
-        local_payment.save()
-
-        user_accesses = get_model('users', 'UserAccess').objects.filter(
-                Q(active=True) &
-                Q(owner=user) &
-                (Q(payed__isnull=True) | Q(payed__lte=today-timedelta(days=1))))
-        if user_accesses:
+        if user.positive_balance():
             local_payment = get_model('payment', 'LocalPayment')(
-                name=u'Списание абонентской платы за активных пользователей в команде.',
+                name=u'Списание ежедневной абонентской платы.',
                 user=user,
-                sum=config.PAYMENT_PER_USER * len(user_accesses)
+                sum=config.PAYMENT_PER_DAY
             )
             local_payment.save()
 
-        for access in user_accesses:
-            get_payment_for_user.delay(access.pk, False)
+            user_accesses = get_model('users', 'UserAccess').objects.filter(
+                    Q(owner=user) &
+                    (Q(payed__isnull=True) | Q(payed__lte=today-timedelta(days=1))))
+            if user_accesses:
+                local_payment = get_model('payment', 'LocalPayment')(
+                    name=u'Списание абонентской платы за активных пользователей в команде.',
+                    user=user,
+                    sum=config.PAYMENT_PER_USER * len(user_accesses)
+                )
+                local_payment.save()
+
+            for access in user_accesses:
+                get_payment_for_user.delay(access.pk, False)
 
 
 @periodic_task(run_every=(crontab(minute=0, hour=1)))
@@ -45,7 +45,7 @@ def recount_balances():
 @app.task
 def get_payment_for_user(access_pk, history=True):
     access = get_model('users', 'UserAccess').objects.get(pk=access_pk)
-    if history:
+    if history and access.owner.positive_balance():
         local_payment = get_model('payment', 'LocalPayment')(
             name=u'Списание абонентской оплаты за доступ пользователю: %(email)s' % dict(email=access.user.email),
             user=access.owner,

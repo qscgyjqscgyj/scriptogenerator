@@ -13,6 +13,8 @@ export class UsersStore {
     @observable creating_teammate_middle_name = '';
     @observable creating_teammate_phone = '';
 
+    @observable pressed_key = null;
+
     @action getData() {
         $.ajax({
             method: 'GET',
@@ -24,6 +26,21 @@ export class UsersStore {
                 console.log(res);
             }
         });
+    }
+
+    @action getTeam() {
+        if(this.team.length === 0) {
+            $.ajax({
+                method: 'GET',
+                url: document.body.getAttribute('data-team-url'),
+                success: (res) => {
+                    this.team = res.team;
+                },
+                error: (res) => {
+                    console.log(res);
+                }
+            });
+        }
     }
 
     @action resetCreating() {

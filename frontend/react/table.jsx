@@ -1,24 +1,25 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import $ from 'jquery';
 import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import {ModalWrapper} from './modal';
-import {Coll} from '../mobx/tablesStore';
-import {CustomEditor, styleMap, DECORATORS} from './editor/editor';
+import {CustomEditor, styleMap} from './editor/editor';
 import {Link} from 'react-router';
 import Clipboard from 'clipboard';
-import {EditorState, ContentState, convertFromRaw} from 'draft-js';
+import {EditorState, ContentState, convertFromRaw, Entity} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
-import {Sort, moveInArray} from './sort';
+import {moveInArray} from './sort';
 import {AccessableComponent} from './access';
-import confirm from './confirm';
 import Select from 'react-select';
 import {extendObservable} from 'mobx';
-import ReactTooltip from 'react-tooltip';
+import {Tooltip} from './tooltip';
+import {scriptsIsLoaded} from './scriptsIsLoaded';
+
+const ALT_CODE = 18;
+const CTRL_CODE = 17;
 
 @observer
-export class Table extends AccessableComponent {
+class Table extends AccessableComponent {
     constructor(props) {
         super(props);
 
@@ -27,197 +28,80 @@ export class Table extends AccessableComponent {
             clipboard: null
         }
     }
-    fixClipboard(onInit, onDestroy) {
-        const {clipboard} = this.state;
-        const {tablesStore} = this.props;
-        let new_clipboard = new Clipboard('.copy_icon', {
-            text: function(trigger) {
-                if(tablesStore.pressed_key == 17) {
-                    return trigger.getAttribute('data-link');
-                } else if($(trigger).hasClass('enable_copy_icon')) {
-                    return trigger.getAttribute('data-link');
-                }
-            }
-        });
-
-        if(this.state.clipboard) {
-            clipboard.destroy();
-            this.setState(update(this.state, {clipboard: {
-                $set: null
-            }}), () => {
-                onDestroy ? onDestroy() : null;
-            });
-        }
-        this.setState(update(this.state, {clipboard: {
-            $set: new_clipboard
-        }}), () => {
-            return onInit ? onInit() : null;
-        });
-    }
-    componentWillMount() {
-        const {tablesStore} = this.props;
-        this.fixClipboard();
-        tablesStore.pullTables(this.props.params.script);
-    }
-    componentWillReceiveProps(props) {
-        const {tablesStore} = props;
-        tablesStore.pullTables(props.params.script);
-    }
-    componentDidMount() {
-        $(document.body).on('keydown', this.handleKeyDown.bind(this));
-        $(document.body).on('keyup', this.handleKeyUp.bind(this));
-    }
-    componentWillUnmount() {
-        $(document.body).off('keydown', this.handleKeyDown.bind(this));
-        $(document.body).off('keyup', this.handleKeyUp.bind(this));
-    }
-    handleKeyDown(e) {
-        const {tablesStore} = this.props;
-        // 17 - CTRL, 16 - SHIFT
-        if(e.keyCode === 17 || e.keyCode === 16) {
-            tablesStore.pressed_key = e.keyCode;
-        }
-    }
-    handleKeyUp(e) {
-        const {tablesStore} = this.props;
-        tablesStore.pressed_key = null;
-    }
-    componentDidUpdate() {
-        const content_height = screen.height - 200;
+    fixHeight() {
+        const content_height = window.innerHeight - $('.navbar').height() - 7;
         let scroll_links = [].slice.call(document.getElementsByClassName('scroll_links'));
         scroll_links.map(el => {
             $(el).css('min-height', content_height + 'px');
             $(el).css('max-height', content_height + 'px');
         });
     }
-    updateTableLinksColl(coll, opened_category, opened_link, update_sate=true) {
-        const {tablesStore} = this.props;
-        $.ajax({
-            method: 'PUT',
-            url: document.body.getAttribute('data-colls-url'),
-            data: JSON.stringify({
-                coll: coll,
-                opened_category: opened_category,
-                opened_link: opened_link
-            }),
-            success: (res) => {
-                if(update_sate) {
-                    tablesStore.tables = res.tables;
-                }
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
-    }
-    createLinkCategory(coll, hidden) {
-        const {tablesStore} = this.props;
-        $.ajax({
-            method: 'POST',
-            url: document.body.getAttribute('data-link-categories-url'),
-            data: JSON.stringify({name: 'Пустой раздел', table: coll.id, hidden: hidden}),
-            success: (res) => {
-                tablesStore.tables = res.tables;
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
-    }
-    deleteLinkCategory(category) {
-        const {tablesStore} = this.props;
-        confirm("Вы действительно хотите удалить категорию: " + category.name).then(
-            (result) => {
-                $.ajax({
-                    method: 'DELETE',
-                    url: document.body.getAttribute('data-link-categories-url'),
-                    data: JSON.stringify({category: category.id, table: this.props.params.table}),
-                    success: (res) => {
-                        tablesStore.tables = res.tables;
-                    },
-                    error: (res) => {
-                        console.log(res);
+    fixClipboard(clear=false) {
+        const {clipboard} = this.state;
+        const {usersStore} = this.props;
+        if(clipboard) {
+            clipboard.destroy();
+        }
+        if(!clear) {
+            let new_clipboard = new Clipboard('.copy_icon', {
+                text: function(trigger) {
+                    if(usersStore.pressed_key === CTRL_CODE) {
+                        return trigger.getAttribute('data-link');
+                    } else if($(trigger).hasClass('enable_copy_icon')) {
+                        return trigger.getAttribute('data-link');
                     }
-                });
-            },
-            (result) => {
-                console.log('cancel called');
-            }
-        )
-    }
-    updateLinkCategory(category) {
-        const {tablesStore} = this.props;
-        $.ajax({
-            method: 'PUT',
-            url: document.body.getAttribute('data-link-categories-url'),
-            data: JSON.stringify(category),
-            success: (res) => {
-                tablesStore.tables = res.tables;
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
-    }
-    createLink(category, to_link) {
-        const {tablesStore} = this.props;
-        $.ajax({
-            method: 'POST',
-            url: document.body.getAttribute('data-links-url'),
-            data: JSON.stringify({
-                name: to_link ? to_link.name : 'Ссылка',
-                category: category.id,
-                text: to_link ? to_link.text : 'Текст ссылки',
-                to_link: to_link ? to_link.id : null
-            }),
-            success: (res) => {
-                tablesStore.tables = res.tables;
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
-    }
-    deleteLink(link) {
-        const {tablesStore} = this.props;
-        confirm("Вы действительно хотите удалить ссылку: " + link.name).then(
-            (result) => {
-                $.ajax({
-                    method: 'DELETE',
-                    url: document.body.getAttribute('data-links-url'),
-                    data: JSON.stringify({link: link.id, table: this.props.params.table}),
-                    success: (res) => {
-                        tablesStore.tables = res.tables;
-                    },
-                    error: (res) => {
-                        console.log(res);
-                    }
-                });
-            },
-            (result) => {
-                console.log('cancel called');
-            }
-        )
-    }
-    updateLink(link, update_state=true) {
-        const {tablesStore} = this.props;
-        $.ajax({
-            method: 'PUT',
-            url: document.body.getAttribute('data-links-url'),
-            data: JSON.stringify(link),
-            success: (res) => {
-                if(update_state) {
-                    tablesStore.tables = res.tables;
                 }
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
+            });
+            this.setState(update(this.state, {clipboard: {
+                $set: new_clipboard
+            }}));
+        }
+    }
+    componentWillMount() {
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        if(script && !script.data.length > 0) {
+            scriptsStore.getScriptData(script);
+        }
+    }
+    setKeyHandlers() {
+        $(document.body).on('keydown', this.handleKeyDown.bind(this));
+        $(document.body).on('keyup', this.handleKeyUp.bind(this));
+    }
+    killKeyHandlers() {
+        $(document.body).off('keydown', this.handleKeyDown.bind(this));
+        $(document.body).off('keyup', this.handleKeyUp.bind(this));
+    }
+    componentDidMount() {
+        this.fixHeight();
+        this.fixClipboard();
+        this.setKeyHandlers();
+    }
+    componentWillUnmount() {
+        this.fixClipboard(true);
+        this.killKeyHandlers();
+    }
+    componentWillUpdate() {
+        this.killKeyHandlers();
+        this.setKeyHandlers();
+    }
+    handleKeyDown(e) {
+        const {usersStore} = this.props;
+        if(e.keyCode === CTRL_CODE || e.keyCode === ALT_CODE) {
+            usersStore.pressed_key = e.keyCode;
+        }
+    }
+    handleKeyUp(e) {
+        const {usersStore} = this.props;
+        usersStore.pressed_key = null;
+    }
+    componentDidUpdate() {
+        this.fixHeight();
     }
     sortedColls() {
-        const {tablesStore} = this.props;
-        let table = tablesStore.table(this.props.params.table);
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        const table = scriptsStore.table(script, this.props.params.table);
         if(table) {
             let sorted_colls = [];
             sorted_colls.push({position: table.text_coll_position, text: true});
@@ -238,75 +122,91 @@ export class Table extends AccessableComponent {
         }
     }
     copyLink(link) {
-        if(!link.to_link) {
-            return (
-                '/tables/' + this.props.params.script +
-                '/table/' + this.props.params.table +
-                '/link/' + link.id +
-                '/share/'
-            )
-        } else {
-            return (
-                link.to_link.href + '/share/'
-            )
-        }
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        const table = scriptsStore.table(script, this.props.params.table);
+        return scriptsStore.linkURL(script, table, link, 'share', true);
     }
-    async onCategorySort(coll) {
-        let categories = await coll.categories.map((category, key) => {
+    onCategorySort(coll) {
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        const table = scriptsStore.table(script, this.props.params.table);
+        coll.categories.forEach((category, key) => {
             category.order = key;
-            return category;
         });
-        return this.updateTableLinksColl(coll);
+        return scriptsStore.updateColl(script, table, coll, false);
     }
-    async onLinkSort(category) {
-        let links = await category.links.map((link, key) => {
+    onLinkSort(coll, category) {
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        const table = scriptsStore.table(script, this.props.params.table);
+        category.links.forEach((link, key) => {
             link.order = key;
         });
-        return this.updateLinkCategory(category);
+        return scriptsStore.updateColl(script, table, coll, false);
     }
-    createToLink(category, link, cb) {
-        this.createLink(category, link);
+    createToLink(script, table, coll, category, link, cb) {
+        const {scriptsStore} = this.props;
+        scriptsStore.createLink(script, table, coll, category, link.id);
         return cb();
     }
 }
 
+const tooltip = <Tooltip/>;
+
 @observer
-export class TableEdit extends Table {
-    async openCategory(coll, category) {
+class TableEdit extends Table {
+    openCategory(coll, category) {
         category.opened = !category.opened;
-        let categories = await coll.categories.map((cat) => {
+        coll.categories.forEach((cat) => {
             if(cat.id !== category.id) {
                cat.opened = false;
             }
-            cat.links.map((link) => {
+            cat.links.forEach((link) => {
                link.opened = false;
             });
-            return cat;
         });
-        this.updateTableLinksColl(coll, category, null, false);
     }
-    async openLink(coll, link) {
+    toggleCategoryNameEditing(category) {
+        category.edit = !category.edit;
+    }
+    openLink(coll, link) {
         link.opened = !link.opened;
-        let categories = await coll.categories.map((cat) => {
+        coll.categories.forEach((cat) => {
             cat.opened = false;
-            cat.links.map((ln) => {
+            cat.links.forEach((ln) => {
                 if(ln.id !== link.id) {
                     ln.opened = false;
                 }
             });
-            return cat;
         });
-        this.updateTableLinksColl(coll, null, link, false);
     }
+    toggleLinkNameEditing(link) {
+        link.edit = !link.edit;
+    }
+    linkDataEditorChangeHandler(value) {
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        let active_link = scriptsStore.link(script, this.props.params.link, true);
+        active_link.link.text = value;
+    }
+    linkDataEditorBlurHandler(value) {
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        let active_link = scriptsStore.link(script, this.props.params.link, true);
+        active_link.link.text = value;
+        scriptsStore.updateLink(script, active_link.table, active_link.coll, active_link.category, active_link.link, false);
+    }
+
     render() {
-        const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
-        let table = tablesStore.table(this.props.params.table);
-        let active_link = tablesStore.link(this.props.params.table, this.props.params.link);
+        const {scriptsStore, modalStore, usersStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        let table = scriptsStore.table(script, this.props.params.table);
+        let active_link = scriptsStore.link(script, this.props.params.link, true);
         let sorted_colls = this.sortedColls();
         let coll_name, coll_size;
 
         if(usersStore.session_user) {
-            let script = scriptsStore.script(this.props.params.script);
             let access = this.access(usersStore, script);
             if (table && access.edit) {
                 return (
@@ -320,23 +220,17 @@ export class TableEdit extends Table {
                                                 <div>
                                                     <div className="row">
                                                         <div className="col-md-12">
-                                                            <h4 className="table_header_text">{active_link.name}</h4>
+                                                            <h4 className="table_header_text">{active_link.link.name}</h4>
                                                         </div>
                                                     </div>
                                                     <div className="link_text_editor">
-                                                        <CustomEditor object={active_link} value={active_link.text}
-                                                            onChange={(value) => {
-                                                                active_link.text = value;
-                                                            }}
-                                                            onBlur={(value) => {
-                                                                active_link.text = value;
-                                                                this.updateLink(active_link, false);
-                                                            }}/>
+                                                        <CustomEditor object={active_link.link} value={active_link.link.text}
+                                                            onChange={this.linkDataEditorChangeHandler.bind(this)}
+                                                            onBlur={this.linkDataEditorBlurHandler.bind(this)}
+                                                            />
                                                     </div>
                                                 </div>
-                                                :
-                                                ''
-                                            }
+                                            : null}
                                         </div>
                                     )
                                 } else if (!coll.text) {
@@ -345,11 +239,11 @@ export class TableEdit extends Table {
                                         <div className="scroll_links" key={key} style={{width: coll.size + '%'}}>
                                             <div className="row">
                                                 <div className="col-md-1">
-                                                    <i data-tip="Добавить раздел" className="icon add_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, false)}}/>
+                                                    <i data-tip="Добавить раздел" className="icon add_icon glyphicon glyphicon-plus" onClick={() => {scriptsStore.createLinkCategory(script, table, coll)}}/>
                                                 </div>
 
                                                 <div className="col-md-1">
-                                                    <i data-tip="Добавить скрытый раздел" className="icon red_icon glyphicon glyphicon-plus" onClick={() => {this.createLinkCategory(coll, true)}}/>
+                                                    <i data-tip="Добавить скрытый раздел" className="icon red_icon glyphicon glyphicon-plus" onClick={() => {scriptsStore.createLinkCategory(script, table, coll, true)}}/>
                                                 </div>
                                             </div>
                                             {coll.categories.map((category, key) => {
@@ -361,17 +255,16 @@ export class TableEdit extends Table {
                                                                    onClick={() => {this.openCategory(coll, category)}}/>
                                                                 <span className="table_header_text inline_element">
                                                                     <EditableText
-                                                                        text={category.name}
-                                                                        field={'name'}
-                                                                        submitHandler={(category) => this.updateLinkCategory(category)}
-                                                                        onClick={(category) => {
-                                                                            if(tablesStore.pressed_key === 16) {
+                                                                        textClickHandler={(e) => {
+                                                                            if(usersStore.pressed_key === ALT_CODE) {
                                                                                 category.edit = true;
                                                                             }
                                                                         }}
-
+                                                                        submitHandler={(category) => {
+                                                                            category.edit = false;
+                                                                            scriptsStore.updateLinkCategory(script, table, coll, category, false);
+                                                                        }}
                                                                         object={category}
-                                                                        edit={category.edit}
                                                                         settings={{
                                                                             placeholder: 'Имя категории',
                                                                             name: 'name'
@@ -383,31 +276,38 @@ export class TableEdit extends Table {
                                                                     <div className="col-md-12 opened_toolbar">
                                                                         <div className="btn-toolbar" role="toolbar">
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Создать ссылку" className="btn btn-default" onClick={()=>{this.createLink(category)}}>
-                                                                                    <i className="icon add_icon glyphicon glyphicon-plus"/>
+                                                                                <button data-tip="Создать ссылку" className="btn btn-default" onClick={()=>{scriptsStore.createLink(script, table, coll, category)}}>
+                                                                                    <i className="icon add_simple_link_icon glyphicon glyphicon-plus"/>
                                                                                 </button>
                                                                                 <button data-tip="Создать ссылку на другую таблицу" className="btn btn-default"
                                                                                     onClick={() => {
-                                                                                        modalStore.modal = true;
-                                                                                        modalStore.component = React.createElement(ToLink, {
-                                                                                            category: category,
-                                                                                            tablesStore: tablesStore,
-                                                                                            createToLink: this.createToLink.bind(this),
-                                                                                            modalStore: modalStore
-                                                                                        });
+                                                                                        modalStore.open_modal(
+                                                                                            React.createElement(ToLink, {
+                                                                                                ...this.props,
+                                                                                                createToLink: this.createToLink.bind(this),
+                                                                                                modalStore: modalStore,
+                                                                                                script: script,
+                                                                                                table: table,
+                                                                                                coll: coll,
+                                                                                                category: category
+                                                                                            })
+                                                                                        );
                                                                                     }}>
-                                                                                    <i className="icon add_icon_blue glyphicon glyphicon-plus"/>
+                                                                                    <i className="icon add_to_link_icon glyphicon glyphicon-plus"/>
                                                                                 </button>
                                                                             </div>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Переименовать раздел" onClick={()=>{category.edit = !category.edit}} className="btn btn-default">
+                                                                                <button data-tip="Переименовать раздел (Shift + клик по названию раздела)"
+                                                                                    onClick={this.toggleCategoryNameEditing.bind(this, category)}
+                                                                                    className="btn btn-default">
+
                                                                                     <i className="glyphicon glyphicon-edit"/>
                                                                                 </button>
                                                                             </div>
 
                                                                             <div className="btn-group btn-group-xs" role="group">
-                                                                                <button data-tip="Удалить раздел" style={{color: '#fff'}} onClick={()=>{this.deleteLinkCategory(category)}} className="btn btn-danger">
+                                                                                <button data-tip="Удалить раздел" style={{color: '#fff'}} onClick={()=>{scriptsStore.deleteLinkCategory(script, table, coll, category, key)}} className="btn btn-danger">
                                                                                     <i className="glyphicon glyphicon-remove"/>
                                                                                 </button>
                                                                             </div>
@@ -436,7 +336,7 @@ export class TableEdit extends Table {
                                                                                     </button>
                                                                                 : null}
                                                                             </div>
-                                                                            <ReactTooltip place="top" type="dark" effect="solid"/>
+                                                                            {tooltip}
                                                                         </div>
                                                                     </div>
                                                                 : null}
@@ -449,27 +349,20 @@ export class TableEdit extends Table {
                                                                         <div className={"col-md-12 hovered_list_item inline_elements edit_icon_handler " + (link.opened ? 'opened' : null)}>
                                                                             <i className="glyphicon glyphicon-edit edit_icon inline_element" onClick={() => {this.openLink(coll, link)}}/>
                                                                             <span data-link={this.copyLink(link)}
-                                                                                  className={"inline_element link " + (category.hidden ? 'hidden_links' : 'link_name') + ' ' + (!link.edit ? 'copy_icon' : null)}>
+                                                                                  className={`inline_element link ${link.to_link ? 'to_link' : ''} ${category.hidden ? ' hidden_links' : ' link_name'} ${!link.edit ? 'copy_icon' : ''}`}>
                                                                                 <EditableText
-                                                                                    text={link.name}
-                                                                                    field={'name'}
-                                                                                    onClick={(link) => {
-                                                                                        if(!tablesStore.pressed_key) {
-                                                                                            this.props.router.push(
-                                                                                                (!link.to_link ?
-                                                                                                    link.edit_url
-                                                                                                :
-                                                                                                    link.to_link.href + '/edit/'
-                                                                                                )
-                                                                                            );
-                                                                                        } else if(tablesStore.pressed_key === 16) {
+                                                                                    textClickHandler={(e) => {
+                                                                                        if(usersStore.pressed_key === ALT_CODE) {
                                                                                             link.edit = true;
-                                                                                            this.fixClipboard();
+                                                                                        } else if(!usersStore.pressed_key) {
+                                                                                            this.props.router.push(scriptsStore.linkURL(script, table, link, 'edit'));
                                                                                         }
                                                                                     }}
-                                                                                    submitHandler={(link) => this.updateLink(link)}
+                                                                                    submitHandler={(link) => {
+                                                                                        link.edit = false;
+                                                                                        scriptsStore.updateLink(script, table, coll, category, link, false)
+                                                                                    }}
                                                                                     object={link}
-                                                                                    edit={link.edit}
                                                                                     settings={{
                                                                                         placeholder: 'Имя ссылки',
                                                                                         name: 'name'
@@ -491,7 +384,7 @@ export class TableEdit extends Table {
                                                                                         <div className="btn-group btn-group-xs" role="group">
                                                                                             <button
                                                                                                 data-tip="Переименовать ссылку (Shift + клик по названию ссылки)"
-                                                                                                onClick={()=>{link.edit = !link.edit}}
+                                                                                                onClick={this.toggleLinkNameEditing.bind(this, link)}
                                                                                                 className="btn btn-default">
                                                                                                 <i className="glyphicon glyphicon-edit"/>
                                                                                             </button>
@@ -501,7 +394,7 @@ export class TableEdit extends Table {
                                                                                             <button
                                                                                                 data-tip="Удалить ссылку"
                                                                                                 style={{color: '#fff'}}
-                                                                                                onClick={()=>{this.deleteLink(link)}}
+                                                                                                onClick={()=>{scriptsStore.deleteLink(script, table, coll, category, link, key)}}
                                                                                                 className="btn btn-danger btn-xs">
                                                                                                 <i className="glyphicon glyphicon-remove"/>
                                                                                             </button>
@@ -513,7 +406,7 @@ export class TableEdit extends Table {
                                                                                                     data-tip="Переместить вверх"
                                                                                                     onClick={() => {
                                                                                                         category.links = moveInArray(category.links, key, key - 1);
-                                                                                                        this.onLinkSort(category);
+                                                                                                        this.onLinkSort(coll, category);
                                                                                                     }}
                                                                                                     className="btn btn-default">
                                                                                                     <i className="glyphicon glyphicon-triangle-top"/>
@@ -524,14 +417,14 @@ export class TableEdit extends Table {
                                                                                                     data-tip="Переместить вниз"
                                                                                                     onClick={() => {
                                                                                                         category.links = moveInArray(category.links, key, key + 1);
-                                                                                                        this.onLinkSort(category);
+                                                                                                        this.onLinkSort(coll, category);
                                                                                                     }}
                                                                                                     className="btn btn-default">
                                                                                                     <i className="glyphicon glyphicon-triangle-bottom"/>
                                                                                                 </button>
                                                                                             : null}
                                                                                         </div>
-                                                                                        <ReactTooltip place="top" type="dark" effect="solid"/>
+                                                                                        {tooltip}
                                                                                     </div>
                                                                                 </div>
                                                                             : null}
@@ -539,18 +432,6 @@ export class TableEdit extends Table {
                                                                     </div>
                                                                 </div>
                                                             );
-                                                            {/*return (*/}
-                                                                {/*<div key={key} category={category} link={link}>*/}
-                                                                    {/*<div className="row">*/}
-                                                                        {/*<div className="col-md-9 link_name">*/}
-                                                                        {/*</div>*/}
-                                                                        {/*<div className="col-md-1"></div>*/}
-                                                                        {/*<div className="col-md-1">*/}
-                                                                            {/*<span className="glyphicon glyphicon-remove icon red_icon" aria-hidden="true" onClick={()=>{this.deleteLink(link)}}/>*/}
-                                                                        {/*</div>*/}
-                                                                    {/*</div>*/}
-                                                                {/*</div>*/}
-                                                            {/*)*/}
                                                         })}
                                                 </div>
                                                 )
@@ -560,7 +441,8 @@ export class TableEdit extends Table {
                                 }
                             })}
                         </div>
-                        <ModalWrapper stores={[projectsStore, tablesStore, scriptsStore]} modalStore={modalStore}/>
+                        <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>
+                        {tooltip}
                     </div>
                 );
             }
@@ -571,8 +453,9 @@ export class TableEdit extends Table {
 }
 
 @observer
-export class TableShare extends Table {
+class TableShare extends Table {
     componentDidMount() {
+        this.fixHeight();
         $(document).on("click", "#link_text_block a", (e) => {
             e.preventDefault();
             const {router} = this.props;
@@ -587,13 +470,13 @@ export class TableShare extends Table {
         $('#link_text_block a').off('click');
     }
     render() {
-        const {projectsStore, scriptsStore, tablesStore, modalStore, usersStore} = this.props;
-        let table = tablesStore.table(this.props.params.table);
-        let active_link = tablesStore.link(this.props.params.table, this.props.params.link);
+        const {scriptsStore, usersStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        const table = scriptsStore.table(script, this.props.params.table);
+        let active_link = scriptsStore.link(script, this.props.params.link);
         let sorted_colls = this.sortedColls();
         let coll_name, coll_size;
         if(usersStore.session_user) {
-            let script = scriptsStore.script(this.props.params.script);
             let access = this.access(usersStore, script);
             if (table && access) {
                 return (
@@ -607,9 +490,21 @@ export class TableShare extends Table {
                                             inlineStyles: {
                                                 red: {style: styleMap.red},
                                                 gray: {style: styleMap.gray},
-                                            }
+                                            },
                                         };
-                                        let editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(active_link.text)), DECORATORS);
+
+                                        {/*TODO: FIX THIS SHIT (MIDDLEWARE)*/}
+                                        let active_link_json = JSON.parse(active_link.text);
+                                        let active_link_entities_list = $.map(active_link_json.entityMap, function(value, index) {
+                                            return [value];
+                                        });
+                                        active_link_entities_list.forEach((entity, i) => {
+                                            if(entity.type === 'LINK' && entity.data.url.includes('/table/') && !entity.data.url.includes('/tables/')) {
+                                                active_link_json.entityMap[String(i)].data.url = `/tables/${script.id}${entity.data.url}`;
+                                            }
+                                        });
+
+                                        let editorState = EditorState.createWithContent(convertFromRaw(active_link_json));
                                         text = stateToHTML(editorState.getCurrentContent(), options);
                                     } catch(err) {
                                         text = '';
@@ -642,20 +537,18 @@ export class TableShare extends Table {
                                                                 </div>
                                                             </span>
                                                             {category.links.map((link, key) => {
-                                                                return (
-                                                                    <div key={key}>
-                                                                        <div className="row">
-                                                                            <div className="col-md-12 link_name">
-                                                                                <Link to={(!link.to_link ?
-                                                                                        link.share_url
-                                                                                    :
-                                                                                        link.to_link.href + '/share/'
-                                                                                    )
-                                                                                }>{link.name}</Link>
+                                                                let link_url = scriptsStore.linkURL(script, table, link);
+                                                                if(link_url) {
+                                                                    return (
+                                                                        <div key={key}>
+                                                                            <div className="row">
+                                                                                <div className="col-md-12 link_name">
+                                                                                    <Link to={link_url}>{link.name}</Link>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                )
+                                                                    )
+                                                                }
                                                             })}
                                                         </div>
                                                     )
@@ -686,14 +579,14 @@ class ToLink extends React.Component {
         }
     }
     onChange(select, selector) {
-        const {tablesStore} = this.props;
+        const {scriptsStore, script} = this.props;
         const {table, category, link} = this.state;
         let selected_table, selected_category, selected_link;
 
         if(selector === 'table') {
             selected_table = null;
             if(select)
-                selected_table = tablesStore.table(select.value);
+                selected_table = scriptsStore.table(script, select.value);
             selected_category = null;
             selected_link = null;
         } else if(selector === 'category') {
@@ -703,8 +596,8 @@ class ToLink extends React.Component {
                 selected_category = null;
                 if(select) {
                     let categories = [];
-                    table.colls.map(coll => {
-                        coll.categories.map(category => {
+                    table.colls.forEach(coll => {
+                        coll.categories.forEach(category => {
                             categories.push(category);
                         });
                     });
@@ -726,8 +619,9 @@ class ToLink extends React.Component {
         }));
     }
     tablesOptions() {
-        const {tablesStore} = this.props;
-        return tablesStore.tables.map(table => {
+        const {scriptsStore} = this.props;
+        const script = scriptsStore.script(this.props.params.script);
+        return script.data.map(table => {
             return {value: table.id, label: table.name}
         });
     }
@@ -754,7 +648,7 @@ class ToLink extends React.Component {
         return result;
     }
     render() {
-        const {modalStore} = this.props;
+        const {scriptsStore, modalStore} = this.props;
         const {table, category, link} = this.state;
         return(
             <div className="row row-centered">
@@ -790,9 +684,15 @@ class ToLink extends React.Component {
                         onClick={() => {
                             const {link} = this.state;
                             if(link) {
-                                return this.props.createToLink(this.props.category, link, () => {
-                                    modalStore.modal = false;
-                                });
+                                return this.props.createToLink(
+                                    this.props.script,
+                                    this.props.table,
+                                    this.props.coll,
+                                    this.props.category,
+                                    link, () => {
+                                        modalStore.close_modal();
+                                    }
+                                );
                             }
                         }}>
                         Добавить
@@ -803,65 +703,55 @@ class ToLink extends React.Component {
     }
 }
 
+@observer
 class EditableText extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.delay = 50;
-
-        this.state = {
-            text: this.props.text,
-            edit: props.edit ? props.edit : false,
-            key: null,
-
-            click_timer: null,
-            prevent: false
-        }
-    }
-    componentWillReceiveProps(props) {
-        this.setState({text: props.text, edit: props.edit ? props.edit : false})
-    }
-    clearTimer() {
-        let timer = this.state.timer;
-        this.setState(update(this.state, {timer: {$set: null}}), () => {
-            clearTimeout(timer);
-        });
-    }
     submitHandler(e) {
         e.preventDefault();
-        let object = this.props.object;
-        object[this.props.field] = this.state.text;
-        this.setEdit(false);
-        return this.props.submitHandler(object);
+        const {object} = this.props;
+        this.props.submitHandler(object);
     }
-    setEdit(edit) {
-        this.setState(update(this.state, {edit: {$set: edit}}))
+    onBlurHandler() {
+        const {object} = this.props;
+        this.props.submitHandler(object);
     }
-    doClickAction() {
-        this.clearTimer();
-        if(this.props.onClick) {
-            this.props.onClick(this.props.object)
-        }
+    textChangeHandler(e) {
+        const {object} = this.props;
+        object.name = e.target.value;
     }
     render() {
-        const {settings} = this.props;
+        const {settings, object} = this.props;
         return (
             <div>
-                {!this.state.edit ?
-                    <span onClick={this.doClickAction.bind(this)}>{this.props.text}</span>
+                {!object.edit ?
+                    <span
+                        onClick={this.props.textClickHandler.bind(this)}>{object.name}</span>
                 :
                     <form onSubmit={this.submitHandler.bind(this)}>
                         <input
-                            onChange={(e) => {this.setState(update(this.state, {text: {$set: e.target.value}}))}}
+                            onChange={this.textChangeHandler.bind(this)}
                             autoFocus={true}
-                            onBlur={this.submitHandler.bind(this)}
+                            onBlur={this.onBlurHandler.bind(this)}
                             placeholder={settings.placeholder}
                             name={settings.name}
-                            value={this.state.text}
+                            value={object.name}
                             type="text"/>
                     </form>
                 }
             </div>
         )
+    }
+}
+
+@observer
+export class TableShareWrapper extends React.Component {
+    render() {
+        return React.createElement(scriptsIsLoaded, {...this.props, renderComponent: TableShare});
+    }
+}
+
+@observer
+export class TableEditWrapper extends React.Component {
+    render() {
+        return React.createElement(scriptsIsLoaded, {...this.props, renderComponent: TableEdit});
     }
 }

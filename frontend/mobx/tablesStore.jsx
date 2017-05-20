@@ -60,7 +60,7 @@ export class TablesStore {
                 this.tables = res.tables;
                 if(modalStore) {
                     this.editing = null;
-                    modalStore.modal = false;
+                    modalStore.close_modal();
                 }
             },
             error: (res) => {

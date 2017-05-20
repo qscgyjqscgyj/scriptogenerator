@@ -7,8 +7,9 @@ import Modal from 'react-modal';
 import {ModalWrapper} from './modal';
 import {Link} from 'react-router';
 import Select from 'react-select';
+import {Paginator} from './pagination';
 import confirm from './confirm';
-import ReactTooltip from 'react-tooltip';
+import {Tooltip} from './tooltip';
 
 const STATIC_URL = document.body.getAttribute('data-static-url');
 
@@ -18,7 +19,8 @@ export class Scripts extends React.Component {
         super(props);
         this.state = {
             cloning: null,
-            interval: null
+            interval: null,
+            page: 0,
         }
     }
     componentDidMount() {
@@ -37,9 +39,9 @@ export class Scripts extends React.Component {
     checkingCloningScripts() {
         const {scriptsStore, usersStore} = this.props;
         const {interval} = this.state;
-        const cloning_tasks = usersStore.session_user.cloning_tasks;
-        if(cloning_tasks && cloning_tasks.length > 0) {
-            scriptsStore.createCloningProcess(cloning_tasks.length);
+        const inactive_scripts = scriptsStore.scripts.filter(script => !script.active);
+        if(inactive_scripts && inactive_scripts.length > 0) {
+            scriptsStore.createCloningProcess(inactive_scripts.length);
             if(!interval) {
                 this.setState(update(this.state, {interval: {
                     $set: setInterval(function() {
@@ -47,21 +49,22 @@ export class Scripts extends React.Component {
                     }, 2000)
                 }}));
             }
-        } else if(!cloning_tasks && interval){
+        } else if(!inactive_scripts && interval){
             this.clearInterval()
         }
     }
     createScript(e) {
         const {scriptsStore, modalStore, usersStore} = this.props;
         e.preventDefault();
+        scriptsStore.createCloningProcess(1);
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-scripts-url'),
             data: JSON.stringify({name: scriptsStore.creating_name, owner: usersStore.session_user, template: scriptsStore.creating_template}),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
-                usersStore.session_user = res.session_user;
-                modalStore.modal = false;
+                scriptsStore.resetCreating();
+                modalStore.close_modal();
                 this.checkingCloningScripts();
             },
             error: (res) => {
@@ -77,8 +80,8 @@ export class Scripts extends React.Component {
             url: document.body.getAttribute('data-scripts-url'),
             data: JSON.stringify((script ? script : scriptsStore.editing)),
             success: (res) => {
-                scriptsStore.scripts = res.scripts;
-                modalStore.modal = false;
+                script = res.script;
+                modalStore.close_modal();
             },
             error: (res) => {
                 console.log(res);
@@ -111,9 +114,11 @@ export class Scripts extends React.Component {
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-accesses-url'),
-            data: JSON.stringify({accesses: accesses, script: script}),
+            data: JSON.stringify({accesses: accesses, script_id: script.id}),
             success: (res) => {
-                scriptsStore.scripts = res.scripts;
+                if(script.data !== res.data) {
+                    script.data = res.data;
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -131,7 +136,7 @@ export class Scripts extends React.Component {
             }),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
-                modalStore.modal = false;
+                modalStore.close_modal();
                 alert('Скрипт "' + script.name + '" делегирован пользователю: ' + email);
             },
             error: (res) => {
@@ -141,15 +146,14 @@ export class Scripts extends React.Component {
     }
     cloneScript(script) {
         const {scriptsStore, usersStore} = this.props;
+        scriptsStore.createCloningProcess(1);
         this.setState(update(this.state, {cloning: {$set: script}}), () => {
             $.ajax({
                 method: 'POST',
                 url: document.body.getAttribute('data-clone-script-url'),
-                data: JSON.stringify(script),
+                data: {script: script.id},
                 success: (res) => {
                     scriptsStore.scripts = res.scripts;
-                    usersStore.session_user = res.session_user;
-                    this.checkingCloningScripts();
                 },
                 error: (res) => {
                     console.log(res);
@@ -157,130 +161,180 @@ export class Scripts extends React.Component {
             });
         });
     }
+    setPage(page) {
+        this.setState(update(this.state, {page: {$set: page}}));
+    }
+    getScriptsData() {
+        const {scriptsStore, available} = this.props;
+        let scripts = scriptsStore.filteredScripts(available);
+        if(scripts && scripts.length > 0) {
+            let chunked_scripts = [];
+            let i, j, chunk = 20;
+            for (i = 0, j = scripts.length; i < j; i += chunk) {
+                chunked_scripts.push(scripts.slice(i, i + chunk));
+            }
+            return {
+                scripts: chunked_scripts[this.state.page],
+                pages: chunked_scripts.length
+            };
+        }
+        return {
+            scripts: scripts,
+            pages: 0
+        }
+    }
     render() {
-        const {scriptsStore, modalStore, projectsStore, usersStore, tablesStore, available} = this.props;
-        if(usersStore.session_user) {
+        const {scriptsStore, modalStore, usersStore, available} = this.props;
+        let scripts_data = this.getScriptsData();
+        if(usersStore.session_user && (scriptsStore.scripts || scriptsStore.available_scripts)) {
             return(
                 <div className="col-md-12">
                     {!available ?
                         <div>
                             <div className="col-md-2">
                                 <button onClick={() => {
-                                    modalStore.modal = true;
-                                    modalStore.component = React.createElement(CreatingScript, {
-                                        projectsStore: projectsStore,
-                                        scriptsStore: scriptsStore,
-                                        modalStore: modalStore,
-                                        createScript: this.createScript.bind(this),
-                                        updateScript: this.updateScript.bind(this),
-                                        available: available
-                                    });
+                                    modalStore.open_modal(
+                                        React.createElement(CreatingScript, {
+                                            scriptsStore: scriptsStore,
+                                            modalStore: modalStore,
+                                            createScript: this.createScript.bind(this),
+                                            updateScript: this.updateScript.bind(this),
+                                            available: available
+                                        })
+                                    );
                                 }} className="btn btn-success">+ Создать скрипт</button>
                             </div>
                             <div className="col-md-3">
                                 <div className="form-group">
-                                    <input onChange={(e) => scriptsStore.filter_by_name = e.target.value} className="form-control" type="text" placeholder="Поиск по названию"/>
+                                    <input onChange={(e) => {
+                                        scriptsStore.filter_by_name = e.target.value;
+                                        this.setPage(0);
+                                    }} className="form-control" type="text" placeholder="Поиск по названию"/>
                                 </div>
                             </div>
+                            {scripts_data.pages > 1 ?
+                                <div className="col-md-5">
+                                    <Paginator
+                                        pages={scripts_data.pages}
+                                        current_page={this.state.page}
+                                        objects_length={scripts_data.scripts.length}
+                                        setPage={this.setPage.bind(this)}
+                                        unmargin={true}
+                                        />
+                                </div>
+                            : null}
                         </div>
                     : null}
+
                     <div className="row">
-                        {scriptsStore.filteredScripts(available).map((script, key)=>{
+                        {scripts_data.scripts.map((script, key)=>{
                             let access = (available ? script.accesses.find(access => {return access.user.id === usersStore.session_user.id}) : null);
-                            if(access ? access.active || !access : true) {
-                                return (
-                                    <div key={key} className="col-md-12 hovered_list_item list_item edit_icon_handler">
-                                        <div className="col-md-6">
-                                            {script.active && script.available ?
-                                                <span className="inline_elements">
-                                                    {(available && script.available ? access.edit : true) ?
-                                                        <i className="glyphicon glyphicon-edit edit_icon inline_element"
-                                                            data-tip="Редактировать скрипт"
-                                                            onClick={() => {
-                                                                scriptsStore.editing = script;
-                                                                modalStore.modal = true;
-                                                                modalStore.component = React.createElement(EditingScript, {
-                                                                    projectsStore: projectsStore,
+                            return (
+                                <div key={key} className="col-md-12 hovered_list_item list_item edit_icon_handler">
+                                    <div className="col-md-6">
+                                        {script.active ?
+                                            <span className="inline_elements">
+                                                {(available && script.available ? access.edit : true) ?
+                                                    <i className="glyphicon glyphicon-edit edit_icon inline_element"
+                                                        data-tip="Редактировать скрипт"
+                                                        onClick={() => {
+                                                            scriptsStore.editing = script;
+                                                            modalStore.open_modal(
+                                                                React.createElement(EditingScript, {
                                                                     scriptsStore: scriptsStore,
                                                                     modalStore: modalStore,
                                                                     createScript: this.createScript.bind(this),
                                                                     updateScript: this.updateScript.bind(this),
                                                                     available: available
-                                                                });
-                                                            }}/>
-                                                    : null}
-
-                                                    <Link className="inline_element" to={script.url}>{script.name}</Link>
-                                                </span>
-                                            :
-                                                <span className="inline_elements">
-                                                    <i className="glyphicon glyphicon-edit hidden_icon inline_element"/>
-                                                    <span>{script.name}</span>
-                                                </span>
-                                            }
-                                        </div>
-                                            <div className="col-md-3">
-                                                {available ?
-                                                    <span>{script.owner.email}</span>
-                                                : null}
-                                            </div>
-                                        <div className="col-md-3">
-                                            <div className="btn-group pull-right">
-                                                {!available ?
-                                                    <button className='btn btn-default btn-xs'
-                                                            data-tip="Копировать скрипт"
-                                                            onClick={() => {this.cloneScript(script)}}>
-                                                        <i className="glyphicon glyphicon-copy"/>
-                                                    </button>
-                                                : null}
-                                                {!available ?
-                                                    <button className="btn btn-default btn-xs"
-                                                            data-tip="Права доступа к скрипту"
-                                                            onClick={() => {
-                                                                modalStore.modal = true;
-                                                                modalStore.component = React.createElement(Accesses, {
-                                                                    script: script,
-                                                                    usersStore: usersStore,
-                                                                    setAccesses: this.setAccesses.bind(this),
-                                                                    delegateScript: this.delegateScript.bind(this)
                                                                 })
-                                                            }}>
-                                                        <i className="glyphicon glyphicon-user"/>
-                                                    </button>
-                                                : null}
-                                                {(available && script.available ? access.edit : true) ?
-                                                    <button className="btn btn-default btn-xs"
-                                                            data-tip="Редактировать структуру скрипта"
-                                                            onClick={()=>{this.props.router.push('/tables/' + script.id + '/')}}>
-                                                        <i className="glyphicon glyphicon-edit"/>
-                                                    </button>
-                                                : null}
-                                                <button className="btn btn-default btn-xs"
-                                                        data-tip="Просмотр скрипта"
-                                                        onClick={() => {
-                                                            this.props.router.push(script.view_url);
-                                                        }}>
-                                                    <i className="glyphicon glyphicon-eye-open"/>
-                                                </button>
-                                                {!available ?
-                                                    <button className="btn btn-danger btn-xs"
-                                                            data-tip="Удалить скрипт"
-                                                            onClick={()=>{this.deleteScript(script)}}>
-                                                        <i className="glyphicon glyphicon-remove"/>
-                                                    </button>
-                                                : null}
-                                            </div>
-                                        </div>
-                                        {!script.active ?
-                                            <p className="loading">Скрипт создается <img src={STATIC_URL + 'img/loading.gif'}/></p>
-                                        : null}
+                                                            );
+                                                        }}/>
+                                                :
+                                                    <i className="glyphicon glyphicon-edit hidden_edit_icon inline_element"/>
+                                                }
+
+                                                <Link className="inline_element" to={scriptsStore.scriptUrl(script)}>{script.name}</Link>
+                                            </span>
+                                        :
+                                            <span className="inline_elements">
+                                                <i className="glyphicon glyphicon-edit hidden_icon inline_element"/>
+                                                <span>{script.name}</span>
+                                            </span>
+                                        }
                                     </div>
-                                )
-                            }
+                                        <div className="col-md-3">
+                                            {available ?
+                                                <span>{script.owner.email}</span>
+                                            : null}
+                                        </div>
+                                    <div className="col-md-3">
+                                        <div className="btn-group pull-right">
+                                            {!available ?
+                                                <button className='btn btn-default btn-xs'
+                                                        data-tip="Копировать скрипт"
+                                                        onClick={() => {this.cloneScript(script)}}>
+                                                    <i className="glyphicon glyphicon-copy"/>
+                                                </button>
+                                            : null}
+
+                                            {!available ?
+                                                <button className="btn btn-default btn-xs"
+                                                        data-tip="Права доступа к скрипту"
+                                                        onClick={() => {
+                                                            usersStore.getTeam();
+                                                            scriptsStore.getScriptData(script, () => {
+                                                                modalStore.open_modal(
+                                                                    React.createElement(Accesses, {
+                                                                        script: script,
+                                                                        usersStore: usersStore,
+                                                                        modalStore: modalStore,
+                                                                        setAccesses: this.setAccesses.bind(this),
+                                                                        delegateScript: this.delegateScript.bind(this)
+                                                                    })
+                                                                )
+                                                            });
+                                                        }}>
+                                                    <i className="glyphicon glyphicon-user"/>
+                                                </button>
+                                            : null}
+
+                                            {(available && script.available ? access.edit : true) ?
+                                                <button className="btn btn-default btn-xs"
+                                                        data-tip="Редактировать структуру скрипта"
+                                                        onClick={()=>{this.props.router.push('/tables/' + script.id + '/')}}>
+                                                    <i className="glyphicon glyphicon-edit"/>
+                                                </button>
+                                            : null}
+
+                                            {!available ?
+                                                <button className="btn btn-danger btn-xs"
+                                                        data-tip="Удалить скрипт"
+                                                        onClick={()=>{this.deleteScript(script)}}>
+                                                    <i className="glyphicon glyphicon-remove"/>
+                                                </button>
+                                            : null}
+                                        </div>
+                                    </div>
+                                    {!script.active ?
+                                        <p className="loading">Скрипт создается <img src={STATIC_URL + 'img/loading.gif'}/></p>
+                                    : null}
+                                </div>
+                            )
                         })}
+
+                        {scripts_data.pages > 1 ?
+                            <div className="col-md-12">
+                                <Paginator
+                                    pages={scripts_data.pages}
+                                    current_page={this.state.page}
+                                    objects_length={scripts_data.scripts.length}
+                                    setPage={this.setPage.bind(this)}
+                                    />
+                            </div>
+                        : null}
                     </div>
-                    <ReactTooltip place="top" type="dark" effect="solid"/>
-                    <ModalWrapper stores={[projectsStore, scriptsStore, tablesStore]} modalStore={modalStore}/>
+                    <Tooltip />
+                    <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>
                 </div>
             );
         }
@@ -290,13 +344,36 @@ export class Scripts extends React.Component {
 
 @observer
 class CreatingScript extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            error: null
+        }
+    }
+    setError(error) {
+        this.setState(update(this.state, {error: {$set: error}}))
+    }
+    submitScript(e) {
+        e.preventDefault();
+        const {scriptsStore} = this.props;
+        if(scriptsStore.creating_name) {
+            this.props.createScript(e)
+        } else {
+            this.setError('Введите имя скрипта');
+        }
+    }
     render() {
-        const {projectsStore, scriptsStore} = this.props;
+        const {scriptsStore} = this.props;
+        const {error} = this.state;
         return (
             <div className="row">
-                <form action="" onSubmit={(e) => this.props.createScript(e)}>
+                <form action="" onSubmit={this.submitScript.bind(this)}>
                     <div className="col-md-12">
-                        <div className="form-group">
+                        <div className={`form-group ${error ? 'has-error' : ''}`}>
+                            {error ?
+                                <label className="control-label">{error}</label>
+                            : null}
                             <input className="form-control" onChange={(e) => {scriptsStore.creating_name = e.target.value}} value={scriptsStore.creating_name} type="text" name="name" placeholder="Имя скрипта"/>
                         </div>
                     </div>
@@ -345,7 +422,7 @@ class CreatingScript extends React.Component {
 @observer
 class EditingScript extends React.Component {
     render() {
-        const {projectsStore, scriptsStore, available} = this.props;
+        const {scriptsStore, available} = this.props;
         if(scriptsStore.editing) {
             return (
                 <div className="row">
@@ -431,6 +508,10 @@ class Accesses extends React.Component {
         this.props.delegateScript(this.props.script, delegate_email);
         return this.setState(update(this.state, {delegate_email: {$set: null}}));
     }
+    closeModal() {
+        let {modalStore} = this.props;
+        modalStore.close_modal();
+    }
     render() {
         const {delegate_email} = this.state;
         return(
@@ -452,19 +533,22 @@ class Accesses extends React.Component {
                             onChange={(selects) => {this.onSelect(selects, false)}}/>
                     </div>
                     <hr/>
+                    <button className="btn btn-success" onClick={this.closeModal.bind(this)}>
+                        Сохранить
+                    </button>
                 </div>
-                <div className="col-md-12">
-                    <h3>Делегирование</h3>
-                    <div className="form-group">
-                        <label>Email нового владельца</label>
-                        <input type="text" name="email" className="form-control" placeholder="Введите email нового владельца" onChange={(e) => {
-                            this.setState(update(this.state, {delegate_email: {$set: e.target.value}}));
-                        }}/>
-                    </div>
-                    <button className={'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled')} onClick={(e) => {
-                        (validateEmail(delegate_email) ? this.delegateScript() : null);
-                    }}>Делегировать</button>
-                </div>
+                {/*<div className="col-md-12">*/}
+                    {/*<h3>Делегирование</h3>*/}
+                    {/*<div className="form-group">*/}
+                        {/*<label>Email нового владельца</label>*/}
+                        {/*<input type="text" name="email" className="form-control" placeholder="Введите email нового владельца" onChange={(e) => {*/}
+                            {/*this.setState(update(this.state, {delegate_email: {$set: e.target.value}}));*/}
+                        {/*}}/>*/}
+                    {/*</div>*/}
+                    {/*<button className={'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled')} onClick={(e) => {*/}
+                        {/*(validateEmail(delegate_email) ? this.delegateScript() : null);*/}
+                    {/*}}>Делегировать</button>*/}
+                {/*</div>*/}
             </div>
         )
     }
@@ -508,13 +592,3 @@ export class AvailableScripts extends React.Component {
         return React.cloneElement(React.createElement(Scripts, this.props), {available: true});
     }
 }
-
-
-                                            //     (script.available ?
-                                            //         <td>
-                                            //             {access.edit ? 'Редактирование' : 'Просмотр'}
-                                            //         </td>
-                                            //     :
-                                            //         <td className="red_text">У создателя скрипта отрицательный баланс.</td>
-                                            //     )
-                                            // }

@@ -19,10 +19,10 @@
 
         data-init-url="{% url 'init' %}"
         data-scripts-url="{% url 'scripts' %}"
+        data-script-url="{% url 'script' %}"
         data-clone-script-url="{% url 'clone_script' %}"
         data-delegate-script-url="{% url 'delegate_script' %}"
         data-accesses-url="{% url 'accesses' %}"
-        data-projects-url="{% url 'projects' %}"
         data-tables-url="{% url 'tables' %}"
         data-colls-url="{% url 'colls' %}"
         data-link-categories-url="{% url 'link_categories' %}"
@@ -60,9 +60,9 @@
                 })(console.error);
             </script>
             {% if DEBUG %}
-                <script src="{% static 'js/bundle.js' %}"></script>
+                <script src="{% static 'js/build.js' %}"></script>
             {% else %}
-                <script src="{% static 'js/bundle.min.js' %}"></script>
+                <script src="{% static 'js/build.min.js' %}"></script>
             {% endif %}
         {% endif %}
         <script type="text/javascript">

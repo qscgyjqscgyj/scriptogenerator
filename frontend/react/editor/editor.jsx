@@ -1,16 +1,10 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import $ from 'jquery';
 import update from 'react-addons-update';
 import {observer} from 'mobx-react';
-import {ModalWrapper} from '../modal';
-import {Coll} from '../../mobx/tablesStore';
 import {Editor, EditorState, CompositeDecorator, Modifier, RichUtils, ContentState, convertToRaw, convertFromRaw, Entity, convertFromHTML} from 'draft-js';
-import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
-import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 import Immutable from 'immutable';
-import ReactTooltip from 'react-tooltip';
+import {Tooltip} from '../tooltip';
 
 @observer
 export class CustomEditor extends React.Component {
@@ -242,11 +236,11 @@ export class CustomEditor extends React.Component {
                                     editorState={editorState}
                                     onToggle={this.toggleInlineStyle}/>
                             </div>
-                            <div className="btn-group" role="group" aria-label="...">
-                                <BlockStyleControls
-                                    editorState={editorState}
-                                    onToggle={this.toggleBlockType}/>
-                            </div>
+                            {/*<div className="btn-group" role="group" aria-label="...">*/}
+                                {/*<BlockStyleControls*/}
+                                    {/*editorState={editorState}*/}
+                                    {/*onToggle={this.toggleBlockType}/>*/}
+                            {/*</div>*/}
                             <div className="btn-group" role="group" aria-label="...">
                                 <button data-tip="Вставить ссылку" id="editor_add_link" onMouseDown={this.promptForLink} style={{marginRight: 10}} className="btn btn-info">
                                     <i className="glyphicon glyphicon-link"/>
@@ -255,8 +249,7 @@ export class CustomEditor extends React.Component {
                                     <i className="glyphicon glyphicon-link"/>
                                 </button>
                             </div>
-                            <ReactTooltip data-for='editor_add_link' place="top" type="dark" effect="solid"/>
-                            <ReactTooltip data-for='editor_remove_link' place="top" type="dark" effect="solid"/>
+                            <Tooltip/>
                         </div>
                     </div>
                     <div className="col-md-12">

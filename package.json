@@ -4,7 +4,7 @@
   "description": "django-admin.py startproject --template https://github.com/ir4y/django-allsol-skel/zipball/master yourprojectname",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha --compilers js:babel-core/register --reporter dot --recursive"
   },
   "author": "",
   "license": "ISC",

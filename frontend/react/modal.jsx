@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import $ from 'jquery';
 import Modal from 'react-modal';
 import {observer} from 'mobx-react';
 
@@ -29,9 +27,9 @@ export class ModalWrapper extends React.Component {
             <Modal
                 isOpen={modalStore.modal}
                 style={customModalStyles}
-								contentLabel=""
+                contentLabel=""
                 onRequestClose={() => {
-                    modalStore.modal = false;
+                    modalStore.close_modal();
                     stores.map(store => {
                         if(store.editing) {
                             store.editing = null;

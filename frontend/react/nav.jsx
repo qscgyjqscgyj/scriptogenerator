@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import {Link} from 'react-router';
 import {observer} from 'mobx-react';
 
@@ -8,9 +7,8 @@ const STATIC_URL = document.body.getAttribute('data-static-url');
 @observer
 export class Nav extends React.Component {
     render() {
-        const {usersStore, tablesStore} = this.props;
-        let script_id = parseInt(this.props.params.script);
-        let script_tables = tablesStore.script_tables(script_id);
+        const {usersStore, scriptsStore, settingsStore} = this.props;
+        let script = scriptsStore.script(this.props.params.script);
         let edit = this.props.location.pathname.includes('edit');
         return(
             <nav className={"navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '')}>
@@ -20,24 +18,26 @@ export class Nav extends React.Component {
                     </a>
 
                     <ul className="nav navbar-nav">
-                        <li><Link to='/scripts/user/'>Мои скрипты</Link></li>
-                        <li><Link to='/scripts/available/'>Доступные скрипты</Link></li>
-                        <li><a href='http://lp.scriptogenerator.ru/info' target="_blank">Инструкция</a></li>
+                        <li className={this.props.location.pathname.includes('/scripts/user/') || this.props.location.pathname === '/' ? 'active' : ''}>
+                            <Link to='/scripts/user/'>Мои скрипты</Link>
+                        </li>
+                        <li className={this.props.location.pathname.includes('/scripts/available/') ? 'active' : ''}>
+                            <Link to='/scripts/available/'>Доступные скрипты</Link>
+                        </li>
+                        <li>
+                            <a href='http://lp.scriptogenerator.ru/info' target="_blank">Инструкция</a>
+                        </li>
 
-                        {script_tables.length > 0 ?
-                            <li className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        {script && script.data.length > 0 ?
+                            <li className={`dropdown ${this.props.location.pathname.includes('/tables/') ? 'active' : ''}`}>
+                                <Link to={scriptsStore.scriptUrl(script)} className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     Таблицы <span className="caret"/>
-                                </a>
+                                </Link>
                                 <ul className="dropdown-menu">
-                                    {script_tables.map((table, key) => {
+                                    {script.data.map((table, key) => {
                                         return(
                                             <li key={key} className={table.id === parseInt(this.props.params.table) ? 'active' : null}>
-                                                <Link to={
-                                                        '/tables/' + this.props.params.script +
-                                                        '/table/' + table.id +
-                                                        (edit ? '/edit/' : '/share/')
-                                                    }>{table.name}</Link>
+                                                <Link to={scriptsStore.tableUrl(script, table, (edit ? 'edit' : 'share'))}>{table.name}</Link>
                                             </li>
                                         )
                                     })}
@@ -52,7 +52,9 @@ export class Nav extends React.Component {
                                         '/table/' + this.props.params.table +
                                         (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
                                         '/share/'
-                                    }>Просмотр</Link>
+                                    } className="nav_button_link">
+                                    <button className="btn btn-default">Просмотр</button>
+                                </Link>
                             </li>
                         : null}
                         {this.props.location.pathname.includes('share') ?
@@ -62,15 +64,19 @@ export class Nav extends React.Component {
                                         '/table/' + this.props.params.table +
                                         (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
                                         '/edit/'
-                                    }>Редактирование</Link>
+                                    } className="nav_button_link">
+                                    <button className="btn btn-default">Редактировать</button>
+                                </Link>
                             </li>
                         : null}
                     </ul>
                     {usersStore.session_user ?
                         <ul className="nav navbar-nav navbar-right">
-                            {!usersStore.session_user.promoted ?
+                            {settingsStore.advertisment ?
                                 <li className="nav_promotion_block">
-                                    <a href="http://getproff.ru/sgt-pay-sale">Акция: год доступа за 4 990р.</a>
+                                    <a target="_blank" href={settingsStore.advertisment.url}>
+                                        {settingsStore.advertisment.title}
+                                    </a>
                                 </li>
                             : null}
                             <li className="nav_balance_block">

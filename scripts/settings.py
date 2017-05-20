@@ -59,9 +59,13 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = ()
 TEMPLATE_DIRS = ()
 
+COMPRESS_ENABLED = True
+# COMPRESS_OFFLINE = True
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder'
 )
 
 TEMPLATE_LOADERS = (
@@ -76,7 +80,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'scripts.middleware.SaveAnonymousUTMs'
+    'scripts.middleware.SaveAnonymousUTMs',
+    'scripts.middleware.SetLastVisitMiddleware'
 )
 
 ANONYMOUS_USER_ID = -1
@@ -112,12 +117,14 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     'constance',
     'constance.backends.database',
+    'compressor'
 )
 
 LOCAL_APPS = (
     'main',
     'payment',
-    'users'
+    'users',
+    'offline'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -169,6 +176,9 @@ CONSTANCE_IGNORE_ADMIN_VERSION_CHECK = True
 CONSTANCE_CONFIG = {
     'PAYMENT_PER_DAY': (15.0, u'Абонентская плата за день', float),
     'PAYMENT_PER_USER': (15.0, u'Абонентская плата за КАЖДОГО пользователя', float),
+
+    'ADVERTISING_TITLE': (u'Акция', u'Название акции', str),
+    'ADVERTISING_URL': (u'Ссылка', u'Ссылка на акцию', str),
 }
 
 YANDEX_SHOPID = '91593'
@@ -185,7 +195,9 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 5
 }
 
 from local import *

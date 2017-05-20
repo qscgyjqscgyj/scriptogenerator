@@ -1,0 +1,29 @@
+{% load static %}
+{% load compress %}
+{% load jsonify %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Конструктор скриптов продаж</title>
+
+        {% compress css inline %}
+            <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+            <link rel="stylesheet" href="{% static 'css/react-select.css' %}">
+            <link rel="stylesheet" href="{% static 'css/draft.css' %}">
+            <link rel="stylesheet" href="{% static 'css/main.css' %}">
+            <link rel="stylesheet" href="{% static 'css/loading.css' %}">
+        {% endcompress %}
+        <link href="{% static 'img/favicon.ico' %}" rel="shortcut icon" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="content"></div>
+        {% compress js inline %}
+            <script type="application/javascript">
+                var SCRIPT_DATA = {{ script|jsonify|safe }};
+            </script>
+            <script src="{% static 'js/offline.js' %}"></script>
+        {% endcompress %}
+    </body>
+</html>

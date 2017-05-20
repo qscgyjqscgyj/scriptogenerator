@@ -6,6 +6,8 @@ from registration.models import RegistrationProfile
 from main.tasks import send_new_user_data_email
 from users.models import CustomUser
 from django.db import IntegrityError
+import time
+import datetime
 
 
 def create_active_user(request, email, last_name='', first_name='', middle_name='', phone=''):
@@ -34,3 +36,54 @@ def create_active_user(request, email, last_name='', first_name='', middle_name=
     new_user.save()
     send_new_user_data_email.delay(email, password)
     return {'user': new_user, 'password': password}
+
+
+def current_milli_time():
+    return int(round(time.time() * 1000))
+
+
+def get_empty_table():
+    return {
+        'id': current_milli_time(),
+        'name': u'Новая таблица',
+        'text_coll_name': u'Блок с текстом',
+        'text_coll_size': 50,
+        'text_coll_position': 0,
+        'date': datetime.datetime.now().isoformat(),
+        'date_mod': datetime.datetime.now().isoformat(),
+        'colls': [get_empty_coll()]
+    }
+
+
+def get_empty_coll():
+    return {
+        'id': current_milli_time(),
+        'name': u'Новый блок',
+        'size': 50,
+        'position': 1,
+        'categories': []
+    }
+
+
+def get_empty_category(hidden=False):
+    return {
+        'id': current_milli_time(),
+        'name': u'Новая категория',
+        'hidden': hidden,
+        'order': 1,
+        'opened': False,
+        'links': [],
+        'edit': False
+    }
+
+
+def get_empty_link(to_link=None):
+    return {
+        'id': current_milli_time(),
+        'name': u'Новая ссылка',
+        'to_link': to_link,
+        'text': None,
+        'order': 1,
+        'opened': False,
+        'edit': False
+    }

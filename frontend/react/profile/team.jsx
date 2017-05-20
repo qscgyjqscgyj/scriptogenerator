@@ -17,6 +17,10 @@ export class Team extends React.Component {
             new_teammate: null
         }
     }
+    componentWillMount() {
+        const {usersStore} = this.props;
+        usersStore.getTeam();
+    }
     createTeammate(e) {
         e.preventDefault();
         const {usersStore, modalStore} = this.props;
@@ -33,7 +37,7 @@ export class Team extends React.Component {
             success: (res) => {
                 usersStore.team = res.team;
                 usersStore.session_user = res.session_user;
-                modalStore.modal = false;
+                modalStore.close_modal();
             },
             error: (res) => {
                 console.log(res);
@@ -81,62 +85,80 @@ export class Team extends React.Component {
             <div className="row">
                 <div className="col-md-12">
                     <button onClick={() => {
-                        modalStore.modal = true;
-                        modalStore.component = React.createElement(CreatingTeammate, {
-                            usersStore: usersStore,
-                            modalStore: modalStore,
-                            createTeammate: this.createTeammate.bind(this)
-                        });
+                        if(usersStore.session_user.positive_balance) {
+                            modalStore.open_modal(
+                                React.createElement(CreatingTeammate, {
+                                    usersStore: usersStore,
+                                    modalStore: modalStore,
+                                    createTeammate: this.createTeammate.bind(this)
+                                })
+                            );
+                        } else {
+                            modalStore.open_modal(
+                                React.createElement(CreatingTeammateNegativeBalance, {
+                                    modalStore: modalStore,
+                                })
+                            );
+                        }
                     }} className="btn btn-success">+ Добавить сотрудника</button>
 
                 </div>
                 <div className="row">
                     <div className="col-md-8">
                         <div className="col-md-12">
-                            <table className="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>Фамилия</td>
-                                        <td>Имя</td>
-                                        <td>Отчество</td>
-                                        <td>Телефон</td>
-                                        <td>Активен</td>
-                                        <td/>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {usersStore.team.length > 0 ?
-                                        usersStore.team.map((access, key) => {
-                                            return (
-                                                <tr key={key}>
-                                                    <td>{access.user.email}</td>
-                                                    <td>{access.user.last_name}</td>
-                                                    <td>{access.user.first_name}</td>
-                                                    <td>{access.user.middle_name}</td>
-                                                    <td>{access.user.phone}</td>
-                                                    <td>
-                                                        <input type="checkbox" defaultChecked={access.active} onChange={() => {access.active = !access.active; this.updateTeammate(access)}}/>
-                                                    </td>
-                                                    <td>
-                                                        <button onClick={()=>{this.deleteTeammate(access)}} className="btn btn-danger btn-xs">
-                                                            <i className="glyphicon glyphicon-remove"/>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })
-                                    : null}
-                                </tbody>
-                            </table>
+                            {usersStore.session_user.positive_balance ?
+                                <table className="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>Фамилия</td>
+                                            <td>Имя</td>
+                                            <td>Отчество</td>
+                                            <td>Телефон</td>
+                                            {/*<td>Активен</td>*/}
+                                            <td/>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {usersStore.team.length > 0 ?
+                                            usersStore.team.map((access, key) => {
+                                                return (
+                                                    <tr key={key}>
+                                                        <td>{access.user.email}</td>
+                                                        <td>{access.user.last_name}</td>
+                                                        <td>{access.user.first_name}</td>
+                                                        <td>{access.user.middle_name}</td>
+                                                        <td>{access.user.phone}</td>
+                                                        {/*<td>*/}
+                                                            {/*<input type="checkbox" defaultChecked={access.active} onChange={() => {access.active = !access.active; this.updateTeammate(access)}}/>*/}
+                                                        {/*</td>*/}
+                                                        <td>
+                                                            <button onClick={()=>{this.deleteTeammate(access)}} className="btn btn-danger btn-xs">
+                                                                <i className="glyphicon glyphicon-remove"/>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+                                        : null}
+                                    </tbody>
+                                </table>
+                            :
+                                <div>
+                                    <h3>Доступ к скриптам для членов команды - закрыт. Пополните баланс, чтобы открыть доступ.</h3>
+                                    <a href="https://getproff.ru/pay/user">
+                                        <button className="btn btn-danger">Пополните баланс</button>
+                                    </a>
+                                </div>
+                            }
                         </div>
                     </div>
-                    <div className="col-md-4">
-                        <div className="jumbotron col-md-11">
-                            <h3>Абонентская плата.</h3>
-                            <p>Абонентская плата составляет 15 рублей за пользователя в день. Деньги списываются только за активных пользователей (включение/отключение пользователей находится в разделе <Link to="/profile/team/">"Команда"</Link>)</p>
-                        </div>
-                    </div>
+                    {/*<div className="col-md-4">*/}
+                        {/*<div className="jumbotron col-md-11">*/}
+                            {/*<h3>Абонентская плата.</h3>*/}
+                            {/*<p>Абонентская плата составляет 15 рублей за пользователя в день. При добавлении пользователя сразу списывается абонентская плата за одного пользователя. Посмотреть список пользователей можно по ссылке <Link to="/profile/team/">"Команда"</Link></p>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
                 </div>
                 <ModalWrapper stores={[usersStore]} modalStore={modalStore}/>
             </div>
@@ -192,6 +214,23 @@ class CreatingTeammate extends React.Component {
                         </div>
                     </div>
                 </form>
+            </div>
+        )
+    }
+}
+
+
+@observer
+class CreatingTeammateNegativeBalance extends React.Component {
+    render() {
+        return (
+            <div className="row row-centered">
+                <div className="col-md-12 col-centered">
+                    <h3>Чтобы добавить сотрудника</h3>
+                    <a href="https://getproff.ru/pay/user">
+                        <button className="btn btn-danger">Пополните баланс</button>
+                    </a>
+                </div>
             </div>
         )
     }

@@ -5,6 +5,7 @@ export class UsersStore {
     @observable users = [];
     @observable team = [];
     @observable local_payments = [];
+    @observable payment_per_user = 0;
     @observable session_user = null;
 
     @observable creating_teammate_email = '';
@@ -21,6 +22,7 @@ export class UsersStore {
             url: document.body.getAttribute('data-profile-url'),
             success: (res) => {
                 this.local_payments = res.local_payments;
+                this.payment_per_user = res.payment_per_user;
             },
             error: (res) => {
                 console.log(res);

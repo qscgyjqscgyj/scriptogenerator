@@ -58852,61 +58852,7 @@
 /* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Payment = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
-	var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);
-	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
-	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
-	var _mobxReact = __webpack_require__(561);
-	var _pagination = __webpack_require__(597);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
-	
-	
-	Payment = exports.Payment = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Payment, _React$Component);function Payment() {_classCallCheck(this, Payment);return _possibleConstructorReturn(this, (Payment.__proto__ || Object.getPrototypeOf(Payment)).apply(this, arguments));}_createClass(Payment, [{ key: 'componentWillMount', value: function componentWillMount()
-	        {var
-	            usersStore = this.props.usersStore;
-	            usersStore.getData();
-	        } }, { key: 'onSubmit', value: function onSubmit()
-	
-	        {var _props =
-	            this.props,usersStore = _props.usersStore,paymentStore = _props.paymentStore;
-	            _jquery2.default.ajax({
-	                method: 'POST',
-	                url: document.body.getAttribute('data-payment-url'),
-	                data: JSON.stringify({
-	                    user: usersStore.session_user,
-	                    sum: paymentStore.sum,
-	                    total_sum: paymentStore.sum + paymentStore.bonus }),
-	
-	                success: function success(res) {
-	                    paymentStore.payment = res.payment;
-	                    document.getElementById("YA_FORM").submit();
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
-	
-	        } }, { key: 'render', value: function render()
-	
-	        {var _props2 =
-	            this.props,usersStore = _props2.usersStore,paymentStore = _props2.paymentStore;
-	            var can_submit = !!usersStore.session_user && paymentStore.sum >= 990 && !!paymentStore.method;
-	            return (
-	                React.createElement('div', { className: 'col-md-12' },
-	                    React.createElement('div', { className: 'col-md-8' },
-	                        React.createElement('div', { className: 'col-md-12' },
-	                            React.createElement('div', { className: 'col-md-12' },
-	                                React.createElement('h3', { className: 'profile_payment__title' }, '1. \u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u043F\u043E\u0441\u043E\u0431 \u043E\u043F\u043B\u0430\u0442\u044B')),
-	
-	                            React.createElement('script', { id: '4626752292b2d3c202d2d85816e04c0878731972',
-	                                src: 'http://getproff.ru/pl/lite/widget/script?id=1748' }))),
-	
-	
-	                    usersStore.local_payments.length > 0 ?
-	                    React.createElement('div', { className: 'col-md-4' },
-	                        React.createElement('div', { className: 'jumbotron col-md-12' },
-	                            React.createElement(PaymentHistory, { usersStore: usersStore }))) :
-	
-	
-	                    null));
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Payment = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;exports.
 	
 	
 	
@@ -58924,67 +58870,349 @@
 	
 	
 	
-	        } }]);return Payment;}(React.Component)) || _class;var
-	
-	
-	PaymentHistory = function (_React$Component2) {_inherits(PaymentHistory, _React$Component2);
-	    function PaymentHistory(props) {_classCallCheck(this, PaymentHistory);var _this2 = _possibleConstructorReturn(this, (PaymentHistory.__proto__ || Object.getPrototypeOf(PaymentHistory)).call(this,
-	        props));
-	
-	        _this2.payments_per_page = 20;
-	        _this2.state = {
-	            page: 0 };return _this2;
-	
-	    }_createClass(PaymentHistory, [{ key: 'setPage', value: function setPage(
-	
-	        page) {
-	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { page: { $set: page } }));
-	        } }, { key: 'render', value: function render()
-	
-	        {var
-	            usersStore = this.props.usersStore;
-	            var local_payments = (0, _pagination.getChunkedArray)(usersStore.local_payments, this.payments_per_page)[this.state.page];
-	            var pages = (0, _pagination.getPagesCount)(usersStore.local_payments.length, this.payments_per_page);
-	            return (
-	                React.createElement('div', null,
-	                    React.createElement('h3', null, '\u0418\u0441\u0442\u043E\u0440\u0438\u044F \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439.'),
-	                    React.createElement('table', { className: 'table' },
-	                        React.createElement('thead', null,
-	                            React.createElement('tr', null,
-	                                React.createElement('td', null, '\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435'),
-	                                React.createElement('td', null, '\u0421\u0443\u043C\u043C\u0430'),
-	                                React.createElement('td', null, '\u0414\u0430\u0442\u0430'))),
-	
-	
-	                        React.createElement('tbody', null,
-	                            local_payments.map(function (payment, key) {
-	                                return (
-	                                    React.createElement('tr', { key: key },
-	                                        React.createElement('td', null, payment.name),
-	                                        React.createElement('td', null, payment.sum, ' \u0440.'),
-	                                        React.createElement('td', null, payment.date)));
-	
-	
-	                            }))),
 	
 	
 	
-	                    usersStore.local_payments.length > this.payments_per_page ?
-	                    React.createElement('div', { className: 'col-md-12' },
-	                        React.createElement(_pagination.Paginator, {
-	                            pages: pages,
-	                            current_page: this.state.page,
-	                            objects_length: usersStore.local_payments.length,
-	                            setPage: this.setPage.bind(this) })) :
 	
 	
-	                    null));
 	
 	
-	        } }]);return PaymentHistory;}(React.Component);
 	
 	
-	// @observer
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	declOfNum = declOfNum;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);var _mobxReact = __webpack_require__(561);var _pagination = __webpack_require__(597);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var Payment = exports.Payment = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Payment, _React$Component);function Payment() {_classCallCheck(this, Payment);return _possibleConstructorReturn(this, (Payment.__proto__ || Object.getPrototypeOf(Payment)).apply(this, arguments));}_createClass(Payment, [{ key: 'componentWillMount', value: function componentWillMount() {var usersStore = this.props.usersStore;usersStore.getData();usersStore.getTeam();} }, { key: 'onSubmit', value: function onSubmit() {var _props = this.props,usersStore = _props.usersStore,paymentStore = _props.paymentStore;_jquery2.default.ajax({ method: 'POST', url: document.body.getAttribute('data-payment-url'), data: JSON.stringify({ user: usersStore.session_user, sum: paymentStore.sum, total_sum: paymentStore.sum + paymentStore.bonus }), success: function success(res) {paymentStore.payment = res.payment;document.getElementById("YA_FORM").submit();}, error: function error(res) {console.log(res);} });} }, { key: 'getBalanceLeftText', value: function getBalanceLeftText() {var usersStore = this.props.usersStore;var team_length = usersStore.team.length;var days_left = Math.floor(usersStore.session_user.balance_total / (team_length * usersStore.payment_per_user));return React.createElement('div', null, '\u0425\u0432\u0430\u0442\u0438\u0442 \u043D\u0430', React.createElement('span', { className: 'underline' }, ' ' + days_left + ' ' + declOfNum(days_left, ['день', 'дня', 'дней']) + ' '), '\u0434\u043B\u044F', React.createElement('span', { className: 'underline' }, ' ' + team_length + ' ' + declOfNum(team_length, ['сотрудника', 'сотрудников', 'сотрудников'])));} }, { key: 'render', value: function render() {var _props2 = this.props,usersStore = _props2.usersStore,paymentStore = _props2.paymentStore;var can_submit = !!usersStore.session_user && paymentStore.sum >= 990 && !!paymentStore.method;return React.createElement('div', { className: 'col-md-12' }, React.createElement('div', { className: 'col-md-8' }, React.createElement('div', { className: 'col-md-12' }, React.createElement('div', { className: 'col-md-12 payment_balance_container' }, React.createElement('div', { className: 'col-md-12 payment_balance_block' }, React.createElement('div', { className: 'col-md-3' }, React.createElement('span', { className: 'payment_balance_total_title' }, '\u0412\u0430\u0448 \u0431\u0430\u043B\u0430\u043D\u0441*'), React.createElement('br', null), React.createElement('span', { className: 'payment_balance_total' }, usersStore.session_user.balance_total, ' \u0440\u0443\u0431.')), React.createElement('div', { className: 'col-md-6 payment_balance_total_left' }, this.getBalanceLeftText()), React.createElement('div', { className: 'col-md-3 payment_balance_button_recharge' }, React.createElement('button', { className: 'btn btn-lg btn-danger pull-right' }, '\u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u044C'))), React.createElement('div', { className: 'col-md-12' }, React.createElement('span', { className: 'payment_balance_total_ps' }, '*\u0421 \u0431\u0430\u043B\u0430\u043D\u0441\u0430 \u0441\u043F\u0438\u0441\u044B\u0432\u0430\u0435\u0442\u0441\u044F ', usersStore.payment_per_user, ' \u0440\u0443\u0431. \u0432 \u0434\u0435\u043D\u044C \u0437\u0430 \u043A\u0430\u0436\u0434\u043E\u0433\u043E \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F. \u0413\u043B\u0430\u0432\u043D\u044B\u0439 \u0430\u043A\u043A\u0430\u0443\u043D\u0442 - \u0431\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E.'))), React.createElement('h3', { className: 'profile_payment__title' }, '\u0414\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0435 \u0432\u043E\u0437\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u0438'), React.createElement('div', { className: 'col-md-12 payment_additional_container' }, React.createElement('div', { className: 'col-md-12 payment_additional_block' }, React.createElement('div', { className: 'col-md-3' }, React.createElement('span', { className: 'payment_additional_feature_title' }, '\u0412\u044B\u0433\u0440\u0443\u0437\u043A\u0430 \u0441\u043A\u0440\u0438\u043F\u0442\u0430'), React.createElement('br', null), React.createElement('span', { className: 'payment_additional_feature_desc' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u0434\u043B\u044F \u0432\u044B\u0433\u0440\u0443\u0437\u043A\u0438: ', React.createElement('span', { className: 'red_text' }, '0'))), React.createElement('div', { className: 'col-md-6 payment_additional_feature_text' }, '\u0412\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u0441\u043A\u0430\u0447\u0430\u0442\u044C \u043B\u044E\u0431\u043E\u0439 \u0441\u043A\u0440\u0438\u043F\u0442 \u0432 html-\u0444\u0430\u0439\u043B \u0438 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u0435\u0433\u043E \u0431\u0435\u0437 \u0434\u043E\u0441\u0442\u0443\u043F\u0430 \u043A \u0438\u043D\u0442\u0435\u0440\u043D\u0435\u0442\u0443'), React.createElement('div', { className: 'col-md-3 payment_balance_button' }, React.createElement('button', { className: 'btn btn-lg btn-success pull-right' }, '\u041F\u043E\u0434\u043A\u043B\u044E\u0447\u0438\u0442\u044C')))), React.createElement('div', { className: 'col-md-12 payment_additional_container' }, React.createElement('div', { className: 'col-md-12 payment_additional_block' }, React.createElement('div', { className: 'col-md-3' }, React.createElement('span', { className: 'payment_additional_feature_title' }, '\u041F\u0435\u0440\u0435\u043D\u043E\u0441 \u0441\u043A\u0440\u0438\u043F\u0442\u0430'), React.createElement('br', null), React.createElement('span', { className: 'payment_additional_feature_desc' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u0434\u043B\u044F \u043F\u0435\u0440\u0435\u043D\u043E\u0441\u0430: ', React.createElement('span', { className: 'red_text' }, '0'))), React.createElement('div', { className: 'col-md-6 payment_additional_feature_text' }, '\u0412\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u043F\u0435\u0440\u0435\u043D\u0435\u0441\u0442\u0438 \u0441\u043A\u0440\u0438\u043F\u0442 \u0441 \u0432\u0430\u0448\u0435\u0433\u043E \u0430\u043A\u043A\u0430\u0443\u043D\u0442\u0430, \u0432 \u0430\u043A\u043A\u0430\u0443\u043D\u0442 \u0434\u0440\u0443\u0433\u043E\u0433\u043E \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F'), React.createElement('div', { className: 'col-md-3 payment_balance_button' }, React.createElement('button', { className: 'btn btn-lg btn-success pull-right' }, '\u041F\u043E\u0434\u043A\u043B\u044E\u0447\u0438\u0442\u044C')))), React.createElement('div', { className: 'col-md-12 payment_additional_container' }, React.createElement('div', { className: 'col-md-12 payment_additional_block' }, React.createElement('div', { className: 'col-md-3' }, React.createElement('span', { className: 'payment_additional_feature_title' }, '\u0411\u0435\u0437\u043B\u0438\u043C\u0438\u0442\u043D\u0430\u044F \u0432\u044B\u0433\u0440\u0443\u0437\u043A\u0430'), React.createElement('br', null), React.createElement('span', { className: 'payment_additional_feature_desc' }, React.createElement('span', { className: 'red_text' }, '\u0423\u0441\u043B\u0443\u0433\u0430 \u043D\u0435 \u043F\u043E\u0434\u043A\u043B\u044E\u0447\u0435\u043D\u0430'))), React.createElement('div', { className: 'col-md-6 payment_additional_feature_text' }, '\u0412\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u0441\u043A\u0430\u0447\u0438\u0432\u0430\u0442\u044C \u043B\u044E\u0431\u043E\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0441\u043A\u0440\u0438\u043F\u0442\u043E\u0432, \u0430 \u0442\u0430\u043A\u0436\u0435 \u0440\u0430\u0437\u043C\u0435\u0449\u0430\u0442\u044C \u0441\u0432\u043E\u0439 \u043B\u043E\u0433\u043E\u0442\u0438\u043F \u0438 \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0441\u0432\u043E\u0439 \u0441\u0430\u0439\u0442 \u0432 \u0432\u044B\u0433\u0440\u0443\u0436\u0435\u043D\u043D\u043E\u043C \u0441\u043A\u0440\u0438\u043F\u0442\u0435'), React.createElement('div', { className: 'col-md-3 payment_balance_button' }, React.createElement('button', { className: 'btn btn-lg btn-success pull-right' }, '\u041F\u043E\u0434\u043A\u043B\u044E\u0447\u0438\u0442\u044C')))))), usersStore.local_payments.length > 0 ? React.createElement('div', { className: 'col-md-4' }, React.createElement('div', { className: 'jumbotron col-md-12' }, React.createElement(PaymentHistory, { usersStore: usersStore }))) : null);} }]);return Payment;}(React.Component)) || _class;var PaymentHistory = function (_React$Component2) {_inherits(PaymentHistory, _React$Component2);function PaymentHistory(props) {_classCallCheck(this, PaymentHistory);var _this2 = _possibleConstructorReturn(this, (PaymentHistory.__proto__ || Object.getPrototypeOf(PaymentHistory)).call(this, props));_this2.payments_per_page = 10;_this2.state = { page: 0 };return _this2;}_createClass(PaymentHistory, [{ key: 'setPage', value: function setPage(page) {this.setState((0, _reactAddonsUpdate2.default)(this.state, { page: { $set: page } }));} }, { key: 'render', value: function render() {var usersStore = this.props.usersStore;var local_payments = (0, _pagination.getChunkedArray)(usersStore.local_payments, this.payments_per_page)[this.state.page];var pages = (0, _pagination.getPagesCount)(usersStore.local_payments.length, this.payments_per_page);return React.createElement('div', null, React.createElement('h3', null, '\u0418\u0441\u0442\u043E\u0440\u0438\u044F \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439.'), React.createElement('table', { className: 'table' }, React.createElement('thead', null, React.createElement('tr', null, React.createElement('td', null, '\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435'), React.createElement('td', null, '\u0421\u0443\u043C\u043C\u0430'), React.createElement('td', null, '\u0414\u0430\u0442\u0430'))), React.createElement('tbody', null, local_payments.map(function (payment, key) {return React.createElement('tr', { key: key }, React.createElement('td', null, payment.name), React.createElement('td', null, payment.sum, ' \u0440.'), React.createElement('td', null, payment.date));}))), usersStore.local_payments.length > this.payments_per_page ? React.createElement('div', { className: 'col-md-12' }, React.createElement(_pagination.Paginator, { pages: pages, current_page: this.state.page, objects_length: usersStore.local_payments.length, setPage: this.setPage.bind(this) })) : null);} }]);return PaymentHistory;}(React.Component); // @observer
 	// export class Payment extends React.Component {
 	//     componentWillMount() {
 	//         const {usersStore} = this.props;
@@ -59130,6 +59358,7 @@
 	//         )
 	//     }
 	// }
+	function declOfNum(number, titles) {var cases = [2, 0, 1, 1, 1, 2];return titles[number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]];}
 
 /***/ },
 /* 617 */
@@ -86899,10 +87128,11 @@
 /* 783 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10;var _mobx = __webpack_require__(562);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11;var _mobx = __webpack_require__(562);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
-	UsersStore = exports.UsersStore = (_class = function () {function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'team', _descriptor2, this);_initDefineProp(this, 'local_payments', _descriptor3, this);_initDefineProp(this, 'session_user', _descriptor4, this);_initDefineProp(this, 'creating_teammate_email', _descriptor5, this);_initDefineProp(this, 'creating_teammate_first_name', _descriptor6, this);_initDefineProp(this, 'creating_teammate_last_name', _descriptor7, this);_initDefineProp(this, 'creating_teammate_middle_name', _descriptor8, this);_initDefineProp(this, 'creating_teammate_phone', _descriptor9, this);_initDefineProp(this, 'pressed_key', _descriptor10, this);}_createClass(UsersStore, [{ key: 'getData', value: function getData()
+	UsersStore = exports.UsersStore = (_class = function () {function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'team', _descriptor2, this);_initDefineProp(this, 'local_payments', _descriptor3, this);_initDefineProp(this, 'payment_per_user', _descriptor4, this);_initDefineProp(this, 'session_user', _descriptor5, this);_initDefineProp(this, 'creating_teammate_email', _descriptor6, this);_initDefineProp(this, 'creating_teammate_first_name', _descriptor7, this);_initDefineProp(this, 'creating_teammate_last_name', _descriptor8, this);_initDefineProp(this, 'creating_teammate_middle_name', _descriptor9, this);_initDefineProp(this, 'creating_teammate_phone', _descriptor10, this);_initDefineProp(this, 'pressed_key', _descriptor11, this);}_createClass(UsersStore, [{ key: 'getData', value: function getData()
+	
 	
 	
 	
@@ -86922,6 +87152,7 @@
 	                url: document.body.getAttribute('data-profile-url'),
 	                success: function success(res) {
 	                    _this.local_payments = res.local_payments;
+	                    _this.payment_per_user = res.payment_per_user;
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -86950,7 +87181,7 @@
 	            this.creating_teammate_first_name = '';
 	            this.creating_teammate_middle_name = '';
 	            this.creating_teammate_phone = '';
-	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'local_payments', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_first_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_last_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_middle_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_phone', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, 'pressed_key', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class.prototype, 'getData', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getData'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getTeam', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getTeam'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
+	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'local_payments', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'payment_per_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return 0;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_first_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_last_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_middle_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_phone', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor11 = _applyDecoratedDescriptor(_class.prototype, 'pressed_key', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _applyDecoratedDescriptor(_class.prototype, 'getData', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getData'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getTeam', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getTeam'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
 	
 	
 	new UsersStore();

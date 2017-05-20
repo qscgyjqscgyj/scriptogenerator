@@ -10,6 +10,7 @@ export class Payment extends React.Component {
     componentWillMount() {
         const {usersStore} = this.props;
         usersStore.getData();
+        usersStore.getTeam();
     }
 
     onSubmit() {
@@ -32,6 +33,24 @@ export class Payment extends React.Component {
         });
     }
 
+    getBalanceLeftText() {
+        const {usersStore} = this.props;
+        let team_length = usersStore.team.length;
+        let days_left = Math.floor(usersStore.session_user.balance_total / (team_length * usersStore.payment_per_user));
+        return(
+            <div>
+                Хватит на
+                <span className="underline">
+                    {` ${days_left} ${declOfNum(days_left, ['день', 'дня', 'дней'])} `}
+                </span>
+                для
+                <span className="underline">
+                    {` ${team_length} ${declOfNum(team_length, ['сотрудника', 'сотрудников', 'сотрудников'])}`}
+                </span>
+            </div>
+        )
+    }
+
     render() {
         const {usersStore, paymentStore} = this.props;
         let can_submit = (!(!usersStore.session_user) && (paymentStore.sum >= 990) && !(!paymentStore.method));
@@ -39,11 +58,85 @@ export class Payment extends React.Component {
             <div className="col-md-12">
                 <div className="col-md-8">
                     <div className="col-md-12">
-                        <div className="col-md-12">
-                            <h3 className="profile_payment__title">1. Выберите способ оплаты</h3>
+                        <div className="col-md-12 payment_balance_container">
+                            <div className="col-md-12 payment_balance_block">
+                                <div className="col-md-3">
+                                    <span className="payment_balance_total_title">Ваш баланс*</span>
+                                    <br/>
+                                    <span className="payment_balance_total">{usersStore.session_user.balance_total} руб.</span>
+                                </div>
+                                <div className="col-md-6 payment_balance_total_left">
+                                    {this.getBalanceLeftText()}
+                                </div>
+                                <div className="col-md-3 payment_balance_button_recharge">
+                                    <button className="btn btn-lg btn-danger pull-right">Пополнить</button>
+                                </div>
+                            </div>
+                            <div className="col-md-12">
+                                <span className="payment_balance_total_ps">
+                                    *С баланса списывается {usersStore.payment_per_user} руб. в день за каждого пользователя. Главный аккаунт - бесплатно.
+                                </span>
+                            </div>
                         </div>
-                        <script id="4626752292b2d3c202d2d85816e04c0878731972"
-                                src="http://getproff.ru/pl/lite/widget/script?id=1748"/>
+
+                        <h3 className="profile_payment__title">Дополнительные возможности</h3>
+                        <div className="col-md-12 payment_additional_container">
+                            <div className="col-md-12 payment_additional_block">
+                                <div className="col-md-3">
+                                    <span className="payment_additional_feature_title">
+                                        Выгрузка скрипта
+                                    </span>
+                                    <br/>
+                                    <span className="payment_additional_feature_desc">
+                                        Доступно для выгрузки: <span className="red_text">0</span>
+                                    </span>
+                                </div>
+                                <div className="col-md-6 payment_additional_feature_text">
+                                    Вы можете скачать любой скрипт в html-файл и использовать его без доступа к интернету
+                                </div>
+                                <div className="col-md-3 payment_balance_button">
+                                    <button className="btn btn-lg btn-success pull-right">Подключить</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-12 payment_additional_container">
+                            <div className="col-md-12 payment_additional_block">
+                                <div className="col-md-3">
+                                    <span className="payment_additional_feature_title">
+                                        Перенос скрипта
+                                    </span>
+                                    <br/>
+                                    <span className="payment_additional_feature_desc">
+                                        Доступно для переноса: <span className="red_text">0</span>
+                                    </span>
+                                </div>
+                                <div className="col-md-6 payment_additional_feature_text">
+                                    Вы можете перенести скрипт с вашего аккаунта, в аккаунт другого пользователя
+                                </div>
+                                <div className="col-md-3 payment_balance_button">
+                                    <button className="btn btn-lg btn-success pull-right">Подключить</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-12 payment_additional_container">
+                            <div className="col-md-12 payment_additional_block">
+                                <div className="col-md-3">
+                                    <span className="payment_additional_feature_title">
+                                        Безлимитная выгрузка
+                                    </span>
+                                    <br/>
+                                    <span className="payment_additional_feature_desc">
+                                        <span className="red_text">Услуга не подключена</span>
+                                    </span>
+                                </div>
+                                <div className="col-md-6 payment_additional_feature_text">
+                                    Вы можете скачивать любое количество скриптов, а также размещать свой логотип и ссылку на свой сайт в выгруженном скрипте
+                                </div>
+                                <div className="col-md-3 payment_balance_button">
+                                    <button className="btn btn-lg btn-success pull-right">Подключить</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {usersStore.local_payments.length > 0 ?
@@ -53,21 +146,8 @@ export class Payment extends React.Component {
                         </div>
                     </div>
                 : null}
-
-                {/*<div className="col-md-6"></div>*/}
-                {/*{paymentStore.payment && usersStore.session_user ?*/}
-                {/*<form action="https://money.yandex.ru/eshop.xml" id="YA_FORM" method="POST">*/}
-                {/*<input name="shopId" value={paymentStore.shopId} type="hidden"/>*/}
-                {/*<input name="scid" value={paymentStore.scid} type="hidden"/>*/}
-                {/*<input name="sum" value={paymentStore.sum} type="hidden"/>*/}
-                {/*<input name="customerNumber" value={usersStore.session_user.id} type="hidden"/>*/}
-                {/*<input name="paymentType" value={paymentStore.method} type="hidden"/>*/}
-                {/*<input name="orderNumber" value={paymentStore.payment.id} type="hidden"/>*/}
-                {/*<input name="cps_phone" value={usersStore.session_user.phone ? usersStore.session_user.phone : ''} type="hidden"/>*/}
-                {/*<input name="cps_email" value={usersStore.session_user.email} type="hidden"/>*/}
-                {/*<input type="submit" value="Заплатить"/>*/}
-                {/*</form>*/}
-                {/*: null}*/}
+                {/*<script id="4626752292b2d3c202d2d85816e04c0878731972"*/}
+                        {/*src="http://getproff.ru/pl/lite/widget/script?id=1748"/>*/}
             </div>
         )
     }
@@ -77,7 +157,7 @@ class PaymentHistory extends React.Component {
     constructor(props) {
         super(props);
 
-        this.payments_per_page = 20;
+        this.payments_per_page = 10;
         this.state = {
             page: 0
         }
@@ -124,7 +204,7 @@ class PaymentHistory extends React.Component {
                             setPage={this.setPage.bind(this)}
                         />
                     </div>
-                : null}
+                    : null}
             </div>
         )
     }
@@ -276,3 +356,9 @@ class PaymentHistory extends React.Component {
 //         )
 //     }
 // }
+
+
+export function declOfNum(number, titles) {
+    let cases = [2, 0, 1, 1, 1, 2];
+    return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
+}

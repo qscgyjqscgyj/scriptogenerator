@@ -1,3 +1,4 @@
+from constance import config
 from django.contrib.sites.models import Site, RequestSite
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
@@ -73,7 +74,8 @@ class CustomRegistrationView(RegistrationView):
 class ProfileView(View):
     def get(self, request, *args, **kwargs):
         return JSONResponse({
-            'local_payments': LocalPaymentSerializer(LocalPayment.objects.filter(user=request.user), many=True).data
+            'local_payments': LocalPaymentSerializer(LocalPayment.objects.filter(user=request.user), many=True).data,
+            'payment_per_user': config.PAYMENT_PER_USER,
         })
 
     def put(self, request, *args, **kwargs):

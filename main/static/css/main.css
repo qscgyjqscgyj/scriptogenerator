@@ -1,91 +1,117 @@
-*, *:before, *:after
-{
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
-html, body
-{
+
+html, body {
     width: 100%;
     height: 100%;
 
     margin: 0;
     padding: 0;
 }
+
 /*HACKS*/
 .row-centered {
-    text-align:center;
+    text-align: center;
 }
+
 .col-centered {
-    display:inline-block;
-    float:none;
+    display: inline-block;
+    float: none;
     /* reset the text-align */
     /*text-align:left;*/
     /* inline-block space fix */
-    margin-right:-4px;
+    margin-right: -4px;
 }
+
 .unmargin {
     margin-top: 0px !important;
     margin-bottom: 0px !important;
 }
-.inline_elements .inline_element {
-    display:inline-block;
+
+.underline {
+    text-decoration: underline;
 }
+
+.inline_elements .inline_element {
+    display: inline-block;
+}
+
 .red_text {
     color: #e95e42 !important;
 }
-.navbar.unmargin{
+
+.navbar.unmargin {
     margin-bottom: 0px !important;
 }
+
 .navbar-brand {
     padding: 5px 0 0 15px !important;
     margin-right: 10px;
 
 }
+
 .nav_balance_block .negative_balance {
     color: #e95e42 !important;
 }
+
 .nav_balance_block .positive_balance {
     color: #5cb85c !important;
 }
+
 .nav_promotion_block a {
     color: #e95e42 !important;
 }
+
 .nav_button_link {
     padding-top: 7px !important;
     padding-bottom: 5px !important;
 }
+
 .link:hover {
     cursor: pointer;
     text-decoration: underline;
 }
+
 .hidden_links {
-    color: #e95e42; !important;
+    color: #e95e42;
+!important;
 }
+
 .link_name {
     font-size: 16px;
     color: #337ab7;
 }
+
 .to_link {
-    color: #944cc3; !important;
+    color: #944cc3;
+!important;
 }
+
 .link_name:hover {
     font-size: 16px;
 }
+
 .list_item {
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
 .hovered_list_item:hover {
     cursor: pointer;
     background-color: #f0f0f0;
 }
+
 .hovered_list_item.opened {
     background-color: #f0f0f0;
 }
+
 .scrollable_panel {
     /*border: 1px solid #ddd;*/
 }
+
 .scroll_block {
     overflow: hidden;
     margin: 0;
@@ -94,85 +120,105 @@ html, body
     font-size: 16px;
     font-family: 'Georgia', serif;
 }
+
 .scroll_block {
     display: inline-block;
     /*min-height: 600px;*/
     /*max-height: 600px;*/
     padding-right: 17px;
 }
+
 .scroll_links {
     padding: 10px;
     overflow-y: scroll;
     overflow-x: hidden;
     float: left;
 }
+
 .link_text_editor {
     /*border: 1px solid #ddd;*/
 }
+
 .table_header_text {
     font-size: 16px;
     font-weight: 600;
 }
+
 .table_header_text:hover {
     cursor: pointer;
     text-decoration: underline;
 }
+
 /*SCROLL*/
 ::-webkit-scrollbar {
-  width: 0.3em;
-  height: 0.3em;
+    width: 0.3em;
+    height: 0.3em;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #5e5e5f;
+    background: #5e5e5f;
 }
+
 ::-webkit-scrollbar-track {
-  background: #cdcdcd;
+    background: #cdcdcd;
 }
+
 /*ICONS*/
 .edit_icon_handler:hover .edit_icon {
     visibility: visible;
 }
+
 .hidden_edit_icon {
     margin-right: 10px;
     font-size: 12px;
     visibility: hidden;
 }
+
 .edit_icon {
     color: #46b8da;
     margin-right: 10px;
     font-size: 12px;
     visibility: hidden;
 }
+
 .hidden_icon {
     margin-right: 10px;
     font-size: 12px;
     visibility: hidden;
 }
+
 .edit_icon:hover {
     cursor: pointer;
     color: #48c1e4;
 }
+
 .color_button {
     height: 25px;
     width: 25px;
     border: 3px solid #fff;
     padding: 0;
 }
+
 .StyleButton {
     border: 3px solid #fff;
 }
+
 .StyleButton.active {
     border: 3px solid #5cb85c;
 }
+
 .color_button.active {
     border: 3px solid #5cb85c;
 }
+
 .icon:hover {
     cursor: pointer;
 }
+
 .add_icon {
     color: #5cb85c;
 }
+
 .add_icon_blue {
     color: #91a8dd;
 }
@@ -180,6 +226,7 @@ html, body
 .add_simple_link_icon {
     color: #337ab7;
 }
+
 .add_to_link_icon {
     color: #944cc3;
 }
@@ -187,21 +234,26 @@ html, body
 .red_icon {
     color: #e95e42;
 }
+
 .remove_icon {
     color: red;
 }
+
 .icon_vertical_centre {
     position: relative;
     top: 10px;
 }
+
 /*SORT*/
 .sort_block {
     width: 100%;
 }
+
 .sort_item {
     width: 85%;
     float: left;
 }
+
 .sort_icons {
     float: left;
     width: 15%;
@@ -210,39 +262,47 @@ html, body
     top: 10px;
     font-size: 10px;
 }
+
 .sort_icons i:hover {
     color: #969696;
     cursor: pointer;
 }
 
 /*BOOTSTRAP*/
-.coll_form .form-group{
+.coll_form .form-group {
     margin: 5px;
 }
+
 .dropdown:hover .dropdown-menu {
     display: block !important;
     margin-top: 0 !important;
- }
+}
 
 .scroll_block p {
     margin: 0 0 0 !important;
 }
+
 .RichEditor-root {
     border: none !important;
 }
+
 /*EDITOR STYLES*/
 .RichEditor-align-center {
     text-align: center !important;
 }
+
 .RichEditor-align-left {
     text-align: left !important;
 }
+
 .RichEditor-align-right {
     text-align: right !important;
 }
+
 .strikethrough {
     position: relative;
 }
+
 .strikethrough:before {
     position: absolute;
     content: "";
@@ -252,22 +312,26 @@ html, body
     border-top: 1px solid;
     border-color: inherit;
 
-    -webkit-transform:rotate(-5deg);
-    -moz-transform:rotate(-5deg);
-    -ms-transform:rotate(-5deg);
-    -o-transform:rotate(-5deg);
-    transform:rotate(-5deg);
+    -webkit-transform: rotate(-5deg);
+    -moz-transform: rotate(-5deg);
+    -ms-transform: rotate(-5deg);
+    -o-transform: rotate(-5deg);
+    transform: rotate(-5deg);
 }
+
 .colored_button.active {
     border: 3px solid #000;
 }
+
 /*MODAL*/
 .modal_block .modal_header {
     margin-bottom: 20px;
 }
+
 .ReactModal__Content {
     overflow: visible !important;
 }
+
 /*TABLE*/
 .opened_toolbar {
     padding: 5px;
@@ -277,8 +341,87 @@ html, body
 
 /*PROFILE PAYMENT*/
 .profile_payment__title {
-    text-decoration: underline;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4d4d4d;
+    font-weight: bold;
 }
+
+.payment_balance_container {
+    margin-bottom: 40px;
+}
+
+.payment_additional_container {
+    margin-bottom: 20px;
+}
+
+.payment_additional_container:nth-child(2n+1) {
+    background-color: #f8f8f8;
+}
+
+.payment_additional_block {
+    padding: 20px;
+}
+
+.payment_additional_feature_title {
+    font-weight: bold;
+    line-height: 25px;
+    font-size: 25px;
+}
+
+.payment_additional_feature_desc {
+    font-style: italic;
+    font-size: 16px;
+}
+
+.payment_additional_feature_text {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.payment_balance_block {
+    border: solid 2px #e5e5e5;
+    padding: 20px;
+}
+
+.payment_balance_total_title {
+    color: #666666;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.payment_balance_total {
+    color: #3c6;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.payment_balance_total_left {
+    color: #4d4d4d;
+    font-size: 25px;
+    font-style: italic;
+    text-align: center;
+    position: relative;
+    top: 20px;
+}
+
+.payment_balance_button_recharge {
+    position: relative;
+    top: 15px;
+}
+
+.payment_balance_button {
+    position: relative;
+    top: 5px;
+}
+
+.payment_balance_total_ps {
+    position: relative;
+    top: 5px;
+    color: #797979;
+    font-size: 16px;
+}
+
 .profile_payment__bordered_block {
     border: solid 2px #ebebeb;
     margin: 10px;
@@ -289,10 +432,12 @@ html, body
     width: 100%;
     height: 100%;
 }
+
 .profile_payment__method_block:hover {
     border: solid 2px #c3c3c3;
     cursor: pointer;
 }
+
 .profile_payment__method_block.active {
     border: solid 2px #c3c3c3;
 }
@@ -300,35 +445,65 @@ html, body
 .profile_payment__bonus_block {
     text-align: center;
 }
+
 .profile_payment__bonus_block img {
     width: 70px;
     height: 70px;
     margin-bottom: 15px;
 }
+
 .profile_payment__bonus_block:hover {
     cursor: pointer;
 }
-.profile_payment__bonus_block.red_bonus:hover {border: solid 2px #e55e5d;}
-.profile_payment__bonus_block.green_bonus:hover {border: solid 2px #33cc66;}
-.profile_payment__bonus_block.blue_bonus:hover {border: solid 2px #6699ff;}
 
-.profile_payment__bonus_block.red_bonus.active {border: solid 2px #e55e5d;}
-.profile_payment__bonus_block.green_bonus.active {border: solid 2px #33cc66;}
-.profile_payment__bonus_block.blue_bonus.active {border: solid 2px #6699ff;}
+.profile_payment__bonus_block.red_bonus:hover {
+    border: solid 2px #e55e5d;
+}
+
+.profile_payment__bonus_block.green_bonus:hover {
+    border: solid 2px #33cc66;
+}
+
+.profile_payment__bonus_block.blue_bonus:hover {
+    border: solid 2px #6699ff;
+}
+
+.profile_payment__bonus_block.red_bonus.active {
+    border: solid 2px #e55e5d;
+}
+
+.profile_payment__bonus_block.green_bonus.active {
+    border: solid 2px #33cc66;
+}
+
+.profile_payment__bonus_block.blue_bonus.active {
+    border: solid 2px #6699ff;
+}
 
 #YA_FORM {
     visibility: hidden;
 }
+
 .invisible {
     visibility: hidden;
 }
+
 .profile_payment__bonus_title {
     font-size: 17px;
     font-weight: bold;
 }
-.profile_payment__bonus_block.red_bonus .profile_payment__bonus_title {color: #e55e5d}
-.profile_payment__bonus_block.green_bonus .profile_payment__bonus_title {color: #33cc66}
-.profile_payment__bonus_block.blue_bonus .profile_payment__bonus_title {color: #6699ff}
+
+.profile_payment__bonus_block.red_bonus .profile_payment__bonus_title {
+    color: #e55e5d
+}
+
+.profile_payment__bonus_block.green_bonus .profile_payment__bonus_title {
+    color: #33cc66
+}
+
+.profile_payment__bonus_block.blue_bonus .profile_payment__bonus_title {
+    color: #6699ff
+}
 
 .profile_payment__payment_sum_block {
     background-color: #ebebeb;
@@ -336,42 +511,54 @@ html, body
     padding-bottom: 5px;
     margin-top: 20px;
 }
+
 .profile_payment__payment_sum_block label {
     font-size: 20px;
     font-weight: bold;
     margin-right: 10px;
 }
+
 .profile_payment__payment_sum_block .form-control {
     border-radius: 0;
     width: 150px;
     font-size: 17px;
 }
+
 .profile_payment__payment_sum_block .avg {
     font-size: 20px;
     margin-left: 10px;
 }
+
 .profile_payment__payment_sum_block .summaries_block {
     text-align: right;
 }
+
 .profile_payment__payment_sum_block .summaries_block p {
     font-size: 17px;
     line-height: 10px;
 }
+
 .profile_payment__payment_sum_block .summary_bonus {
     color: #e55e5d;
     font-weight: bold;
-}.profile_payment__payment_sum_block .summary_sum {
+}
+
+.profile_payment__payment_sum_block .summary_sum {
     color: #33cc66;
     font-weight: bold;
 }
+
 .profile_payment__payment {
     margin-top: 20px;
 }
+
 .logo {
- }
-.pagination>li:first-child>a, .pagination>li:first-child>span {
+}
+
+.pagination > li:first-child > a, .pagination > li:first-child > span {
     z-index: 0;
 }
+
 .cursor-pointer:hover {
     cursor: pointer;
 }

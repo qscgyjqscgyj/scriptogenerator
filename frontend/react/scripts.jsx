@@ -7,7 +7,7 @@ import Modal from 'react-modal';
 import {ModalWrapper} from './modal';
 import {Link} from 'react-router';
 import Select from 'react-select';
-import {Paginator} from './pagination';
+import {Paginator, getChunkedArray} from './pagination';
 import confirm from './confirm';
 import {Tooltip} from './tooltip';
 
@@ -23,9 +23,11 @@ export class Scripts extends React.Component {
             page: 0,
         }
     }
+
     componentDidMount() {
         this.checkingCloningScripts();
     }
+
     clearInterval() {
         const {scriptsStore} = this.props;
         const {interval} = this.state;
@@ -33,26 +35,31 @@ export class Scripts extends React.Component {
         scriptsStore.createCloningProcess(0);
         this.setState(update(this.state, {interval: {$set: null}}));
     }
+
     componentWillUnmount() {
         return this.clearInterval();
     }
+
     checkingCloningScripts() {
         const {scriptsStore, usersStore} = this.props;
         const {interval} = this.state;
         const inactive_scripts = scriptsStore.scripts.filter(script => !script.active);
-        if(inactive_scripts && inactive_scripts.length > 0) {
+        if (inactive_scripts && inactive_scripts.length > 0) {
             scriptsStore.createCloningProcess(inactive_scripts.length);
-            if(!interval) {
-                this.setState(update(this.state, {interval: {
-                    $set: setInterval(function() {
-                        scriptsStore.updateScripts(usersStore, true);
-                    }, 2000)
-                }}));
+            if (!interval) {
+                this.setState(update(this.state, {
+                    interval: {
+                        $set: setInterval(function () {
+                            scriptsStore.updateScripts(usersStore, true);
+                        }, 2000)
+                    }
+                }));
             }
-        } else if(!inactive_scripts && interval){
+        } else if (!inactive_scripts && interval) {
             this.clearInterval()
         }
     }
+
     createScript(e) {
         const {scriptsStore, modalStore, usersStore} = this.props;
         e.preventDefault();
@@ -60,7 +67,11 @@ export class Scripts extends React.Component {
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-scripts-url'),
-            data: JSON.stringify({name: scriptsStore.creating_name, owner: usersStore.session_user, template: scriptsStore.creating_template}),
+            data: JSON.stringify({
+                name: scriptsStore.creating_name,
+                owner: usersStore.session_user,
+                template: scriptsStore.creating_template
+            }),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
                 scriptsStore.resetCreating();
@@ -72,9 +83,12 @@ export class Scripts extends React.Component {
             }
         });
     }
+
     updateScript(e, script) {
         const {scriptsStore, modalStore} = this.props;
-        if(e) {e.preventDefault()}
+        if (e) {
+            e.preventDefault()
+        }
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-scripts-url'),
@@ -88,6 +102,7 @@ export class Scripts extends React.Component {
             }
         });
     }
+
     deleteScript(script) {
         const {scriptsStore, modalStore} = this.props;
         confirm("Вы действительно хотите удалить скрипт: " + script.name).then(
@@ -109,6 +124,7 @@ export class Scripts extends React.Component {
             }
         )
     }
+
     setAccesses(accesses, script) {
         const {scriptsStore} = this.props;
         $.ajax({
@@ -116,7 +132,7 @@ export class Scripts extends React.Component {
             url: document.body.getAttribute('data-accesses-url'),
             data: JSON.stringify({accesses: accesses, script_id: script.id}),
             success: (res) => {
-                if(script.data !== res.data) {
+                if (script.data !== res.data) {
                     script.data = res.data;
                 }
             },
@@ -125,6 +141,7 @@ export class Scripts extends React.Component {
             }
         });
     }
+
     delegateScript(script, email) {
         const {scriptsStore, modalStore} = this.props;
         $.ajax({
@@ -144,6 +161,7 @@ export class Scripts extends React.Component {
             }
         });
     }
+
     cloneScript(script) {
         const {scriptsStore, usersStore} = this.props;
         scriptsStore.createCloningProcess(1);
@@ -161,13 +179,16 @@ export class Scripts extends React.Component {
             });
         });
     }
+
     setPage(page) {
         this.setState(update(this.state, {page: {$set: page}}));
     }
+
     getScriptsData() {
         const {scriptsStore, available} = this.props;
         let scripts = scriptsStore.filteredScripts(available);
-        if(scripts && scripts.length > 0) {
+        if (scripts && scripts.length > 0) {
+            // let chunked_scripts = getChunkedArray(scripts, 20);
             let chunked_scripts = [];
             let i, j, chunk = 20;
             for (i = 0, j = scripts.length; i < j; i += chunk) {
@@ -183,11 +204,12 @@ export class Scripts extends React.Component {
             pages: 0
         }
     }
+
     render() {
         const {scriptsStore, modalStore, usersStore, available} = this.props;
         let scripts_data = this.getScriptsData();
-        if(usersStore.session_user && (scriptsStore.scripts || scriptsStore.available_scripts)) {
-            return(
+        if (usersStore.session_user && (scriptsStore.scripts || scriptsStore.available_scripts)) {
+            return (
                 <div className="col-md-12">
                     {!available ?
                         <div>
@@ -202,7 +224,8 @@ export class Scripts extends React.Component {
                                             available: available
                                         })
                                     );
-                                }} className="btn btn-success">+ Создать скрипт</button>
+                                }} className="btn btn-success">+ Создать скрипт
+                                </button>
                             </div>
                             <div className="col-md-3">
                                 <div className="form-group">
@@ -220,15 +243,17 @@ export class Scripts extends React.Component {
                                         objects_length={scripts_data.scripts.length}
                                         setPage={this.setPage.bind(this)}
                                         unmargin={true}
-                                        />
+                                    />
                                 </div>
-                            : null}
+                                : null}
                         </div>
-                    : null}
+                        : null}
 
                     <div className="row">
-                        {scripts_data.scripts.map((script, key)=>{
-                            let access = (available ? script.accesses.find(access => {return access.user.id === usersStore.session_user.id}) : null);
+                        {scripts_data.scripts.map((script, key) => {
+                            let access = (available ? script.accesses.find(access => {
+                                return access.user.id === usersStore.session_user.id
+                            }) : null);
                             return (
                                 <div key={key} className="col-md-12 hovered_list_item list_item edit_icon_handler">
                                     <div className="col-md-6">
@@ -236,46 +261,49 @@ export class Scripts extends React.Component {
                                             <span className="inline_elements">
                                                 {(available && script.available ? access.edit : true) ?
                                                     <i className="glyphicon glyphicon-edit edit_icon inline_element"
-                                                        data-tip="Редактировать скрипт"
-                                                        onClick={() => {
-                                                            scriptsStore.editing = script;
-                                                            modalStore.open_modal(
-                                                                React.createElement(EditingScript, {
-                                                                    scriptsStore: scriptsStore,
-                                                                    modalStore: modalStore,
-                                                                    createScript: this.createScript.bind(this),
-                                                                    updateScript: this.updateScript.bind(this),
-                                                                    available: available
-                                                                })
-                                                            );
-                                                        }}/>
-                                                :
+                                                       data-tip="Редактировать скрипт"
+                                                       onClick={() => {
+                                                           scriptsStore.editing = script;
+                                                           modalStore.open_modal(
+                                                               React.createElement(EditingScript, {
+                                                                   scriptsStore: scriptsStore,
+                                                                   modalStore: modalStore,
+                                                                   createScript: this.createScript.bind(this),
+                                                                   updateScript: this.updateScript.bind(this),
+                                                                   available: available
+                                                               })
+                                                           );
+                                                       }}/>
+                                                    :
                                                     <i className="glyphicon glyphicon-edit hidden_edit_icon inline_element"/>
                                                 }
 
-                                                <Link className="inline_element" to={scriptsStore.scriptUrl(script)}>{script.name}</Link>
+                                                <Link className="inline_element"
+                                                      to={scriptsStore.scriptUrl(script)}>{script.name}</Link>
                                             </span>
-                                        :
+                                            :
                                             <span className="inline_elements">
                                                 <i className="glyphicon glyphicon-edit hidden_icon inline_element"/>
                                                 <span>{script.name}</span>
                                             </span>
                                         }
                                     </div>
-                                        <div className="col-md-3">
-                                            {available ?
-                                                <span>{script.owner.email}</span>
+                                    <div className="col-md-3">
+                                        {available ?
+                                            <span>{script.owner.email}</span>
                                             : null}
-                                        </div>
+                                    </div>
                                     <div className="col-md-3">
                                         <div className="btn-group pull-right">
                                             {!available ?
                                                 <button className='btn btn-default btn-xs'
                                                         data-tip="Копировать скрипт"
-                                                        onClick={() => {this.cloneScript(script)}}>
+                                                        onClick={() => {
+                                                            this.cloneScript(script)
+                                                        }}>
                                                     <i className="glyphicon glyphicon-copy"/>
                                                 </button>
-                                            : null}
+                                                : null}
 
                                             {!available ?
                                                 <button className="btn btn-default btn-xs"
@@ -296,28 +324,33 @@ export class Scripts extends React.Component {
                                                         }}>
                                                     <i className="glyphicon glyphicon-user"/>
                                                 </button>
-                                            : null}
+                                                : null}
 
                                             {(available && script.available ? access.edit : true) ?
                                                 <button className="btn btn-default btn-xs"
                                                         data-tip="Редактировать структуру скрипта"
-                                                        onClick={()=>{this.props.router.push('/tables/' + script.id + '/')}}>
+                                                        onClick={() => {
+                                                            this.props.router.push('/tables/' + script.id + '/')
+                                                        }}>
                                                     <i className="glyphicon glyphicon-edit"/>
                                                 </button>
-                                            : null}
+                                                : null}
 
                                             {!available ?
                                                 <button className="btn btn-danger btn-xs"
                                                         data-tip="Удалить скрипт"
-                                                        onClick={()=>{this.deleteScript(script)}}>
+                                                        onClick={() => {
+                                                            this.deleteScript(script)
+                                                        }}>
                                                     <i className="glyphicon glyphicon-remove"/>
                                                 </button>
-                                            : null}
+                                                : null}
                                         </div>
                                     </div>
                                     {!script.active ?
-                                        <p className="loading">Скрипт создается <img src={STATIC_URL + 'img/loading.gif'}/></p>
-                                    : null}
+                                        <p className="loading">Скрипт создается <img
+                                            src={STATIC_URL + 'img/loading.gif'}/></p>
+                                        : null}
                                 </div>
                             )
                         })}
@@ -329,9 +362,9 @@ export class Scripts extends React.Component {
                                     current_page={this.state.page}
                                     objects_length={scripts_data.scripts.length}
                                     setPage={this.setPage.bind(this)}
-                                    />
+                                />
                             </div>
-                        : null}
+                            : null}
                     </div>
                     <Tooltip />
                     <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>
@@ -351,18 +384,21 @@ class CreatingScript extends React.Component {
             error: null
         }
     }
+
     setError(error) {
         this.setState(update(this.state, {error: {$set: error}}))
     }
+
     submitScript(e) {
         e.preventDefault();
         const {scriptsStore} = this.props;
-        if(scriptsStore.creating_name) {
+        if (scriptsStore.creating_name) {
             this.props.createScript(e)
         } else {
             this.setError('Введите имя скрипта');
         }
     }
+
     render() {
         const {scriptsStore} = this.props;
         const {error} = this.state;
@@ -373,8 +409,10 @@ class CreatingScript extends React.Component {
                         <div className={`form-group ${error ? 'has-error' : ''}`}>
                             {error ?
                                 <label className="control-label">{error}</label>
-                            : null}
-                            <input className="form-control" onChange={(e) => {scriptsStore.creating_name = e.target.value}} value={scriptsStore.creating_name} type="text" name="name" placeholder="Имя скрипта"/>
+                                : null}
+                            <input className="form-control" onChange={(e) => {
+                                scriptsStore.creating_name = e.target.value
+                            }} value={scriptsStore.creating_name} type="text" name="name" placeholder="Имя скрипта"/>
                         </div>
                     </div>
                     <div className="col-md-12">
@@ -386,7 +424,9 @@ class CreatingScript extends React.Component {
                                     id="optionsRadios1"
                                     value="option1"
                                     defaultChecked={!scriptsStore.creating_template}
-                                    onChange={() => {scriptsStore.creating_template = null}}
+                                    onChange={() => {
+                                        scriptsStore.creating_template = null
+                                    }}
                                 />
                                 Пустой
                             </label>
@@ -400,7 +440,9 @@ class CreatingScript extends React.Component {
                                             type="radio"
                                             name="optionsRadios"
                                             defaultChecked={is_checked}
-                                            onChange={() => {scriptsStore.creating_template = script}}
+                                            onChange={() => {
+                                                scriptsStore.creating_template = script
+                                            }}
                                         />
                                         {script.name}
                                     </label>
@@ -423,13 +465,16 @@ class CreatingScript extends React.Component {
 class EditingScript extends React.Component {
     render() {
         const {scriptsStore, available} = this.props;
-        if(scriptsStore.editing) {
+        if (scriptsStore.editing) {
             return (
                 <div className="row">
                     <form action="" onSubmit={(e) => this.props.updateScript(e)}>
                         <div className="col-md-12">
                             <div className="form-group">
-                                <input className="form-control" onChange={(e) => scriptsStore.editing.name = e.target.value} value={scriptsStore.editing.name} type="text" name="name" placeholder="Имя скрипта"/>
+                                <input className="form-control"
+                                       onChange={(e) => scriptsStore.editing.name = e.target.value}
+                                       value={scriptsStore.editing.name} type="text" name="name"
+                                       placeholder="Имя скрипта"/>
                             </div>
                         </div>
                         <div className="col-md-12">
@@ -460,20 +505,25 @@ class Accesses extends React.Component {
             delegate_email: null
         }
     }
+
     componentWillReceiveProps(props) {
         this.setState(update(this.state, {
             accesses: {$set: this.formatAccesses(props.script.accesses)}
         }));
     }
+
     formatAccesses(accesses) {
         return accesses.map(access => {
             return {value: access.user.id, label: access.user.email, selected: true, edit: access.edit}
         });
     }
+
     onSelect(selects, edit) {
         const {script} = this.props;
         let {accesses} = this.state;
-        let new_accesses = accesses.filter(access => {return access.edit !== edit});
+        let new_accesses = accesses.filter(access => {
+            return access.edit !== edit
+        });
         selects.map(select => {
             new_accesses.push(
                 {value: select.value, label: select.label, selected: true, edit: edit}
@@ -485,9 +535,13 @@ class Accesses extends React.Component {
             }), script);
         });
     }
+
     getSelected(edit) {
-        return this.state.accesses.filter(access => {return access.edit === edit});
+        return this.state.accesses.filter(access => {
+            return access.edit === edit
+        });
     }
+
     getOptions(edit) {
         const {usersStore} = this.props;
         let edit_selects = this.getSelected(true);
@@ -495,7 +549,9 @@ class Accesses extends React.Component {
         let options = (edit ? edit_selects : no_edit_selects);
         let all_options = edit_selects.concat(no_edit_selects);
         usersStore.team.map(teammate => {
-            if((all_options.length > 0 ? !(all_options.find(option => {return option.value === teammate.user.id})) : true)) {
+            if ((all_options.length > 0 ? !(all_options.find(option => {
+                    return option.value === teammate.user.id
+                })) : true)) {
                 options.push(
                     {value: teammate.user.id, label: teammate.user.email}
                 );
@@ -503,18 +559,21 @@ class Accesses extends React.Component {
         });
         return options;
     }
+
     delegateScript() {
         const {delegate_email} = this.state;
         this.props.delegateScript(this.props.script, delegate_email);
         return this.setState(update(this.state, {delegate_email: {$set: null}}));
     }
+
     closeModal() {
         let {modalStore} = this.props;
         modalStore.close_modal();
     }
+
     render() {
         const {delegate_email} = this.state;
-        return(
+        return (
             <div className="row">
                 <div className="col-md-12">
                     <h3>Права и доступы</h3>
@@ -523,14 +582,18 @@ class Accesses extends React.Component {
                         <MultiSelectField
                             className="form-control"
                             options={this.getOptions(true)}
-                            onChange={(selects) => {this.onSelect(selects, true)}}/>
+                            onChange={(selects) => {
+                                this.onSelect(selects, true)
+                            }}/>
                     </div>
                     <div className="form-group">
                         <label>Операторы</label>
                         <MultiSelectField
                             className="form-control"
                             options={this.getOptions(false)}
-                            onChange={(selects) => {this.onSelect(selects, false)}}/>
+                            onChange={(selects) => {
+                                this.onSelect(selects, false)
+                            }}/>
                     </div>
                     <hr/>
                     <button className="btn btn-success" onClick={this.closeModal.bind(this)}>
@@ -538,16 +601,16 @@ class Accesses extends React.Component {
                     </button>
                 </div>
                 {/*<div className="col-md-12">*/}
-                    {/*<h3>Делегирование</h3>*/}
-                    {/*<div className="form-group">*/}
-                        {/*<label>Email нового владельца</label>*/}
-                        {/*<input type="text" name="email" className="form-control" placeholder="Введите email нового владельца" onChange={(e) => {*/}
-                            {/*this.setState(update(this.state, {delegate_email: {$set: e.target.value}}));*/}
-                        {/*}}/>*/}
-                    {/*</div>*/}
-                    {/*<button className={'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled')} onClick={(e) => {*/}
-                        {/*(validateEmail(delegate_email) ? this.delegateScript() : null);*/}
-                    {/*}}>Делегировать</button>*/}
+                {/*<h3>Делегирование</h3>*/}
+                {/*<div className="form-group">*/}
+                {/*<label>Email нового владельца</label>*/}
+                {/*<input type="text" name="email" className="form-control" placeholder="Введите email нового владельца" onChange={(e) => {*/}
+                {/*this.setState(update(this.state, {delegate_email: {$set: e.target.value}}));*/}
+                {/*}}/>*/}
+                {/*</div>*/}
+                {/*<button className={'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled')} onClick={(e) => {*/}
+                {/*(validateEmail(delegate_email) ? this.delegateScript() : null);*/}
+                {/*}}>Делегировать</button>*/}
                 {/*</div>*/}
             </div>
         )
@@ -560,18 +623,24 @@ class MultiSelectField extends React.Component {
 
         this.displayName = 'MultiSelect';
         this.state = {
-			options: props.options,
-			value: props.options.filter(i => {return i.selected})
-		};
+            options: props.options,
+            value: props.options.filter(i => {
+                return i.selected
+            })
+        };
     }
+
     componentWillReceiveProps(props) {
         this.setState({
-			options: props.options,
-			value: props.options.filter(i => {return i.selected})
-		});
+            options: props.options,
+            value: props.options.filter(i => {
+                return i.selected
+            })
+        });
     }
-	render() {
-		return (
+
+    render() {
+        return (
             <Select
                 multi
                 value={this.state.value}
@@ -581,9 +650,9 @@ class MultiSelectField extends React.Component {
                     this.setState(update(this.state, {value: {$set: e}}), () => {
                         this.props.onChange(e);
                     });
-                }} />
-		);
-	}
+                }}/>
+        );
+    }
 }
 
 @observer

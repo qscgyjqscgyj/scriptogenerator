@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import $ from 'jquery';
 import update from 'react-addons-update';
 import {observer} from 'mobx-react';
+import {Paginator, getPagesCount, getChunkedArray} from '../pagination';
 
 @observer
 export class Payment extends React.Component {
@@ -10,6 +11,7 @@ export class Payment extends React.Component {
         const {usersStore} = this.props;
         usersStore.getData();
     }
+
     onSubmit() {
         const {usersStore, paymentStore} = this.props;
         $.ajax({
@@ -29,64 +31,104 @@ export class Payment extends React.Component {
             }
         });
     }
+
     render() {
         const {usersStore, paymentStore} = this.props;
         let can_submit = (!(!usersStore.session_user) && (paymentStore.sum >= 990) && !(!paymentStore.method));
-        return(
+        return (
             <div className="col-md-12">
                 <div className="col-md-8">
                     <div className="col-md-12">
                         <div className="col-md-12">
                             <h3 className="profile_payment__title">1. Выберите способ оплаты</h3>
                         </div>
-                        <script id="4626752292b2d3c202d2d85816e04c0878731972" src="http://getproff.ru/pl/lite/widget/script?id=1748"/>
+                        <script id="4626752292b2d3c202d2d85816e04c0878731972"
+                                src="http://getproff.ru/pl/lite/widget/script?id=1748"/>
                     </div>
                 </div>
-                <div className="col-md-4">
-                    <div className="jumbotron col-md-11">
-                        <h3>История платежей.</h3>
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <td>Наименование</td>
-                                    <td>Сумма</td>
-                                    <td>Дата</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {usersStore.local_payments.map((payment, key) => {
-                                    return (
-                                        <tr key={key}>
-                                            <td>{payment.name}</td>
-                                            <td>{payment.sum} р.</td>
-                                            <td>{payment.date}</td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
+                {usersStore.local_payments.length > 0 ?
+                    <div className="col-md-4">
+                        <div className="jumbotron col-md-12">
+                            <PaymentHistory usersStore={usersStore}/>
+                        </div>
                     </div>
-                </div>
-
-                <div className="col-md-6"></div>
-                {paymentStore.payment && usersStore.session_user ?
-                    <form action="https://money.yandex.ru/eshop.xml" id="YA_FORM" method="POST">
-                        <input name="shopId" value={paymentStore.shopId} type="hidden"/>
-                        <input name="scid" value={paymentStore.scid} type="hidden"/>
-                        <input name="sum" value={paymentStore.sum} type="hidden"/>
-                        <input name="customerNumber" value={usersStore.session_user.id} type="hidden"/>
-                        <input name="paymentType" value={paymentStore.method} type="hidden"/>
-                        <input name="orderNumber" value={paymentStore.payment.id} type="hidden"/>
-                        <input name="cps_phone" value={usersStore.session_user.phone ? usersStore.session_user.phone : ''} type="hidden"/>
-                        <input name="cps_email" value={usersStore.session_user.email} type="hidden"/>
-                        <input type="submit" value="Заплатить"/>
-                    </form>
                 : null}
+
+                {/*<div className="col-md-6"></div>*/}
+                {/*{paymentStore.payment && usersStore.session_user ?*/}
+                {/*<form action="https://money.yandex.ru/eshop.xml" id="YA_FORM" method="POST">*/}
+                {/*<input name="shopId" value={paymentStore.shopId} type="hidden"/>*/}
+                {/*<input name="scid" value={paymentStore.scid} type="hidden"/>*/}
+                {/*<input name="sum" value={paymentStore.sum} type="hidden"/>*/}
+                {/*<input name="customerNumber" value={usersStore.session_user.id} type="hidden"/>*/}
+                {/*<input name="paymentType" value={paymentStore.method} type="hidden"/>*/}
+                {/*<input name="orderNumber" value={paymentStore.payment.id} type="hidden"/>*/}
+                {/*<input name="cps_phone" value={usersStore.session_user.phone ? usersStore.session_user.phone : ''} type="hidden"/>*/}
+                {/*<input name="cps_email" value={usersStore.session_user.email} type="hidden"/>*/}
+                {/*<input type="submit" value="Заплатить"/>*/}
+                {/*</form>*/}
+                {/*: null}*/}
             </div>
         )
     }
 }
 
+class PaymentHistory extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.payments_per_page = 20;
+        this.state = {
+            page: 0
+        }
+    }
+
+    setPage(page) {
+        this.setState(update(this.state, {page: {$set: page}}));
+    }
+
+    render() {
+        const {usersStore} = this.props;
+        let local_payments = getChunkedArray(usersStore.local_payments, this.payments_per_page)[this.state.page];
+        let pages = getPagesCount(usersStore.local_payments.length, this.payments_per_page);
+        return (
+            <div>
+                <h3>История платежей.</h3>
+                <table className="table">
+                    <thead>
+                    <tr>
+                        <td>Наименование</td>
+                        <td>Сумма</td>
+                        <td>Дата</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {local_payments.map((payment, key) => {
+                        return (
+                            <tr key={key}>
+                                <td>{payment.name}</td>
+                                <td>{payment.sum} р.</td>
+                                <td>{payment.date}</td>
+                            </tr>
+                        )
+                    })}
+                    </tbody>
+                </table>
+
+                {usersStore.local_payments.length > this.payments_per_page ?
+                    <div className="col-md-12">
+                        <Paginator
+                            pages={pages}
+                            current_page={this.state.page}
+                            objects_length={usersStore.local_payments.length}
+                            setPage={this.setPage.bind(this)}
+                        />
+                    </div>
+                : null}
+            </div>
+        )
+    }
+}
 
 // @observer
 // export class Payment extends React.Component {

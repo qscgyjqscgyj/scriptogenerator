@@ -372,3 +372,6 @@ html, body
 .pagination>li:first-child>a, .pagination>li:first-child>span {
     z-index: 0;
 }
+.cursor-pointer:hover {
+    cursor: pointer;
+}

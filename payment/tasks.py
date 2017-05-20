@@ -14,17 +14,18 @@ def get_payment_for_users():
     today = datetime.today()
     for user in get_model('users', 'CustomUser').objects.all():
         if user.positive_balance():
-            local_payment = get_model('payment', 'LocalPayment')(
-                name=u'Списание ежедневной абонентской платы.',
-                user=user,
-                sum=config.PAYMENT_PER_DAY
-            )
-            local_payment.save()
+            if config.PAYMENT_PER_DAY > 0:
+                local_payment = get_model('payment', 'LocalPayment')(
+                    name=u'Списание ежедневной абонентской платы.',
+                    user=user,
+                    sum=config.PAYMENT_PER_DAY
+                )
+                local_payment.save()
 
             user_accesses = get_model('users', 'UserAccess').objects.filter(
                     Q(owner=user) &
                     (Q(payed__isnull=True) | Q(payed__lte=today-timedelta(days=1))))
-            if user_accesses:
+            if user_accesses and config.PAYMENT_PER_USER > 0:
                 local_payment = get_model('payment', 'LocalPayment')(
                     name=u'Списание абонентской платы за активных пользователей в команде.',
                     user=user,

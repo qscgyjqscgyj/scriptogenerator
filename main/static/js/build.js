@@ -36485,9 +36485,11 @@
 	            page: 0 };return _this;
 	
 	    }_createClass(Scripts, [{ key: 'componentDidMount', value: function componentDidMount()
+	
 	        {
 	            this.checkingCloningScripts();
 	        } }, { key: 'clearInterval', value: function (_clearInterval) {function clearInterval() {return _clearInterval.apply(this, arguments);}clearInterval.toString = function () {return _clearInterval.toString();};return clearInterval;}(function ()
+	
 	        {var
 	            scriptsStore = this.props.scriptsStore;var
 	            interval = this.state.interval;
@@ -36495,9 +36497,11 @@
 	            scriptsStore.createCloningProcess(0);
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: { $set: null } }));
 	        }) }, { key: 'componentWillUnmount', value: function componentWillUnmount()
+	
 	        {
 	            return this.clearInterval();
 	        } }, { key: 'checkingCloningScripts', value: function checkingCloningScripts()
+	
 	        {var _props =
 	            this.props,scriptsStore = _props.scriptsStore,usersStore = _props.usersStore;var
 	            interval = this.state.interval;
@@ -36505,16 +36509,19 @@
 	            if (inactive_scripts && inactive_scripts.length > 0) {
 	                scriptsStore.createCloningProcess(inactive_scripts.length);
 	                if (!interval) {
-	                    this.setState((0, _reactAddonsUpdate2.default)(this.state, { interval: {
+	                    this.setState((0, _reactAddonsUpdate2.default)(this.state, {
+	                        interval: {
 	                            $set: setInterval(function () {
 	                                scriptsStore.updateScripts(usersStore, true);
 	                            }, 2000) } }));
+	
 	
 	                }
 	            } else if (!inactive_scripts && interval) {
 	                this.clearInterval();
 	            }
 	        } }, { key: 'createScript', value: function createScript(
+	
 	        e) {var _this2 = this;var _props2 =
 	            this.props,scriptsStore = _props2.scriptsStore,modalStore = _props2.modalStore,usersStore = _props2.usersStore;
 	            e.preventDefault();
@@ -36522,7 +36529,11 @@
 	            _jquery2.default.ajax({
 	                method: 'POST',
 	                url: document.body.getAttribute('data-scripts-url'),
-	                data: JSON.stringify({ name: scriptsStore.creating_name, owner: usersStore.session_user, template: scriptsStore.creating_template }),
+	                data: JSON.stringify({
+	                    name: scriptsStore.creating_name,
+	                    owner: usersStore.session_user,
+	                    template: scriptsStore.creating_template }),
+	
 	                success: function success(res) {
 	                    scriptsStore.scripts = res.scripts;
 	                    scriptsStore.resetCreating();
@@ -36534,9 +36545,12 @@
 	                } });
 	
 	        } }, { key: 'updateScript', value: function updateScript(
+	
 	        e, script) {var _props3 =
 	            this.props,scriptsStore = _props3.scriptsStore,modalStore = _props3.modalStore;
-	            if (e) {e.preventDefault();}
+	            if (e) {
+	                e.preventDefault();
+	            }
 	            _jquery2.default.ajax({
 	                method: 'PUT',
 	                url: document.body.getAttribute('data-scripts-url'),
@@ -36550,6 +36564,7 @@
 	                } });
 	
 	        } }, { key: 'deleteScript', value: function deleteScript(
+	
 	        script) {var _props4 =
 	            this.props,scriptsStore = _props4.scriptsStore,modalStore = _props4.modalStore;
 	            (0, _confirm2.default)("Вы действительно хотите удалить скрипт: " + script.name).then(
@@ -36571,6 +36586,7 @@
 	            });
 	
 	        } }, { key: 'setAccesses', value: function setAccesses(
+	
 	        accesses, script) {var
 	            scriptsStore = this.props.scriptsStore;
 	            _jquery2.default.ajax({
@@ -36587,6 +36603,7 @@
 	                } });
 	
 	        } }, { key: 'delegateScript', value: function delegateScript(
+	
 	        script, email) {var _props5 =
 	            this.props,scriptsStore = _props5.scriptsStore,modalStore = _props5.modalStore;
 	            _jquery2.default.ajax({
@@ -36606,6 +36623,7 @@
 	                } });
 	
 	        } }, { key: 'cloneScript', value: function cloneScript(
+	
 	        script) {var _props6 =
 	            this.props,scriptsStore = _props6.scriptsStore,usersStore = _props6.usersStore;
 	            scriptsStore.createCloningProcess(1);
@@ -36623,13 +36641,16 @@
 	
 	            });
 	        } }, { key: 'setPage', value: function setPage(
+	
 	        page) {
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { page: { $set: page } }));
 	        } }, { key: 'getScriptsData', value: function getScriptsData()
+	
 	        {var _props7 =
 	            this.props,scriptsStore = _props7.scriptsStore,available = _props7.available;
 	            var scripts = scriptsStore.filteredScripts(available);
 	            if (scripts && scripts.length > 0) {
+	                // let chunked_scripts = getChunkedArray(scripts, 20);
 	                var chunked_scripts = [];
 	                var i = void 0,j = void 0,chunk = 20;
 	                for (i = 0, j = scripts.length; i < j; i += chunk) {
@@ -36645,6 +36666,7 @@
 	                pages: 0 };
 	
 	        } }, { key: 'render', value: function render()
+	
 	        {var _this3 = this;var _props8 =
 	            this.props,scriptsStore = _props8.scriptsStore,modalStore = _props8.modalStore,usersStore = _props8.usersStore,available = _props8.available;
 	            var scripts_data = this.getScriptsData();
@@ -36665,6 +36687,7 @@
 	
 	
 	                                        }, className: 'btn btn-success' }, '+ \u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442')),
+	
 	
 	                            React.createElement('div', { className: 'col-md-3' },
 	                                React.createElement('div', { className: 'form-group' },
@@ -36690,7 +36713,9 @@
 	
 	                        React.createElement('div', { className: 'row' },
 	                            scripts_data.scripts.map(function (script, key) {
-	                                var access = available ? script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;}) : null;
+	                                var access = available ? script.accesses.find(function (access) {
+	                                    return access.user.id === usersStore.session_user.id;
+	                                }) : null;
 	                                return (
 	                                    React.createElement('div', { key: key, className: 'col-md-12 hovered_list_item list_item edit_icon_handler' },
 	                                        React.createElement('div', { className: 'col-md-6' },
@@ -36715,7 +36740,8 @@
 	                                                React.createElement('i', { className: 'glyphicon glyphicon-edit hidden_edit_icon inline_element' }),
 	
 	
-	                                                React.createElement(_reactRouter.Link, { className: 'inline_element', to: scriptsStore.scriptUrl(script) }, script.name)) :
+	                                                React.createElement(_reactRouter.Link, { className: 'inline_element',
+	                                                        to: scriptsStore.scriptUrl(script) }, script.name)) :
 	
 	
 	                                            React.createElement('span', { className: 'inline_elements' },
@@ -36734,7 +36760,9 @@
 	                                                !available ?
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                        onClick: function onClick() {_this3.cloneScript(script);} },
+	                                                        onClick: function onClick() {
+	                                                            _this3.cloneScript(script);
+	                                                        } },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-copy' })) :
 	
 	                                                null,
@@ -36763,7 +36791,9 @@
 	                                                (available && script.available ? access.edit : true) ?
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
-	                                                        onClick: function onClick() {_this3.props.router.push('/tables/' + script.id + '/');} },
+	                                                        onClick: function onClick() {
+	                                                            _this3.props.router.push('/tables/' + script.id + '/');
+	                                                        } },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' })) :
 	
 	                                                null,
@@ -36771,14 +36801,17 @@
 	                                                !available ?
 	                                                React.createElement('button', { className: 'btn btn-danger btn-xs',
 	                                                        'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                        onClick: function onClick() {_this3.deleteScript(script);} },
+	                                                        onClick: function onClick() {
+	                                                            _this3.deleteScript(script);
+	                                                        } },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
 	
 	                                                null)),
 	
 	
 	                                        !script.active ?
-	                                        React.createElement('p', { className: 'loading' }, '\u0421\u043A\u0440\u0438\u043F\u0442 \u0441\u043E\u0437\u0434\u0430\u0435\u0442\u0441\u044F ', React.createElement('img', { src: STATIC_URL + 'img/loading.gif' })) :
+	                                        React.createElement('p', { className: 'loading' }, '\u0421\u043A\u0440\u0438\u043F\u0442 \u0441\u043E\u0437\u0434\u0430\u0435\u0442\u0441\u044F ', React.createElement('img', {
+	                                                src: STATIC_URL + 'img/loading.gif' })) :
 	                                        null));
 	
 	
@@ -36813,9 +36846,11 @@
 	            error: null };return _this4;
 	
 	    }_createClass(CreatingScript, [{ key: 'setError', value: function setError(
+	
 	        error) {
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { error: { $set: error } }));
 	        } }, { key: 'submitScript', value: function submitScript(
+	
 	        e) {
 	            e.preventDefault();var
 	            scriptsStore = this.props.scriptsStore;
@@ -36825,6 +36860,7 @@
 	                this.setError('Введите имя скрипта');
 	            }
 	        } }, { key: 'render', value: function render()
+	
 	        {var
 	            scriptsStore = this.props.scriptsStore;var
 	            error = this.state.error;
@@ -36836,7 +36872,9 @@
 	                                error ?
 	                                React.createElement('label', { className: 'control-label' }, error) :
 	                                null,
-	                                React.createElement('input', { className: 'form-control', onChange: function onChange(e) {scriptsStore.creating_name = e.target.value;}, value: scriptsStore.creating_name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
+	                                React.createElement('input', { className: 'form-control', onChange: function onChange(e) {
+	                                        scriptsStore.creating_name = e.target.value;
+	                                    }, value: scriptsStore.creating_name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
 	
 	
 	                        React.createElement('div', { className: 'col-md-12' },
@@ -36848,7 +36886,9 @@
 	                                        id: 'optionsRadios1',
 	                                        value: 'option1',
 	                                        defaultChecked: !scriptsStore.creating_template,
-	                                        onChange: function onChange() {scriptsStore.creating_template = null;} }), '\u041F\u0443\u0441\u0442\u043E\u0439')),
+	                                        onChange: function onChange() {
+	                                            scriptsStore.creating_template = null;
+	                                        } }), '\u041F\u0443\u0441\u0442\u043E\u0439')),
 	
 	
 	
@@ -36862,7 +36902,9 @@
 	                                                type: 'radio',
 	                                                name: 'optionsRadios',
 	                                                defaultChecked: is_checked,
-	                                                onChange: function onChange() {scriptsStore.creating_template = script;} }),
+	                                                onChange: function onChange() {
+	                                                    scriptsStore.creating_template = script;
+	                                                } }),
 	
 	                                            script.name)));
 	
@@ -36891,7 +36933,10 @@
 	                        React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this6.props.updateScript(e);} },
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('div', { className: 'form-group' },
-	                                    React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return scriptsStore.editing.name = e.target.value;}, value: scriptsStore.editing.name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
+	                                    React.createElement('input', { className: 'form-control',
+	                                        onChange: function onChange(e) {return scriptsStore.editing.name = e.target.value;},
+	                                        value: scriptsStore.editing.name, type: 'text', name: 'name',
+	                                        placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
 	
 	
 	                            React.createElement('div', { className: 'col-md-12' },
@@ -36922,20 +36967,25 @@
 	            delegate_email: null };return _this7;
 	
 	    }_createClass(Accesses, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
+	
 	        props) {
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, {
 	                accesses: { $set: this.formatAccesses(props.script.accesses) } }));
 	
 	        } }, { key: 'formatAccesses', value: function formatAccesses(
+	
 	        accesses) {
 	            return accesses.map(function (access) {
 	                return { value: access.user.id, label: access.user.email, selected: true, edit: access.edit };
 	            });
 	        } }, { key: 'onSelect', value: function onSelect(
+	
 	        selects, edit) {var _this8 = this;var
 	            script = this.props.script;var
 	            accesses = this.state.accesses;
-	            var new_accesses = accesses.filter(function (access) {return access.edit !== edit;});
+	            var new_accesses = accesses.filter(function (access) {
+	                return access.edit !== edit;
+	            });
 	            selects.map(function (select) {
 	                new_accesses.push(
 	                { value: select.value, label: select.label, selected: true, edit: edit });
@@ -36947,9 +36997,13 @@
 	                }), script);
 	            });
 	        } }, { key: 'getSelected', value: function getSelected(
+	
 	        edit) {
-	            return this.state.accesses.filter(function (access) {return access.edit === edit;});
+	            return this.state.accesses.filter(function (access) {
+	                return access.edit === edit;
+	            });
 	        } }, { key: 'getOptions', value: function getOptions(
+	
 	        edit) {var
 	            usersStore = this.props.usersStore;
 	            var edit_selects = this.getSelected(true);
@@ -36957,7 +37011,9 @@
 	            var options = edit ? edit_selects : no_edit_selects;
 	            var all_options = edit_selects.concat(no_edit_selects);
 	            usersStore.team.map(function (teammate) {
-	                if (all_options.length > 0 ? !all_options.find(function (option) {return option.value === teammate.user.id;}) : true) {
+	                if (all_options.length > 0 ? !all_options.find(function (option) {
+	                    return option.value === teammate.user.id;
+	                }) : true) {
 	                    options.push(
 	                    { value: teammate.user.id, label: teammate.user.email });
 	
@@ -36965,15 +37021,18 @@
 	            });
 	            return options;
 	        } }, { key: 'delegateScript', value: function delegateScript()
+	
 	        {var
 	            delegate_email = this.state.delegate_email;
 	            this.props.delegateScript(this.props.script, delegate_email);
 	            return this.setState((0, _reactAddonsUpdate2.default)(this.state, { delegate_email: { $set: null } }));
 	        } }, { key: 'closeModal', value: function closeModal()
+	
 	        {var
 	            modalStore = this.props.modalStore;
 	            modalStore.close_modal();
 	        } }, { key: 'render', value: function render()
+	
 	        {var _this9 = this;var
 	            delegate_email = this.state.delegate_email;
 	            return (
@@ -36985,14 +37044,18 @@
 	                            React.createElement(MultiSelectField, {
 	                                className: 'form-control',
 	                                options: this.getOptions(true),
-	                                onChange: function onChange(selects) {_this9.onSelect(selects, true);} })),
+	                                onChange: function onChange(selects) {
+	                                    _this9.onSelect(selects, true);
+	                                } })),
 	
 	                        React.createElement('div', { className: 'form-group' },
 	                            React.createElement('label', null, '\u041E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u044B'),
 	                            React.createElement(MultiSelectField, {
 	                                className: 'form-control',
 	                                options: this.getOptions(false),
-	                                onChange: function onChange(selects) {_this9.onSelect(selects, false);} })),
+	                                onChange: function onChange(selects) {
+	                                    _this9.onSelect(selects, false);
+	                                } })),
 	
 	                        React.createElement('hr', null),
 	                        React.createElement('button', { className: 'btn btn-success', onClick: this.closeModal.bind(this) }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))));
@@ -37023,15 +37086,21 @@
 	        _this10.displayName = 'MultiSelect';
 	        _this10.state = {
 	            options: props.options,
-	            value: props.options.filter(function (i) {return i.selected;}) };return _this10;
+	            value: props.options.filter(function (i) {
+	                return i.selected;
+	            }) };return _this10;
 	
 	    }_createClass(MultiSelectField, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
+	
 	        props) {
 	            this.setState({
 	                options: props.options,
-	                value: props.options.filter(function (i) {return i.selected;}) });
+	                value: props.options.filter(function (i) {
+	                    return i.selected;
+	                }) });
 	
 	        } }, { key: 'render', value: function render()
+	
 	        {var _this11 = this;
 	            return (
 	                React.createElement(_reactSelect2.default, {
@@ -56302,47 +56371,82 @@
 /* 597 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Paginator = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
-	var _mobxReact = __webpack_require__(561);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Paginator = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;exports.
 	
 	
-	Paginator = exports.Paginator = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Paginator, _React$Component);
-	    function Paginator(props) {_classCallCheck(this, Paginator);var _this = _possibleConstructorReturn(this, (Paginator.__proto__ || Object.getPrototypeOf(Paginator)).call(this,
-	        props));
-	
-	        _this.state = props;return _this;
-	    }_createClass(Paginator, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
-	        props) {
-	            this.setState(props);
-	        } }, { key: 'render', value: function render()
-	        {var _this2 = this;var _state =
-	            this.state,pages = _state.pages,current_page = _state.current_page,objects_length = _state.objects_length,unmargin = _state.unmargin;
-	            return (
-	                React.createElement('ul', { className: 'pagination ' + (unmargin ? 'unmargin' : '') },
-	                    current_page > 0 ?
-	                    React.createElement('li', null,
-	                        React.createElement('a', { href: '#', onClick: function onClick() {_this2.props.setPage(current_page - 1);} },
-	                            React.createElement('span', { 'aria-hidden': 'true' }, '\xAB'))) :
 	
 	
-	                    null,
-	
-	                    Array.from(Array(pages).keys()).map(function (page) {
-	                        return (
-	                            React.createElement('li', { key: page, className: current_page === page ? 'active' : '' }, React.createElement('a', { href: '#', onClick: function onClick() {_this2.props.setPage(page);} }, page + 1)));
-	
-	                    }),
-	
-	                    current_page < objects_length ?
-	                    React.createElement('li', null,
-	                        React.createElement('a', { href: '#', onClick: function onClick() {_this2.props.setPage(current_page + 1);} },
-	                            React.createElement('span', { 'aria-hidden': 'true' }, '\xBB'))) :
 	
 	
-	                    null));
 	
 	
-	        } }]);return Paginator;}(React.Component)) || _class;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	getPagesCount = getPagesCount;exports.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	getChunkedArray = getChunkedArray;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);var _mobxReact = __webpack_require__(561);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var Paginator = exports.Paginator = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Paginator, _React$Component); // PROPS:
+	    //     :pages - count of pages
+	    //     :current_page - current page
+	    //     :objects_length - count of all objects
+	    //     :unmargin - pagination without margin css
+	    function Paginator(props) {_classCallCheck(this, Paginator);var _this = _possibleConstructorReturn(this, (Paginator.__proto__ || Object.getPrototypeOf(Paginator)).call(this, props));_this.state = props;return _this;}_createClass(Paginator, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(props) {this.setState(props);} }, { key: 'render', value: function render() {var _this2 = this;var _state = this.state,pages = _state.pages,current_page = _state.current_page,objects_length = _state.objects_length,unmargin = _state.unmargin;return React.createElement('ul', { className: 'pagination ' + (unmargin ? 'unmargin' : '') }, current_page > 0 ? React.createElement('li', null, React.createElement('a', { className: 'cursor-pointer', onClick: function onClick() {_this2.props.setPage(current_page - 1);} }, React.createElement('span', { 'aria-hidden': 'true' }, '\xAB'))) : null, Array.from(Array(pages).keys()).map(function (page) {return React.createElement('li', { key: page, className: current_page === page ? 'active' : '' }, React.createElement('a', { className: 'cursor-pointer', onClick: function onClick() {_this2.props.setPage(page);} }, page + 1));}), current_page < objects_length ? React.createElement('li', null, React.createElement('a', { className: 'cursor-pointer', onClick: function onClick() {_this2.props.setPage(current_page + 1);} }, React.createElement('span', { 'aria-hidden': 'true' }, '\xBB'))) : null);} }]);return Paginator;}(React.Component)) || _class;function getPagesCount(objects_length) {var per_page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;var pages = objects_length / per_page;switch (true) {case pages <= 1:return 0;case pages > 1:return Math.ceil(pages);default:return 0;}}function getChunkedArray(array, length) {var chunked_array = [];var i = void 0,j = void 0,chunk = length;for (i = 0, j = array.length; i < j; i += chunk) {chunked_array.push(array.slice(i, i + chunk));}
+	    return chunked_array;
+	}
 
 /***/ },
 /* 598 */
@@ -58752,7 +58856,8 @@
 	var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
-	var _mobxReact = __webpack_require__(561);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _mobxReact = __webpack_require__(561);
+	var _pagination = __webpack_require__(597);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	Payment = exports.Payment = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Payment, _React$Component);function Payment() {_classCallCheck(this, Payment);return _possibleConstructorReturn(this, (Payment.__proto__ || Object.getPrototypeOf(Payment)).apply(this, arguments));}_createClass(Payment, [{ key: 'componentWillMount', value: function componentWillMount()
@@ -58760,6 +58865,7 @@
 	            usersStore = this.props.usersStore;
 	            usersStore.getData();
 	        } }, { key: 'onSubmit', value: function onSubmit()
+	
 	        {var _props =
 	            this.props,usersStore = _props.usersStore,paymentStore = _props.paymentStore;
 	            _jquery2.default.ajax({
@@ -58779,6 +58885,7 @@
 	                } });
 	
 	        } }, { key: 'render', value: function render()
+	
 	        {var _props2 =
 	            this.props,usersStore = _props2.usersStore,paymentStore = _props2.paymentStore;
 	            var can_submit = !!usersStore.session_user && paymentStore.sum >= 990 && !!paymentStore.method;
@@ -58789,53 +58896,92 @@
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('h3', { className: 'profile_payment__title' }, '1. \u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u043F\u043E\u0441\u043E\u0431 \u043E\u043F\u043B\u0430\u0442\u044B')),
 	
-	                            React.createElement('script', { id: '4626752292b2d3c202d2d85816e04c0878731972', src: 'http://getproff.ru/pl/lite/widget/script?id=1748' }))),
+	                            React.createElement('script', { id: '4626752292b2d3c202d2d85816e04c0878731972',
+	                                src: 'http://getproff.ru/pl/lite/widget/script?id=1748' }))),
 	
 	
+	                    usersStore.local_payments.length > 0 ?
 	                    React.createElement('div', { className: 'col-md-4' },
-	                        React.createElement('div', { className: 'jumbotron col-md-11' },
-	                            React.createElement('h3', null, '\u0418\u0441\u0442\u043E\u0440\u0438\u044F \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439.'),
-	                            React.createElement('table', { className: 'table' },
-	                                React.createElement('thead', null,
-	                                    React.createElement('tr', null,
-	                                        React.createElement('td', null, '\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435'),
-	                                        React.createElement('td', null, '\u0421\u0443\u043C\u043C\u0430'),
-	                                        React.createElement('td', null, '\u0414\u0430\u0442\u0430'))),
+	                        React.createElement('div', { className: 'jumbotron col-md-12' },
+	                            React.createElement(PaymentHistory, { usersStore: usersStore }))) :
 	
-	
-	                                React.createElement('tbody', null,
-	                                    usersStore.local_payments.map(function (payment, key) {
-	                                        return (
-	                                            React.createElement('tr', { key: key },
-	                                                React.createElement('td', null, payment.name),
-	                                                React.createElement('td', null, payment.sum, ' \u0440.'),
-	                                                React.createElement('td', null, payment.date)));
-	
-	
-	                                    }))))),
-	
-	
-	
-	
-	
-	                    React.createElement('div', { className: 'col-md-6' }),
-	                    paymentStore.payment && usersStore.session_user ?
-	                    React.createElement('form', { action: 'https://money.yandex.ru/eshop.xml', id: 'YA_FORM', method: 'POST' },
-	                        React.createElement('input', { name: 'shopId', value: paymentStore.shopId, type: 'hidden' }),
-	                        React.createElement('input', { name: 'scid', value: paymentStore.scid, type: 'hidden' }),
-	                        React.createElement('input', { name: 'sum', value: paymentStore.sum, type: 'hidden' }),
-	                        React.createElement('input', { name: 'customerNumber', value: usersStore.session_user.id, type: 'hidden' }),
-	                        React.createElement('input', { name: 'paymentType', value: paymentStore.method, type: 'hidden' }),
-	                        React.createElement('input', { name: 'orderNumber', value: paymentStore.payment.id, type: 'hidden' }),
-	                        React.createElement('input', { name: 'cps_phone', value: usersStore.session_user.phone ? usersStore.session_user.phone : '', type: 'hidden' }),
-	                        React.createElement('input', { name: 'cps_email', value: usersStore.session_user.email, type: 'hidden' }),
-	                        React.createElement('input', { type: 'submit', value: '\u0417\u0430\u043F\u043B\u0430\u0442\u0438\u0442\u044C' })) :
 	
 	                    null));
 	
 	
-	        } }]);return Payment;}(React.Component)) || _class;
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	        } }]);return Payment;}(React.Component)) || _class;var
+	
+	
+	PaymentHistory = function (_React$Component2) {_inherits(PaymentHistory, _React$Component2);
+	    function PaymentHistory(props) {_classCallCheck(this, PaymentHistory);var _this2 = _possibleConstructorReturn(this, (PaymentHistory.__proto__ || Object.getPrototypeOf(PaymentHistory)).call(this,
+	        props));
+	
+	        _this2.payments_per_page = 20;
+	        _this2.state = {
+	            page: 0 };return _this2;
+	
+	    }_createClass(PaymentHistory, [{ key: 'setPage', value: function setPage(
+	
+	        page) {
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { page: { $set: page } }));
+	        } }, { key: 'render', value: function render()
+	
+	        {var
+	            usersStore = this.props.usersStore;
+	            var local_payments = (0, _pagination.getChunkedArray)(usersStore.local_payments, this.payments_per_page)[this.state.page];
+	            var pages = (0, _pagination.getPagesCount)(usersStore.local_payments.length, this.payments_per_page);
+	            return (
+	                React.createElement('div', null,
+	                    React.createElement('h3', null, '\u0418\u0441\u0442\u043E\u0440\u0438\u044F \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439.'),
+	                    React.createElement('table', { className: 'table' },
+	                        React.createElement('thead', null,
+	                            React.createElement('tr', null,
+	                                React.createElement('td', null, '\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435'),
+	                                React.createElement('td', null, '\u0421\u0443\u043C\u043C\u0430'),
+	                                React.createElement('td', null, '\u0414\u0430\u0442\u0430'))),
+	
+	
+	                        React.createElement('tbody', null,
+	                            local_payments.map(function (payment, key) {
+	                                return (
+	                                    React.createElement('tr', { key: key },
+	                                        React.createElement('td', null, payment.name),
+	                                        React.createElement('td', null, payment.sum, ' \u0440.'),
+	                                        React.createElement('td', null, payment.date)));
+	
+	
+	                            }))),
+	
+	
+	
+	                    usersStore.local_payments.length > this.payments_per_page ?
+	                    React.createElement('div', { className: 'col-md-12' },
+	                        React.createElement(_pagination.Paginator, {
+	                            pages: pages,
+	                            current_page: this.state.page,
+	                            objects_length: usersStore.local_payments.length,
+	                            setPage: this.setPage.bind(this) })) :
+	
+	
+	                    null));
+	
+	
+	        } }]);return PaymentHistory;}(React.Component);
 	
 	
 	// @observer
@@ -86248,18 +86394,18 @@
 	
 	                            null,
 	                            React.createElement('li', { className: 'nav_balance_block' },
-	                                React.createElement('a', {
-	                                        href: 'http://getproff.ru/sgt-pay',
+	
+	
+	
+	
+	
+	                                React.createElement(_reactRouter.Link, { to: '/profile/payment/',
+	                                        role: 'button',
+	                                        'aria-haspopup': 'true',
+	                                        'aria-expanded': 'false',
 	                                        className: usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance' }, '\u0411\u0430\u043B\u0430\u043D\u0441: ',
+	
 	                                    usersStore.session_user.balance_total, '\u0440.')),
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	                            React.createElement('li', { className: 'dropdown' },

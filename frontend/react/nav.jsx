@@ -80,19 +80,19 @@ export class Nav extends React.Component {
                                 </li>
                             : null}
                             <li className="nav_balance_block">
-                                <a
-                                    href="http://getproff.ru/sgt-pay"
-                                    className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}>
-                                        Баланс: {usersStore.session_user.balance_total}р.
-                                </a>
-                                {/*<Link to="/profile/payment/"*/}
-                                    {/*role="button"*/}
-                                    {/*aria-haspopup="true"*/}
-                                    {/*aria-expanded="false"*/}
-                                    {/*className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}*/}
-                                {/*>*/}
-                                    {/*Баланс: {usersStore.session_user.balance_total}р.*/}
-                                {/*</Link>*/}
+                                {/*<a*/}
+                                    {/*href="http://getproff.ru/sgt-pay"*/}
+                                    {/*className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}>*/}
+                                        {/*Баланс: {usersStore.session_user.balance_total}р.*/}
+                                {/*</a>*/}
+                                <Link to="/profile/payment/"
+                                    role="button"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}
+                                >
+                                    Баланс: {usersStore.session_user.balance_total}р.
+                                </Link>
                             </li>
                             <li className="dropdown">
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{usersStore.session_user.username} <span className="caret"/></a>

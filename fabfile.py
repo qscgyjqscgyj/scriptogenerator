@@ -14,11 +14,11 @@ def deploy():
         try:
             local('git add .')
             local('git commit -a -m "deploy: %s"' % datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-            local('git push origin script_json_data')
+            local('git push origin master')
         except Exception as e:
             print(e)
         with server_prefix:
-            run('git pull origin script_json_data')
+            run('git pull origin master')
             run('pip install -r requirements/development.pip')
             run('python ./manage.py syncdb')
             run('python ./manage.py makemigrations --merge')

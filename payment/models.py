@@ -10,7 +10,7 @@ class UserPayment(models.Model):
     user = models.ForeignKey(CustomUser, related_name='user_payment_user_custom_user')
     sum = models.FloatField(default=0)
     total_sum = models.FloatField(default=0)
-    date_created = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     payment_data = models.TextField(blank=True, null=True)
     payed = models.DateTimeField(blank=True, null=True)
     promotion = models.BooleanField(default=False)

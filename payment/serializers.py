@@ -14,7 +14,7 @@ class UserPaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserPayment
-        fields = ('id', 'user', 'sum', 'date_created', 'payed', 'total_sum')
+        fields = ('id', 'user', 'sum', 'date', 'payed', 'total_sum')
 
 
 class LocalPaymentSerializer(serializers.ModelSerializer):

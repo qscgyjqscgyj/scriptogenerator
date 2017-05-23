@@ -139,7 +139,7 @@ export class Payment extends React.Component {
                         </div>
                     </div>
                 </div>
-                {usersStore.local_payments.length > 0 ?
+                {usersStore.payment_history.length > 0 ?
                     <div className="col-md-4">
                         <div className="jumbotron col-md-12">
                             <PaymentHistory usersStore={usersStore}/>
@@ -169,8 +169,8 @@ class PaymentHistory extends React.Component {
 
     render() {
         const {usersStore} = this.props;
-        let local_payments = getChunkedArray(usersStore.local_payments, this.payments_per_page)[this.state.page];
-        let pages = getPagesCount(usersStore.local_payments.length, this.payments_per_page);
+        let payment_history = getChunkedArray(usersStore.payment_history, this.payments_per_page)[this.state.page];
+        let pages = getPagesCount(usersStore.payment_history.length, this.payments_per_page);
         return (
             <div>
                 <h3>История платежей.</h3>
@@ -183,24 +183,24 @@ class PaymentHistory extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {local_payments.map((payment, key) => {
+                    {payment_history.map((payment, key) => {
                         return (
                             <tr key={key}>
-                                <td>{payment.name}</td>
-                                <td>{payment.sum} р.</td>
-                                <td>{payment.date}</td>
+                                <td>{payment.name ? payment.name : 'Информация отсутствует'}</td>
+                                <td>{`${payment.payed ? '+' : '-'}${payment.sum}`} р.</td>
+                                <td>{payment.payed ? payment.payed : payment.date}</td>
                             </tr>
                         )
                     })}
                     </tbody>
                 </table>
 
-                {usersStore.local_payments.length > this.payments_per_page ?
+                {usersStore.payment_history.length > this.payments_per_page ?
                     <div className="col-md-12">
                         <Paginator
                             pages={pages}
                             current_page={this.state.page}
-                            objects_length={usersStore.local_payments.length}
+                            objects_length={usersStore.payment_history.length}
                             setPage={this.setPage.bind(this)}
                         />
                     </div>

@@ -77674,18 +77674,18 @@
 	
 	                            null,
 	                            React.createElement('li', { className: 'nav_balance_block' },
-	
-	
-	
-	
-	
-	                                React.createElement(_reactRouter.Link, { to: '/profile/payment/',
-	                                        role: 'button',
-	                                        'aria-haspopup': 'true',
-	                                        'aria-expanded': 'false',
+	                                React.createElement('a', {
+	                                        href: 'http://getproff.ru/sgt-pay',
 	                                        className: usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance' }, '\u0411\u0430\u043B\u0430\u043D\u0441: ',
-	
 	                                    usersStore.session_user.balance_total, '\u0440.')),
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	                            React.createElement('li', { className: 'dropdown' },

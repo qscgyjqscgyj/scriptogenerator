@@ -15,7 +15,7 @@ import json
 import hashlib
 from dateutil.tz import tzlocal
 
-from payment.models import UserPayment, UserScriptDelegationAccess, UserOfflineScriptExportAccess
+from payment.models import UserPayment, UserScriptDelegationAccess, UserOfflineScriptExportAccess, PaymentLog
 from payment.serializers import UserPaymentSerializer
 from django.core.mail import send_mail
 
@@ -234,13 +234,20 @@ class PaymentForOfflineScript(View, GetproffExternalPayment):
         positions = request.GET.get('positions')
         email = request.GET.get('email')
         if email:
+            user = CustomUser.objects.get(username=email)
+            date_now = datetime.datetime.now()
             if positions and self.PRODUCT_ID in positions:
                 products_count = self.get_products_count(positions)
                 for i in range(products_count):
                     UserOfflineScriptExportAccess.objects.create(
-                        user=CustomUser.objects.get(username=email),
-                        payed=datetime.datetime.now()
+                        user=user,
+                        payed=date_now
                     )
+                PaymentLog.objects.create(
+                    name='Услуга "Выгрузка скрипта (%(accesses_count)s шт.)" - подключена' % dict(accesses_count=str(products_count)),
+                    user=user,
+                    date=date_now
+                )
                 return JSONResponse({'status': 'success'}, status=200)
             return JSONResponse({'status': 'error', 'message': 'Positions does not support with this method'},
                                 status=500)

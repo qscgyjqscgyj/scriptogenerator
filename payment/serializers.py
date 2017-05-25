@@ -1,10 +1,14 @@
 from rest_framework import serializers
 
-from payment.models import UserPayment, LocalPayment
+from main.serializers.fields import DateTimeField
+from payment.models import UserPayment, LocalPayment, PaymentLog
 from users.models import CustomUser
 
 
 class UserPaymentSerializer(serializers.ModelSerializer):
+    date = DateTimeField(required=False, read_only=True)
+    payed = DateTimeField(required=False, read_only=True)
+
     def create(self, validated_data):
         validated_data['user'] = CustomUser.objects.get(pk=validated_data.get('user'))
         return UserPayment.objects.create(**validated_data)
@@ -18,6 +22,16 @@ class UserPaymentSerializer(serializers.ModelSerializer):
 
 
 class LocalPaymentSerializer(serializers.ModelSerializer):
+    date = DateTimeField(required=False, read_only=True)
+
     class Meta:
         model = LocalPayment
         fields = ('id', 'name', 'user', 'sum', 'date')
+
+
+class PaymentLogSerializer(serializers.ModelSerializer):
+    date = DateTimeField(required=False, read_only=True)
+
+    class Meta:
+        model = PaymentLog
+        fields = ('id', 'name', 'user', 'sum', 'debit_credit', 'date')

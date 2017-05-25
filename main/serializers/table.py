@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
+
+from main.serializers.fields import DateTimeField
 from main.serializers.link import LinkCategoriesField
 
 
@@ -31,7 +33,7 @@ class TableSerializer(serializers.Serializer):
     text_coll_name = serializers.CharField(required=True)
     text_coll_size = serializers.IntegerField(required=True)
     text_coll_position = serializers.IntegerField(required=True)
-    date = serializers.DateTimeField(required=True)
+    date = DateTimeField(required=False, read_only=True)
     date_mod = serializers.DateTimeField(required=True)
     colls = CollsField()
 

@@ -159,21 +159,66 @@ class PaymentHistory extends React.Component {
 
         this.payments_per_page = 10;
         this.state = {
-            page: 0
+            page: 0,
+            payment_history_filter: null
         }
     }
 
-    setPage(page) {
-        this.setState(update(this.state, {page: {$set: page}}));
+    setPage(page=0, callback=null) {
+        this.setState(update(this.state, {page: {$set: page}}), () => {
+            if(callback) {
+                callback();
+            }
+        });
+    }
+
+    setPaymentHistoryFilter(value) {
+        this.setPage(0, () => {
+            this.setState(update(this.state, {payment_history_filter: {$set: value}}));
+        });
+    }
+
+    getFilteredPaymentHistory() {
+        const {usersStore} = this.props;
+        const {payment_history_filter} = this.state;
+
+        let payment_history = usersStore.payment_history;
+        if(payment_history_filter) {
+            return payment_history.filter((payment) => {
+                switch (true) {
+                    case (payment_history_filter > 0):
+                        return payment.debit_credit > 0;
+                    case (payment_history_filter < 0):
+                        return payment.debit_credit < 0;
+                    default:
+                        return false;
+                }
+            });
+        }
+        return payment_history;
     }
 
     render() {
         const {usersStore} = this.props;
-        let payment_history = getChunkedArray(usersStore.payment_history, this.payments_per_page)[this.state.page];
-        let pages = getPagesCount(usersStore.payment_history.length, this.payments_per_page);
+        const {payment_history_filter} = this.state;
+
+        let payment_history = this.getFilteredPaymentHistory();
+        let chunked_payment_history = getChunkedArray(payment_history, this.payments_per_page)[this.state.page];
+        let pages = getPagesCount(payment_history.length, this.payments_per_page);
         return (
             <div>
                 <h3>История платежей.</h3>
+                <div className="btn-group" role="group" aria-label="...">
+                    <button type="button"
+                            className={`btn btn-default ${payment_history_filter > 0 ? 'active' : ''}`}
+                            onClick={this.setPaymentHistoryFilter.bind(this, 1)}>Дебет</button>
+                    <button type="button"
+                            className={`btn btn-default ${payment_history_filter < 0 ? 'active' : ''}`}
+                            onClick={this.setPaymentHistoryFilter.bind(this, -1)}>Кредит</button>
+                    <button type="button"
+                            className={`btn btn-default ${!payment_history_filter ? 'active' : ''}`}
+                            onClick={this.setPaymentHistoryFilter.bind(this, null)}>Все</button>
+                </div>
                 <table className="table">
                     <thead>
                     <tr>
@@ -183,24 +228,24 @@ class PaymentHistory extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {payment_history.map((payment, key) => {
+                    {chunked_payment_history.map((payment, key) => {
                         return (
                             <tr key={key}>
                                 <td>{payment.name ? payment.name : 'Информация отсутствует'}</td>
-                                <td>{`${payment.payed ? '+' : '-'}${payment.sum}`} р.</td>
-                                <td>{payment.payed ? payment.payed : payment.date}</td>
+                                <td>{payment.sum ? `${payment.debit_credit > 0 ? '+' : '-'}${payment.sum} р.` : ''}</td>
+                                <td>{payment.date}</td>
                             </tr>
                         )
                     })}
                     </tbody>
                 </table>
 
-                {usersStore.payment_history.length > this.payments_per_page ?
+                {payment_history.length > this.payments_per_page ?
                     <div className="col-md-12">
                         <Paginator
                             pages={pages}
                             current_page={this.state.page}
-                            objects_length={usersStore.payment_history.length}
+                            objects_length={payment_history.length}
                             setPage={this.setPage.bind(this)}
                         />
                     </div>

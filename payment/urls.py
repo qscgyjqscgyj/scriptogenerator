@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.views.decorators.csrf import csrf_exempt
 
 from payment.views import PaymentFailView, YandexPaymentView, PaymentForUserAccesses, PaymentForScriptDelegation, \
-    PaymentForOfflineScript, PaymentForUnlimitedOfflineScript
+    PaymentForOfflineScript, PaymentForUnlimitedOfflineScript, PaymentForUserAccessesWithSale
 from payment.views import PaymentSuccessView
 
 urlpatterns = patterns('',
@@ -13,6 +13,7 @@ urlpatterns = patterns('',
 
     # GETPROFF EXTERNAL PAYMENTS
     url(r'^getproff/pay.user/$', PaymentForUserAccesses.as_view(), name='getproff__pay.user'),
+    url(r'^getproff/pay.user.sale/$', PaymentForUserAccessesWithSale.as_view(), name='getproff__pay.user.sale'),
     url(r'^getproff/delegate.script/$', PaymentForScriptDelegation.as_view(), name='getproff__delegate.script'),
     url(r'^getproff/export.script/$', PaymentForOfflineScript.as_view(), name='getproff__export.script'),
     url(r'^getproff/export.script.unlim/$', PaymentForUnlimitedOfflineScript.as_view(), name='getproff__export.script.unlim'),

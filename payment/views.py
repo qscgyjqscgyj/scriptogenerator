@@ -3,6 +3,7 @@ import datetime
 import urllib
 
 import pytz
+from constance import config
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -14,12 +15,13 @@ import json
 import hashlib
 from dateutil.tz import tzlocal
 
-from payment.models import UserPayment
+from payment.models import UserPayment, UserScriptDelegationAccess, UserOfflineScriptExportAccess, PaymentLog
 from payment.serializers import UserPaymentSerializer
 from django.core.mail import send_mail
 
 from payment.tasks import recount_balance
 from scripts.settings import YANDEX_SHOPID, YANDEX_SHOPPASSWORD
+from users.models import CustomUser
 
 
 class PaymentView(View):
@@ -54,16 +56,17 @@ class YandexPaymentView(View):
         response_template = loader.get_template('payment_response.xml')
         if yandex_md5:
             md5 = hashlib.md5()
-            md5.update('%(action)s;%(order_sum)s;%(orderSumCurrencyPaycash)s;%(orderSumBankPaycash)s;%(shopId)s;%(invoiceId)s;%(customerNumber)s;%(shopPassword)s' % dict(
-                action=action,
-                order_sum=request.POST.get('orderSumAmount'),
-                orderSumCurrencyPaycash=request.POST.get('orderSumCurrencyPaycash'),
-                orderSumBankPaycash=request.POST.get('orderSumBankPaycash'),
-                shopId=YANDEX_SHOPID,
-                invoiceId=request.POST.get('invoiceId'),
-                customerNumber=request.POST.get('customerNumber'),
-                shopPassword=YANDEX_SHOPPASSWORD
-            ))
+            md5.update(
+                '%(action)s;%(order_sum)s;%(orderSumCurrencyPaycash)s;%(orderSumBankPaycash)s;%(shopId)s;%(invoiceId)s;%(customerNumber)s;%(shopPassword)s' % dict(
+                    action=action,
+                    order_sum=request.POST.get('orderSumAmount'),
+                    orderSumCurrencyPaycash=request.POST.get('orderSumCurrencyPaycash'),
+                    orderSumBankPaycash=request.POST.get('orderSumBankPaycash'),
+                    shopId=YANDEX_SHOPID,
+                    invoiceId=request.POST.get('invoiceId'),
+                    customerNumber=request.POST.get('customerNumber'),
+                    shopPassword=YANDEX_SHOPPASSWORD
+                ))
 
             def success(aviso=False):
                 response = {
@@ -131,3 +134,147 @@ class PaymentFailView(View):
         if test_mode and test_mode == 'test':
             return JSONResponse({'success': True, 'test': True})
         return JSONResponse({'success': True})
+
+
+class GetproffExternalPayment:
+    PRODUCT_ID = None
+
+    def get_product_with_count(self, positions):
+        if ' x ' in positions and self.PRODUCT_ID in positions:
+            return positions.split(' x ')[0]
+        return positions
+
+    def get_products_count(self, positions):
+        if ' x ' in positions and self.PRODUCT_ID in positions:
+            return int(positions.split(' x ')[1])
+        return 1
+
+    def get_multiplier(self, positions):
+        splited_positions = self.get_product_with_count(positions).split(self.PRODUCT_ID)
+        return 1 if (len(splited_positions) == 2 and splited_positions[1] == '') else int(splited_positions[1][1:])
+
+
+# data examples:
+# {u'positions': [u'pay.user.6 x 7'], u'type': [u'ext'], u'email': [u'sky-life@inbox.ru']}
+# {u'positions': [u'pay.user'], u'type': [u'ext'], u'email': [u'sky-life@inbox.ru']}
+class PaymentForUserAccesses(View, GetproffExternalPayment):
+    PRODUCT_ID = 'pay.user'
+
+    def get(self, request, *args, **kwargs):
+        send_mail('PaymentForUserAccesses.get or PaymentForUserAccessesWithSale.get', str(dict(request.GET)),
+                  'info@scriptogenerator.ru', ['skyliffer@gmail.com', 'aliestarten@gmail.com'])
+
+        positions = request.GET.get('positions')
+        email = request.GET.get('email')
+        if email:
+            if positions and self.PRODUCT_ID in positions:
+                users_multiplier = self.get_multiplier(positions)
+                months_multiplier = self.get_products_count(positions)
+                payment_sum = config.PAYMENT_PER_USER * users_multiplier * 30 * months_multiplier
+                payment = UserPayment(
+                    name='Пополнение счета. Пользователей: %(product_multiplier)s, месяцев: %(months_multiplier)s' % dict(
+                        product_multiplier=str(users_multiplier),
+                        months_multiplier=str(months_multiplier)
+                    ),
+                    user=CustomUser.objects.get(username=email),
+                    sum=payment_sum,
+                    total_sum=payment_sum,
+                    payed=datetime.datetime.now()
+                )
+                payment.save()
+                return JSONResponse({'status': 'success'}, status=200)
+            return JSONResponse({'status': 'error', 'message': 'Positions does not support with this method'},
+                                status=500)
+        return JSONResponse({'status': 'error', 'message': 'Email is required'}, status=500)
+
+
+# data examples:
+# {u'positions': [u'pay.user.sale.6 x 7'], u'type': [u'ext'], u'email': [u'sky-life@inbox.ru']}
+# {u'positions': [u'pay.user.sale'], u'type': [u'ext'], u'email': [u'sky-life@inbox.ru']}
+class PaymentForUserAccessesWithSale(PaymentForUserAccesses):
+    PRODUCT_ID = 'pay.user.sale'
+
+
+# data examples
+# {u'positions': [u'delegate.script x 8'], u'type': [u'ext'], u'email': [u'sky-life@inbox.ru']}
+# {u'positions': [u'delegate.script'], u'type': [u'ext'], u'email': [u'sky-life@inbox.ru']}
+class PaymentForScriptDelegation(View, GetproffExternalPayment):
+    PRODUCT_ID = 'delegate.script'
+
+    def get(self, request, *args, **kwargs):
+        send_mail('PaymentForScriptDelegation.get', str(dict(request.GET)),
+                  'info@scriptogenerator.ru', ['skyliffer@gmail.com', 'aliestarten@gmail.com'])
+
+        positions = request.GET.get('positions')
+        email = request.GET.get('email')
+        if email:
+            if positions and self.PRODUCT_ID in positions:
+                products_count = self.get_products_count(positions)
+                for i in range(products_count):
+                    UserScriptDelegationAccess.objects.create(
+                        user=CustomUser.objects.get(username=email),
+                        payed=datetime.datetime.now()
+                    )
+                return JSONResponse({'status': 'success'}, status=200)
+            return JSONResponse({'status': 'error', 'message': 'Positions does not support with this method'},
+                                status=500)
+        return JSONResponse({'status': 'error', 'message': 'Email is required'}, status=500)
+
+
+# data examples
+# {u'positions': [u'export.script x 5'], u'type': [u'ext'], u'email': [u'sky-life@inbox.ru']}
+# {u'positions': [u'export.script'], u'type': [u'ext'], u'email': [u'sky-life@inbox.ru']}
+class PaymentForOfflineScript(View, GetproffExternalPayment):
+    PRODUCT_ID = 'export.script'
+
+    def get(self, request, *args, **kwargs):
+        send_mail('PaymentForOfflineScript.get', str(dict(request.GET)),
+                  'info@scriptogenerator.ru', ['skyliffer@gmail.com', 'aliestarten@gmail.com'])
+
+        positions = request.GET.get('positions')
+        email = request.GET.get('email')
+        if email:
+            user = CustomUser.objects.get(username=email)
+            date_now = datetime.datetime.now()
+            if positions and self.PRODUCT_ID in positions:
+                products_count = self.get_products_count(positions)
+                for i in range(products_count):
+                    UserOfflineScriptExportAccess.objects.create(
+                        user=user,
+                        payed=date_now
+                    )
+                PaymentLog.objects.create(
+                    name='Услуга "Выгрузка скрипта (%(accesses_count)s шт.)" - подключена' % dict(accesses_count=str(products_count)),
+                    user=user,
+                    date=date_now
+                )
+                return JSONResponse({'status': 'success'}, status=200)
+            return JSONResponse({'status': 'error', 'message': 'Positions does not support with this method'},
+                                status=500)
+        return JSONResponse({'status': 'error', 'message': 'Email is required'}, status=500)
+
+
+# data examples
+# {u'positions': [u'export.script.unlim.12'], u'type': [u'ext'], u'email': [u'sky-life@inbox.ru']}
+# {u'positions': [u'export.script.unlim'], u'type': [u'ext'], u'email': [u'sky-life@inbox.ru']}
+class PaymentForUnlimitedOfflineScript(View, GetproffExternalPayment):
+    PRODUCT_ID = 'export.script.unlim'
+
+    def get(self, request, *args, **kwargs):
+        send_mail('PaymentForUnlimitedOfflineScript.get', str(dict(request.GET)),
+                  'info@scriptogenerator.ru', ['skyliffer@gmail.com', 'aliestarten@gmail.com'])
+
+        positions = request.GET.get('positions')
+        email = request.GET.get('email')
+        if email:
+            if positions and self.PRODUCT_ID in positions:
+                months = self.get_multiplier(positions)
+                UserOfflineScriptExportAccess.objects.create(
+                    user=CustomUser.objects.get(username=email),
+                    payed=datetime.datetime.now(),
+                    unlim_months=months
+                )
+                return JSONResponse({'status': 'success'}, status=200)
+            return JSONResponse({'status': 'error', 'message': 'Positions does not support with this method'},
+                                status=500)
+        return JSONResponse({'status': 'error', 'message': 'Email is required'}, status=500)

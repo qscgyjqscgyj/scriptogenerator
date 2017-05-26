@@ -16,10 +16,14 @@ def get_params(url):
     return result
 
 
-def datetime_handler(x):
-    if isinstance(x, datetime.datetime):
-        return x.isoformat()
+def datetime_handler(date):
+    if isinstance(date, datetime.datetime):
+        return readable_datetime_format(date)
     raise TypeError("Unknown type")
+
+
+def readable_datetime_format(date):
+    return date.strftime('%d-%m-%Y %H:%M')
 
 
 def duplicate(instance):

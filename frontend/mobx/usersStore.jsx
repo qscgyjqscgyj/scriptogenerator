@@ -4,7 +4,7 @@ import $ from 'jquery';
 export class UsersStore {
     @observable users = [];
     @observable team = [];
-    @observable local_payments = [];
+    @observable payment_history = [];
     @observable payment_per_user = 0;
     @observable session_user = null;
 
@@ -21,7 +21,7 @@ export class UsersStore {
             method: 'GET',
             url: document.body.getAttribute('data-profile-url'),
             success: (res) => {
-                this.local_payments = res.local_payments;
+                this.payment_history = res.payment_history;
                 this.payment_per_user = res.payment_per_user;
             },
             error: (res) => {

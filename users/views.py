@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 from constance import config
 from django.contrib.sites.models import Site, RequestSite
 from django.contrib.sites.shortcuts import get_current_site
@@ -15,8 +17,8 @@ from registration.users import UserModel
 from main.models import Script, ScriptAccess
 from main.utils import create_active_user
 from main.views import JSONResponse
-from payment.models import LocalPayment
-from payment.serializers import LocalPaymentSerializer
+from payment.models import LocalPayment, UserPayment, PaymentLog
+from payment.serializers import LocalPaymentSerializer, UserPaymentSerializer, PaymentLogSerializer
 from scripts.settings import DEBUG
 from users.forms import UserProfileForm
 from users.models import CustomUser, UserAccess
@@ -74,7 +76,7 @@ class CustomRegistrationView(RegistrationView):
 class ProfileView(View):
     def get(self, request, *args, **kwargs):
         return JSONResponse({
-            'local_payments': LocalPaymentSerializer(LocalPayment.objects.filter(user=request.user), many=True).data,
+            'payment_history': PaymentLogSerializer(PaymentLog.objects.filter(user=request.user).exclude(sum=0), many=True).data,
             'payment_per_user': config.PAYMENT_PER_USER,
         })
 

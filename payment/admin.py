@@ -10,5 +10,20 @@ class LocalPaymentAdmin(admin.ModelAdmin):
     list_display = ('name', 'user', 'sum', 'date')
 
 
+class PaymentLogAdmin(admin.ModelAdmin):
+    list_display = ('name', 'user', 'debit_credit', 'date')
+
+
+class UserScriptDelegationAccessAdmin(admin.ModelAdmin):
+    list_display = ('user', 'delegated', 'payed', 'date')
+
+
+class UserOfflineScriptExportAccessAdmin(admin.ModelAdmin):
+    list_display = ('user', 'script', 'exported', 'unlim_months', 'payed', 'date')
+
+
 admin.site.register(UserPayment, UserPaymentAdmin)
 admin.site.register(LocalPayment, LocalPaymentAdmin)
+admin.site.register(PaymentLog, PaymentLogAdmin)
+admin.site.register(UserScriptDelegationAccess, UserScriptDelegationAccessAdmin)
+admin.site.register(UserOfflineScriptExportAccess, UserOfflineScriptExportAccessAdmin)

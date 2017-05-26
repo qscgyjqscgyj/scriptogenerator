@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.loading import get_model
 from rest_framework import serializers
 from main.models import Script, ScriptAccess
+from main.serializers.fields import DateTimeField
 from main.serializers.table import TableSerializer
 from users.models import UserAccess
 from users.serializers import UserSerializer
@@ -83,6 +84,7 @@ class ScriptSerializer(serializers.ModelSerializer):
     template = ScriptTemplateField(required=False, allow_null=True)
     available = ScriptAvailableField(read_only=True, allow_null=True)
     data = ScriptDataField(required=False)
+    date = DateTimeField(required=False, read_only=True)
 
     def __init__(self, *args, **kwargs):
         empty_data = kwargs.pop('empty_data', None)

@@ -4,6 +4,7 @@ import {Router, Route, IndexRoute, browserHistory} from 'react-router'
 import {createHashHistory} from 'history';
 
 import {Scripts, AvailableScripts} from './scripts';
+import {OfflineScripts} from './offlineScripts';
 import {Profile} from './profile/profile';
 import {Payment} from './profile/payment';
 import {Team} from './profile/team';
@@ -20,6 +21,7 @@ ReactDOM.render(
 
             <Route path="/scripts/user/" component={Scripts}/>
             <Route path="/scripts/available/" component={AvailableScripts}/>
+            <Route path="/scripts/offline/user/" component={OfflineScripts}/>
 
             <Route path="/tables/:script/" component={TablesWrapper}/>
             <Route path="/tables/:script/available/" component={AvailableTablesWrapper}/>

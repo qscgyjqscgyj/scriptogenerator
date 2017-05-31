@@ -24,10 +24,13 @@ export class App extends React.Component {
             url: document.body.getAttribute('data-init-url'),
             success: (res) => {
                 usersStore.session_user = res.session_user;
+
                 scriptsStore.template_scripts = res.template_scripts;
                 scriptsStore.available_scripts = res.available_scripts;
+
                 paymentStore.shopId = res.shopId;
                 paymentStore.scid = res.scid;
+
                 settingsStore.advertisment = res.advertisment;
 
                 scriptsStore.getInitialData();

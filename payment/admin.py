@@ -20,6 +20,7 @@ class UserScriptDelegationAccessAdmin(admin.ModelAdmin):
 
 class UserOfflineScriptExportAccessAdmin(admin.ModelAdmin):
     list_display = ('user', 'script', 'exported', 'unlim_months', 'payed', 'date')
+    readonly_fields = ('script_data',)
 
 
 admin.site.register(UserPayment, UserPaymentAdmin)

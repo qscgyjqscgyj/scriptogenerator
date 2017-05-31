@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from main.serializers.fields import DateTimeField
-from payment.models import UserPayment, LocalPayment, PaymentLog
+from payment.models import UserPayment, LocalPayment, PaymentLog, UserScriptDelegationAccess, \
+    UserOfflineScriptExportAccess
 from users.models import CustomUser
 
 
@@ -35,3 +36,21 @@ class PaymentLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentLog
         fields = ('id', 'name', 'user', 'sum', 'debit_credit', 'date')
+
+
+class UserScriptDelegationAccessSerializer(serializers.ModelSerializer):
+    date = DateTimeField(required=False, read_only=True)
+    payed = DateTimeField(required=False, read_only=True)
+
+    class Meta:
+        model = UserScriptDelegationAccess
+        fields = ('id', 'user', 'payed', 'date')
+
+
+class UserOfflineScriptExportAccessSerializer(serializers.ModelSerializer):
+    date = DateTimeField(required=False, read_only=True)
+    payed = DateTimeField(required=False, read_only=True)
+
+    class Meta:
+        model = UserOfflineScriptExportAccess
+        fields = ('id', 'user', 'payed', 'date')

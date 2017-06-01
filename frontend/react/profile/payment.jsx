@@ -109,6 +109,7 @@ export class Payment extends React.Component {
     }
 }
 
+@observer
 export class OfflineScriptExportAdditionalService extends React.Component {
     render() {
         const {usersStore} = this.props;
@@ -122,6 +123,7 @@ export class OfflineScriptExportAdditionalService extends React.Component {
     }
 }
 
+@observer
 export class UnlimOfflineScriptExportAdditionalService extends React.Component {
     render() {
         const {usersStore} = this.props;
@@ -135,6 +137,7 @@ export class UnlimOfflineScriptExportAdditionalService extends React.Component {
     }
 }
 
+@observer
 export class DelegationScriptAccessAdditionalService extends React.Component {
     render() {
         const {usersStore} = this.props;
@@ -148,6 +151,7 @@ export class DelegationScriptAccessAdditionalService extends React.Component {
     }
 }
 
+@observer
 class AdditionalService extends React.Component {
     render() {
         return (
@@ -174,6 +178,7 @@ class AdditionalService extends React.Component {
     }
 }
 
+@observer
 class PaymentHistory extends React.Component {
     constructor(props) {
         super(props);

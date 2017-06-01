@@ -205,7 +205,8 @@ export class Scripts extends React.Component {
             }),
             success: (res) => {
                 modalStore.close_modal();
-                this.props.router.push('/scripts/offline/user/');
+                window.location.href = `/offline/${res.script_access.id}/`;
+                // this.props.router.push('/scripts/offline/user/');
                 // alert(`Скрипт ${script.name} экспортирован`);
             },
             error: (res) => {

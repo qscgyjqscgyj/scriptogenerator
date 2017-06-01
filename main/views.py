@@ -183,8 +183,10 @@ class ScriptExportingView(View):
         if actual_user_offline_script_export_access:
             try:
                 script = Script.objects.get(pk=int(data['script_id']))
-                actual_user_offline_script_export_access.create_offline_scripts_data(script)
-                return JSONResponse({'message': 'Script is exported.'}, status=200)
+                script_access = actual_user_offline_script_export_access.create_offline_scripts_data(script)
+                return JSONResponse({
+                    'script_access': UserOfflineScriptExportAccessSerializer(script_access).data
+                })
             except ObjectDoesNotExist:
                 return JSONResponse({'message': 'Script does not exist.'}, status=404)
         else:

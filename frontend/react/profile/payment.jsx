@@ -115,7 +115,7 @@ export class OfflineScriptExportAdditionalService extends React.Component {
 
         return <AdditionalService
             title={'Выгрузка скрипта'}
-            sub_title={<span>Доступно для выгрузки: : <span
+            sub_title={<span>Доступно для выгрузки: <span
                 className="red_text">{usersStore.script_exporting_accesses.length}</span></span>}
             description={'Вы можете скачать любой скрипт в html-файл и использовать его без доступа к интернету'}
             url={'https://getproff.ru/pay/export.script'}/>

@@ -232,11 +232,11 @@ class PaymentHistory extends React.Component {
                 <div className="btn-group" role="group" aria-label="...">
                     <button type="button"
                             className={`btn btn-default ${payment_history_filter > 0 ? 'active' : ''}`}
-                            onClick={this.setPaymentHistoryFilter.bind(this, 1)}>Дебет
+                            onClick={this.setPaymentHistoryFilter.bind(this, 1)}>Пополнения
                     </button>
                     <button type="button"
                             className={`btn btn-default ${payment_history_filter < 0 ? 'active' : ''}`}
-                            onClick={this.setPaymentHistoryFilter.bind(this, -1)}>Кредит
+                            onClick={this.setPaymentHistoryFilter.bind(this, -1)}>Списания
                     </button>
                     <button type="button"
                             className={`btn btn-default ${!payment_history_filter ? 'active' : ''}`}

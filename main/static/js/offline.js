@@ -77696,7 +77696,7 @@
 	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/payment/' }, '\u041E\u043F\u043B\u0430\u0442\u0430')),
 	
 	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/team/' }, '\u041C\u043E\u044F \u041A\u043E\u043C\u0430\u043D\u0434\u0430')),
-	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/offline/user/' }, '\u0421\u043A\u0430\u0447\u0435\u043D\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
+	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/offline/user/' }, '\u0421\u043A\u0430\u0447\u0430\u043D\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
 	                                    React.createElement('li', null, React.createElement('a', { href: document.body.getAttribute('data-logout-url') }, '\u0412\u044B\u0445\u043E\u0434'))))) :
 	
 	

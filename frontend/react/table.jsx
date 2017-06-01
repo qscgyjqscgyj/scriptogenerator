@@ -543,7 +543,11 @@ class TableShare extends Table {
                                                                         <div key={key}>
                                                                             <div className="row">
                                                                                 <div className="col-md-12 link_name">
-                                                                                    <Link to={link_url}>{link.name}</Link>
+                                                                                    <Link to={link_url}>
+                                                                                        <button className="btn btn-default btn-xs">
+                                                                                            {link.name}
+                                                                                        </button>
+                                                                                    </Link>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

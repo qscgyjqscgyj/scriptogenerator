@@ -368,18 +368,18 @@ html, body {
 }
 
 .payment_additional_block {
-    padding: 20px;
+    padding: 10px;
 }
 
 .payment_additional_feature_title {
     font-weight: bold;
     line-height: 25px;
-    font-size: 25px;
+    font-size: 18px;
 }
 
 .payment_additional_feature_desc {
     font-style: italic;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .payment_additional_feature_text {
@@ -389,24 +389,24 @@ html, body {
 
 .payment_balance_block {
     border: solid 2px #e5e5e5;
-    padding: 20px;
+    padding: 10px;
 }
 
 .payment_balance_total_title {
     color: #666666;
-    font-size: 25px;
+    font-size: 18px;
     font-weight: bold;
 }
 
 .payment_balance_total {
     color: #3c6;
-    font-size: 32px;
+    font-size: 23px;
     font-weight: bold;
 }
 
 .payment_balance_total_left {
     color: #4d4d4d;
-    font-size: 25px;
+    font-size: 18px;
     font-style: italic;
     text-align: center;
     position: relative;
@@ -428,6 +428,11 @@ html, body {
     top: 5px;
     color: #797979;
     font-size: 16px;
+}
+
+.payment_history_block {
+    padding: 20px;
+    background-color: #eee;
 }
 
 .profile_payment__bordered_block {

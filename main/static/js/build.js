@@ -36658,7 +36658,7 @@
 	
 	        } }, { key: 'createScriptExport', value: function createScriptExport(
 	
-	        script) {var
+	        script) {var _this3 = this;var
 	            modalStore = this.props.modalStore;
 	
 	            _jquery2.default.ajax({
@@ -36669,7 +36669,8 @@
 	
 	                success: function success(res) {
 	                    modalStore.close_modal();
-	                    alert('\u0421\u043A\u0440\u0438\u043F\u0442 ' + script.name + ' \u044D\u043A\u0441\u043F\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u043D');
+	                    _this3.props.router.push('/scripts/offline/user/');
+	                    // alert(`Скрипт ${script.name} экспортирован`);
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -36720,7 +36721,7 @@
 	
 	        } }, { key: 'render', value: function render()
 	
-	        {var _this3 = this;var _props10 =
+	        {var _this4 = this;var _props10 =
 	            this.props,scriptsStore = _props10.scriptsStore,modalStore = _props10.modalStore,usersStore = _props10.usersStore,available = _props10.available;
 	            var scripts_data = this.getScriptsData();
 	            if (usersStore.session_user && (scriptsStore.scripts || scriptsStore.available_scripts)) {
@@ -36734,8 +36735,8 @@
 	                                            React.createElement(CreatingScript, {
 	                                                scriptsStore: scriptsStore,
 	                                                modalStore: modalStore,
-	                                                createScript: _this3.createScript.bind(_this3),
-	                                                updateScript: _this3.updateScript.bind(_this3),
+	                                                createScript: _this4.createScript.bind(_this4),
+	                                                updateScript: _this4.updateScript.bind(_this4),
 	                                                available: available }));
 	
 	
@@ -36746,7 +36747,7 @@
 	                                React.createElement('div', { className: 'form-group' },
 	                                    React.createElement('input', { onChange: function onChange(e) {
 	                                            scriptsStore.filter_by_name = e.target.value;
-	                                            _this3.setPage(0);
+	                                            _this4.setPage(0);
 	                                        }, className: 'form-control', type: 'text', placeholder: '\u041F\u043E\u0438\u0441\u043A \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E' }))),
 	
 	
@@ -36783,8 +36784,8 @@
 	                                                        React.createElement(EditingScript, {
 	                                                            scriptsStore: scriptsStore,
 	                                                            modalStore: modalStore,
-	                                                            createScript: _this3.createScript.bind(_this3),
-	                                                            updateScript: _this3.updateScript.bind(_this3),
+	                                                            createScript: _this4.createScript.bind(_this4),
+	                                                            updateScript: _this4.updateScript.bind(_this4),
 	                                                            available: available }));
 	
 	
@@ -36813,7 +36814,7 @@
 	                                                !available ?
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043D\u0435\u0441\u0442\u0438 \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                        onClick: _this3.openDelegationModalForm.bind(_this3, script) },
+	                                                        onClick: _this4.openDelegationModalForm.bind(_this4, script) },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-arrow-right' })) :
 	
 	                                                null,
@@ -36821,7 +36822,7 @@
 	                                                !available ?
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u0421\u043A\u0430\u0447\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                        onClick: _this3.openScriptExportCreatingModalForm.bind(_this3, script) },
+	                                                        onClick: _this4.openScriptExportCreatingModalForm.bind(_this4, script) },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-download-alt' })) :
 	
 	                                                null,
@@ -36830,7 +36831,7 @@
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
 	                                                        onClick: function onClick() {
-	                                                            _this3.cloneScript(script);
+	                                                            _this4.cloneScript(script);
 	                                                        } },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-copy' })) :
 	
@@ -36847,8 +36848,8 @@
 	                                                                    script: script,
 	                                                                    usersStore: usersStore,
 	                                                                    modalStore: modalStore,
-	                                                                    setAccesses: _this3.setAccesses.bind(_this3),
-	                                                                    delegateScript: _this3.delegateScript.bind(_this3) }));
+	                                                                    setAccesses: _this4.setAccesses.bind(_this4),
+	                                                                    delegateScript: _this4.delegateScript.bind(_this4) }));
 	
 	
 	                                                            });
@@ -36861,7 +36862,7 @@
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0443 \u0441\u043A\u0440\u0438\u043F\u0442\u0430',
 	                                                        onClick: function onClick() {
-	                                                            _this3.props.router.push('/tables/' + script.id + '/');
+	                                                            _this4.props.router.push('/tables/' + script.id + '/');
 	                                                        } },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' })) :
 	
@@ -36871,7 +36872,7 @@
 	                                                React.createElement('button', { className: 'btn btn-danger btn-xs',
 	                                                        'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
 	                                                        onClick: function onClick() {
-	                                                            _this3.deleteScript(script);
+	                                                            _this4.deleteScript(script);
 	                                                        } },
 	                                                    React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
 	
@@ -36910,11 +36911,11 @@
 	
 	
 	CreatingScript = (0, _mobxReact.observer)(_class2 = function (_React$Component2) {_inherits(CreatingScript, _React$Component2);
-	    function CreatingScript(props) {_classCallCheck(this, CreatingScript);var _this4 = _possibleConstructorReturn(this, (CreatingScript.__proto__ || Object.getPrototypeOf(CreatingScript)).call(this,
+	    function CreatingScript(props) {_classCallCheck(this, CreatingScript);var _this5 = _possibleConstructorReturn(this, (CreatingScript.__proto__ || Object.getPrototypeOf(CreatingScript)).call(this,
 	        props));
 	
-	        _this4.state = {
-	            error: null };return _this4;
+	        _this5.state = {
+	            error: null };return _this5;
 	
 	    }_createClass(CreatingScript, [{ key: 'setError', value: function setError(
 	
@@ -36996,12 +36997,12 @@
 	
 	
 	EditingScript = (0, _mobxReact.observer)(_class3 = function (_React$Component3) {_inherits(EditingScript, _React$Component3);function EditingScript() {_classCallCheck(this, EditingScript);return _possibleConstructorReturn(this, (EditingScript.__proto__ || Object.getPrototypeOf(EditingScript)).apply(this, arguments));}_createClass(EditingScript, [{ key: 'render', value: function render()
-	        {var _this6 = this;var _props11 =
+	        {var _this7 = this;var _props11 =
 	            this.props,scriptsStore = _props11.scriptsStore,available = _props11.available;
 	            if (scriptsStore.editing) {
 	                return (
 	                    React.createElement('div', { className: 'row' },
-	                        React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this6.props.updateScript(e);} },
+	                        React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return _this7.props.updateScript(e);} },
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('div', { className: 'form-group' },
 	                                    React.createElement('input', { className: 'form-control',
@@ -37030,11 +37031,11 @@
 	
 	
 	Accesses = (0, _mobxReact.observer)(_class4 = function (_React$Component4) {_inherits(Accesses, _React$Component4);
-	    function Accesses(props) {_classCallCheck(this, Accesses);var _this7 = _possibleConstructorReturn(this, (Accesses.__proto__ || Object.getPrototypeOf(Accesses)).call(this,
+	    function Accesses(props) {_classCallCheck(this, Accesses);var _this8 = _possibleConstructorReturn(this, (Accesses.__proto__ || Object.getPrototypeOf(Accesses)).call(this,
 	        props));
 	
-	        _this7.state = {
-	            accesses: _this7.formatAccesses(props.script.accesses) };return _this7;
+	        _this8.state = {
+	            accesses: _this8.formatAccesses(props.script.accesses) };return _this8;
 	
 	    }_createClass(Accesses, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	
@@ -37050,7 +37051,7 @@
 	            });
 	        } }, { key: 'onSelect', value: function onSelect(
 	
-	        selects, edit) {var _this8 = this;var
+	        selects, edit) {var _this9 = this;var
 	            script = this.props.script;var
 	            accesses = this.state.accesses;
 	            var new_accesses = accesses.filter(function (access) {
@@ -37062,7 +37063,7 @@
 	
 	            });
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { accesses: { $set: new_accesses } }), function () {
-	                _this8.props.setAccesses(new_accesses.map(function (access) {
+	                _this9.props.setAccesses(new_accesses.map(function (access) {
 	                    return { user_id: access.value, edit: access.edit };
 	                }), script);
 	            });
@@ -37097,7 +37098,7 @@
 	            modalStore.close_modal();
 	        } }, { key: 'render', value: function render()
 	
-	        {var _this9 = this;
+	        {var _this10 = this;
 	            return (
 	                React.createElement('div', { className: 'row' },
 	                    React.createElement('div', { className: 'col-md-12' },
@@ -37108,7 +37109,7 @@
 	                                className: 'form-control',
 	                                options: this.getOptions(true),
 	                                onChange: function onChange(selects) {
-	                                    _this9.onSelect(selects, true);
+	                                    _this10.onSelect(selects, true);
 	                                } })),
 	
 	                        React.createElement('div', { className: 'form-group' },
@@ -37117,7 +37118,7 @@
 	                                className: 'form-control',
 	                                options: this.getOptions(false),
 	                                onChange: function onChange(selects) {
-	                                    _this9.onSelect(selects, false);
+	                                    _this10.onSelect(selects, false);
 	                                } })),
 	
 	                        React.createElement('hr', null),
@@ -37132,11 +37133,11 @@
 	
 	
 	DelegationScript = (0, _mobxReact.observer)(_class5 = function (_React$Component5) {_inherits(DelegationScript, _React$Component5);
-	    function DelegationScript(props) {_classCallCheck(this, DelegationScript);var _this10 = _possibleConstructorReturn(this, (DelegationScript.__proto__ || Object.getPrototypeOf(DelegationScript)).call(this,
+	    function DelegationScript(props) {_classCallCheck(this, DelegationScript);var _this11 = _possibleConstructorReturn(this, (DelegationScript.__proto__ || Object.getPrototypeOf(DelegationScript)).call(this,
 	        props));
 	
-	        _this10.state = {
-	            delegate_email: null };return _this10;
+	        _this11.state = {
+	            delegate_email: null };return _this11;
 	
 	    }_createClass(DelegationScript, [{ key: 'componentWillMount', value: function componentWillMount()
 	
@@ -37156,7 +37157,7 @@
 	            return this.setState((0, _reactAddonsUpdate2.default)(this.state, { delegate_email: { $set: null } }));
 	        } }, { key: 'render', value: function render()
 	
-	        {var _this11 = this;var
+	        {var _this12 = this;var
 	            usersStore = this.props.usersStore;var
 	            delegate_email = this.state.delegate_email;
 	
@@ -37172,13 +37173,13 @@
 	                                    React.createElement('label', null, 'Email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430'),
 	                                    React.createElement('input', { type: 'text', name: 'email', className: 'form-control',
 	                                        placeholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430', onChange: function onChange(e) {
-	                                            _this11.setState((0, _reactAddonsUpdate2.default)(_this11.state, { delegate_email: { $set: e.target.value } }));
+	                                            _this12.setState((0, _reactAddonsUpdate2.default)(_this12.state, { delegate_email: { $set: e.target.value } }));
 	                                        } })),
 	
 	                                React.createElement('button', {
 	                                        className: 'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled'),
 	                                        onClick: function onClick(e) {
-	                                            validateEmail(delegate_email) ? _this11.delegateScript() : null;
+	                                            validateEmail(delegate_email) ? _this12.delegateScript() : null;
 	                                        } }, '\u041F\u0435\u0440\u0435\u043D\u0435\u0441\u0442\u0438')) :
 	
 	
@@ -37278,15 +37279,15 @@
 	
 	
 	MultiSelectField = function (_React$Component8) {_inherits(MultiSelectField, _React$Component8);
-	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this14 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
+	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this15 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
 	        props));
 	
-	        _this14.displayName = 'MultiSelect';
-	        _this14.state = {
+	        _this15.displayName = 'MultiSelect';
+	        _this15.state = {
 	            options: props.options,
 	            value: props.options.filter(function (i) {
 	                return i.selected;
-	            }) };return _this14;
+	            }) };return _this15;
 	
 	    }_createClass(MultiSelectField, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	
@@ -37299,7 +37300,7 @@
 	
 	        } }, { key: 'render', value: function render()
 	
-	        {var _this15 = this;
+	        {var _this16 = this;
 	            return (
 	                React.createElement(_reactSelect2.default, {
 	                    multi: true,
@@ -37307,8 +37308,8 @@
 	                    placeholder: '\u0414\u0430\u0442\u044C \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
 	                    options: this.state.options,
 	                    onChange: function onChange(e) {
-	                        _this15.setState((0, _reactAddonsUpdate2.default)(_this15.state, { value: { $set: e } }), function () {
-	                            _this15.props.onChange(e);
+	                        _this16.setState((0, _reactAddonsUpdate2.default)(_this16.state, { value: { $set: e } }), function () {
+	                            _this16.props.onChange(e);
 	                        });
 	                    } }));
 	
@@ -57079,7 +57080,7 @@
 	
 	
 	
-	declOfNum = declOfNum;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);var _mobxReact = __webpack_require__(561);var _pagination = __webpack_require__(597);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var Payment = exports.Payment = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Payment, _React$Component);function Payment() {_classCallCheck(this, Payment);return _possibleConstructorReturn(this, (Payment.__proto__ || Object.getPrototypeOf(Payment)).apply(this, arguments));}_createClass(Payment, [{ key: 'componentWillMount', value: function componentWillMount() {var usersStore = this.props.usersStore;usersStore.getData();usersStore.getTeam();usersStore.getScriptDelegationAccesses();usersStore.getOfflineScriptsExportAccesses();} }, { key: 'componentWillUnmount', value: function componentWillUnmount() {var usersStore = this.props.usersStore;usersStore.clearPaymentHistory();usersStore.clearScriptDelegationAccesses();usersStore.getOfflineScriptsExportAccesses();} }, { key: 'onSubmit', value: function onSubmit() {var _props = this.props,usersStore = _props.usersStore,paymentStore = _props.paymentStore;_jquery2.default.ajax({ method: 'POST', url: document.body.getAttribute('data-payment-url'), data: JSON.stringify({ user: usersStore.session_user, sum: paymentStore.sum, total_sum: paymentStore.sum + paymentStore.bonus }), success: function success(res) {paymentStore.payment = res.payment;document.getElementById("YA_FORM").submit();}, error: function error(res) {console.log(res);} });} }, { key: 'getBalanceLeftText', value: function getBalanceLeftText() {var usersStore = this.props.usersStore;var team_length = usersStore.team.length;var days_left = Math.floor(usersStore.session_user.balance_total / (team_length * usersStore.payment_per_user));return React.createElement('div', null, '\u0425\u0432\u0430\u0442\u0438\u0442 \u043D\u0430', React.createElement('span', { className: 'underline' }, ' ' + days_left + ' ' + declOfNum(days_left, ['день', 'дня', 'дней']) + ' '), '\u0434\u043B\u044F', React.createElement('span', { className: 'underline' }, ' ' + team_length + ' ' + declOfNum(team_length, ['сотрудника', 'сотрудников', 'сотрудников'])));} }, { key: 'render', value: function render() {var _props2 = this.props,usersStore = _props2.usersStore,paymentStore = _props2.paymentStore;var can_submit = !!usersStore.session_user && paymentStore.sum >= 990 && !!paymentStore.method;return React.createElement('div', { className: 'col-md-12' }, React.createElement('div', { className: 'col-md-8' }, React.createElement('div', { className: 'col-md-12' }, React.createElement('div', { className: 'col-md-12 payment_balance_container' }, React.createElement('div', { className: 'col-md-12 payment_balance_block' }, React.createElement('div', { className: 'col-md-3' }, React.createElement('span', { className: 'payment_balance_total_title' }, '\u0412\u0430\u0448 \u0431\u0430\u043B\u0430\u043D\u0441*'), React.createElement('br', null), React.createElement('span', { className: 'payment_balance_total' }, usersStore.session_user.balance_total, '\u0440\u0443\u0431.')), React.createElement('div', { className: 'col-md-6 payment_balance_total_left' }, this.getBalanceLeftText()), React.createElement('div', { className: 'col-md-3 payment_balance_button_recharge' }, React.createElement('button', { className: 'btn btn-lg btn-danger pull-right' }, '\u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u044C'))), React.createElement('div', { className: 'col-md-12' }, React.createElement('span', { className: 'payment_balance_total_ps' }, '*\u0421 \u0431\u0430\u043B\u0430\u043D\u0441\u0430 \u0441\u043F\u0438\u0441\u044B\u0432\u0430\u0435\u0442\u0441\u044F ', usersStore.payment_per_user, ' \u0440\u0443\u0431. \u0432 \u0434\u0435\u043D\u044C \u0437\u0430 \u043A\u0430\u0436\u0434\u043E\u0433\u043E \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F. \u0413\u043B\u0430\u0432\u043D\u044B\u0439 \u0430\u043A\u043A\u0430\u0443\u043D\u0442 - \u0431\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E.'))), React.createElement('h3', { className: 'profile_payment__title' }, '\u0414\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0435 \u0432\u043E\u0437\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u0438'), React.createElement(OfflineScriptExportAdditionalService, { usersStore: usersStore }), React.createElement(DelegationScriptAccessAdditionalService, { usersStore: usersStore }), React.createElement(UnlimOfflineScriptExportAdditionalService, { usersStore: usersStore }))), usersStore.payment_history.length > 0 ? React.createElement('div', { className: 'col-md-4' }, React.createElement('div', { className: 'jumbotron col-md-12' }, React.createElement(PaymentHistory, { usersStore: usersStore }))) : null);} }]);return Payment;}(React.Component)) || _class;var OfflineScriptExportAdditionalService = exports.OfflineScriptExportAdditionalService = function (_React$Component2) {_inherits(OfflineScriptExportAdditionalService, _React$Component2);function OfflineScriptExportAdditionalService() {_classCallCheck(this, OfflineScriptExportAdditionalService);return _possibleConstructorReturn(this, (OfflineScriptExportAdditionalService.__proto__ || Object.getPrototypeOf(OfflineScriptExportAdditionalService)).apply(this, arguments));}_createClass(OfflineScriptExportAdditionalService, [{ key: 'render', value: function render() {var usersStore = this.props.usersStore;return React.createElement(AdditionalService, { title: 'Выгрузка скрипта', sub_title: React.createElement('span', null, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u0434\u043B\u044F \u0432\u044B\u0433\u0440\u0443\u0437\u043A\u0438: : ', React.createElement('span', { className: 'red_text' }, usersStore.script_exporting_accesses.length)), description: 'Вы можете скачать любой скрипт в html-файл и использовать его без доступа к интернету', url: 'https://getproff.ru/pay/export.script' });} }]);return OfflineScriptExportAdditionalService;}(React.Component);var UnlimOfflineScriptExportAdditionalService = exports.UnlimOfflineScriptExportAdditionalService = function (_React$Component3) {_inherits(UnlimOfflineScriptExportAdditionalService, _React$Component3);function UnlimOfflineScriptExportAdditionalService() {_classCallCheck(this, UnlimOfflineScriptExportAdditionalService);return _possibleConstructorReturn(this, (UnlimOfflineScriptExportAdditionalService.__proto__ || Object.getPrototypeOf(UnlimOfflineScriptExportAdditionalService)).apply(this, arguments));}_createClass(UnlimOfflineScriptExportAdditionalService, [{ key: 'render', value: function render() {var usersStore = this.props.usersStore;return React.createElement(AdditionalService, { title: 'Безлимитная выгрузка', sub_title: React.createElement('span', { className: usersStore.script_exporting_unlim_access_is_active ? 'green_text' : 'red_text' }, usersStore.script_exporting_unlim_access_is_active ? 'Услуга подключена' : 'Услуга не подключена'), description: 'Вы можете скачивать любое количество скриптов, а также размещать свой логотип и ссылку на свой сайт в выгруженном скрипте', url: usersStore.script_exporting_unlim_access_is_active ? null : 'https://getproff.ru/pay/export.script.unlim' });} }]);return UnlimOfflineScriptExportAdditionalService;}(React.Component);var DelegationScriptAccessAdditionalService = exports.DelegationScriptAccessAdditionalService = function (_React$Component4) {_inherits(DelegationScriptAccessAdditionalService, _React$Component4);function DelegationScriptAccessAdditionalService() {_classCallCheck(this, DelegationScriptAccessAdditionalService);return _possibleConstructorReturn(this, (DelegationScriptAccessAdditionalService.__proto__ || Object.getPrototypeOf(DelegationScriptAccessAdditionalService)).apply(this, arguments));}_createClass(DelegationScriptAccessAdditionalService, [{ key: 'render', value: function render() {var usersStore = this.props.usersStore;return React.createElement(AdditionalService, { title: 'Перенос скрипта', sub_title: React.createElement('span', null, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u0434\u043B\u044F \u043F\u0435\u0440\u0435\u043D\u043E\u0441\u0430: ', React.createElement('span', { className: 'red_text' }, usersStore.script_delegation_accesses.length)), description: 'Вы можете перенести скрипт с вашего аккаунта, в аккаунт другого пользователя', url: 'https://getproff.ru/pay/delegate.script' });} }]);return DelegationScriptAccessAdditionalService;}(React.Component);var AdditionalService = function (_React$Component5) {_inherits(AdditionalService, _React$Component5);function AdditionalService() {_classCallCheck(this, AdditionalService);return _possibleConstructorReturn(this, (AdditionalService.__proto__ || Object.getPrototypeOf(AdditionalService)).apply(this, arguments));}_createClass(AdditionalService, [{ key: 'render', value: function render() {return React.createElement('div', { className: 'col-md-12 payment_additional_container' }, React.createElement('div', { className: 'col-md-12 payment_additional_block' }, React.createElement('div', { className: 'col-md-3' }, React.createElement('span', { className: 'payment_additional_feature_title' }, this.props.title), React.createElement('br', null), React.createElement('span', { className: 'payment_additional_feature_desc' }, React.createElement('span', { className: 'red_text' }, this.props.sub_title))), React.createElement('div', { className: 'col-md-6 payment_additional_feature_text' }, this.props.description), this.props.url ? React.createElement('div', { className: 'col-md-3 payment_balance_button' }, React.createElement('a', { href: this.props.url }, React.createElement('button', { className: 'btn btn-lg btn-success pull-right' }, '\u041F\u043E\u0434\u043A\u043B\u044E\u0447\u0438\u0442\u044C'))) : null));} }]);return AdditionalService;}(React.Component);var PaymentHistory = function (_React$Component6) {_inherits(PaymentHistory, _React$Component6);function PaymentHistory(props) {_classCallCheck(this, PaymentHistory);var _this6 = _possibleConstructorReturn(this, (PaymentHistory.__proto__ || Object.getPrototypeOf(PaymentHistory)).call(this, props));_this6.payments_per_page = 10;_this6.state = { page: 0, payment_history_filter: null };return _this6;}_createClass(PaymentHistory, [{ key: 'setPage', value: function setPage() {var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;this.setState((0, _reactAddonsUpdate2.default)(this.state, { page: { $set: page } }), function () {if (callback) {callback();}});} }, { key: 'setPaymentHistoryFilter', value: function setPaymentHistoryFilter(value) {var _this7 = this;this.setPage(0, function () {_this7.setState((0, _reactAddonsUpdate2.default)(_this7.state, { payment_history_filter: { $set: value } }));});} }, { key: 'getFilteredPaymentHistory', value: function getFilteredPaymentHistory() {var usersStore = this.props.usersStore;var payment_history_filter = this.state.payment_history_filter;var payment_history = usersStore.payment_history;if (payment_history_filter) {return payment_history.filter(function (payment) {switch (true) {case payment_history_filter > 0:return payment.debit_credit > 0;case payment_history_filter < 0:return payment.debit_credit < 0;default:return false;}});}return payment_history;} }, { key: 'render', value: function render() {var usersStore = this.props.usersStore;var payment_history_filter = this.state.payment_history_filter;var payment_history = this.getFilteredPaymentHistory();var chunked_payment_history = (0, _pagination.getChunkedArray)(payment_history, this.payments_per_page)[this.state.page];var pages = (0, _pagination.getPagesCount)(payment_history.length, this.payments_per_page);return React.createElement('div', null, React.createElement('h3', null, '\u0418\u0441\u0442\u043E\u0440\u0438\u044F \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439.'), React.createElement('div', { className: 'btn-group', role: 'group', 'aria-label': '...' }, React.createElement('button', { type: 'button', className: 'btn btn-default ' + (payment_history_filter > 0 ? 'active' : ''), onClick: this.setPaymentHistoryFilter.bind(this, 1) }, '\u0414\u0435\u0431\u0435\u0442'), React.createElement('button', { type: 'button', className: 'btn btn-default ' + (payment_history_filter < 0 ? 'active' : ''), onClick: this.setPaymentHistoryFilter.bind(this, -1) }, '\u041A\u0440\u0435\u0434\u0438\u0442'), React.createElement('button', { type: 'button', className: 'btn btn-default ' + (!payment_history_filter ? 'active' : ''), onClick: this.setPaymentHistoryFilter.bind(this, null) }, '\u0412\u0441\u0435')), React.createElement('table', { className: 'table' }, React.createElement('thead', null, React.createElement('tr', null, React.createElement('td', null, '\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435'), React.createElement('td', null, '\u0421\u0443\u043C\u043C\u0430'), React.createElement('td', null, '\u0414\u0430\u0442\u0430'))), React.createElement('tbody', null, chunked_payment_history.map(function (payment, key) {return React.createElement('tr', { key: key }, React.createElement('td', null, payment.name ? payment.name : 'Информация отсутствует'), React.createElement('td', null, payment.sum ? '' + (payment.debit_credit > 0 ? '+' : '-') + payment.sum + ' \u0440.' : ''), React.createElement('td', null, payment.date));}))), payment_history.length > this.payments_per_page ? React.createElement('div', { className: 'col-md-12' }, React.createElement(_pagination.Paginator, { pages: pages, current_page: this.state.page, objects_length: payment_history.length, setPage: this.setPage.bind(this) })) : null);} }]);return PaymentHistory;}(React.Component); // @observer
+	declOfNum = declOfNum;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);var _reactDom = __webpack_require__(330);var ReactDOM = _interopRequireWildcard(_reactDom);var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);var _mobxReact = __webpack_require__(561);var _pagination = __webpack_require__(597);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var Payment = exports.Payment = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Payment, _React$Component);function Payment() {_classCallCheck(this, Payment);return _possibleConstructorReturn(this, (Payment.__proto__ || Object.getPrototypeOf(Payment)).apply(this, arguments));}_createClass(Payment, [{ key: 'componentWillMount', value: function componentWillMount() {var usersStore = this.props.usersStore;usersStore.getData();usersStore.getTeam();usersStore.getScriptDelegationAccesses();usersStore.getOfflineScriptsExportAccesses();} }, { key: 'componentWillUnmount', value: function componentWillUnmount() {var usersStore = this.props.usersStore;usersStore.clearPaymentHistory();usersStore.clearScriptDelegationAccesses();usersStore.getOfflineScriptsExportAccesses();} }, { key: 'onSubmit', value: function onSubmit() {var _props = this.props,usersStore = _props.usersStore,paymentStore = _props.paymentStore;_jquery2.default.ajax({ method: 'POST', url: document.body.getAttribute('data-payment-url'), data: JSON.stringify({ user: usersStore.session_user, sum: paymentStore.sum, total_sum: paymentStore.sum + paymentStore.bonus }), success: function success(res) {paymentStore.payment = res.payment;document.getElementById("YA_FORM").submit();}, error: function error(res) {console.log(res);} });} }, { key: 'getBalanceLeftText', value: function getBalanceLeftText() {var usersStore = this.props.usersStore;var team_length = usersStore.team.length;var days_left = Math.floor(usersStore.session_user.balance_total / (team_length * usersStore.payment_per_user));return React.createElement('div', null, '\u0425\u0432\u0430\u0442\u0438\u0442 \u043D\u0430', React.createElement('span', { className: 'underline' }, ' ' + days_left + ' ' + declOfNum(days_left, ['день', 'дня', 'дней']) + ' '), '\u0434\u043B\u044F', React.createElement('span', { className: 'underline' }, ' ' + team_length + ' ' + declOfNum(team_length, ['сотрудника', 'сотрудников', 'сотрудников'])));} }, { key: 'render', value: function render() {var _props2 = this.props,usersStore = _props2.usersStore,paymentStore = _props2.paymentStore;var can_submit = !!usersStore.session_user && paymentStore.sum >= 990 && !!paymentStore.method;return React.createElement('div', { className: 'col-md-12' }, React.createElement('div', { className: 'col-md-8' }, React.createElement('div', { className: 'col-md-12 payment_balance_container' }, React.createElement('div', { className: 'col-md-12 payment_balance_block' }, React.createElement('div', { className: 'col-md-3' }, React.createElement('span', { className: 'payment_balance_total_title' }, '\u0412\u0430\u0448 \u0431\u0430\u043B\u0430\u043D\u0441*'), React.createElement('br', null), React.createElement('span', { className: 'payment_balance_total' }, usersStore.session_user.balance_total, '\u0440\u0443\u0431.')), React.createElement('div', { className: 'col-md-6 payment_balance_total_left' }, this.getBalanceLeftText()), React.createElement('div', { className: 'col-md-3 payment_balance_button_recharge' }, React.createElement('a', { href: 'https://getproff.ru/pay/user', target: '_blank' }, React.createElement('button', { className: 'btn btn-danger pull-right' }, '\u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u044C')))), React.createElement('div', { className: 'col-md-12' }, React.createElement('span', { className: 'payment_balance_total_ps' }, '*\u0421 \u0431\u0430\u043B\u0430\u043D\u0441\u0430 \u0441\u043F\u0438\u0441\u044B\u0432\u0430\u0435\u0442\u0441\u044F ', usersStore.payment_per_user, ' \u0440\u0443\u0431. \u0432 \u0434\u0435\u043D\u044C \u0437\u0430 \u043A\u0430\u0436\u0434\u043E\u0433\u043E \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F. \u0413\u043B\u0430\u0432\u043D\u044B\u0439 \u0430\u043A\u043A\u0430\u0443\u043D\u0442 - \u0431\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E.'))), React.createElement('h3', { className: 'profile_payment__title' }, '\u0414\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0435 \u0432\u043E\u0437\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u0438'), React.createElement(OfflineScriptExportAdditionalService, { usersStore: usersStore }), React.createElement(DelegationScriptAccessAdditionalService, { usersStore: usersStore }), React.createElement(UnlimOfflineScriptExportAdditionalService, { usersStore: usersStore })), usersStore.payment_history.length > 0 ? React.createElement('div', { className: 'col-md-4' }, React.createElement('div', { className: 'payment_history_block col-md-12' }, React.createElement(PaymentHistory, { usersStore: usersStore }))) : null);} }]);return Payment;}(React.Component)) || _class;var OfflineScriptExportAdditionalService = exports.OfflineScriptExportAdditionalService = function (_React$Component2) {_inherits(OfflineScriptExportAdditionalService, _React$Component2);function OfflineScriptExportAdditionalService() {_classCallCheck(this, OfflineScriptExportAdditionalService);return _possibleConstructorReturn(this, (OfflineScriptExportAdditionalService.__proto__ || Object.getPrototypeOf(OfflineScriptExportAdditionalService)).apply(this, arguments));}_createClass(OfflineScriptExportAdditionalService, [{ key: 'render', value: function render() {var usersStore = this.props.usersStore;return React.createElement(AdditionalService, { title: 'Выгрузка скрипта', sub_title: React.createElement('span', null, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u0434\u043B\u044F \u0432\u044B\u0433\u0440\u0443\u0437\u043A\u0438: : ', React.createElement('span', { className: 'red_text' }, usersStore.script_exporting_accesses.length)), description: 'Вы можете скачать любой скрипт в html-файл и использовать его без доступа к интернету', url: 'https://getproff.ru/pay/export.script' });} }]);return OfflineScriptExportAdditionalService;}(React.Component);var UnlimOfflineScriptExportAdditionalService = exports.UnlimOfflineScriptExportAdditionalService = function (_React$Component3) {_inherits(UnlimOfflineScriptExportAdditionalService, _React$Component3);function UnlimOfflineScriptExportAdditionalService() {_classCallCheck(this, UnlimOfflineScriptExportAdditionalService);return _possibleConstructorReturn(this, (UnlimOfflineScriptExportAdditionalService.__proto__ || Object.getPrototypeOf(UnlimOfflineScriptExportAdditionalService)).apply(this, arguments));}_createClass(UnlimOfflineScriptExportAdditionalService, [{ key: 'render', value: function render() {var usersStore = this.props.usersStore;return React.createElement(AdditionalService, { title: 'Безлимитная выгрузка', sub_title: React.createElement('span', { className: usersStore.script_exporting_unlim_access_is_active ? 'green_text' : 'red_text' }, usersStore.script_exporting_unlim_access_is_active ? 'Услуга подключена' : 'Услуга не подключена'), description: 'Вы можете скачивать любое количество скриптов, а также размещать свой логотип и ссылку на свой сайт в выгруженном скрипте', url: usersStore.script_exporting_unlim_access_is_active ? null : 'https://getproff.ru/pay/export.script.unlim' });} }]);return UnlimOfflineScriptExportAdditionalService;}(React.Component);var DelegationScriptAccessAdditionalService = exports.DelegationScriptAccessAdditionalService = function (_React$Component4) {_inherits(DelegationScriptAccessAdditionalService, _React$Component4);function DelegationScriptAccessAdditionalService() {_classCallCheck(this, DelegationScriptAccessAdditionalService);return _possibleConstructorReturn(this, (DelegationScriptAccessAdditionalService.__proto__ || Object.getPrototypeOf(DelegationScriptAccessAdditionalService)).apply(this, arguments));}_createClass(DelegationScriptAccessAdditionalService, [{ key: 'render', value: function render() {var usersStore = this.props.usersStore;return React.createElement(AdditionalService, { title: 'Перенос скрипта', sub_title: React.createElement('span', null, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u0434\u043B\u044F \u043F\u0435\u0440\u0435\u043D\u043E\u0441\u0430: ', React.createElement('span', { className: 'red_text' }, usersStore.script_delegation_accesses.length)), description: 'Вы можете перенести скрипт с вашего аккаунта, в аккаунт другого пользователя', url: 'https://getproff.ru/pay/delegate.script' });} }]);return DelegationScriptAccessAdditionalService;}(React.Component);var AdditionalService = function (_React$Component5) {_inherits(AdditionalService, _React$Component5);function AdditionalService() {_classCallCheck(this, AdditionalService);return _possibleConstructorReturn(this, (AdditionalService.__proto__ || Object.getPrototypeOf(AdditionalService)).apply(this, arguments));}_createClass(AdditionalService, [{ key: 'render', value: function render() {return React.createElement('div', { className: 'col-md-12 payment_additional_container' }, React.createElement('div', { className: 'col-md-12 payment_additional_block' }, React.createElement('div', { className: 'col-md-3' }, React.createElement('span', { className: 'payment_additional_feature_title' }, this.props.title), React.createElement('br', null), React.createElement('span', { className: 'payment_additional_feature_desc' }, React.createElement('span', { className: 'red_text' }, this.props.sub_title))), React.createElement('div', { className: 'col-md-6 payment_additional_feature_text' }, this.props.description), this.props.url ? React.createElement('div', { className: 'col-md-3 payment_balance_button' }, React.createElement('a', { href: this.props.url, target: '_blank' }, React.createElement('button', { className: 'btn btn-success pull-right' }, '\u041F\u043E\u0434\u043A\u043B\u044E\u0447\u0438\u0442\u044C'))) : null));} }]);return AdditionalService;}(React.Component);var PaymentHistory = function (_React$Component6) {_inherits(PaymentHistory, _React$Component6);function PaymentHistory(props) {_classCallCheck(this, PaymentHistory);var _this6 = _possibleConstructorReturn(this, (PaymentHistory.__proto__ || Object.getPrototypeOf(PaymentHistory)).call(this, props));_this6.payments_per_page = 10;_this6.state = { page: 0, payment_history_filter: null };return _this6;}_createClass(PaymentHistory, [{ key: 'setPage', value: function setPage() {var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;this.setState((0, _reactAddonsUpdate2.default)(this.state, { page: { $set: page } }), function () {if (callback) {callback();}});} }, { key: 'setPaymentHistoryFilter', value: function setPaymentHistoryFilter(value) {var _this7 = this;this.setPage(0, function () {_this7.setState((0, _reactAddonsUpdate2.default)(_this7.state, { payment_history_filter: { $set: value } }));});} }, { key: 'getFilteredPaymentHistory', value: function getFilteredPaymentHistory() {var usersStore = this.props.usersStore;var payment_history_filter = this.state.payment_history_filter;var payment_history = usersStore.payment_history;if (payment_history_filter) {return payment_history.filter(function (payment) {switch (true) {case payment_history_filter > 0:return payment.debit_credit > 0;case payment_history_filter < 0:return payment.debit_credit < 0;default:return false;}});}return payment_history;} }, { key: 'render', value: function render() {var usersStore = this.props.usersStore;var payment_history_filter = this.state.payment_history_filter;var payment_history = this.getFilteredPaymentHistory();var chunked_payment_history = (0, _pagination.getChunkedArray)(payment_history, this.payments_per_page)[this.state.page];var pages = (0, _pagination.getPagesCount)(payment_history.length, this.payments_per_page);return React.createElement('div', null, React.createElement('h3', null, '\u0418\u0441\u0442\u043E\u0440\u0438\u044F \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439.'), React.createElement('div', { className: 'btn-group', role: 'group', 'aria-label': '...' }, React.createElement('button', { type: 'button', className: 'btn btn-default ' + (payment_history_filter > 0 ? 'active' : ''), onClick: this.setPaymentHistoryFilter.bind(this, 1) }, '\u0414\u0435\u0431\u0435\u0442'), React.createElement('button', { type: 'button', className: 'btn btn-default ' + (payment_history_filter < 0 ? 'active' : ''), onClick: this.setPaymentHistoryFilter.bind(this, -1) }, '\u041A\u0440\u0435\u0434\u0438\u0442'), React.createElement('button', { type: 'button', className: 'btn btn-default ' + (!payment_history_filter ? 'active' : ''), onClick: this.setPaymentHistoryFilter.bind(this, null) }, '\u0412\u0441\u0435')), React.createElement('table', { className: 'table' }, React.createElement('thead', null, React.createElement('tr', null, React.createElement('td', null, '\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435'), React.createElement('td', null, '\u0421\u0443\u043C\u043C\u0430'), React.createElement('td', null, '\u0414\u0430\u0442\u0430'))), React.createElement('tbody', null, chunked_payment_history.map(function (payment, key) {return React.createElement('tr', { key: key }, React.createElement('td', null, payment.name ? payment.name : 'Информация отсутствует'), React.createElement('td', null, payment.sum ? '' + (payment.debit_credit > 0 ? '+' : '-') + payment.sum + ' \u0440.' : ''), React.createElement('td', null, payment.date));}))), payment_history.length > this.payments_per_page ? React.createElement('div', { className: 'col-md-12' }, React.createElement(_pagination.Paginator, { pages: pages, current_page: this.state.page, objects_length: payment_history.length, setPage: this.setPage.bind(this) })) : null);} }]);return PaymentHistory;}(React.Component); // @observer
 	// export class Payment extends React.Component {
 	//     componentWillMount() {
 	//         const {usersStore} = this.props;
@@ -61010,7 +61011,11 @@
 	                                                                            React.createElement('div', { key: key },
 	                                                                                React.createElement('div', { className: 'row' },
 	                                                                                    React.createElement('div', { className: 'col-md-12 link_name' },
-	                                                                                        React.createElement(_reactRouter.Link, { to: link_url }, link.name)))));
+	                                                                                        React.createElement(_reactRouter.Link, { to: link_url },
+	                                                                                            React.createElement('button', { className: 'btn btn-default btn-xs' },
+	                                                                                                link.name))))));
+	
+	
 	
 	
 	
@@ -87070,7 +87075,7 @@
 	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/payment/' }, '\u041E\u043F\u043B\u0430\u0442\u0430')),
 	
 	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/team/' }, '\u041C\u043E\u044F \u041A\u043E\u043C\u0430\u043D\u0434\u0430')),
-	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/offline/user/' }, '\u0421\u043A\u0430\u0447\u0435\u043D\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
+	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/offline/user/' }, '\u0421\u043A\u0430\u0447\u0430\u043D\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
 	                                    React.createElement('li', null, React.createElement('a', { href: document.body.getAttribute('data-logout-url') }, '\u0412\u044B\u0445\u043E\u0434'))))) :
 	
 	

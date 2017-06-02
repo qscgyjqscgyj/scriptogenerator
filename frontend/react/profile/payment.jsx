@@ -113,11 +113,11 @@ export class Payment extends React.Component {
 export class OfflineScriptExportAdditionalService extends React.Component {
     render() {
         const {usersStore} = this.props;
+        let accesses_length = usersStore.script_exporting_accesses.length;
 
         return <AdditionalService
             title={'Выгрузка скрипта'}
-            sub_title={<span>Доступно для выгрузки: <span
-                className="red_text">{usersStore.script_exporting_accesses.length}</span></span>}
+            sub_title={<span className={accesses_length > 0 ? 'green_text' : 'red_text'}>Доступно для выгрузки: <span>{accesses_length}</span></span>}
             description={'Вы можете скачать любой скрипт в html-файл и использовать его без доступа к интернету'}
             url={'https://getproff.ru/pay/export.script'}/>
     }

@@ -22,6 +22,7 @@ class OfflineScriptExportView(View):
                 context = {}
 
                 context['script'] = json.loads(offline_script_export.script_data)
+                context['user'] = request.user
 
                 made_in_scriptogenerator_logo_path = '%(PROJECT_PATH)s/offline/static/img/logo-made-in-scriptogenerator.png' % dict(PROJECT_PATH=PROJECT_PATH)
                 made_in_scriptogenerator_logo = open(made_in_scriptogenerator_logo_path, "rb")

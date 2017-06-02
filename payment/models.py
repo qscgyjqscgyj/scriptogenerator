@@ -148,8 +148,9 @@ class UserOfflineScriptExportAccess(models.Model):
     def create_offline_scripts_data(self, script):
         script_data = json.dumps(ScriptSerializer(script).data, default=datetime_handler)
         date_today = datetime.datetime.now()
+        script_access = self
         if self.unlim_months:
-            UserOfflineScriptExportAccess.objects.create(
+            script_access = UserOfflineScriptExportAccess.objects.create(
                 user=self.user,
                 exported=True,
                 script=script,
@@ -168,6 +169,7 @@ class UserOfflineScriptExportAccess(models.Model):
             user=self.user,
             date=date_today
         )
+        return script_access
 
     def update_offline_script_data(self):
         if self.exported and self.script_data and self.script:

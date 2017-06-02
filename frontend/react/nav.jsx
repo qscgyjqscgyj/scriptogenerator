@@ -101,7 +101,7 @@ export class Nav extends React.Component {
                                     <li><Link to='/profile/payment/'>Оплата</Link></li>
                                     {/*<li><a href="http://getproff.ru/sgt-pay">Оплата</a></li>*/}
                                     <li><Link to='/profile/team/'>Моя Команда</Link></li>
-                                    <li><Link to='/scripts/offline/user/'>Скаченные скрипты</Link></li>
+                                    <li><Link to='/scripts/offline/user/'>Скачанные скрипты</Link></li>
                                     <li><a href={document.body.getAttribute('data-logout-url')}>Выход</a></li>
                                 </ul>
                             </li>

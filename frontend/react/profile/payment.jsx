@@ -66,38 +66,38 @@ export class Payment extends React.Component {
         return (
             <div className="col-md-12">
                 <div className="col-md-8">
-                    <div className="col-md-12">
-                        <div className="col-md-12 payment_balance_container">
-                            <div className="col-md-12 payment_balance_block">
-                                <div className="col-md-3">
-                                    <span className="payment_balance_total_title">Ваш баланс*</span>
-                                    <br/>
-                                    <span className="payment_balance_total">{usersStore.session_user.balance_total}
-                                        руб.</span>
-                                </div>
-                                <div className="col-md-6 payment_balance_total_left">
-                                    {this.getBalanceLeftText()}
-                                </div>
-                                <div className="col-md-3 payment_balance_button_recharge">
-                                    <button className="btn btn-lg btn-danger pull-right">Пополнить</button>
-                                </div>
+                    <div className="col-md-12 payment_balance_container">
+                        <div className="col-md-12 payment_balance_block">
+                            <div className="col-md-3">
+                                <span className="payment_balance_total_title">Ваш баланс*</span>
+                                <br/>
+                                <span className="payment_balance_total">{usersStore.session_user.balance_total}
+                                    руб.</span>
                             </div>
-                            <div className="col-md-12">
-                                <span className="payment_balance_total_ps">
-                                    *С баланса списывается {usersStore.payment_per_user} руб. в день за каждого пользователя. Главный аккаунт - бесплатно.
-                                </span>
+                            <div className="col-md-6 payment_balance_total_left">
+                                {this.getBalanceLeftText()}
+                            </div>
+                            <div className="col-md-3 payment_balance_button_recharge">
+                                <a href="https://getproff.ru/pay/user" target="_blank">
+                                    <button className="btn btn-danger pull-right">Пополнить</button>
+                                </a>
                             </div>
                         </div>
-
-                        <h3 className="profile_payment__title">Дополнительные возможности</h3>
-                        <OfflineScriptExportAdditionalService usersStore={usersStore}/>
-                        <DelegationScriptAccessAdditionalService usersStore={usersStore}/>
-                        <UnlimOfflineScriptExportAdditionalService usersStore={usersStore}/>
+                        <div className="col-md-12">
+                            <span className="payment_balance_total_ps">
+                                *С баланса списывается {usersStore.payment_per_user} руб. в день за каждого пользователя. Главный аккаунт - бесплатно.
+                            </span>
+                        </div>
                     </div>
+
+                    <h3 className="profile_payment__title">Дополнительные возможности</h3>
+                    <OfflineScriptExportAdditionalService usersStore={usersStore}/>
+                    <DelegationScriptAccessAdditionalService usersStore={usersStore}/>
+                    <UnlimOfflineScriptExportAdditionalService usersStore={usersStore}/>
                 </div>
                 {usersStore.payment_history.length > 0 ?
                     <div className="col-md-4">
-                        <div className="jumbotron col-md-12">
+                        <div className="payment_history_block col-md-12">
                             <PaymentHistory usersStore={usersStore}/>
                         </div>
                     </div>
@@ -109,19 +109,21 @@ export class Payment extends React.Component {
     }
 }
 
+@observer
 export class OfflineScriptExportAdditionalService extends React.Component {
     render() {
         const {usersStore} = this.props;
 
         return <AdditionalService
             title={'Выгрузка скрипта'}
-            sub_title={<span>Доступно для выгрузки: : <span
+            sub_title={<span>Доступно для выгрузки: <span
                 className="red_text">{usersStore.script_exporting_accesses.length}</span></span>}
             description={'Вы можете скачать любой скрипт в html-файл и использовать его без доступа к интернету'}
             url={'https://getproff.ru/pay/export.script'}/>
     }
 }
 
+@observer
 export class UnlimOfflineScriptExportAdditionalService extends React.Component {
     render() {
         const {usersStore} = this.props;
@@ -135,6 +137,7 @@ export class UnlimOfflineScriptExportAdditionalService extends React.Component {
     }
 }
 
+@observer
 export class DelegationScriptAccessAdditionalService extends React.Component {
     render() {
         const {usersStore} = this.props;
@@ -148,6 +151,7 @@ export class DelegationScriptAccessAdditionalService extends React.Component {
     }
 }
 
+@observer
 class AdditionalService extends React.Component {
     render() {
         return (
@@ -163,8 +167,8 @@ class AdditionalService extends React.Component {
                     <div className="col-md-6 payment_additional_feature_text">{this.props.description}</div>
                     {this.props.url ?
                         <div className="col-md-3 payment_balance_button">
-                            <a href={this.props.url}>
-                                <button className="btn btn-lg btn-success pull-right">Подключить</button>
+                            <a href={this.props.url} target="_blank">
+                                <button className="btn btn-success pull-right">Подключить</button>
                             </a>
                         </div>
                         : null}
@@ -174,6 +178,7 @@ class AdditionalService extends React.Component {
     }
 }
 
+@observer
 class PaymentHistory extends React.Component {
     constructor(props) {
         super(props);
@@ -232,11 +237,11 @@ class PaymentHistory extends React.Component {
                 <div className="btn-group" role="group" aria-label="...">
                     <button type="button"
                             className={`btn btn-default ${payment_history_filter > 0 ? 'active' : ''}`}
-                            onClick={this.setPaymentHistoryFilter.bind(this, 1)}>Дебет
+                            onClick={this.setPaymentHistoryFilter.bind(this, 1)}>Пополнения
                     </button>
                     <button type="button"
                             className={`btn btn-default ${payment_history_filter < 0 ? 'active' : ''}`}
-                            onClick={this.setPaymentHistoryFilter.bind(this, -1)}>Кредит
+                            onClick={this.setPaymentHistoryFilter.bind(this, -1)}>Списания
                     </button>
                     <button type="button"
                             className={`btn btn-default ${!payment_history_filter ? 'active' : ''}`}

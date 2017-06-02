@@ -162,7 +162,7 @@ class PaymentForUserAccesses(View, GetproffExternalPayment):
 
     def get(self, request, *args, **kwargs):
         send_mail('PaymentForUserAccesses.get or PaymentForUserAccessesWithSale.get', str(dict(request.GET)),
-                  'info@scriptogenerator.ru', ['skyliffer@gmail.com', 'aliestarten@gmail.com'])
+                  'info@scriptogenerator.ru', ['skyliffer@gmail.com'])
 
         positions = request.GET.get('positions')
         email = request.GET.get('email')
@@ -203,7 +203,7 @@ class PaymentForScriptDelegation(View, GetproffExternalPayment):
 
     def get(self, request, *args, **kwargs):
         send_mail('PaymentForScriptDelegation.get', str(dict(request.GET)),
-                  'info@scriptogenerator.ru', ['skyliffer@gmail.com', 'aliestarten@gmail.com'])
+                  'info@scriptogenerator.ru', ['skyliffer@gmail.com'])
 
         positions = request.GET.get('positions')
         email = request.GET.get('email')
@@ -229,7 +229,7 @@ class PaymentForOfflineScript(View, GetproffExternalPayment):
 
     def get(self, request, *args, **kwargs):
         send_mail('PaymentForOfflineScript.get', str(dict(request.GET)),
-                  'info@scriptogenerator.ru', ['skyliffer@gmail.com', 'aliestarten@gmail.com'])
+                  'info@scriptogenerator.ru', ['skyliffer@gmail.com'])
 
         positions = request.GET.get('positions')
         email = request.GET.get('email')
@@ -262,7 +262,7 @@ class PaymentForUnlimitedOfflineScript(View, GetproffExternalPayment):
 
     def get(self, request, *args, **kwargs):
         send_mail('PaymentForUnlimitedOfflineScript.get', str(dict(request.GET)),
-                  'info@scriptogenerator.ru', ['skyliffer@gmail.com', 'aliestarten@gmail.com'])
+                  'info@scriptogenerator.ru', ['skyliffer@gmail.com'])
 
         positions = request.GET.get('positions')
         email = request.GET.get('email')

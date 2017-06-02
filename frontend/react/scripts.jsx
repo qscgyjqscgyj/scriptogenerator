@@ -8,6 +8,11 @@ import {ModalWrapper} from './modal';
 import {Link} from 'react-router';
 import Select from 'react-select';
 import {Paginator, getChunkedArray} from './pagination';
+import {
+    DelegationScriptAccessAdditionalService,
+    OfflineScriptExportAdditionalService,
+    UnlimOfflineScriptExportAdditionalService
+} from './profile/payment';
 import confirm from './confirm';
 import {Tooltip} from './tooltip';
 
@@ -142,19 +147,65 @@ export class Scripts extends React.Component {
         });
     }
 
+    openDelegationModalForm(script) {
+        const {modalStore, usersStore} = this.props;
+
+        modalStore.open_modal(
+            React.createElement(DelegationScript, {
+                script: script,
+                usersStore: usersStore,
+                modalStore: modalStore,
+                delegateScript: this.delegateScript.bind(this)
+            })
+        )
+    }
+
     delegateScript(script, email) {
         const {scriptsStore, modalStore} = this.props;
+
         $.ajax({
             method: 'POST',
-            url: document.body.getAttribute('data-delegate-script-url'),
+            url: document.body.getAttribute('data-scripts-delegation-url'),
             data: JSON.stringify({
-                script: script,
+                script_id: script.id,
                 email: email
             }),
             success: (res) => {
                 scriptsStore.scripts = res.scripts;
                 modalStore.close_modal();
                 alert('Скрипт "' + script.name + '" делегирован пользователю: ' + email);
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
+    openScriptExportCreatingModalForm(script) {
+        const {modalStore, usersStore} = this.props;
+
+        modalStore.open_modal(
+            React.createElement(CreateOfflineScriptExport, {
+                script: script,
+                usersStore: usersStore,
+                modalStore: modalStore,
+                createScriptExport: this.createScriptExport.bind(this)
+            })
+        )
+    }
+
+    createScriptExport(script) {
+        const {modalStore} = this.props;
+
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-scripts-exporting-url'),
+            data: JSON.stringify({
+                script_id: script.id,
+            }),
+            success: (res) => {
+                modalStore.close_modal();
+                alert(`Скрипт ${script.name} экспортирован`);
             },
             error: (res) => {
                 console.log(res);
@@ -297,6 +348,22 @@ export class Scripts extends React.Component {
                                         <div className="btn-group pull-right">
                                             {!available ?
                                                 <button className='btn btn-default btn-xs'
+                                                        data-tip="Перенести скрипт"
+                                                        onClick={this.openDelegationModalForm.bind(this, script)}>
+                                                    <i className="glyphicon glyphicon-arrow-right"/>
+                                                </button>
+                                                : null}
+
+                                            {!available ?
+                                                <button className='btn btn-default btn-xs'
+                                                        data-tip="Скачать скрипт"
+                                                        onClick={this.openScriptExportCreatingModalForm.bind(this, script)}>
+                                                    <i className="glyphicon glyphicon-download-alt"/>
+                                                </button>
+                                                : null}
+
+                                            {!available ?
+                                                <button className='btn btn-default btn-xs'
                                                         data-tip="Копировать скрипт"
                                                         onClick={() => {
                                                             this.cloneScript(script)
@@ -351,6 +418,8 @@ export class Scripts extends React.Component {
                                         <p className="loading">Скрипт создается <img
                                             src={STATIC_URL + 'img/loading.gif'}/></p>
                                         : null}
+
+                                    <Tooltip />
                                 </div>
                             )
                         })}
@@ -501,8 +570,7 @@ class Accesses extends React.Component {
         super(props);
 
         this.state = {
-            accesses: this.formatAccesses(props.script.accesses),
-            delegate_email: null
+            accesses: this.formatAccesses(props.script.accesses)
         }
     }
 
@@ -560,19 +628,12 @@ class Accesses extends React.Component {
         return options;
     }
 
-    delegateScript() {
-        const {delegate_email} = this.state;
-        this.props.delegateScript(this.props.script, delegate_email);
-        return this.setState(update(this.state, {delegate_email: {$set: null}}));
-    }
-
     closeModal() {
         let {modalStore} = this.props;
         modalStore.close_modal();
     }
 
     render() {
-        const {delegate_email} = this.state;
         return (
             <div className="row">
                 <div className="col-md-12">
@@ -600,19 +661,154 @@ class Accesses extends React.Component {
                         Сохранить
                     </button>
                 </div>
-                {/*<div className="col-md-12">*/}
-                {/*<h3>Делегирование</h3>*/}
-                {/*<div className="form-group">*/}
-                {/*<label>Email нового владельца</label>*/}
-                {/*<input type="text" name="email" className="form-control" placeholder="Введите email нового владельца" onChange={(e) => {*/}
-                {/*this.setState(update(this.state, {delegate_email: {$set: e.target.value}}));*/}
-                {/*}}/>*/}
-                {/*</div>*/}
-                {/*<button className={'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled')} onClick={(e) => {*/}
-                {/*(validateEmail(delegate_email) ? this.delegateScript() : null);*/}
-                {/*}}>Делегировать</button>*/}
-                {/*</div>*/}
             </div>
+        )
+    }
+}
+
+@observer
+class DelegationScript extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            delegate_email: null
+        }
+    }
+
+    componentWillMount() {
+        const {usersStore} = this.props;
+        usersStore.getScriptDelegationAccesses();
+    }
+
+    componentWillUnmount() {
+        const {usersStore} = this.props;
+        usersStore.clearScriptDelegationAccesses();
+    }
+
+    delegateScript() {
+        const {delegate_email} = this.state;
+        this.props.delegateScript(this.props.script, delegate_email);
+        return this.setState(update(this.state, {delegate_email: {$set: null}}));
+    }
+
+    render() {
+        const {usersStore} = this.props;
+        const {delegate_email} = this.state;
+
+        if (!usersStore.loading) {
+            return (
+                <div className="row-centered">
+                    <div className="col-md-12 col-centered">
+                        <h3>Перенос скрипта</h3>
+                        <p>Переносов доступно: {usersStore.script_delegation_accesses.length}</p>
+                        {usersStore.script_delegation_accesses.length > 0 ?
+                            <div>
+                                <div className="form-group">
+                                    <label>Email нового владельца</label>
+                                    <input type="text" name="email" className="form-control"
+                                           placeholder="Введите email нового владельца" onChange={(e) => {
+                                        this.setState(update(this.state, {delegate_email: {$set: e.target.value}}));
+                                    }}/>
+                                </div>
+                                <button
+                                    className={'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled')}
+                                    onClick={(e) => {
+                                        (validateEmail(delegate_email) ? this.delegateScript() : null);
+                                    }}>Перенести
+                                </button>
+                            </div>
+                            :
+                            <DelegationScriptAccessAdditionalService usersStore={usersStore}/>
+                        }
+                    </div>
+                </div>
+            )
+        }
+        return null;
+    }
+}
+
+@observer
+export class OfflineScriptExport extends React.Component {
+    render() {
+        const {usersStore, exportingContentBlock} = this.props;
+
+        if (!usersStore.loading) {
+            return (
+                <div className="row-centered">
+                    <div className="col-md-12 col-centered">
+                        <h3>{this.props.title}</h3>
+                        <p>Скачиваний доступно: {usersStore.script_exporting_accesses.length}</p>
+                        <p>Активность безлимитных
+                            скачиваний: {usersStore.script_exporting_unlim_access_is_active ? 'Активно' : 'Не активно'}</p>
+
+                        {usersStore.script_exporting_accesses.length > 0 || usersStore.script_exporting_unlim_access_is_active ?
+                            <div>
+                                {exportingContentBlock}
+                            </div>
+                            :
+                            <div>
+                                <OfflineScriptExportAdditionalService usersStore={usersStore}/>
+                                <UnlimOfflineScriptExportAdditionalService usersStore={usersStore}/>
+                            </div>
+                        }
+                    </div>
+                </div>
+            )
+        }
+        return null;
+    }
+}
+
+@observer
+class CreateOfflineScriptExport extends React.Component {
+    componentWillMount() {
+        const {usersStore} = this.props;
+        usersStore.getOfflineScriptsExportAccesses();
+    }
+
+    componentWillUnmount() {
+        const {usersStore} = this.props;
+        usersStore.clearOfflineScriptsExportAccesses();
+    }
+
+    cancelExporting() {
+        const {modalStore} = this.props;
+        modalStore.close_modal();
+    }
+
+    getExportingContentBlock() {
+        const {usersStore, script} = this.props;
+
+        return (
+            <div className="row">
+                <div className="col-md-12">
+                    <h4>Вы уверены, что хотите скачать скрипт "{script.name}"?</h4>
+                </div>
+                <div className="col-md-12 script_export_confirm_block">
+                    <div className="col-md-6">
+                        <button className="custom_button btn btn-success"
+                                onClick={this.props.createScriptExport.bind(this, script)}>Да
+                        </button>
+                    </div>
+                    <div className="col-md-6">
+                        <button className="custom_button btn btn-danger" onClick={this.cancelExporting.bind(this)}>Нет
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    render() {
+        const {usersStore} = this.props;
+
+        return (
+            <OfflineScriptExport
+                exportingContentBlock={this.getExportingContentBlock()}
+                usersStore={usersStore}
+                title="Скачать скрипт"/>
         )
     }
 }

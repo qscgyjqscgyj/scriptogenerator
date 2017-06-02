@@ -8,9 +8,9 @@ from django.dispatch import receiver
 
 from main.models import Script
 from main.serializers.script import ScriptSerializer
-from payment.managers import UserOfflineScriptExportAccessManager
+from payment.managers import UserOfflineScriptExportAccessManager, UserScriptDelegationAccessManager
 from payment.tasks import recount_balance
-from scripts.utils import readable_datetime_format
+from scripts.utils import readable_datetime_format, datetime_handler
 from users.models import CustomUser
 
 
@@ -107,6 +107,8 @@ class UserScriptDelegationAccess(models.Model):
     payed = models.DateTimeField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
 
+    objects = UserScriptDelegationAccessManager()
+
     def __unicode__(self):
         return self.user.__unicode__()
 
@@ -116,7 +118,7 @@ class UserScriptDelegationAccess(models.Model):
         self.delegated = True
         self.save()
         PaymentLog.objects.create(
-            name='Делегирование скрипта "%(script_name)s" пользователю "%(to_user_name)s"' % dict(script_name=script.name, to_user_name=to_user.username),
+            name=u'Делегирование скрипта "%(script_name)s" пользователю "%(to_user_name)s"' % dict(script_name=script.name, to_user_name=to_user.username),
             user=self.user,
             date=datetime.datetime.now()
         )
@@ -124,9 +126,10 @@ class UserScriptDelegationAccess(models.Model):
 
 class UserOfflineScriptExportAccess(models.Model):
     user = models.ForeignKey(CustomUser, related_name='user_offline_script_export_access_custom_user')
+    exported = models.BooleanField(default=False)
     script = models.ForeignKey(Script, on_delete=models.SET_NULL, blank=True, null=True)
     script_data = models.TextField(blank=True, null=True)
-    exported = models.BooleanField(default=False)
+    exported_date = models.DateTimeField(blank=True, null=True)
     unlim_months = models.IntegerField(blank=True, null=True)
     payed = models.DateTimeField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
@@ -143,31 +146,44 @@ class UserOfflineScriptExportAccess(models.Model):
         return True if datetime.datetime.now() < self.unlime_datetime_expires() else False
 
     def create_offline_scripts_data(self, script):
-        script_data = json.dumps(ScriptSerializer(script).data)
+        script_data = json.dumps(ScriptSerializer(script).data, default=datetime_handler)
+        date_today = datetime.datetime.now()
         if self.unlim_months:
             UserOfflineScriptExportAccess.objects.create(
                 user=self.user,
+                exported=True,
                 script=script,
                 script_data=script_data,
-                exported=True,
+                exported_date=date_today,
                 payed=self.payed
             )
         elif not self.exported:
-            self.script = script,
-            self.script_data = script_data
             self.exported = True
+            self.script = script
+            self.script_data = script_data
+            self.exported_date = date_today
             self.save()
         PaymentLog.objects.create(
-            name='Услуга "Выгрузка скрипта" - активирована. Скрипт "%(script_name)s" экспортирован.' % dict(script_name=script.name),
+            name=u'Услуга "Выгрузка скрипта" - активирована. Скрипт "%(script_name)s" экспортирован.' % dict(script_name=script.name),
             user=self.user,
-            date=datetime.datetime.now()
+            date=date_today
         )
+
+    def update_offline_script_data(self):
+        if self.exported and self.script_data and self.script:
+            actual_user_offline_script_export_access = self.__class__.objects.get_actual_user_offline_script_export_access(self.user)
+            if actual_user_offline_script_export_access:
+                actual_user_offline_script_export_access.create_offline_scripts_data(self.script)
+                self.delete()
+
+    class Meta:
+        ordering = ('-pk',)
 
 
 def create_payment_log_for_new_unlim_offline_script_export_access(sender, instance, created, **kwargs):
     if created and instance.unlim_months:
         PaymentLog.objects.create(
-            name='Безлимитная выгрузка скрипта активирована. Дата завершения: %(expires_date)s' % dict(
+            name=u'Безлимитная выгрузка скрипта активирована. Дата завершения: %(expires_date)s' % dict(
                 expires_date=readable_datetime_format(instance.unlime_datetime_expires())
             ),
             user=instance.user,

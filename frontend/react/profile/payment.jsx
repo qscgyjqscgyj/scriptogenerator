@@ -11,6 +11,15 @@ export class Payment extends React.Component {
         const {usersStore} = this.props;
         usersStore.getData();
         usersStore.getTeam();
+        usersStore.getScriptDelegationAccesses();
+        usersStore.getOfflineScriptsExportAccesses();
+    }
+
+    componentWillUnmount() {
+        const {usersStore} = this.props;
+        usersStore.clearPaymentHistory();
+        usersStore.clearScriptDelegationAccesses();
+        usersStore.getOfflineScriptsExportAccesses();
     }
 
     onSubmit() {
@@ -37,7 +46,7 @@ export class Payment extends React.Component {
         const {usersStore} = this.props;
         let team_length = usersStore.team.length;
         let days_left = Math.floor(usersStore.session_user.balance_total / (team_length * usersStore.payment_per_user));
-        return(
+        return (
             <div>
                 Хватит на
                 <span className="underline">
@@ -63,7 +72,8 @@ export class Payment extends React.Component {
                                 <div className="col-md-3">
                                     <span className="payment_balance_total_title">Ваш баланс*</span>
                                     <br/>
-                                    <span className="payment_balance_total">{usersStore.session_user.balance_total} руб.</span>
+                                    <span className="payment_balance_total">{usersStore.session_user.balance_total}
+                                        руб.</span>
                                 </div>
                                 <div className="col-md-6 payment_balance_total_left">
                                     {this.getBalanceLeftText()}
@@ -80,63 +90,9 @@ export class Payment extends React.Component {
                         </div>
 
                         <h3 className="profile_payment__title">Дополнительные возможности</h3>
-                        <div className="col-md-12 payment_additional_container">
-                            <div className="col-md-12 payment_additional_block">
-                                <div className="col-md-3">
-                                    <span className="payment_additional_feature_title">
-                                        Выгрузка скрипта
-                                    </span>
-                                    <br/>
-                                    <span className="payment_additional_feature_desc">
-                                        Доступно для выгрузки: <span className="red_text">0</span>
-                                    </span>
-                                </div>
-                                <div className="col-md-6 payment_additional_feature_text">
-                                    Вы можете скачать любой скрипт в html-файл и использовать его без доступа к интернету
-                                </div>
-                                <div className="col-md-3 payment_balance_button">
-                                    <button className="btn btn-lg btn-success pull-right">Подключить</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-12 payment_additional_container">
-                            <div className="col-md-12 payment_additional_block">
-                                <div className="col-md-3">
-                                    <span className="payment_additional_feature_title">
-                                        Перенос скрипта
-                                    </span>
-                                    <br/>
-                                    <span className="payment_additional_feature_desc">
-                                        Доступно для переноса: <span className="red_text">0</span>
-                                    </span>
-                                </div>
-                                <div className="col-md-6 payment_additional_feature_text">
-                                    Вы можете перенести скрипт с вашего аккаунта, в аккаунт другого пользователя
-                                </div>
-                                <div className="col-md-3 payment_balance_button">
-                                    <button className="btn btn-lg btn-success pull-right">Подключить</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-12 payment_additional_container">
-                            <div className="col-md-12 payment_additional_block">
-                                <div className="col-md-3">
-                                    <span className="payment_additional_feature_title">
-                                        Безлимитная выгрузка
-                                    </span>
-                                    <br/>
-                                    <span className="payment_additional_feature_desc">
-                                        <span className="red_text">Услуга не подключена</span>
-                                    </span>
-                                </div>
-                                <div className="col-md-6 payment_additional_feature_text">
-                                    Вы можете скачивать любое количество скриптов, а также размещать свой логотип и ссылку на свой сайт в выгруженном скрипте
-                                </div>
-                                <div className="col-md-3 payment_balance_button">
-                                    <button className="btn btn-lg btn-success pull-right">Подключить</button>
-                                </div>
-                            </div>
-                        </div>
+                        <OfflineScriptExportAdditionalService usersStore={usersStore}/>
+                        <DelegationScriptAccessAdditionalService usersStore={usersStore}/>
+                        <UnlimOfflineScriptExportAdditionalService usersStore={usersStore}/>
                     </div>
                 </div>
                 {usersStore.payment_history.length > 0 ?
@@ -145,9 +101,74 @@ export class Payment extends React.Component {
                             <PaymentHistory usersStore={usersStore}/>
                         </div>
                     </div>
-                : null}
+                    : null}
                 {/*<script id="4626752292b2d3c202d2d85816e04c0878731972"*/}
-                        {/*src="http://getproff.ru/pl/lite/widget/script?id=1748"/>*/}
+                {/*src="http://getproff.ru/pl/lite/widget/script?id=1748"/>*/}
+            </div>
+        )
+    }
+}
+
+export class OfflineScriptExportAdditionalService extends React.Component {
+    render() {
+        const {usersStore} = this.props;
+
+        return <AdditionalService
+            title={'Выгрузка скрипта'}
+            sub_title={<span>Доступно для выгрузки: : <span
+                className="red_text">{usersStore.script_exporting_accesses.length}</span></span>}
+            description={'Вы можете скачать любой скрипт в html-файл и использовать его без доступа к интернету'}
+            url={'https://getproff.ru/pay/export.script'}/>
+    }
+}
+
+export class UnlimOfflineScriptExportAdditionalService extends React.Component {
+    render() {
+        const {usersStore} = this.props;
+
+        return <AdditionalService
+            title={'Безлимитная выгрузка'}
+            sub_title={<span
+                className={usersStore.script_exporting_unlim_access_is_active ? 'green_text' : 'red_text'}>{usersStore.script_exporting_unlim_access_is_active ? 'Услуга подключена' : 'Услуга не подключена'}</span>}
+            description={'Вы можете скачивать любое количество скриптов, а также размещать свой логотип и ссылку на свой сайт в выгруженном скрипте'}
+            url={usersStore.script_exporting_unlim_access_is_active ? null : 'https://getproff.ru/pay/export.script.unlim'}/>
+    }
+}
+
+export class DelegationScriptAccessAdditionalService extends React.Component {
+    render() {
+        const {usersStore} = this.props;
+
+        return <AdditionalService
+            title={'Перенос скрипта'}
+            sub_title={<span>Доступно для переноса: <span
+                className="red_text">{usersStore.script_delegation_accesses.length}</span></span>}
+            description={'Вы можете перенести скрипт с вашего аккаунта, в аккаунт другого пользователя'}
+            url={'https://getproff.ru/pay/delegate.script'}/>
+    }
+}
+
+class AdditionalService extends React.Component {
+    render() {
+        return (
+            <div className="col-md-12 payment_additional_container">
+                <div className="col-md-12 payment_additional_block">
+                    <div className="col-md-3">
+                        <span className="payment_additional_feature_title">{this.props.title}</span>
+                        <br/>
+                        <span className="payment_additional_feature_desc">
+                            <span className="red_text">{this.props.sub_title}</span>
+                        </span>
+                    </div>
+                    <div className="col-md-6 payment_additional_feature_text">{this.props.description}</div>
+                    {this.props.url ?
+                        <div className="col-md-3 payment_balance_button">
+                            <a href={this.props.url}>
+                                <button className="btn btn-lg btn-success pull-right">Подключить</button>
+                            </a>
+                        </div>
+                        : null}
+                </div>
             </div>
         )
     }
@@ -164,9 +185,9 @@ class PaymentHistory extends React.Component {
         }
     }
 
-    setPage(page=0, callback=null) {
+    setPage(page = 0, callback = null) {
         this.setState(update(this.state, {page: {$set: page}}), () => {
-            if(callback) {
+            if (callback) {
                 callback();
             }
         });
@@ -183,7 +204,7 @@ class PaymentHistory extends React.Component {
         const {payment_history_filter} = this.state;
 
         let payment_history = usersStore.payment_history;
-        if(payment_history_filter) {
+        if (payment_history_filter) {
             return payment_history.filter((payment) => {
                 switch (true) {
                     case (payment_history_filter > 0):
@@ -211,13 +232,16 @@ class PaymentHistory extends React.Component {
                 <div className="btn-group" role="group" aria-label="...">
                     <button type="button"
                             className={`btn btn-default ${payment_history_filter > 0 ? 'active' : ''}`}
-                            onClick={this.setPaymentHistoryFilter.bind(this, 1)}>Дебет</button>
+                            onClick={this.setPaymentHistoryFilter.bind(this, 1)}>Дебет
+                    </button>
                     <button type="button"
                             className={`btn btn-default ${payment_history_filter < 0 ? 'active' : ''}`}
-                            onClick={this.setPaymentHistoryFilter.bind(this, -1)}>Кредит</button>
+                            onClick={this.setPaymentHistoryFilter.bind(this, -1)}>Кредит
+                    </button>
                     <button type="button"
                             className={`btn btn-default ${!payment_history_filter ? 'active' : ''}`}
-                            onClick={this.setPaymentHistoryFilter.bind(this, null)}>Все</button>
+                            onClick={this.setPaymentHistoryFilter.bind(this, null)}>Все
+                    </button>
                 </div>
                 <table className="table">
                     <thead>

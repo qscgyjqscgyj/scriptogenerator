@@ -8,6 +8,14 @@ export class UsersStore {
     @observable payment_per_user = 0;
     @observable session_user = null;
 
+    // SCRIPT DELEGATION ACCESSES
+    @observable script_delegation_accesses = [];
+
+    // SCRIPT EXPORTING ACCESSES
+    @observable script_exporting_accesses = [];
+    @observable offline_exported_scripts = [];
+    @observable script_exporting_unlim_access_is_active = false;
+
     @observable creating_teammate_email = '';
     @observable creating_teammate_first_name = '';
     @observable creating_teammate_last_name = '';
@@ -15,6 +23,12 @@ export class UsersStore {
     @observable creating_teammate_phone = '';
 
     @observable pressed_key = null;
+
+    @observable loading = false;
+
+    @action setLoading(loading=true) {
+        this.loading = loading;
+    }
 
     @action getData() {
         $.ajax({
@@ -43,6 +57,75 @@ export class UsersStore {
                 }
             });
         }
+    }
+
+    @action clearPaymentHistory() {
+        this.payment_history.clear();
+    }
+
+    @action getScriptDelegationAccesses() {
+        this.setLoading(true);
+
+        $.ajax({
+            method: 'GET',
+            url: document.body.getAttribute('data-scripts-delegation-url'),
+            success: (res) => {
+                this.script_delegation_accesses = res.script_delegation_accesses;
+                this.setLoading(false);
+            },
+            error: (res) => {
+                console.log(res);
+                this.setLoading(false);
+            }
+        });
+    }
+
+    @action clearScriptDelegationAccesses() {
+        this.script_delegation_accesses.clear();
+    }
+
+    @action getOfflineScriptsExportAccesses() {
+        this.setLoading(true);
+
+        $.ajax({
+            method: 'GET',
+            url: document.body.getAttribute('data-scripts-exporting-url'),
+            success: (res) => {
+                this.script_exporting_accesses = res.script_exporting_accesses;
+                this.script_exporting_unlim_access_is_active = res.script_exporting_unlim_access_is_active;
+                this.setLoading(false);
+            },
+            error: (res) => {
+                console.log(res);
+                this.setLoading(false);
+            }
+        });
+    }
+
+    @action clearOfflineScriptsExportAccesses() {
+        this.script_exporting_accesses.clear();
+        this.script_exporting_unlim_access_is_active = false;
+    }
+
+    @action getOfflineExportedScripts() {
+        this.setLoading(true);
+
+        $.ajax({
+            method: 'GET',
+            url: document.body.getAttribute('data-offline-exported-scripts-url'),
+            success: (res) => {
+                this.offline_exported_scripts = res.offline_exported_scripts;
+                this.setLoading(false);
+            },
+            error: (res) => {
+                console.log(res);
+                this.setLoading(false);
+            }
+        });
+    }
+
+    @action clearOfflineExportedScripts() {
+        this.offline_exported_scripts.clear();
     }
 
     @action resetCreating() {

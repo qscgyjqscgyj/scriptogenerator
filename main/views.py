@@ -23,6 +23,8 @@ from main.serializers.link import LinkCategorySerializer, LinkSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
 from main.utils import create_active_user, get_empty_table, get_empty_coll, get_empty_category, get_empty_link
+from payment.models import UserScriptDelegationAccess, UserOfflineScriptExportAccess
+from payment.serializers import UserScriptDelegationAccessSerializer, UserOfflineScriptExportAccessSerializer
 from scripts.settings import DEBUG, YANDEX_SHOPID, YANDEX_SCID
 from scripts.tasks import clone_script_with_relations
 from users.models import CustomUser, UserAccess
@@ -135,23 +137,58 @@ class ScriptView(ScriptsView):
             })
 
 
-class DelegateScriptView(View):
+class ScriptDelegationView(View):
+    def get(self, request, *args, **kwargs):
+        return JSONResponse({
+            'script_delegation_accesses': UserScriptDelegationAccessSerializer(
+                UserScriptDelegationAccess.objects.filter(user=request.user, delegated=False), many=True).data
+        })
+
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        script = data['script']
-        new_owner_email = data['email']
-        try:
-            user = CustomUser.objects.get(username=new_owner_email)
-            script = Script.objects.get(pk=int(script['id']))
-            script.owner = user
-            script.save()
-            for access in script.accesses():
-                access.delete()
-            return JSONResponse({
-                'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
-            })
-        except ObjectDoesNotExist:
-            return JSONResponse({'message': 'User does not exist.'}, status=400)
+        active_user_script_delegation_access = UserScriptDelegationAccess.objects.get_active_script_delegation_access(request.user)
+        if active_user_script_delegation_access:
+            new_owner_email = data['email']
+            try:
+                to_user = CustomUser.objects.get(username=new_owner_email)
+                script = Script.objects.get(pk=int(data['script_id']))
+                script.owner = to_user
+                script.save()
+
+                active_user_script_delegation_access.delegate(to_user, script)
+
+                for access in script.accesses():
+                    access.delete()
+
+                return JSONResponse({
+                    'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
+                })
+            except ObjectDoesNotExist:
+                return JSONResponse({'message': 'Script does not exist.'}, status=404)
+        else:
+            return JSONResponse({'message': 'User cant\' delegate script.'}, status=500)
+
+
+class ScriptExportingView(View):
+    def get(self, request, *args, **kwargs):
+        return JSONResponse({
+            'script_exporting_accesses': UserOfflineScriptExportAccessSerializer(
+                UserOfflineScriptExportAccess.objects.get_actual_user_offline_script_export_accesses(request.user), many=True).data,
+            'script_exporting_unlim_access_is_active': True if UserOfflineScriptExportAccess.objects.get_actual_user_unlim_offline_script_export_access_date(request.user) else False
+        })
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        actual_user_offline_script_export_access = UserOfflineScriptExportAccess.objects.get_actual_user_offline_script_export_access(request.user)
+        if actual_user_offline_script_export_access:
+            try:
+                script = Script.objects.get(pk=int(data['script_id']))
+                actual_user_offline_script_export_access.create_offline_scripts_data(script)
+                return JSONResponse({'message': 'Script is exported.'}, status=200)
+            except ObjectDoesNotExist:
+                return JSONResponse({'message': 'Script does not exist.'}, status=404)
+        else:
+            return JSONResponse({'message': 'User cant\' export scripts.'}, status=500)
 
 
 class TablesView(View):

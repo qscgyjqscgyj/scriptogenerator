@@ -9,7 +9,7 @@ class ScriptAdmin(admin.ModelAdmin):
 
 
 class DeletedScriptAdmin(admin.ModelAdmin):
-    list_display = ('name', 'owner',)
+    list_display = ('name', 'owner', 'date')
     search_fields = ('owner__email',)
     readonly_fields = ('data',)
 

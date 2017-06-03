@@ -350,22 +350,6 @@ export class Scripts extends React.Component {
                                         <div className="btn-group pull-right">
                                             {!available ?
                                                 <button className='btn btn-default btn-xs'
-                                                        data-tip="Перенести скрипт"
-                                                        onClick={this.openDelegationModalForm.bind(this, script)}>
-                                                    <i className="glyphicon glyphicon-arrow-right"/>
-                                                </button>
-                                                : null}
-
-                                            {!available ?
-                                                <button className='btn btn-default btn-xs'
-                                                        data-tip="Скачать скрипт"
-                                                        onClick={this.openScriptExportCreatingModalForm.bind(this, script)}>
-                                                    <i className="glyphicon glyphicon-download-alt"/>
-                                                </button>
-                                                : null}
-
-                                            {!available ?
-                                                <button className='btn btn-default btn-xs'
                                                         data-tip="Копировать скрипт"
                                                         onClick={() => {
                                                             this.cloneScript(script)
@@ -401,7 +385,23 @@ export class Scripts extends React.Component {
                                                         onClick={() => {
                                                             this.props.router.push('/tables/' + script.id + '/')
                                                         }}>
-                                                    <i className="glyphicon glyphicon-edit"/>
+                                                    <i className="glyphicon glyphicon-cog"/>
+                                                </button>
+                                                : null}
+
+                                            {!available ?
+                                                <button className='btn btn-default btn-xs'
+                                                        data-tip="Перенести скрипт"
+                                                        onClick={this.openDelegationModalForm.bind(this, script)}>
+                                                    <i className="glyphicon glyphicon-arrow-right"/>
+                                                </button>
+                                                : null}
+
+                                            {!available ?
+                                                <button className='btn btn-default btn-xs'
+                                                        data-tip="Скачать скрипт"
+                                                        onClick={this.openScriptExportCreatingModalForm.bind(this, script)}>
+                                                    <i className="glyphicon glyphicon-download-alt"/>
                                                 </button>
                                                 : null}
 

@@ -36814,22 +36814,6 @@
 	                                            React.createElement('div', { className: 'btn-group pull-right' },
 	                                                !available ?
 	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
-	                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043D\u0435\u0441\u0442\u0438 \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                        onClick: _this3.openDelegationModalForm.bind(_this3, script) },
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-arrow-right' })) :
-	
-	                                                null,
-	
-	                                                !available ?
-	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
-	                                                        'data-tip': '\u0421\u043A\u0430\u0447\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
-	                                                        onClick: _this3.openScriptExportCreatingModalForm.bind(_this3, script) },
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-download-alt' })) :
-	
-	                                                null,
-	
-	                                                !available ?
-	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                        'data-tip': '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
 	                                                        onClick: function onClick() {
 	                                                            _this3.cloneScript(script);
@@ -36865,7 +36849,23 @@
 	                                                        onClick: function onClick() {
 	                                                            _this3.props.router.push('/tables/' + script.id + '/');
 	                                                        } },
-	                                                    React.createElement('i', { className: 'glyphicon glyphicon-edit' })) :
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-cog' })) :
+	
+	                                                null,
+	
+	                                                !available ?
+	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                        'data-tip': '\u041F\u0435\u0440\u0435\u043D\u0435\u0441\u0442\u0438 \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                                        onClick: _this3.openDelegationModalForm.bind(_this3, script) },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-arrow-right' })) :
+	
+	                                                null,
+	
+	                                                !available ?
+	                                                React.createElement('button', { className: 'btn btn-default btn-xs',
+	                                                        'data-tip': '\u0421\u043A\u0430\u0447\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                                        onClick: _this3.openScriptExportCreatingModalForm.bind(_this3, script) },
+	                                                    React.createElement('i', { className: 'glyphicon glyphicon-download-alt' })) :
 	
 	                                                null,
 	

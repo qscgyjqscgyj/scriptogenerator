@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from main.views import MainView, ScriptsView, InitView, TablesView, CollsView, LinkCategoriesView, \
     LinkView, ScriptAccessView, CloneScriptView, ExternalRegisterView, ScriptDelegationView, ExternalPaymentView, \
-    ScriptView, ScriptExportingView
+    ScriptView, ScriptExportingView, CloneTableView
 from payment.views import PaymentView
 from users.views import TeamView, ProfileView
 
@@ -23,6 +23,8 @@ urlpatterns = patterns('',
     url(r'^api/accesses/$', login_required(csrf_exempt(ScriptAccessView.as_view())), name='accesses'),
 
     url(r'^api/tables/$', login_required(csrf_exempt(TablesView.as_view())), name='tables'),
+    url(r'^api/table/clone/$', login_required(csrf_exempt(CloneTableView.as_view())), name='clone_table'),
+
     url(r'^api/colls/$', login_required(csrf_exempt(CollsView.as_view())), name='colls'),
 
     url(r'^api/links/$', login_required(csrf_exempt(LinkView.as_view())), name='links'),

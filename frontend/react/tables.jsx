@@ -1,10 +1,14 @@
 import * as React from 'react';
+import $ from 'jquery';
 import {observer} from 'mobx-react';
+import update from 'react-addons-update';
 import {ModalWrapper} from './modal';
 import {Link} from 'react-router';
 import {Sort} from './sort';
 import {AccessableComponent} from './access';
 import {scriptsIsLoaded} from './scriptsIsLoaded';
+import {Tooltip} from './tooltip';
+import Select from 'react-select';
 
 @observer
 class Tables extends AccessableComponent {
@@ -15,6 +19,42 @@ class Tables extends AccessableComponent {
             scriptsStore.getScriptData(script);
         }
     }
+
+    openTableEditingModalForm(table) {
+        const {scriptsStore, modalStore} = this.props;
+        let script = scriptsStore.script(this.props.params.script);
+
+        scriptsStore.editing = table;
+        modalStore.open_modal(
+            React.createElement(EditingTable, {
+                scriptsStore: scriptsStore,
+                script: script,
+                modalStore: modalStore,
+            })
+        );
+    }
+
+    openTableCloningModalForm(table) {
+        const {scriptsStore, modalStore} = this.props;
+        let script = scriptsStore.script(this.props.params.script);
+
+        modalStore.open_modal(
+            React.createElement(CloningTable, {
+                scriptsStore: scriptsStore,
+                script: script,
+                table: table,
+                modalStore: modalStore,
+            })
+        );
+    }
+
+    deleteTableHandler(table) {
+        const {scriptsStore} = this.props;
+        let script = scriptsStore.script(this.props.params.script);
+
+        scriptsStore.deleteTable(script, table);
+    }
+
     render() {
         const {scriptsStore, modalStore, usersStore} = this.props;
         if(usersStore.session_user) {
@@ -24,7 +64,7 @@ class Tables extends AccessableComponent {
                 return(
                     <div className="col-md-12">
                         {access.edit ?
-                            <div>
+                            <div className="row list_controls">
                                 <div className="col-md-2">
                                     <button onClick={() => {
                                         scriptsStore.createTable(script);
@@ -36,45 +76,46 @@ class Tables extends AccessableComponent {
                             </div>
                         : null}
                         <div className="row">
-                            <div className="col-md-12">
-                                <table className="table">
-                                    <thead>
-                                        <tr>
-                                            <td>Название таблицы</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {script.data.map((table, key)=>{
-                                            return (
-                                                <tr key={key}>
-                                                    <td>
-                                                        <Link to={scriptsStore.tableUrl(script, table)}>{table.name}</Link>
-                                                    </td>
-                                                    <td className="text-right">
-                                                        {access.edit ?
-                                                            <button className="btn btn-default" onClick={()=>{
-                                                                scriptsStore.editing = table;
-                                                                modalStore.open_modal(
-                                                                    React.createElement(EditingTable, {
-                                                                        scriptsStore: scriptsStore,
-                                                                        script: script,
-                                                                        modalStore: modalStore,
-                                                                    })
-                                                                );
-                                                            }}>Ред.</button>
-                                                        : null}
-                                                    </td>
-                                                    <td className="text-right">
-                                                        {access.edit ?
-                                                            <button className="btn btn-danger btn-xs" onClick={()=>{scriptsStore.deleteTable(script, table)}}>Удалить</button>
-                                                        : null}
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
+                            {script.data.map((table, key)=>{
+                                return (
+                                    <div key={key} className="col-md-12 hovered_list_item list_item edit_icon_handler">
+                                        <div className="col-md-6">
+                                            <span className="inline_elements">
+                                                <Link className="inline_element" to={scriptsStore.tableUrl(script, table)}>{table.name}</Link>
+                                            </span>
+                                        </div>
+
+                                        <div className="col-md-3 pull-right">
+                                            <div className="btn-group pull-right">
+                                                {access.edit ?
+                                                    <button className='btn btn-default btn-xs'
+                                                            data-tip="Настройка таблицы"
+                                                            onClick={this.openTableEditingModalForm.bind(this, table)}>
+                                                        <i className="glyphicon glyphicon-cog"/>
+                                                    </button>
+                                                    : null}
+
+                                                {access.edit ?
+                                                    <button className='btn btn-default btn-xs'
+                                                            data-tip="Скопировать таблицу"
+                                                            onClick={this.openTableCloningModalForm.bind(this, table)}>
+                                                        <i className="glyphicon glyphicon-download-alt"/>
+                                                    </button>
+                                                    : null}
+
+                                                {access.edit ?
+                                                    <button className='btn btn-danger btn-xs'
+                                                            data-tip="Удалить таблицу"
+                                                            onClick={this.deleteTableHandler.bind(this, table)}>
+                                                        <i className="glyphicon glyphicon-remove"/>
+                                                    </button>
+                                                    : null}
+                                            </div>
+                                        </div>
+                                        <Tooltip />
+                                    </div>
+                                )
+                            })}
                         </div>
                         <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>
                     </div>
@@ -119,6 +160,114 @@ class EditingTable extends React.Component {
             )
         }
         return null;
+    }
+}
+
+@observer
+class CloningTable extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            clone_to_current_script: true,
+            to_script: null
+        }
+    }
+
+    triggerCloneToCurrentScript() {
+        this.setState(update(this.state, {$set: {clone_to_current_script: !this.state.clone_to_current_script, to_script: null}}))
+    }
+
+    setToScript(selected_script) {
+        const {clone_to_current_script} = this.state;
+
+        if(!clone_to_current_script) {
+            const {scriptsStore} = this.props;
+            let script = scriptsStore.script(selected_script.value);
+            this.setState(update(this.state, {$set: {to_script: script}}))
+        }
+    }
+
+    cloneTable(e) {
+        e.preventDefault();
+        const {modalStore, script, table} = this.props;
+        const {clone_to_current_script, to_script} = this.state;
+        let to_script_result;
+
+        if(clone_to_current_script) {
+            to_script_result = this.props.script;
+        } else if(to_script) {
+            to_script_result = to_script;
+        }
+
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-clone-table-url'),
+            data: {
+                current_script_id: script.id,
+                to_script_id: to_script_result.id,
+                table_id: table.id
+            },
+            success: (res) => {
+                script.data = res.data;
+                alert(`Таблица "${table.name}" скопирована в ${to_script_result.id === script.id ? 'текущий скрипт' : `скрипт "${to_script_result.name}"`}`);
+                modalStore.close_modal();
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
+    getOptions() {
+        const {scriptsStore} = this.props;
+
+        return scriptsStore.scripts.map(script => {
+            return {value: script.id, label: script.name};
+        });
+    }
+
+    render() {
+        const {scriptsStore} = this.props;
+        const {clone_to_current_script, to_script} = this.state;
+
+        return(
+            <div className="row">
+                <div className="col-md-12">
+                    <h3>Копировать таблицу</h3>
+
+                    <form action="" onSubmit={this.cloneTable.bind(this)}>
+                        <div className="col-md-12">
+                            <div className="form-group">
+                                <div className="radio">
+                                    <label>
+                                        <input onChange={this.triggerCloneToCurrentScript.bind(this)} type="radio" name="clone_to_current_script" checked={clone_to_current_script}/>
+                                        Копировать в текущий скрипт
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-md-12">
+                            <div className="form-group">
+                                <Select
+                                    disabled={clone_to_current_script}
+                                    value={to_script ? to_script.id : null}
+                                    placeholder="Скопировать таблицу в скрипт"
+                                    options={this.getOptions()}
+                                    onChange={this.setToScript.bind(this)}/>
+                            </div>
+                        </div>
+
+                        <div className="col-md-12">
+                            <div className="form-group">
+                                <button className="btn btn-success" disabled={!(clone_to_current_script || (!clone_to_current_script && to_script))} type="submit">Сохранить</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )
     }
 }
 

@@ -22,7 +22,8 @@ from main.models import Script, Table, TableLinksColl, LinkCategory, Link, Scrip
 from main.serializers.link import LinkCategorySerializer, LinkSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
-from main.utils import create_active_user, get_empty_table, get_empty_coll, get_empty_category, get_empty_link
+from main.utils import create_active_user, get_empty_table, get_empty_coll, get_empty_category, get_empty_link, \
+    current_milli_time, clone_table
 from payment.models import UserScriptDelegationAccess, UserOfflineScriptExportAccess
 from payment.serializers import UserScriptDelegationAccessSerializer, UserOfflineScriptExportAccessSerializer
 from scripts.settings import DEBUG, YANDEX_SHOPID, YANDEX_SCID
@@ -406,6 +407,19 @@ class CloneScriptView(View):
         clone_script_with_relations(current_script.pk, [('name', current_script.name + u'  (копия)')])
         return JSONResponse({
             'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
+        })
+
+
+class CloneTableView(View):
+    def post(self, request, *args, **kwargs):
+        current_script = Script.objects.get(pk=int(request.POST.get('current_script_id')))
+        to_script = Script.objects.get(pk=int(request.POST.get('to_script_id')))
+        current_table = current_script.tables(table_id=int(request.POST.get('table_id')))['data']
+
+        new_table = clone_table(current_table)
+        to_script.append_new_table(new_table)
+        return JSONResponse({
+            'data': json.loads(current_script.data())
         })
 
 

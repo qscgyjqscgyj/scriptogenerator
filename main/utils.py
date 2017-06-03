@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from copy import copy
+
 from django.contrib.auth import authenticate, login
 from django.contrib.sites.models import get_current_site
 from registration.models import RegistrationProfile
@@ -43,14 +45,15 @@ def current_milli_time():
 
 
 def get_empty_table():
+    date_today = datetime.datetime.now()
     return {
         'id': current_milli_time(),
         'name': u'Новая таблица',
         'text_coll_name': u'Блок с текстом',
         'text_coll_size': 50,
         'text_coll_position': 0,
-        'date': datetime.datetime.now().isoformat(),
-        'date_mod': datetime.datetime.now().isoformat(),
+        'date': date_today.isoformat(),
+        'date_mod': date_today.isoformat(),
         'colls': [get_empty_coll()]
     }
 
@@ -87,3 +90,12 @@ def get_empty_link(to_link=None):
         'opened': False,
         'edit': False
     }
+
+
+def clone_table(table):
+    new_table = copy(table)
+    date_today = datetime.datetime.now()
+    new_table['id'] = current_milli_time()
+    new_table['date'] = date_today.isoformat()
+    new_table['date_mod'] = date_today.isoformat()
+    return new_table

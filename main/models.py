@@ -44,10 +44,21 @@ class Script(models.Model):
         script_data.data = json.dumps(data)
         script_data.save()
 
+    def append_new_table(self, new_table):
+        if not self.tables(table_id=int(new_table['id'])):
+            script_data = ScriptData.objects.get(script=self)
+            data = json.loads(script_data.data)
+            data.append(new_table)
+            script_data.data = json.dumps(data)
+            script_data.save()
+
     def tables(self, table_id=None):
         data = json.loads(self.data())
         if table_id:
-            return [{'data': table, 'index': i} for i, table in enumerate(data) if table['id'] == table_id][0]
+            try:
+                return [{'data': table, 'index': i} for i, table in enumerate(data) if table['id'] == table_id][0]
+            except IndexError:
+                return None
         return data
 
     def colls(self, table_id=None, coll_id=None):

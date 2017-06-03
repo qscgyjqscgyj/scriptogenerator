@@ -138,6 +138,7 @@ class ScriptData(models.Model):
 class DeletedScript(models.Model):
     name = models.CharField(max_length=1024)
     owner = models.ForeignKey(CustomUser, related_name='deleted_script_owner_custom_user')
+    date = models.DateTimeField(auto_now_add=True)
     data = models.TextField(default='[]')
 
     def __unicode__(self):

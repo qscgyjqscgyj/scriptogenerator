@@ -99,7 +99,7 @@ class Tables extends AccessableComponent {
                                                     <button className='btn btn-default btn-xs'
                                                             data-tip="Скопировать таблицу"
                                                             onClick={this.openTableCloningModalForm.bind(this, table)}>
-                                                        <i className="glyphicon glyphicon-download-alt"/>
+                                                        <i className="glyphicon glyphicon-copy"/>
                                                     </button>
                                                     : null}
 

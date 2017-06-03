@@ -60136,7 +60136,7 @@
 	                                                        React.createElement('button', { className: 'btn btn-default btn-xs',
 	                                                                'data-tip': '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u0430\u0431\u043B\u0438\u0446\u0443',
 	                                                                onClick: _this2.openTableCloningModalForm.bind(_this2, table) },
-	                                                            React.createElement('i', { className: 'glyphicon glyphicon-download-alt' })) :
+	                                                            React.createElement('i', { className: 'glyphicon glyphicon-copy' })) :
 	
 	                                                        null,
 	

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from copy import copy
 
 from django.contrib.auth import authenticate, login
@@ -93,9 +94,37 @@ def get_empty_link(to_link=None):
 
 
 def clone_table(table):
-    new_table = copy(table)
     date_today = datetime.datetime.now()
+
+    new_table = copy(table)
     new_table['id'] = current_milli_time()
     new_table['date'] = date_today.isoformat()
     new_table['date_mod'] = date_today.isoformat()
+    if new_table['colls']:
+        for coll_index, coll in enumerate(new_table['colls']):
+            new_table['colls'][coll_index] = clone_coll(coll)
     return new_table
+
+
+def clone_coll(coll):
+    new_coll = copy(coll)
+    new_coll['id'] = current_milli_time()
+    if new_coll['categories']:
+        for category_index, category in enumerate(new_coll['categories']):
+            new_coll['categories'][category_index] = clone_category(category)
+    return new_coll
+
+
+def clone_category(category):
+    new_category = copy(category)
+    new_category['id'] = current_milli_time()
+    if new_category['links']:
+        for link_index, link in enumerate(new_category['links']):
+            new_category['links'][link_index] = clone_link(link)
+    return new_category
+
+
+def clone_link(link):
+    new_link = copy(link)
+    new_link['id'] = current_milli_time()
+    return new_link

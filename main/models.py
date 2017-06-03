@@ -3,6 +3,7 @@ import json
 
 from django.db import models
 
+from main.managers import ScriptManager
 from users.models import CustomUser
 
 
@@ -16,6 +17,9 @@ class Script(models.Model):
     date_mod = models.DateTimeField(auto_now=True)
     is_template = models.BooleanField(default=False)
     is_present = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False)
+
+    objects = ScriptManager()
 
     def get_client_url(self):
         return '/tables/' + str(self.pk) + '/'
@@ -23,6 +27,10 @@ class Script(models.Model):
     def data(self):
         data, created = ScriptData.objects.get_or_create(script=self)
         return data.data
+
+    def deleta_script(self):
+        self.deleted = True
+        self.save()
 
     def get_client_view_url(self):
         result = '/tables/' + str(self.pk) + '/'

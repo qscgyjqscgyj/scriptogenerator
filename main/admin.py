@@ -10,6 +10,7 @@ class ScriptAdmin(admin.ModelAdmin):
 
 class ScriptDataAdmin(admin.ModelAdmin):
     list_display = ('script',)
+    readonly_fields = ('data',)
     search_fields = ('script__pk',)
 
 

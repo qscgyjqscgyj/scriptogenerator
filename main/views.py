@@ -112,7 +112,7 @@ class ScriptsView(View):
         data = json.loads(request.body)
         try:
             script = Script.objects.get(pk=int(data['id']))
-            script.delete()
+            script.delete_script()
             return JSONResponse({
                 'scripts': ScriptSerializer(Script.objects.filter(owner=request.user), many=True, empty_data=True).data
             })

@@ -8,6 +8,12 @@ class ScriptAdmin(admin.ModelAdmin):
     list_filter = ('active',)
 
 
+class DeletedScriptAdmin(admin.ModelAdmin):
+    list_display = ('name', 'owner',)
+    search_fields = ('owner__email',)
+    readonly_fields = ('data',)
+
+
 class ScriptDataAdmin(admin.ModelAdmin):
     list_display = ('script',)
     readonly_fields = ('data',)
@@ -27,6 +33,7 @@ class ScriptAccessAdmin(admin.ModelAdmin):
     search_fields = ('user__username',)
 
 admin.site.register(Script, ScriptAdmin)
+admin.site.register(DeletedScript, DeletedScriptAdmin)
 admin.site.register(ScriptData, ScriptDataAdmin)
 admin.site.register(ScriptAccess, ScriptAccessAdmin)
 admin.site.register(Project)

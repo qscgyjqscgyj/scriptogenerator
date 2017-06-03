@@ -17,7 +17,6 @@ class Script(models.Model):
     date_mod = models.DateTimeField(auto_now=True)
     is_template = models.BooleanField(default=False)
     is_present = models.BooleanField(default=False)
-    deleted = models.BooleanField(default=False)
 
     objects = ScriptManager()
 
@@ -28,9 +27,13 @@ class Script(models.Model):
         data, created = ScriptData.objects.get_or_create(script=self)
         return data.data
 
-    def deleta_script(self):
-        self.deleted = True
-        self.save()
+    def delete_script(self):
+        DeletedScript.objects.create(
+            name=self.name,
+            owner=self.owner,
+            data=json.dumps(self.data())
+        )
+        self.delete()
 
     def get_client_view_url(self):
         result = '/tables/' + str(self.pk) + '/'
@@ -130,6 +133,15 @@ class ScriptData(models.Model):
 
     def __unicode__(self):
         return self.script.__unicode__()
+
+
+class DeletedScript(models.Model):
+    name = models.CharField(max_length=1024)
+    owner = models.ForeignKey(CustomUser, related_name='deleted_script_owner_custom_user')
+    data = models.TextField(default='[]')
+
+    def __unicode__(self):
+        return self.name
 
 
 class ScriptAccess(models.Model):

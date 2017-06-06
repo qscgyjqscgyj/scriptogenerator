@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
 from main.models import *
 
@@ -12,6 +13,21 @@ class DeletedScriptAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner', 'date')
     search_fields = ('owner__email',)
     readonly_fields = ('data',)
+
+    actions = ['restore_deleted_scripts']
+
+    def restore_deleted_scripts(self, request, queryset):
+        for deleted_script in queryset:
+            restored_script = Script.objects.create(
+                name=deleted_script.name,
+                owner=deleted_script.owner
+            )
+            ScriptData.objects.create(
+                script=restored_script,
+                data=deleted_script.data
+            )
+            deleted_script.delete()
+    restore_deleted_scripts.short_description = u'Восстановить удаленные скрипты'
 
 
 class ScriptDataAdmin(admin.ModelAdmin):

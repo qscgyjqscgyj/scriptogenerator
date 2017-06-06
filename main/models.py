@@ -31,7 +31,7 @@ class Script(models.Model):
         DeletedScript.objects.create(
             name=self.name,
             owner=self.owner,
-            data=json.dumps(self.data())
+            data=self.data()
         )
         self.delete()
 

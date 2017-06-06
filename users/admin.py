@@ -10,12 +10,13 @@ class CustomUserAdmin(UserAdmin):
     list_display = (
         'email', 'last_name', 'first_name', 'phone', 'date_joined', 'balance_total', 'team_length', 'last_visit', 'is_active'
     )
-    actions = ['update_team_lengths']
     fieldsets = UserAdmin.fieldsets + (
         (None, {
             'fields': ('middle_name', 'balance_real', 'balance_total', 'utm')}
         ),
     )
+
+    actions = ['update_team_lengths']
 
     def update_team_lengths(self, request, queryset):
         for user in CustomUser.objects.all():

@@ -150,6 +150,10 @@ def hot_fix_ids(script_id=None):
         links_with_duplicates = False
 
         tables_ids = []
+        colls_ids = []
+        categories_ids = []
+        links_ids = []
+        
         for table_index, table in enumerate(tables):
             if table['id'] in tables_ids:
                 tables[table_index]['id'] = get_uuid()
@@ -159,7 +163,6 @@ def hot_fix_ids(script_id=None):
                 tables_ids.append(table['id'])
 
             if table['colls']:
-                colls_ids = []
                 for coll_index, coll in enumerate(table['colls']):
                     if coll['id'] in colls_ids:
                         tables[table_index]['colls'][coll_index]['id'] = get_uuid()
@@ -169,7 +172,6 @@ def hot_fix_ids(script_id=None):
                         colls_ids.append(coll['id'])
 
                     if coll['categories']:
-                        categories_ids = []
                         for category_index, category in enumerate(coll['categories']):
                             if category['id'] in categories_ids:
                                 tables[table_index]['colls'][coll_index]['categories'][category_index]['id'] = get_uuid()
@@ -179,7 +181,6 @@ def hot_fix_ids(script_id=None):
                                 categories_ids.append(category['id'])
 
                             if category['links']:
-                                links_ids = []
                                 for link_index, link in enumerate(category['links']):
                                     if link['id'] in links_ids:
                                         tables[table_index]['colls'][coll_index]['categories'][category_index]['links'][link_index]['id'] = get_uuid()

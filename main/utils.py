@@ -144,13 +144,13 @@ def hot_fix_ids(script_id=None):
         print('Iteration: ' + str(i))
         tables = script.tables()
 
+        tables_with_duplicates = False
+        colls_with_duplicates = False
+        categories_with_duplicates = False
+        links_with_duplicates = False
+
         tables_ids = []
         for table_index, table in enumerate(tables):
-            tables_with_duplicates = False
-            colls_with_duplicates = False
-            categories_with_duplicates = False
-            links_with_duplicates = False
-
             if table['id'] in tables_ids:
                 tables[table_index]['id'] = get_uuid()
                 tables_with_duplicates = True

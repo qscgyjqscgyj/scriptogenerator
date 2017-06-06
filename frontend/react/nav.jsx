@@ -41,7 +41,7 @@ export class Nav extends React.Component {
                                 <ul className="dropdown-menu">
                                     {script.data.map((table, key) => {
                                         return(
-                                            <li key={key} className={table.id === parseInt(this.props.params.table) ? 'active' : null}>
+                                            <li key={key} className={table.id === this.props.params.table ? 'active' : null}>
                                                 <Link to={scriptsStore.tableUrl(script, table, (edit ? 'edit' : 'share'))}>{table.name}</Link>
                                             </li>
                                         )

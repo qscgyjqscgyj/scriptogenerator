@@ -53,7 +53,7 @@ class FalseField(serializers.Field):
 
 
 class LinkCategorySerializer(serializers.Serializer):
-    id = serializers.IntegerField(required=True)
+    id = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
     order = serializers.IntegerField(required=True, allow_null=True)
     hidden = serializers.BooleanField(required=True)
@@ -66,9 +66,9 @@ class LinkCategorySerializer(serializers.Serializer):
 
 
 class LinkSerializer(serializers.Serializer):
-    id = serializers.IntegerField(required=True)
+    id = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
-    to_link = serializers.IntegerField(required=False, allow_null=True)
+    to_link = serializers.CharField(required=False, allow_null=True)
     text = serializers.CharField(required=False, allow_null=True)
     order = serializers.IntegerField(required=True, allow_null=True)
     edit = FalseField(allow_null=True, required=False)

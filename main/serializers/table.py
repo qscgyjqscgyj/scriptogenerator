@@ -10,11 +10,8 @@ class CollsField(serializers.Field):
         validated_data = []
         for coll in colls:
             serialized_coll = TableLinksCollSerializer(data=coll)
-            if serialized_coll.is_valid():
+            if serialized_coll.is_valid(raise_exception=True):
                 validated_data.append(serialized_coll.validated_data)
-            else:
-                print(serialized_coll.errors)
-                raise ValueError
         return validated_data
 
     def to_representation(self, table):
@@ -28,7 +25,7 @@ class CollsField(serializers.Field):
 
 
 class TableSerializer(serializers.Serializer):
-    id = serializers.IntegerField(required=True)
+    id = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
     text_coll_name = serializers.CharField(required=True)
     text_coll_size = serializers.IntegerField(required=True)
@@ -42,7 +39,7 @@ class TableSerializer(serializers.Serializer):
 
 
 class TableLinksCollSerializer(serializers.Serializer):
-    id = serializers.IntegerField(required=True)
+    id = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
     size = serializers.IntegerField(required=True)
     position = serializers.IntegerField(required=True)

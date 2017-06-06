@@ -5,7 +5,6 @@ import {CustomEditor, styleMap} from '../editor/editor';
 import {Link} from 'react-router';
 import {EditorState, ContentState, convertFromRaw, Entity} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
-import ScriptsStore from '../../mobx/scriptsStore';
 
 
 @observer
@@ -14,7 +13,7 @@ class Table extends React.Component {
         super(props);
 
         this.script = this.props.script;
-        this.scriptsStore = ScriptsStore;
+        this.scriptsStore = this.props.scriptsStore;
     }
     fixHeight() {
         const content_height = window.innerHeight - $('.navbar').height() - 7;
@@ -34,8 +33,8 @@ class Table extends React.Component {
     }
     sortedColls() {
         const {scriptsStore, script} = this;
-        const table = scriptsStore.table(script, this.props.params.table);
-        if(table) {
+        if(scriptsStore) {
+            const table = scriptsStore.table(script, this.props.params.table);
             let sorted_colls = [];
             sorted_colls.push({position: table.text_coll_position, text: true});
             table.colls.map(coll => {
@@ -62,7 +61,7 @@ class TableShare extends Table {
         super(props);
 
         this.script = this.props.script;
-        this.sciptsStore = ScriptsStore;
+        this.sciptsStore = this.props.scriptsStore;
     }
     componentDidMount() {
         this.fixHeight();
@@ -81,11 +80,11 @@ class TableShare extends Table {
     }
     render() {
         const {scriptsStore, script} = this;
-        const table = scriptsStore.table(script, this.props.params.table);
-        let active_link = scriptsStore.link(script, this.props.params.link);
-        let sorted_colls = this.sortedColls();
-        let coll_name, coll_size;
-        if (table) {
+        if(scriptsStore) {
+            const table = scriptsStore.table(script, this.props.params.table);
+            let active_link = scriptsStore.link(script, this.props.params.link);
+            let sorted_colls = this.sortedColls();
+            let coll_name, coll_size;
             return (
                 <div className="scrollable_panel">
                     <div className="scroll_block">

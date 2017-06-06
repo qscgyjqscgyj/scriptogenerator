@@ -229,7 +229,7 @@ class TablesView(View):
         script = Script.objects.get(pk=int(data['script']))
         script_data_object = ScriptData.objects.get(script=script)
         script_data = json.loads(script_data_object.data)
-        script_data.remove(script.tables(table_id=int(data['table']))['data'])
+        script_data.remove(script.tables(table_id=data['table'])['data'])
         script_data_object.data = json.dumps(script_data)
         script_data_object.save()
         return JSONResponse({
@@ -413,7 +413,7 @@ class CloneTableView(View):
     def post(self, request, *args, **kwargs):
         current_script = Script.objects.get(pk=int(request.POST.get('current_script_id')))
         to_script = Script.objects.get(pk=int(request.POST.get('to_script_id')))
-        current_table = current_script.tables(table_id=int(request.POST.get('table_id')))['data']
+        current_table = current_script.tables(table_id=request.POST.get('table_id'))['data']
 
         new_table = clone_table(current_table)
         to_script.append_new_table(new_table)

@@ -9,7 +9,7 @@ class Tables extends React.Component {
         super(props);
 
         this.script = this.props.script;
-        this.scriptsStore = ScriptsStore;
+        this.scriptsStore = this.props.scriptsStore;
     }
 
     componentWillMount() {
@@ -17,7 +17,7 @@ class Tables extends React.Component {
 
     render() {
         let {script, scriptsStore} = this;
-        if (script) {
+        if (scriptsStore) {
             return (
                 <div className="col-md-12">
                     <div className="row">

@@ -6,8 +6,11 @@ import json
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 from django.template.loader import render_to_string
+from django.template.response import TemplateResponse
 from django.views.generic import View
 
+from main.models import Script
+from main.serializers.script import ScriptSerializer
 from main.views import JSONResponse
 from offline.serializers import UserOfflineExportedScriptSerializer
 from payment.models import UserOfflineScriptExportAccess
@@ -42,6 +45,16 @@ class OfflineScriptExportView(View):
             raise Http404
         except ObjectDoesNotExist:
             raise Http404
+
+
+class OfflineVersionScriptViewingView(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            context = {}
+            script = Script.objects.get(pk=int(kwargs['script']))
+            context['script'] = ScriptSerializer(script).data
+            return TemplateResponse(request, 'offline_script.html', context)
+        raise Http404
 
 
 class OfflineExportedScripts(View):

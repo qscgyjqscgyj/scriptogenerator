@@ -45,11 +45,11 @@ urlpatterns = patterns('',
     url(r'^tables/(?P<script>\d+)/$', MainView.as_view(), name='react__script'),
     url(r'^tables/(?P<script>\d+)/available/$', MainView.as_view(), name='react__available_script'),
 
-    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/edit/$', MainView.as_view(), name='react__table__edit'),
-    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/share/$', MainView.as_view(), name='react__table__share'),
+    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\w+)/edit/$', MainView.as_view(), name='react__table__edit'),
+    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\w+)/share/$', MainView.as_view(), name='react__table__share'),
 
-    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/link/(?P<link>\d+)/edit/$', MainView.as_view(), name='react__link__edit'),
-    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\d+)/link/(?P<link>\d+)/share/$', MainView.as_view(), name='react__link__edit'),
+    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\w+)/link/(?P<link>\w+)/edit/$', MainView.as_view(), name='react__link__edit'),
+    url(r'^tables/(?P<scripts>\d+)/table/(?P<table>\w+)/link/(?P<link>\w+)/share/$', MainView.as_view(), name='react__link__edit'),
 
     url(r'^profile/$', MainView.as_view(), name='react__profile'),
     url(r'^profile/payment/$', MainView.as_view(), name='react__profile_payment'),

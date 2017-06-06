@@ -12,6 +12,7 @@ ReactDOM.render(
     <Router history={hashHistory}>
         <Route path="/" component={AppWrapper}>
             <IndexRoute component={TablesWrapper}/>
+            <Route path="/tables/:script/" component={TablesWrapper}/>
             <Route path="/tables/:script/table/:table/share/" component={TableWrapper}/>
             <Route path="/tables/:script/table/:table/link/:link/share/" component={TableWrapper}/>
         </Route>

@@ -72,7 +72,7 @@ export class ScriptsStore {
         return this.scripts.concat(this.available_scripts).find(script => parseInt(script.id) === parseInt(id));
     }
     table(script, id) {
-        return script.data.find(table => parseInt(table.id) === parseInt(id));
+        return script.data.find(table => table.id === id);
     }
     link(script, id, with_parents=false) {
         // "with_parents=true" returns object with link and table.id
@@ -91,7 +91,7 @@ export class ScriptsStore {
                     })
                 })
             });
-            return all_links.find(link => parseInt(!with_parents ? link.id : link.link.id) === parseInt(id));
+            return all_links.find(link => (!with_parents ? link.id : link.link.id) === id);
         }
         return null;
     }

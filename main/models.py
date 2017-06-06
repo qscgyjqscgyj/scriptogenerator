@@ -27,11 +27,15 @@ class Script(models.Model):
         data, created = ScriptData.objects.get_or_create(script=self)
         return data.data
 
+    def get_data_object(self):
+        data, created = ScriptData.objects.get_or_create(script=self)
+        return data
+
     def delete_script(self):
         DeletedScript.objects.create(
             name=self.name,
             owner=self.owner,
-            data=self.data()
+            data=self.data
         )
         self.delete()
 
@@ -56,7 +60,7 @@ class Script(models.Model):
         script_data.save()
 
     def append_new_table(self, new_table):
-        if not self.tables(table_id=int(new_table['id'])):
+        if not self.tables(table_id=new_table['id']):
             script_data = ScriptData.objects.get(script=self)
             data = json.loads(script_data.data)
             data.append(new_table)

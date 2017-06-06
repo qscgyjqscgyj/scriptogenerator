@@ -87152,7 +87152,7 @@
 	                                React.createElement('ul', { className: 'dropdown-menu' },
 	                                    script.data.map(function (table, key) {
 	                                        return (
-	                                            React.createElement('li', { key: key, className: table.id === parseInt(_this2.props.params.table) ? 'active' : null },
+	                                            React.createElement('li', { key: key, className: table.id === _this2.props.params.table ? 'active' : null },
 	                                                React.createElement(_reactRouter.Link, { to: scriptsStore.tableUrl(script, table, edit ? 'edit' : 'share') }, table.name)));
 	
 	
@@ -87343,7 +87343,7 @@
 	            return this.scripts.concat(this.available_scripts).find(function (script) {return parseInt(script.id) === parseInt(id);});
 	        } }, { key: 'table', value: function table(
 	        script, id) {
-	            return script.data.find(function (table) {return parseInt(table.id) === parseInt(id);});
+	            return script.data.find(function (table) {return table.id === id;});
 	        } }, { key: 'link', value: function link(
 	        script, id) {var with_parents = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	            // "with_parents=true" returns object with link and table.id
@@ -87362,7 +87362,7 @@
 	                            });
 	                        });
 	                    });
-	                    return { v: all_links.find(function (link) {return parseInt(!with_parents ? link.id : link.link.id) === parseInt(id);}) };}();if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+	                    return { v: all_links.find(function (link) {return (!with_parents ? link.id : link.link.id) === id;}) };}();if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
 	            }
 	            return null;
 	        } }, { key: 'scriptUrl', value: function scriptUrl(

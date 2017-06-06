@@ -14,6 +14,7 @@ from django.db import IntegrityError
 import time
 import datetime
 import uuid
+import time
 
 
 def create_active_user(request, email, last_name='', first_name='', middle_name='', phone=''):
@@ -49,7 +50,7 @@ def current_milli_time():
 
 
 def get_uuid():
-    return uuid.uuid1().int>>64
+    return uuid.uuid4().hex
 
 
 def get_empty_table():
@@ -153,42 +154,52 @@ def hot_fix_ids(script_id=None):
         colls_ids = []
         categories_ids = []
         links_ids = []
-        
+
         for table_index, table in enumerate(tables):
-            if table['id'] in tables_ids:
+            if table['id'] in tables_ids or isinstance(table['id'], long):
                 tables[table_index]['id'] = get_uuid()
                 tables_with_duplicates = True
-                print('TABLE IS DUPLICATE!!!')
+            elif isinstance(table['id'], int):
+                tables[table_index]['id'] = str(table['id'])
+                tables_with_duplicates = True
             else:
                 tables_ids.append(table['id'])
 
             if table['colls']:
                 for coll_index, coll in enumerate(table['colls']):
-                    if coll['id'] in colls_ids:
+                    if coll['id'] in colls_ids or isinstance(coll['id'], long):
                         tables[table_index]['colls'][coll_index]['id'] = get_uuid()
                         colls_with_duplicates = True
-                        print('COLL IS DUPLICATE!!!')
+                    elif isinstance(coll['id'], int):
+                        tables[table_index]['colls'][coll_index]['id'] = str(coll['id'])
+                        colls_with_duplicates = True
                     else:
                         colls_ids.append(coll['id'])
 
                     if coll['categories']:
                         for category_index, category in enumerate(coll['categories']):
-                            if category['id'] in categories_ids:
+                            if category['id'] in categories_ids or isinstance(category['id'], long):
                                 tables[table_index]['colls'][coll_index]['categories'][category_index]['id'] = get_uuid()
                                 categories_with_duplicates = True
-                                print('CATEGORY IS DUPLICATE!!!')
+                            elif isinstance(category['id'], int):
+                                tables[table_index]['colls'][coll_index]['categories'][category_index]['id'] = str(category['id'])
+                                categories_with_duplicates = True
                             else:
                                 categories_ids.append(category['id'])
 
                             if category['links']:
                                 for link_index, link in enumerate(category['links']):
-                                    if link['id'] in links_ids:
+                                    if link['id'] in links_ids or isinstance(link['id'], long):
                                         tables[table_index]['colls'][coll_index]['categories'][category_index]['links'][link_index]['id'] = get_uuid()
                                         links_with_duplicates = True
-                                        print('LINK IS DUPLICATE!!!')
+                                    elif isinstance(link['id'], int):
+                                        tables[table_index]['colls'][coll_index]['categories'][category_index]['links'][link_index]['id'] = str(link['id'])
+                                        links_with_duplicates = True
                                     else:
                                         links_ids.append(link['id'])
             if tables_with_duplicates or colls_with_duplicates or categories_with_duplicates or links_with_duplicates:
+                print('WITH DUPLICATES!!!')
                 script.replace_table(tables[table_index], table_index)
-        gc.collect()
         print('------------------------')
+        print(gc.collect())
+        time.sleep(0.1)

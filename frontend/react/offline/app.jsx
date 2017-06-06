@@ -1,18 +1,20 @@
 import * as React from 'react';
 import $ from 'jquery';
-import {Nav} from '../nav';
+import {Nav} from './nav';
+import ScriptsStore from '../../mobx/scriptsStore';
 
 import {observer} from 'mobx-react';
-import {Tables} from './tables';
-import {TableEdit, TableShare} from './table';
+import {TableEdit} from './table';
 
 
 @observer
 export class App extends React.Component {
     render() {
+        const {script, scriptsStore} = this.props;
+
         return (
             <div>
-                {/*<Nav location={this.props.location} params={this.props.params}/>*/}
+                <Nav location={this.props.location} params={this.props.params} script={script} scriptsStore={scriptsStore}/>
 
                 <div className="container-fluid" id="main_container">
                     {this.props.children}
@@ -27,14 +29,16 @@ export class AppWrapper extends React.Component {
         super(props);
 
         this.script = SCRIPT_DATA;
+        this.scriptsStore = ScriptsStore;
     }
     render() {
         const childrenWithProps = React.Children.map(this.props.children,
             (child) => React.cloneElement(child, {
-                script: this.script
+                script: this.script,
+                scriptsStore: this.scriptsStore
             })
         );
 
-        return React.createElement(App, {...this.props, children: childrenWithProps});
+        return React.createElement(App, {...this.props, children: childrenWithProps, script: this.script, scriptsStore: this.scriptsStore});
     }
 }

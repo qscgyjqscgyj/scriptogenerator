@@ -72,7 +72,7 @@ export class TablesStore {
         this.active_link = this.link(table_id, link_id);
     }
     table(id) {
-        return this.tables.find(table => parseInt(table.id) === parseInt(id));
+        return this.tables.find(table => table.id === id);
     }
     script_tables(script_id) {
         return this.tables.filter(table => parseInt(table.script) === parseInt(script_id));
@@ -88,7 +88,7 @@ export class TablesStore {
                     });
                 })
             });
-            return all_links.find(link => parseInt(link.id) === parseInt(link_id));
+            return all_links.find(link => link.id === link_id);
         }
     }
     resetCreating() {

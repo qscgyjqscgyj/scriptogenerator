@@ -77590,144 +77590,7 @@
 
 /***/ },
 /* 780 */,
-/* 781 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Nav = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
-	var _reactRouter = __webpack_require__(476);
-	var _mobxReact = __webpack_require__(561);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
-	
-	var STATIC_URL = document.body.getAttribute('data-static-url');var
-	
-	
-	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);function Nav() {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));}_createClass(Nav, [{ key: 'triggerUserButtonLinksSetting', value: function triggerUserButtonLinksSetting()
-	        {var
-	            usersStore = this.props.usersStore;
-	            usersStore.triggerUserButtonLinksSetting();
-	        } }, { key: 'render', value: function render()
-	
-	        {var _this2 = this;var _props =
-	            this.props,usersStore = _props.usersStore,scriptsStore = _props.scriptsStore,settingsStore = _props.settingsStore;
-	            var script = scriptsStore.script(this.props.params.script);
-	            var edit = this.props.location.pathname.includes('edit');
-	            return (
-	                React.createElement('nav', { className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
-	                    React.createElement('div', { className: 'container-fluid' },
-	                        React.createElement('a', { className: 'navbar-brand', href: '/' },
-	                            React.createElement('img', { className: 'logo', width: '40px', alt: 'Scriptogenerator', src: STATIC_URL + 'img/logo.png' })),
-	
-	
-	                        React.createElement('ul', { className: 'nav navbar-nav' },
-	                            React.createElement('li', { className: this.props.location.pathname.includes('/scripts/user/') || this.props.location.pathname === '/' ? 'active' : '' },
-	                                React.createElement(_reactRouter.Link, { to: '/scripts/user/' }, '\u041C\u043E\u0438 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
-	
-	                            React.createElement('li', { className: this.props.location.pathname.includes('/scripts/available/') ? 'active' : '' },
-	                                React.createElement(_reactRouter.Link, { to: '/scripts/available/' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
-	
-	                            React.createElement('li', null,
-	                                React.createElement('a', { href: 'http://lp.scriptogenerator.ru/info', target: '_blank' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F')),
-	
-	
-	                            script && script.data.length > 0 ?
-	                            React.createElement('li', { className: 'dropdown ' + (this.props.location.pathname.includes('/tables/') ? 'active' : '') },
-	                                React.createElement(_reactRouter.Link, { to: scriptsStore.scriptUrl(script), className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
-	                                    React.createElement('span', { className: 'caret' })),
-	
-	                                React.createElement('ul', { className: 'dropdown-menu' },
-	                                    script.data.map(function (table, key) {
-	                                        return (
-	                                            React.createElement('li', { key: key, className: table.id === parseInt(_this2.props.params.table) ? 'active' : null },
-	                                                React.createElement(_reactRouter.Link, { to: scriptsStore.tableUrl(script, table, edit ? 'edit' : 'share') }, table.name)));
-	
-	
-	                                    }))) :
-	
-	
-	                            null,
-	
-	                            this.props.location.pathname.includes('edit') ?
-	                            React.createElement('li', null,
-	                                React.createElement(_reactRouter.Link, { to:
-	                                        '/tables/' + this.props.params.script +
-	                                        '/table/' + this.props.params.table + (
-	                                        this.props.params.link ? '/link/' + this.props.params.link : '') +
-	                                        '/share/',
-	                                        className: 'nav_button_link' },
-	                                    React.createElement('button', { className: 'btn btn-default' }, '\u041F\u0440\u043E\u0441\u043C\u043E\u0442\u0440'))) :
-	
-	
-	                            null,
-	                            this.props.location.pathname.includes('share') ?
-	                            React.createElement('li', null,
-	                                React.createElement(_reactRouter.Link, { to:
-	                                        '/tables/' + this.props.params.script +
-	                                        '/table/' + this.props.params.table + (
-	                                        this.props.params.link ? '/link/' + this.props.params.link : '') +
-	                                        '/edit/',
-	                                        className: 'nav_button_link' },
-	                                    React.createElement('button', { className: 'btn btn-default' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C'))) :
-	
-	
-	                            null,
-	
-	                            script && script.data.length > 0 ?
-	                            React.createElement('li', null,
-	                                React.createElement('div', { className: 'checkbox button_links_setting_trigger' },
-	                                    React.createElement('label', null,
-	                                        React.createElement('input', { type: 'checkbox',
-	                                            onChange: this.triggerUserButtonLinksSetting.bind(this),
-	                                            checked: usersStore.session_user.button_links_setting,
-	                                            value: 'button_links_setting',
-	                                            'aria-label': '\u0421\u0441\u044B\u043B\u043A\u0438/\u041A\u043D\u043E\u043F\u043A\u0438' }), '\u0421\u0441\u044B\u043B\u043A\u0438/\u041A\u043D\u043E\u043F\u043A\u0438'))) :
-	
-	
-	
-	
-	                            null),
-	
-	                        usersStore.session_user ?
-	                        React.createElement('ul', { className: 'nav navbar-nav navbar-right' },
-	                            settingsStore.advertisment ?
-	                            React.createElement('li', { className: 'nav_promotion_block' },
-	                                React.createElement('a', { target: '_blank', href: settingsStore.advertisment.url },
-	                                    settingsStore.advertisment.title)) :
-	
-	
-	                            null,
-	                            React.createElement('li', { className: 'nav_balance_block' },
-	
-	
-	
-	
-	
-	                                React.createElement(_reactRouter.Link, { to: '/profile/payment/',
-	                                        role: 'button',
-	                                        'aria-haspopup': 'true',
-	                                        'aria-expanded': 'false',
-	                                        className: usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance' }, '\u0411\u0430\u043B\u0430\u043D\u0441: ',
-	
-	                                    usersStore.session_user.balance_total, '\u0440.')),
-	
-	
-	                            React.createElement('li', { className: 'dropdown' },
-	                                React.createElement('a', { href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, usersStore.session_user.username, ' ', React.createElement('span', { className: 'caret' })),
-	                                React.createElement('ul', { className: 'dropdown-menu' },
-	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/' }, '\u041B\u0438\u0447\u043D\u044B\u0439 \u041A\u0430\u0431\u0438\u043D\u0435\u0442')),
-	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/payment/' }, '\u041E\u043F\u043B\u0430\u0442\u0430')),
-	
-	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/team/' }, '\u041C\u043E\u044F \u041A\u043E\u043C\u0430\u043D\u0434\u0430')),
-	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/scripts/offline/user/' }, '\u0421\u043A\u0430\u0447\u0430\u043D\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
-	                                    React.createElement('li', null, React.createElement('a', { href: document.body.getAttribute('data-logout-url') }, '\u0412\u044B\u0445\u043E\u0434'))))) :
-	
-	
-	
-	                        '')));
-	
-	
-	
-	        } }]);return Nav;}(React.Component)) || _class;
-
-/***/ },
+/* 781 */,
 /* 782 */,
 /* 783 */
 /***/ function(module, exports, __webpack_require__) {
@@ -77806,7 +77669,7 @@
 	            return this.scripts.concat(this.available_scripts).find(function (script) {return parseInt(script.id) === parseInt(id);});
 	        } }, { key: 'table', value: function table(
 	        script, id) {
-	            return script.data.find(function (table) {return parseInt(table.id) === parseInt(id);});
+	            return script.data.find(function (table) {return table.id === id;});
 	        } }, { key: 'link', value: function link(
 	        script, id) {var with_parents = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	            // "with_parents=true" returns object with link and table.id
@@ -77825,7 +77688,7 @@
 	                            });
 	                        });
 	                    });
-	                    return { v: all_links.find(function (link) {return parseInt(!with_parents ? link.id : link.link.id) === parseInt(id);}) };}();if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+	                    return { v: all_links.find(function (link) {return (!with_parents ? link.id : link.link.id) === id;}) };}();if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
 	            }
 	            return null;
 	        } }, { key: 'scriptUrl', value: function scriptUrl(
@@ -78199,6 +78062,7 @@
 	React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory },
 	    React.createElement(_reactRouter.Route, { path: '/', component: _app.AppWrapper },
 	        React.createElement(_reactRouter.IndexRoute, { component: _tables.TablesWrapper }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/', component: _tables.TablesWrapper }),
 	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/share/', component: _table.TableWrapper }),
 	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/link/:link/share/', component: _table.TableWrapper }))),
 	
@@ -78220,7 +78084,7 @@
 	        props));
 	
 	        _this.script = _this.props.script;
-	        _this.scriptsStore = _scriptsStore2.default;return _this;
+	        _this.scriptsStore = _this.props.scriptsStore;return _this;
 	    }_createClass(Tables, [{ key: 'componentWillMount', value: function componentWillMount()
 	
 	        {
@@ -78228,7 +78092,7 @@
 	
 	        {var
 	            script = this.script,scriptsStore = this.scriptsStore;
-	            if (script) {
+	            if (scriptsStore) {
 	                return (
 	                    React.createElement('div', { className: 'col-md-12' },
 	                        React.createElement('div', { className: 'row' },
@@ -78277,8 +78141,7 @@
 	var _editor = __webpack_require__(624);
 	var _reactRouter = __webpack_require__(476);
 	var _draftJs = __webpack_require__(625);
-	var _draftJsExportHtml = __webpack_require__(775);
-	var _scriptsStore = __webpack_require__(783);var _scriptsStore2 = _interopRequireDefault(_scriptsStore);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	var _draftJsExportHtml = __webpack_require__(775);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	
@@ -78287,7 +78150,7 @@
 	        props));
 	
 	        _this.script = _this.props.script;
-	        _this.scriptsStore = _scriptsStore2.default;return _this;
+	        _this.scriptsStore = _this.props.scriptsStore;return _this;
 	    }_createClass(Table, [{ key: 'fixHeight', value: function fixHeight()
 	        {
 	            var content_height = window.innerHeight - (0, _jquery2.default)('.navbar').height() - 7;
@@ -78305,10 +78168,10 @@
 	        {
 	            this.fixHeight();
 	        } }, { key: 'sortedColls', value: function sortedColls()
-	        {var
+	        {var _this2 = this;var
 	            scriptsStore = this.scriptsStore,script = this.script;
-	            var table = scriptsStore.table(script, this.props.params.table);
-	            if (table) {var _ret = function () {
+	            if (scriptsStore) {var _ret = function () {
+	                    var table = scriptsStore.table(script, _this2.props.params.table);
 	                    var sorted_colls = [];
 	                    sorted_colls.push({ position: table.text_coll_position, text: true });
 	                    table.colls.map(function (coll) {
@@ -78331,17 +78194,17 @@
 	
 	
 	TableShare = (0, _mobxReact.observer)(_class2 = function (_Table) {_inherits(TableShare, _Table);
-	    function TableShare(props) {_classCallCheck(this, TableShare);var _this2 = _possibleConstructorReturn(this, (TableShare.__proto__ || Object.getPrototypeOf(TableShare)).call(this,
+	    function TableShare(props) {_classCallCheck(this, TableShare);var _this3 = _possibleConstructorReturn(this, (TableShare.__proto__ || Object.getPrototypeOf(TableShare)).call(this,
 	        props));
 	
-	        _this2.script = _this2.props.script;
-	        _this2.sciptsStore = _scriptsStore2.default;return _this2;
+	        _this3.script = _this3.props.script;
+	        _this3.sciptsStore = _this3.props.scriptsStore;return _this3;
 	    }_createClass(TableShare, [{ key: 'componentDidMount', value: function componentDidMount()
-	        {var _this3 = this;
+	        {var _this4 = this;
 	            this.fixHeight();
 	            (0, _jquery2.default)(document).on("click", "#link_text_block a", function (e) {
 	                e.preventDefault();var
-	                router = _this3.props.router;
+	                router = _this4.props.router;
 	
 	                if (e.target.tagName !== 'A') {
 	                    return router.push((0, _jquery2.default)(e.target).closest('a').attr('href'));
@@ -78352,92 +78215,92 @@
 	        {
 	            (0, _jquery2.default)('#link_text_block a').off('click');
 	        } }, { key: 'render', value: function render()
-	        {var
+	        {var _this5 = this;var
 	            scriptsStore = this.scriptsStore,script = this.script;
-	            var table = scriptsStore.table(script, this.props.params.table);
-	            var active_link = scriptsStore.link(script, this.props.params.link);
-	            var sorted_colls = this.sortedColls();
-	            var coll_name = void 0,coll_size = void 0;
-	            if (table) {
-	                return (
-	                    React.createElement('div', { className: 'scrollable_panel' },
-	                        React.createElement('div', { className: 'scroll_block' },
-	                            sorted_colls.map(function (coll, key) {
-	                                if (coll.text) {
-	                                    var text = void 0;
-	                                    try {(function () {
-	                                            var options = {
-	                                                inlineStyles: {
-	                                                    red: { style: _editor.styleMap.red },
-	                                                    gray: { style: _editor.styleMap.gray } } };
+	            if (scriptsStore) {var _ret2 = function () {
+	                    var table = scriptsStore.table(script, _this5.props.params.table);
+	                    var active_link = scriptsStore.link(script, _this5.props.params.link);
+	                    var sorted_colls = _this5.sortedColls();
+	                    var coll_name = void 0,coll_size = void 0;
+	                    return { v:
+	                        React.createElement('div', { className: 'scrollable_panel' },
+	                            React.createElement('div', { className: 'scroll_block' },
+	                                sorted_colls.map(function (coll, key) {
+	                                    if (coll.text) {
+	                                        var text = void 0;
+	                                        try {(function () {
+	                                                var options = {
+	                                                    inlineStyles: {
+	                                                        red: { style: _editor.styleMap.red },
+	                                                        gray: { style: _editor.styleMap.gray } } };
 	
 	
 	
-	                                            {/*TODO: FIX THIS SHIT (MIDDLEWARE)*/}
-	                                            var active_link_json = JSON.parse(active_link.text);
-	                                            var active_link_entities_list = _jquery2.default.map(active_link_json.entityMap, function (value, index) {
-	                                                return [value];
-	                                            });
-	                                            active_link_entities_list.forEach(function (entity, i) {
-	                                                if (entity.type === 'LINK' && entity.data.url.includes('/table/') && !entity.data.url.includes('/tables/')) {
-	                                                    active_link_json.entityMap[String(i)].data.url = '/tables/' + script.id + entity.data.url;
-	                                                }
-	                                            });
+	                                                {/*TODO: FIX THIS SHIT (MIDDLEWARE)*/}
+	                                                var active_link_json = JSON.parse(active_link.text);
+	                                                var active_link_entities_list = _jquery2.default.map(active_link_json.entityMap, function (value, index) {
+	                                                    return [value];
+	                                                });
+	                                                active_link_entities_list.forEach(function (entity, i) {
+	                                                    if (entity.type === 'LINK' && entity.data.url.includes('/table/') && !entity.data.url.includes('/tables/')) {
+	                                                        active_link_json.entityMap[String(i)].data.url = '/tables/' + script.id + entity.data.url;
+	                                                    }
+	                                                });
 	
-	                                            var editorState = _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(active_link_json));
-	                                            text = (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent(), options);})();
-	                                    } catch (err) {
-	                                        text = '';
+	                                                var editorState = _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(active_link_json));
+	                                                text = (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent(), options);})();
+	                                        } catch (err) {
+	                                            text = '';
+	                                        }
+	                                        return (
+	                                            React.createElement('div', { className: 'scroll_links', key: key, style: { width: table.text_coll_size + '%' } },
+	                                                active_link ?
+	                                                React.createElement('div', null,
+	                                                    React.createElement('h4', { className: 'table_header_text' }, active_link.name),
+	                                                    React.createElement('div', { id: 'link_text_block', dangerouslySetInnerHTML: { __html: text } })) :
+	
+	
+	                                                ''));
+	
+	
+	
+	                                    } else if (!coll.text) {
+	                                        coll = coll.coll;
+	                                        return (
+	                                            React.createElement('div', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
+	                                                coll.categories.map(function (category, key) {
+	                                                    if (!category.hidden) {
+	                                                        return (
+	                                                            React.createElement('div', { key: key, className: category.hidden ? 'hidden_links' : '' },
+	                                                                React.createElement('span', { className: 'table_header_text' },
+	                                                                    React.createElement('div', { className: 'row' },
+	                                                                        React.createElement('div', { className: 'col-md-12' },
+	                                                                            category.name))),
+	
+	
+	
+	                                                                category.links.map(function (link, key) {
+	                                                                    var link_url = scriptsStore.linkURL(script, table, link);
+	                                                                    if (link_url) {
+	                                                                        return (
+	                                                                            React.createElement('div', { key: key },
+	                                                                                React.createElement('div', { className: 'row' },
+	                                                                                    React.createElement('div', { className: 'col-md-12 link_name' },
+	                                                                                        React.createElement(_reactRouter.Link, { to: link_url }, link.name)))));
+	
+	
+	
+	
+	                                                                    }
+	                                                                })));
+	
+	
+	                                                    }
+	                                                })));
+	
+	
 	                                    }
-	                                    return (
-	                                        React.createElement('div', { className: 'scroll_links', key: key, style: { width: table.text_coll_size + '%' } },
-	                                            active_link ?
-	                                            React.createElement('div', null,
-	                                                React.createElement('h4', { className: 'table_header_text' }, active_link.name),
-	                                                React.createElement('div', { id: 'link_text_block', dangerouslySetInnerHTML: { __html: text } })) :
-	
-	
-	                                            ''));
-	
-	
-	
-	                                } else if (!coll.text) {
-	                                    coll = coll.coll;
-	                                    return (
-	                                        React.createElement('div', { className: 'scroll_links', key: key, style: { width: coll.size + '%' } },
-	                                            coll.categories.map(function (category, key) {
-	                                                if (!category.hidden) {
-	                                                    return (
-	                                                        React.createElement('div', { key: key, className: category.hidden ? 'hidden_links' : '' },
-	                                                            React.createElement('span', { className: 'table_header_text' },
-	                                                                React.createElement('div', { className: 'row' },
-	                                                                    React.createElement('div', { className: 'col-md-12' },
-	                                                                        category.name))),
-	
-	
-	
-	                                                            category.links.map(function (link, key) {
-	                                                                var link_url = scriptsStore.linkURL(script, table, link);
-	                                                                if (link_url) {
-	                                                                    return (
-	                                                                        React.createElement('div', { key: key },
-	                                                                            React.createElement('div', { className: 'row' },
-	                                                                                React.createElement('div', { className: 'col-md-12 link_name' },
-	                                                                                    React.createElement(_reactRouter.Link, { to: link_url }, link.name)))));
-	
-	
-	
-	
-	                                                                }
-	                                                            })));
-	
-	
-	                                                }
-	                                            })));
-	
-	
-	                                }
-	                            }))));
+	                                }))) };}();if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
 	
 	
 	
@@ -78458,19 +78321,21 @@
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AppWrapper = exports.App = undefined;var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
-	var _nav = __webpack_require__(781);
+	var _nav = __webpack_require__(793);
+	var _scriptsStore = __webpack_require__(783);var _scriptsStore2 = _interopRequireDefault(_scriptsStore);
 	
 	var _mobxReact = __webpack_require__(561);
-	var _tables = __webpack_require__(790);
 	var _table = __webpack_require__(791);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
 	
 	App = exports.App = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(App, _React$Component);function App() {_classCallCheck(this, App);return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));}_createClass(App, [{ key: 'render', value: function render()
-	        {
+	        {var _props =
+	            this.props,script = _props.script,scriptsStore = _props.scriptsStore;
+	
 	            return (
 	                React.createElement('div', null,
-	
+	                    React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params, script: script, scriptsStore: scriptsStore }),
 	
 	                    React.createElement('div', { className: 'container-fluid', id: 'main_container' },
 	                        this.props.children)));
@@ -78484,17 +78349,64 @@
 	    function AppWrapper(props) {_classCallCheck(this, AppWrapper);var _this2 = _possibleConstructorReturn(this, (AppWrapper.__proto__ || Object.getPrototypeOf(AppWrapper)).call(this,
 	        props));
 	
-	        _this2.script = SCRIPT_DATA;return _this2;
+	        _this2.script = SCRIPT_DATA;
+	        _this2.scriptsStore = _scriptsStore2.default;return _this2;
 	    }_createClass(AppWrapper, [{ key: 'render', value: function render()
 	        {var _this3 = this;
 	            var childrenWithProps = React.Children.map(this.props.children,
 	            function (child) {return React.cloneElement(child, {
-	                    script: _this3.script });});
+	                    script: _this3.script,
+	                    scriptsStore: _this3.scriptsStore });});
 	
 	
 	
-	            return React.createElement(App, _extends({}, this.props, { children: childrenWithProps }));
+	            return React.createElement(App, _extends({}, this.props, { children: childrenWithProps, script: this.script, scriptsStore: this.scriptsStore }));
 	        } }]);return AppWrapper;}(React.Component);
+
+/***/ },
+/* 793 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Nav = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
+	var _reactRouter = __webpack_require__(476);
+	var _mobxReact = __webpack_require__(561);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	
+	
+	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);
+	    function Nav(props) {_classCallCheck(this, Nav);var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this,
+	        props));
+	
+	        _this.scriptsStore = _this.props.scriptsStore;
+	        _this.script = _this.props.script;return _this;
+	    }_createClass(Nav, [{ key: 'render', value: function render()
+	
+	        {var _this2 = this;
+	            if (this.script && this.scriptsStore) {
+	                return (
+	                    React.createElement('nav', { className: "navbar navbar-default unmargin" },
+	                        React.createElement('div', { className: 'container-fluid' },
+	                            React.createElement('ul', { className: 'nav navbar-nav' },
+	                                React.createElement('li', { className: 'dropdown ' + (this.props.location.pathname.includes('/tables/') ? 'active' : '') },
+	                                    React.createElement(_reactRouter.Link, { to: this.scriptsStore.scriptUrl(this.script), className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
+	                                        React.createElement('span', { className: 'caret' })),
+	
+	                                    React.createElement('ul', { className: 'dropdown-menu' },
+	                                        this.script.data.map(function (table, key) {
+	                                            return (
+	                                                React.createElement('li', { key: key, className: table.id === _this2.props.params.table ? 'active' : null },
+	                                                    React.createElement(_reactRouter.Link, { to: _this2.scriptsStore.tableUrl(_this2.script, table, 'share') }, table.name)));
+	
+	
+	                                        })))))));
+	
+	
+	
+	
+	
+	
+	            }
+	            return null;
+	        } }]);return Nav;}(React.Component)) || _class;
 
 /***/ }
 /******/ ]);

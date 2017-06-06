@@ -61147,7 +61147,7 @@
 	                                                                                React.createElement('div', { className: 'col-md-12 link_name ' + (usersStore.session_user.button_links_setting ? 'unpadding_horizontal' : '') },
 	                                                                                    React.createElement(_reactRouter.Link, { to: link_url },
 	                                                                                        usersStore.session_user.button_links_setting ?
-	                                                                                        React.createElement('button', { className: 'btn btn-default link_button ' + (active_link.id === link.id ? 'active' : '') },
+	                                                                                        React.createElement('button', { className: 'btn btn-default link_button ' + (active_link && active_link.id === link.id ? 'active' : '') },
 	                                                                                            link.name) :
 	
 	

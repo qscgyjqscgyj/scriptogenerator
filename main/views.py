@@ -22,8 +22,7 @@ from main.models import Script, Table, TableLinksColl, LinkCategory, Link, Scrip
 from main.serializers.link import LinkCategorySerializer, LinkSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
-from main.utils import create_active_user, get_empty_table, get_empty_coll, get_empty_category, get_empty_link, \
-    current_milli_time, clone_table
+from main.utils import create_active_user, get_empty_table, get_empty_coll, get_empty_category, get_empty_link, clone_table
 from payment.models import UserScriptDelegationAccess, UserOfflineScriptExportAccess
 from payment.serializers import UserScriptDelegationAccessSerializer, UserOfflineScriptExportAccessSerializer
 from scripts.settings import DEBUG, YANDEX_SHOPID, YANDEX_SCID

@@ -532,10 +532,10 @@ class TableShare extends Table {
                                                                 if(link_url) {
                                                                     return (
                                                                         <div key={key}>
-                                                                            <div className={`col-md-12 link_name ${usersStore.session_user.button_links_setting ? 'unpadding_horizontal' : ''}`}>
+                                                                            <div className={`col-md-12 link_name ${usersStore.session_user.button_links_setting ? '' : ''}`}>
                                                                                 <Link to={link_url}>
                                                                                     {usersStore.session_user.button_links_setting ?
-                                                                                        <button className={`btn btn-default link_button ${active_link && active_link.id === link.id ? 'active' : ''}`}>
+                                                                                        <button className={`btn btn-default btn-sm link_button ${active_link && active_link.id === link.id ? 'active' : ''}`}>
                                                                                             {link.name}
                                                                                         </button>
                                                                                         :

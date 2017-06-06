@@ -188,6 +188,6 @@ def hot_fix_ids(script_id=None):
                                     else:
                                         links_ids.append(link['id'])
             if tables_with_duplicates or colls_with_duplicates or categories_with_duplicates or links_with_duplicates:
-                script.replace_table(table, table_index)
+                script.replace_table(tables[table_index], table_index)
         gc.collect()
         print('------------------------')

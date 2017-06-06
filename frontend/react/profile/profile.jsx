@@ -9,18 +9,7 @@ import MaskedInput from 'react-maskedinput';
 export class Profile extends React.Component {
     updateSessionUser() {
         const {usersStore} = this.props;
-        $.ajax({
-            method: 'PUT',
-            url: document.body.getAttribute('data-profile-url'),
-            data: JSON.stringify(usersStore.session_user),
-            success: (res) => {
-                usersStore.session_user = res.session_user;
-                alert('Данные успешно сохранены');
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
+        usersStore.updateUserDate();
     }
     onSubmit(e) {
         e.preventDefault();

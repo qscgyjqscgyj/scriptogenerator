@@ -6,6 +6,11 @@ const STATIC_URL = document.body.getAttribute('data-static-url');
 
 @observer
 export class Nav extends React.Component {
+    triggerUserButtonLinksSetting() {
+        const {usersStore} = this.props;
+        usersStore.triggerUserButtonLinksSetting();
+    }
+
     render() {
         const {usersStore, scriptsStore, settingsStore} = this.props;
         let script = scriptsStore.script(this.props.params.script);
@@ -67,6 +72,21 @@ export class Nav extends React.Component {
                                     } className="nav_button_link">
                                     <button className="btn btn-default">Редактировать</button>
                                 </Link>
+                            </li>
+                        : null}
+
+                        {script && script.data.length > 0 ?
+                            <li>
+                                <div className="checkbox button_links_setting_trigger">
+                                    <label>
+                                        <input type="checkbox"
+                                               onChange={this.triggerUserButtonLinksSetting.bind(this)}
+                                               checked={usersStore.session_user.button_links_setting}
+                                               value="button_links_setting"
+                                               aria-label="Ссылки/Кнопки"/>
+                                        Ссылки/Кнопки
+                                    </label>
+                                </div>
                             </li>
                         : null}
                     </ul>

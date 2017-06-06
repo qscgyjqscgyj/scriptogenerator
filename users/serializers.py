@@ -36,12 +36,15 @@ class UserSerializer(serializers.ModelSerializer):
         instance.middle_name = validated_data.get('middle_name')
         instance.last_name = validated_data.get('last_name')
         instance.company = validated_data.get('company')
+        instance.button_links_setting = validated_data.get('button_links_setting')
         instance.save()
         return instance
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email', 'phone', 'first_name', 'middle_name', 'last_name', 'company', 'balance_total', 'promoted', 'positive_balance')
+        fields = (
+        'id', 'username', 'email', 'phone', 'first_name', 'middle_name', 'last_name', 'company', 'balance_total',
+        'promoted', 'positive_balance', 'button_links_setting')
 
 
 class UserAccessSerializer(serializers.ModelSerializer):

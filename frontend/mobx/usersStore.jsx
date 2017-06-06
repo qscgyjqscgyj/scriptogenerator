@@ -44,6 +44,21 @@ export class UsersStore {
         });
     }
 
+    @action updateUserDate() {
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-profile-url'),
+            data: JSON.stringify(this.session_user),
+            success: (res) => {
+                this.session_user = res.session_user;
+                alert('Данные успешно сохранены');
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
     @action getTeam() {
         if(this.team.length === 0) {
             $.ajax({
@@ -126,6 +141,11 @@ export class UsersStore {
 
     @action clearOfflineExportedScripts() {
         this.offline_exported_scripts.clear();
+    }
+
+    @action triggerUserButtonLinksSetting() {
+        this.session_user.button_links_setting = !this.session_user.button_links_setting;
+        this.updateUserDate();
     }
 
     @action resetCreating() {

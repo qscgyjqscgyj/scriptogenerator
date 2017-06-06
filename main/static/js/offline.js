@@ -77600,7 +77600,12 @@
 	var STATIC_URL = document.body.getAttribute('data-static-url');var
 	
 	
-	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);function Nav() {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));}_createClass(Nav, [{ key: 'render', value: function render()
+	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);function Nav() {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));}_createClass(Nav, [{ key: 'triggerUserButtonLinksSetting', value: function triggerUserButtonLinksSetting()
+	        {var
+	            usersStore = this.props.usersStore;
+	            usersStore.triggerUserButtonLinksSetting();
+	        } }, { key: 'render', value: function render()
+	
 	        {var _this2 = this;var _props =
 	            this.props,usersStore = _props.usersStore,scriptsStore = _props.scriptsStore,settingsStore = _props.settingsStore;
 	            var script = scriptsStore.script(this.props.params.script);
@@ -77661,6 +77666,21 @@
 	                                        '/edit/',
 	                                        className: 'nav_button_link' },
 	                                    React.createElement('button', { className: 'btn btn-default' }, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C'))) :
+	
+	
+	                            null,
+	
+	                            script && script.data.length > 0 ?
+	                            React.createElement('li', null,
+	                                React.createElement('div', { className: 'checkbox button_links_setting_trigger' },
+	                                    React.createElement('label', null,
+	                                        React.createElement('input', { type: 'checkbox',
+	                                            onChange: this.triggerUserButtonLinksSetting.bind(this),
+	                                            checked: usersStore.session_user.button_links_setting,
+	                                            value: 'button_links_setting',
+	                                            'aria-label': '\u0421\u0441\u044B\u043B\u043A\u0438/\u041A\u043D\u043E\u043F\u043A\u0438' }), '\u0421\u0441\u044B\u043B\u043A\u0438/\u041A\u043D\u043E\u043F\u043A\u0438'))) :
+	
+	
 	
 	
 	                            null),

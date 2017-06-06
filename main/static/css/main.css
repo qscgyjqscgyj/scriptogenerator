@@ -31,6 +31,11 @@ html, body {
     margin-bottom: 0px !important;
 }
 
+.unpadding_horizontal {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
 .underline {
     text-decoration: underline;
 }
@@ -59,6 +64,10 @@ html, body {
     padding: 5px 0 0 15px !important;
     margin-right: 10px;
 
+}
+
+#main_container {
+    padding: 0px;
 }
 
 .nav_balance_block .negative_balance {
@@ -141,7 +150,7 @@ html, body {
 }
 
 .scroll_links {
-    padding: 10px;
+    padding: 5px;
     overflow-y: scroll;
     overflow-x: hidden;
     float: left;
@@ -149,6 +158,18 @@ html, body {
 
 .link_text_editor {
     /*border: 1px solid #ddd;*/
+}
+
+.button_links_setting_trigger {
+    position: relative;
+    top: 5px;
+}
+
+.link_button {
+    width: 100%;
+    text-align: left;
+    border-radius: 0px;
+    background-color: #f8f8f8;
 }
 
 .table_header_text {

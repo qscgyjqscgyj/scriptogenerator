@@ -16,11 +16,16 @@ class CustomUser(AbstractUser):
     phone = models.CharField(max_length=1025, blank=True, null=True)
     middle_name = models.CharField(max_length=30, blank=True, null=True)
     company = models.CharField(max_length=30, blank=True, null=True)
+
     balance_real = models.FloatField(default=0.0)
     balance_total = models.FloatField(default=0.0)
+
     utm = models.TextField(blank=True, null=True)
+
     last_visit = models.DateTimeField(blank=True, null=True)
     team_length = models.IntegerField(blank=True, null=True)
+
+    button_links_setting = models.BooleanField(default=False)
 
     objects = UserManager()
 

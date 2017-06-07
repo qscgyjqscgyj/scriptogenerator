@@ -234,7 +234,7 @@ class TableEdit extends Table {
                                 } else if (!coll.text) {
                                     coll = coll.coll;
                                     return (
-                                        <div className="scroll_links unpadding_horizontal" key={key} style={{width: coll.size + '%'}}>
+                                        <div className="scroll_links colls_block unpadding_horizontal" key={key} style={{width: coll.size + '%'}}>
                                             <div className="col-md-1">
                                                 <i data-tip="Добавить раздел" className="icon add_icon glyphicon glyphicon-plus" onClick={() => {scriptsStore.createLinkCategory(script, table, coll)}}/>
                                             </div>
@@ -517,7 +517,7 @@ class TableShare extends Table {
                                 } else if (!coll.text) {
                                     coll = coll.coll;
                                     return (
-                                        <div className="scroll_links unpadding_horizontal" key={key} style={{width: coll.size + '%'}}>
+                                        <div className="scroll_links colls_block unpadding_horizontal" key={key} style={{width: coll.size + '%'}}>
                                             {coll.categories.map((category, key) => {
                                                 if(!category.hidden) {
                                                     return (

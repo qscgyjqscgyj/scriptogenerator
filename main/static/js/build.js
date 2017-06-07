@@ -60699,7 +60699,7 @@
 	                                    } else if (!coll.text) {
 	                                        coll = coll.coll;
 	                                        return (
-	                                            React.createElement('div', { className: 'scroll_links unpadding_horizontal', key: key, style: { width: coll.size + '%' } },
+	                                            React.createElement('div', { className: 'scroll_links colls_block unpadding_horizontal', key: key, style: { width: coll.size + '%' } },
 	                                                React.createElement('div', { className: 'col-md-1' },
 	                                                    React.createElement('i', { 'data-tip': '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B', className: 'icon add_icon glyphicon glyphicon-plus', onClick: function onClick() {scriptsStore.createLinkCategory(script, table, coll);} })),
 	
@@ -60982,7 +60982,7 @@
 	                                    } else if (!coll.text) {
 	                                        coll = coll.coll;
 	                                        return (
-	                                            React.createElement('div', { className: 'scroll_links unpadding_horizontal', key: key, style: { width: coll.size + '%' } },
+	                                            React.createElement('div', { className: 'scroll_links colls_block unpadding_horizontal', key: key, style: { width: coll.size + '%' } },
 	                                                coll.categories.map(function (category, key) {
 	                                                    if (!category.hidden) {
 	                                                        return (

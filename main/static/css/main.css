@@ -315,6 +315,10 @@ html, body {
     margin: 5px;
 }
 
+.colls_block {
+    background-color: #fbfbfb;
+}
+
 .dropdown:hover .dropdown-menu {
     display: block !important;
     margin-top: 0 !important;

@@ -103,6 +103,9 @@ class ScriptSerializer(serializers.ModelSerializer):
             del validated_data['template']
             script = Script(**validated_data)
             script.save()
+
+            # TODO: that was testing
+            script.append_empty_table()
         return template
 
     def update(self, instance, validated_data):

@@ -5,11 +5,10 @@ from copy import copy
 import gc
 from django.contrib.auth import authenticate, login
 from django.contrib.sites.models import get_current_site
+from django.db.models.loading import get_model
 from registration.models import RegistrationProfile
 
-from main.models import Script
 from main.tasks import send_new_user_data_email
-from users.models import CustomUser
 from django.db import IntegrityError
 import time
 import datetime
@@ -19,7 +18,7 @@ import time
 
 def create_active_user(request, email, last_name='', first_name='', middle_name='', phone=''):
     try:
-        user = CustomUser.objects.create(
+        user = get_model('users', 'CustomUser').objects.create(
             username=email,
             email=email,
             last_name=last_name,
@@ -27,7 +26,7 @@ def create_active_user(request, email, last_name='', first_name='', middle_name=
             middle_name=middle_name,
             phone=phone
         )
-        password = CustomUser.objects.make_random_password(length=10)
+        password = get_model('users', 'CustomUser').objects.make_random_password(length=10)
         user.set_password(password)
         user.save()
     except IntegrityError:
@@ -60,27 +59,30 @@ def get_empty_table():
         'name': u'Новая таблица',
         'text_coll_name': u'Блок с текстом',
         'text_coll_size': 50,
-        'text_coll_position': 0,
+        'text_coll_position': 2,
         'date': date_today.isoformat(),
         'date_mod': date_today.isoformat(),
-        'colls': [get_empty_coll()]
+        'colls': [
+            get_empty_coll(size=20, position=1, default_category_name=u'Начало разговора'),
+            get_empty_coll(size=30, position=3, default_category_name=u'Вопросы клиента')
+        ]
     }
 
 
-def get_empty_coll():
+def get_empty_coll(size=None, position=None, default_category_name=None):
     return {
         'id': get_uuid(),
         'name': u'Новый блок',
-        'size': 50,
-        'position': 1,
-        'categories': []
+        'size': 50 if not size else size,
+        'position': 1 if not position else position,
+        'categories': [get_empty_category(name=default_category_name)]
     }
 
 
-def get_empty_category(hidden=False):
+def get_empty_category(hidden=False, name=None):
     return {
         'id': get_uuid(),
-        'name': u'Новая категория',
+        'name': u'Новая категория' if not name else name,
         'hidden': hidden,
         'order': 1,
         'opened': False,
@@ -139,7 +141,7 @@ def clone_link(link):
 
 
 def hot_fix_ids(script_id=None):
-    scripts = Script.objects.all() if not script_id else Script.objects.filter(id=script_id)
+    scripts = get_model('main', 'Script').objects.all() if not script_id else get_model('main', 'Script').objects.filter(id=script_id)
     for i, script in enumerate(scripts):
         print('Script: ' + script.name)
         print('Iteration: ' + str(i))

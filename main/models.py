@@ -4,6 +4,7 @@ import json
 from django.db import models
 
 from main.managers import ScriptManager
+from main.utils import get_empty_table
 from users.models import CustomUser
 
 
@@ -30,6 +31,12 @@ class Script(models.Model):
     def get_data_object(self):
         data, created = ScriptData.objects.get_or_create(script=self)
         return data
+
+    def append_empty_table(self):
+        script_data_objects = self.get_data_object()
+        script_data = json.loads(script_data_objects.data)
+        script_data.append(get_empty_table())
+        script_data_objects.set_data(script_data)
 
     def delete_script(self):
         DeletedScript.objects.create(
@@ -134,6 +141,13 @@ class Script(models.Model):
 class ScriptData(models.Model):
     script = models.OneToOneField(Script, primary_key=True)
     data = models.TextField(default='[]')
+
+    def set_data(self, data):
+        if isinstance(data, str):
+            self.data = data
+        elif isinstance(data, list):
+            self.data = json.dumps(data)
+        self.save()
 
     def __unicode__(self):
         return self.script.__unicode__()

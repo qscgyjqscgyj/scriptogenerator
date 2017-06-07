@@ -76,7 +76,7 @@ export class Nav extends React.Component {
                         : null}
 
                         {script && script.data.length > 0 ?
-                            <li>
+                            <li className={!this.props.location.pathname.includes('edit') || !this.props.location.pathname.includes('share') ? 'nav_left_margin' : ''}>
                                 <div className="checkbox button_links_setting_trigger">
                                     <label>
                                         <input type="checkbox"

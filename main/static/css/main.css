@@ -66,6 +66,10 @@ html, body {
 
 }
 
+.nav_left_margin {
+    margin-left: 15px;
+}
+
 #main_container {
     padding: 0px;
 }
@@ -165,16 +169,17 @@ html, body {
     top: 5px;
 }
 
-/*.link_button {*/
-    /*width: 100%;*/
-    /*text-align: left;*/
-    /*border-radius: 0px;*/
-    /*background-color: #f8f8f8;*/
-/*}*/
-
 .link_button {
+    width: 100%;
+    text-align: left;
+    border-radius: 0px;
+    background-color: #f8f8f8;
     font-size: 14px;
 }
+
+/*.link_button {*/
+    /*font-size: 14px;*/
+/*}*/
 
 .table_header_text {
     font-size: 16px;

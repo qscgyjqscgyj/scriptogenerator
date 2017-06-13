@@ -6,12 +6,10 @@ from django.db.models.loading import get_model
 
 from scripts.celery import app
 from constance import config
-from django.db.models import Q
 
 
 @periodic_task(run_every=(crontab(minute=0, hour=0)))
 def get_payment_for_users():
-    today = datetime.today()
     for user in get_model('users', 'CustomUser').objects.all():
         if user.positive_balance():
             if config.PAYMENT_PER_DAY > 0:
@@ -22,19 +20,15 @@ def get_payment_for_users():
                 )
                 local_payment.save()
 
-            user_accesses = get_model('users', 'UserAccess').objects.filter(
-                    Q(owner=user) &
-                    (Q(payed__isnull=True) | Q(payed__lte=today-timedelta(days=1))))
-            if user_accesses and config.PAYMENT_PER_USER > 0:
+            user_accesses = user.teammates_for_payment()
+            if user_accesses and config.PAYMENT_PER_USER > 0 and user.team_is_payable():
                 local_payment = get_model('payment', 'LocalPayment')(
                     name=u'Списание абонентской платы за активных пользователей в команде.',
                     user=user,
                     sum=config.PAYMENT_PER_USER * len(user_accesses)
                 )
                 local_payment.save()
-
-            for access in user_accesses:
-                get_payment_for_user.delay(access.pk, False)
+                recount_balance(user_pk=user.pk)
 
 
 @periodic_task(run_every=(crontab(minute=0, hour=1)))

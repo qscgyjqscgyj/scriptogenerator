@@ -10,6 +10,7 @@ from registration.signals import user_registered
 from celery.result import AsyncResult
 
 from users.signals import user_created
+from django.db.models import Q
 
 
 class CustomUser(AbstractUser):
@@ -44,10 +45,19 @@ class CustomUser(AbstractUser):
     def team(self):
         return UserAccess.objects.filter(owner=self)
 
+    def teammates_for_payment(self):
+        today = datetime.datetime.today()
+        return UserAccess.objects.filter(Q(owner=self) & (Q(payed__isnull=True) | Q(payed__lte=today - datetime.timedelta(days=1))))
+
     def positive_balance(self):
         if self.balance_real > 0 and self.balance_total > config.PAYMENT_PER_DAY:
             return True
         return False
+
+    def team_is_payable(self):
+        if float(len(self.teammates_for_payment()) * config.PAYMENT_PER_USER) > self.balance_total:
+            return False
+        return True
 
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'

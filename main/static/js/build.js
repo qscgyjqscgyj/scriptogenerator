@@ -87188,7 +87188,7 @@
 	                            null,
 	
 	                            script && script.data.length > 0 ?
-	                            React.createElement('li', { className: !this.props.location.pathname.includes('edit') || !this.props.location.pathname.includes('share') ? 'nav_left_margin' : '' },
+	                            React.createElement('li', null,
 	                                React.createElement('div', { className: 'checkbox button_links_setting_trigger col-md-12' },
 	                                    React.createElement('div', { className: 'col-md-3' },
 	                                        React.createElement(_switcher.Switcher, {

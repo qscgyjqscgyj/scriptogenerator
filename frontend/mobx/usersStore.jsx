@@ -44,14 +44,16 @@ export class UsersStore {
         });
     }
 
-    @action updateUserDate() {
+    @action updateUserDate(alert_after_updates=true) {
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-profile-url'),
             data: JSON.stringify(this.session_user),
             success: (res) => {
                 this.session_user = res.session_user;
-                alert('Данные успешно сохранены');
+                if(alert_after_updates) {
+                    alert('Данные успешно сохранены');
+                }
             },
             error: (res) => {
                 console.log(res);
@@ -145,7 +147,7 @@ export class UsersStore {
 
     @action triggerUserButtonLinksSetting() {
         this.session_user.button_links_setting = !this.session_user.button_links_setting;
-        this.updateUserDate();
+        this.updateUserDate(false);
     }
 
     @action resetCreating() {

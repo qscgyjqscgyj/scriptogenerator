@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Link} from 'react-router';
 import {observer} from 'mobx-react';
+import {Switcher} from './switcher';
 
 const STATIC_URL = document.body.getAttribute('data-static-url');
 
@@ -77,15 +78,15 @@ export class Nav extends React.Component {
 
                         {script && script.data.length > 0 ?
                             <li className={!this.props.location.pathname.includes('edit') || !this.props.location.pathname.includes('share') ? 'nav_left_margin' : ''}>
-                                <div className="checkbox button_links_setting_trigger">
-                                    <label>
-                                        <input type="checkbox"
-                                               onChange={this.triggerUserButtonLinksSetting.bind(this)}
-                                               checked={usersStore.session_user.button_links_setting}
-                                               value="button_links_setting"
-                                               aria-label="Ссылки/Кнопки"/>
+                                <div className="checkbox button_links_setting_trigger col-md-12">
+                                    <div className="col-md-3">
+                                        <Switcher
+                                            onChange={this.triggerUserButtonLinksSetting.bind(this)}
+                                            checked={usersStore.session_user.button_links_setting}/>
+                                    </div>
+                                    <div className="col-md-8">
                                         Ссылки/Кнопки
-                                    </label>
+                                    </div>
                                 </div>
                             </li>
                         : null}

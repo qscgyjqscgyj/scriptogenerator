@@ -87111,7 +87111,8 @@
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Nav = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _reactRouter = __webpack_require__(476);
-	var _mobxReact = __webpack_require__(561);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
+	var _mobxReact = __webpack_require__(561);
+	var _switcher = __webpack_require__(794);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
 	
 	var STATIC_URL = document.body.getAttribute('data-static-url');var
 	
@@ -87188,13 +87189,13 @@
 	
 	                            script && script.data.length > 0 ?
 	                            React.createElement('li', { className: !this.props.location.pathname.includes('edit') || !this.props.location.pathname.includes('share') ? 'nav_left_margin' : '' },
-	                                React.createElement('div', { className: 'checkbox button_links_setting_trigger' },
-	                                    React.createElement('label', null,
-	                                        React.createElement('input', { type: 'checkbox',
+	                                React.createElement('div', { className: 'checkbox button_links_setting_trigger col-md-12' },
+	                                    React.createElement('div', { className: 'col-md-3' },
+	                                        React.createElement(_switcher.Switcher, {
 	                                            onChange: this.triggerUserButtonLinksSetting.bind(this),
-	                                            checked: usersStore.session_user.button_links_setting,
-	                                            value: 'button_links_setting',
-	                                            'aria-label': '\u0421\u0441\u044B\u043B\u043A\u0438/\u041A\u043D\u043E\u043F\u043A\u0438' }), '\u0421\u0441\u044B\u043B\u043A\u0438/\u041A\u043D\u043E\u043F\u043A\u0438'))) :
+	                                            checked: usersStore.session_user.button_links_setting })),
+	
+	                                    React.createElement('div', { className: 'col-md-8' }, '\u0421\u0441\u044B\u043B\u043A\u0438/\u041A\u043D\u043E\u043F\u043A\u0438'))) :
 	
 	
 	
@@ -87763,14 +87764,16 @@
 	
 	        } }, { key: 'updateUserDate', value: function updateUserDate()
 	
-	        {var _this2 = this;
+	        {var _this2 = this;var alert_after_updates = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 	            _jquery2.default.ajax({
 	                method: 'PUT',
 	                url: document.body.getAttribute('data-profile-url'),
 	                data: JSON.stringify(this.session_user),
 	                success: function success(res) {
 	                    _this2.session_user = res.session_user;
-	                    alert('Данные успешно сохранены');
+	                    if (alert_after_updates) {
+	                        alert('Данные успешно сохранены');
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -87864,7 +87867,7 @@
 	
 	        {
 	            this.session_user.button_links_setting = !this.session_user.button_links_setting;
-	            this.updateUserDate();
+	            this.updateUserDate(false);
 	        } }, { key: 'resetCreating', value: function resetCreating()
 	
 	        {
@@ -88058,6 +88061,56 @@
 	
 	
 	        } }]);return NoAccess;}(React.Component)) || _class3;
+
+/***/ },
+/* 789 */,
+/* 790 */,
+/* 791 */,
+/* 792 */,
+/* 793 */,
+/* 794 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Switcher = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = __webpack_require__(300);var _react2 = _interopRequireDefault(_react);
+	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+	var _mobxReact = __webpack_require__(561);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	
+	
+	Switcher = exports.Switcher = function (_React$Component) {_inherits(Switcher, _React$Component);
+	    function Switcher(props) {_classCallCheck(this, Switcher);var _this = _possibleConstructorReturn(this, (Switcher.__proto__ || Object.getPrototypeOf(Switcher)).call(this,
+	        props));
+	
+	        _this.state = {
+	            checked: _this.props.checked };return _this;
+	
+	    }_createClass(Switcher, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
+	
+	        props) {
+	            this.setState({ checked: props.checked });
+	        } }, { key: 'setCheked', value: function setCheked(
+	
+	        checked) {
+	            this.setState({ checked: checked });
+	        } }, { key: 'onChangeHandler', value: function onChangeHandler()
+	
+	        {var
+	            checked = this.state.checked;
+	
+	            this.setCheked(!checked);
+	
+	            return this.props.onChange();
+	        } }, { key: 'render', value: function render()
+	
+	        {var
+	            checked = this.state.checked;
+	
+	            return (
+	                _react2.default.createElement('div', { className: 'onoffswitch' },
+	                    _react2.default.createElement('input', { type: 'checkbox', name: 'onoffswitch', onChange: this.onChangeHandler.bind(this), className: 'onoffswitch-checkbox', id: 'myonoffswitch', checked: checked }),
+	                    _react2.default.createElement('label', { className: 'onoffswitch-label', htmlFor: 'myonoffswitch' })));
+	
+	
+	        } }]);return Switcher;}(_react2.default.Component);
 
 /***/ }
 /******/ ]);

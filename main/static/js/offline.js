@@ -78335,7 +78335,7 @@
 	
 	            return (
 	                React.createElement('div', null,
-	                    React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params, script: script, scriptsStore: scriptsStore }),
+	
 	
 	                    React.createElement('div', { className: 'container-fluid', id: 'main_container' },
 	                        this.props.children)));

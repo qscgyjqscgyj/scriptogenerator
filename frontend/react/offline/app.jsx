@@ -14,7 +14,7 @@ export class App extends React.Component {
 
         return (
             <div>
-                <Nav location={this.props.location} params={this.props.params} script={script} scriptsStore={scriptsStore}/>
+                {/*<Nav location={this.props.location} params={this.props.params} script={script} scriptsStore={scriptsStore}/>*/}
 
                 <div className="container-fluid" id="main_container">
                     {this.props.children}

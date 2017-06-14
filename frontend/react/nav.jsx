@@ -171,6 +171,14 @@ export class Nav extends React.Component {
                 {usersStore.session_user.video_instructions_settings && video_instructions.length > 0 ?
                     <div className="container-fluid video_instructions_container">
                         <div className="col-md-12">
+                            <div className="col-md-1 pull-right video_instructions_close_icon_container">
+                                <i
+                                    onClick={this.triggerVideoInstructions.bind(this)}
+                                    className="glyphicon glyphicon-remove video_instructions_close_icon"/>
+                            </div>
+                        </div>
+
+                        <div className="col-md-12">
                             {video_instructions.map((video_instruction, key) => {
                                 return (
                                     <div key={key} className="col-md-2 video_block">

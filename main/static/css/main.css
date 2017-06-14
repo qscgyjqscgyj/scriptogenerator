@@ -632,7 +632,7 @@ html, body {
 
     background-color: #f1f1f1;
     padding-top: 15px;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
 }
 
 .video_instructions_container iframe {
@@ -642,4 +642,12 @@ html, body {
 .button_video_instructions_trigger {
     position: relative;
     top: 8px;
+}
+
+.video_instructions_close_icon_container {
+    text-align: right;
+}
+
+.video_instructions_close_icon:hover {
+    cursor: pointer;
 }

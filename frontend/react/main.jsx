@@ -19,22 +19,22 @@ ReactDOM.render(
         <Route path="/" component={AppWrapper}>
             <IndexRoute component={Scripts}/>
 
-            <Route path="/scripts/user/" component={Scripts}/>
-            <Route path="/scripts/available/" component={AvailableScripts}/>
+            <Route path="/scripts/user/" component={Scripts} page_name="scripts"/>
+            <Route path="/scripts/available/" component={AvailableScripts} page_name="available_scripts"/>
             <Route path="/scripts/offline/user/" component={OfflineScripts}/>
 
-            <Route path="/tables/:script/" component={TablesWrapper}/>
-            <Route path="/tables/:script/available/" component={AvailableTablesWrapper}/>
+            <Route path="/tables/:script/" component={TablesWrapper} page_name="tables"/>
+            <Route path="/tables/:script/available/" component={AvailableTablesWrapper} page_name="available_tables"/>
 
-            <Route path="/tables/:script/table/:table/edit/" component={TableEditWrapper}/>
-            <Route path="/tables/:script/table/:table/link/:link/edit/" component={TableEditWrapper}/>
+            <Route path="/tables/:script/table/:table/edit/" component={TableEditWrapper} page_name="table_edit"/>
+            <Route path="/tables/:script/table/:table/link/:link/edit/" component={TableEditWrapper} page_name="table_edit"/>
 
-            <Route path="/tables/:script/table/:table/share/" component={TableShareWrapper}/>
-            <Route path="/tables/:script/table/:table/link/:link/share/" component={TableShareWrapper}/>
+            <Route path="/tables/:script/table/:table/share/" component={TableShareWrapper} page_name="table_share"/>
+            <Route path="/tables/:script/table/:table/link/:link/share/" component={TableShareWrapper} page_name="table_share"/>
 
-            <Route path="/profile/" component={Profile}/>
-            <Route path="/profile/payment/" component={Payment}/>
-            <Route path="/profile/team/" component={Team}/>
+            <Route path="/profile/" component={Profile} page_name="profile"/>
+            <Route path="/profile/payment/" component={Payment} page_name="payment"/>
+            <Route path="/profile/team/" component={Team} page_name="team"/>
         </Route>
     </Router>,
     RENDER_ELEMENT

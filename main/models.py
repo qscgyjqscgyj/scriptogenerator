@@ -292,3 +292,36 @@ class Link(models.Model):
 
     class Meta:
         ordering = ('order', 'pk')
+
+
+class PageVideoInstruction(models.Model):
+    SCRIPTS_PAGE_ID = 1
+    AVAILABLE_SCRIPTS_PAGE_ID = 2
+    TABLES_PAGE_ID = 3
+    AVAILABLE_TABLES_PAGE_ID = 4
+    TABLE_SHARE_PAGE_ID = 5
+    TABLE_EDIT_PAGE_ID = 6
+    PROFILE_PAGE_ID = 7
+    PAYMENT_PAGE_ID = 8
+    TEAM_PAGE_ID = 9
+
+    PAGES_CHOICES = (
+        (SCRIPTS_PAGE_ID, 'scripts'),
+        (AVAILABLE_SCRIPTS_PAGE_ID, 'available_scripts'),
+        (TABLES_PAGE_ID, 'tables'),
+        (AVAILABLE_TABLES_PAGE_ID, 'available_tables'),
+        (TABLE_SHARE_PAGE_ID, 'table_share'),
+        (TABLE_EDIT_PAGE_ID, 'table_edit'),
+        (PROFILE_PAGE_ID, 'profile'),
+        (PAYMENT_PAGE_ID, 'payment'),
+        (TEAM_PAGE_ID, 'team'),
+    )
+
+    page = models.IntegerField(choices=PAGES_CHOICES)
+    youtube_video_id = models.CharField(max_length=255)
+
+    def get_page_name(self):
+        return self.PAGES_CHOICES[self.page - 1][1]
+
+    def __unicode__(self):
+        return self.get_page_name()

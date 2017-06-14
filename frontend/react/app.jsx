@@ -24,6 +24,7 @@ export class App extends React.Component {
             url: document.body.getAttribute('data-init-url'),
             success: (res) => {
                 usersStore.session_user = res.session_user;
+                usersStore.video_instructions = res.video_instructions;
 
                 scriptsStore.template_scripts = res.template_scripts;
                 scriptsStore.available_scripts = res.available_scripts;
@@ -74,7 +75,8 @@ export class App extends React.Component {
         if(usersStore.session_user) {
             return(
                 <div>
-                    <Nav location={this.props.location} params={this.props.params} usersStore={usersStore} scriptsStore={scriptsStore} settingsStore={settingsStore}/>
+                    {React.createElement(Nav, {...this.props})}
+                    {/*<Nav location={this.props.location} params={this.props.params} usersStore={usersStore} scriptsStore={scriptsStore} settingsStore={settingsStore}/>*/}
 
                     <div className="container-fluid" id="main_container">
 
@@ -126,7 +128,8 @@ export class AppWrapper extends React.Component {
                 settingsStore={settingsStore}
                 children={childrenWithProps}
                 location={this.props.location}
-                params={this.props.params}/>
+                params={this.props.params}
+                page_name={this.props.routes[1].page_name}/>
         )
     }
 }

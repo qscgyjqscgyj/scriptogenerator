@@ -18,7 +18,9 @@ from rest_framework.renderers import JSONRenderer
 import json
 
 from main.events import take_presents_to_user
-from main.models import Script, Table, TableLinksColl, LinkCategory, Link, ScriptAccess, ScriptData
+from main.models import Script, Table, TableLinksColl, LinkCategory, Link, ScriptAccess, ScriptData, \
+    PageVideoInstruction
+from main.serializers.instruction import PageVideoInstructionSerializer
 from main.serializers.link import LinkCategorySerializer, LinkSerializer
 from main.serializers.script import ScriptSerializer
 from main.serializers.table import TableSerializer, TableLinksCollSerializer
@@ -434,7 +436,8 @@ class InitView(ScriptsView):
             'session_user': UserSerializer(request.user).data,
             'shopId': YANDEX_SHOPID,
             'scid': YANDEX_SCID,
-            'advertisment': {'title': config.ADVERTISING_TITLE, 'url': config.ADVERTISING_URL} if config.ADVERTISING_TITLE and config.ADVERTISING_URL else None
+            'advertisment': {'title': config.ADVERTISING_TITLE, 'url': config.ADVERTISING_URL} if config.ADVERTISING_TITLE and config.ADVERTISING_URL else None,
+            'video_instructions': PageVideoInstructionSerializer(PageVideoInstruction.objects.all(), many=True).data
         }, status=200)
 
 

@@ -33,8 +33,8 @@ export class Switcher extends React.Component {
 
         return(
             <div className="onoffswitch">
-                <input type="checkbox" name="onoffswitch" onChange={this.onChangeHandler.bind(this)} className="onoffswitch-checkbox" id="myonoffswitch" checked={checked}/>
-                <label className="onoffswitch-label" htmlFor="myonoffswitch"/>
+                <input type="checkbox" name="onoffswitch" onChange={this.onChangeHandler.bind(this)} className="onoffswitch-checkbox" id={this.props.html_id} checked={checked}/>
+                <label className="onoffswitch-label" htmlFor={this.props.html_id}/>
             </div>
         );
     }

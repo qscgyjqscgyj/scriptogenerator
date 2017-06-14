@@ -8137,22 +8137,22 @@
 	    React.createElement(_reactRouter.Route, { path: '/', component: _app.AppWrapper },
 	        React.createElement(_reactRouter.IndexRoute, { component: _scripts.Scripts }),
 	
-	        React.createElement(_reactRouter.Route, { path: '/scripts/user/', component: _scripts.Scripts }),
-	        React.createElement(_reactRouter.Route, { path: '/scripts/available/', component: _scripts.AvailableScripts }),
+	        React.createElement(_reactRouter.Route, { path: '/scripts/user/', component: _scripts.Scripts, page_name: 'scripts' }),
+	        React.createElement(_reactRouter.Route, { path: '/scripts/available/', component: _scripts.AvailableScripts, page_name: 'available_scripts' }),
 	        React.createElement(_reactRouter.Route, { path: '/scripts/offline/user/', component: _offlineScripts.OfflineScripts }),
 	
-	        React.createElement(_reactRouter.Route, { path: '/tables/:script/', component: _tables.TablesWrapper }),
-	        React.createElement(_reactRouter.Route, { path: '/tables/:script/available/', component: _tables.AvailableTablesWrapper }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/', component: _tables.TablesWrapper, page_name: 'tables' }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/available/', component: _tables.AvailableTablesWrapper, page_name: 'available_tables' }),
 	
-	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/edit/', component: _table.TableEditWrapper }),
-	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/link/:link/edit/', component: _table.TableEditWrapper }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/edit/', component: _table.TableEditWrapper, page_name: 'table_edit' }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/link/:link/edit/', component: _table.TableEditWrapper, page_name: 'table_edit' }),
 	
-	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/share/', component: _table.TableShareWrapper }),
-	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/link/:link/share/', component: _table.TableShareWrapper }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/share/', component: _table.TableShareWrapper, page_name: 'table_share' }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/link/:link/share/', component: _table.TableShareWrapper, page_name: 'table_share' }),
 	
-	        React.createElement(_reactRouter.Route, { path: '/profile/', component: _profile.Profile }),
-	        React.createElement(_reactRouter.Route, { path: '/profile/payment/', component: _payment.Payment }),
-	        React.createElement(_reactRouter.Route, { path: '/profile/team/', component: _team.Team }))),
+	        React.createElement(_reactRouter.Route, { path: '/profile/', component: _profile.Profile, page_name: 'profile' }),
+	        React.createElement(_reactRouter.Route, { path: '/profile/payment/', component: _payment.Payment, page_name: 'payment' }),
+	        React.createElement(_reactRouter.Route, { path: '/profile/team/', component: _team.Team, page_name: 'team' }))),
 	
 	
 	RENDER_ELEMENT);
@@ -86973,17 +86973,17 @@
 /* 780 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AppWrapper = exports.App = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AppWrapper = exports.App = undefined;var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);
 	var _nav = __webpack_require__(781);
-	var _modalStore = __webpack_require__(782);var _modalStore2 = _interopRequireDefault(_modalStore);
-	var _scriptsStore = __webpack_require__(783);var _scriptsStore2 = _interopRequireDefault(_scriptsStore);
-	var _usersStore = __webpack_require__(784);var _usersStore2 = _interopRequireDefault(_usersStore);
-	var _paymentStore = __webpack_require__(785);var _paymentStore2 = _interopRequireDefault(_paymentStore);
-	var _tooltipStore = __webpack_require__(786);var _tooltipStore2 = _interopRequireDefault(_tooltipStore);
-	var _settingsStore = __webpack_require__(787);var _settingsStore2 = _interopRequireDefault(_settingsStore);
+	var _modalStore = __webpack_require__(783);var _modalStore2 = _interopRequireDefault(_modalStore);
+	var _scriptsStore = __webpack_require__(784);var _scriptsStore2 = _interopRequireDefault(_scriptsStore);
+	var _usersStore = __webpack_require__(785);var _usersStore2 = _interopRequireDefault(_usersStore);
+	var _paymentStore = __webpack_require__(786);var _paymentStore2 = _interopRequireDefault(_paymentStore);
+	var _tooltipStore = __webpack_require__(787);var _tooltipStore2 = _interopRequireDefault(_tooltipStore);
+	var _settingsStore = __webpack_require__(788);var _settingsStore2 = _interopRequireDefault(_settingsStore);
 	
-	var _noMoney = __webpack_require__(788);
+	var _noMoney = __webpack_require__(789);
 	var _mobxReact = __webpack_require__(561);
 	var _scripts = __webpack_require__(557);
 	var _tables = __webpack_require__(619);
@@ -86999,6 +86999,7 @@
 	                url: document.body.getAttribute('data-init-url'),
 	                success: function success(res) {
 	                    usersStore.session_user = res.session_user;
+	                    usersStore.video_instructions = res.video_instructions;
 	
 	                    scriptsStore.template_scripts = res.template_scripts;
 	                    scriptsStore.available_scripts = res.available_scripts;
@@ -87049,7 +87050,8 @@
 	            if (usersStore.session_user) {
 	                return (
 	                    React.createElement('div', null,
-	                        React.createElement(_nav.Nav, { location: this.props.location, params: this.props.params, usersStore: usersStore, scriptsStore: scriptsStore, settingsStore: settingsStore }),
+	                        React.createElement(_nav.Nav, _extends({}, this.props)),
+	
 	
 	                        React.createElement('div', { className: 'container-fluid', id: 'main_container' },
 	
@@ -87101,7 +87103,8 @@
 	                    settingsStore: settingsStore,
 	                    children: childrenWithProps,
 	                    location: this.props.location,
-	                    params: this.props.params }));
+	                    params: this.props.params,
+	                    page_name: this.props.routes[1].page_name }));
 	
 	        } }]);return AppWrapper;}(React.Component);
 
@@ -87112,23 +87115,50 @@
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Nav = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _reactRouter = __webpack_require__(476);
 	var _mobxReact = __webpack_require__(561);
-	var _switcher = __webpack_require__(794);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
+	var _switcher = __webpack_require__(782);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
 	
 	var STATIC_URL = document.body.getAttribute('data-static-url');var
 	
 	
-	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);function Nav() {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));}_createClass(Nav, [{ key: 'triggerUserButtonLinksSetting', value: function triggerUserButtonLinksSetting()
+	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);
+	    function Nav(props) {_classCallCheck(this, Nav);var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this,
+	        props));
+	
+	        _this.state = {
+	            video_instructions_is_visible: true };return _this;
+	
+	    }_createClass(Nav, [{ key: 'triggerVideoInstructions', value: function triggerVideoInstructions()
+	
+	        {var
+	            video_instructions_is_visible = this.state.video_instructions_is_visible;
+	
+	            this.setState({ video_instructions_is_visible: !video_instructions_is_visible });
+	        } }, { key: 'triggerUserButtonLinksSetting', value: function triggerUserButtonLinksSetting()
+	
 	        {var
 	            usersStore = this.props.usersStore;
 	            usersStore.triggerUserButtonLinksSetting();
+	        } }, { key: 'getVideoInstructions', value: function getVideoInstructions()
+	
+	        {var _props =
+	            this.props,usersStore = _props.usersStore,page_name = _props.page_name;
+	
+	            return usersStore.video_instructions.filter(function (video_instruction) {
+	                return video_instruction.page_id === page_name;
+	            });
 	        } }, { key: 'render', value: function render()
 	
-	        {var _this2 = this;var _props =
-	            this.props,usersStore = _props.usersStore,scriptsStore = _props.scriptsStore,settingsStore = _props.settingsStore;
+	        {var _this2 = this;var _props2 =
+	            this.props,usersStore = _props2.usersStore,scriptsStore = _props2.scriptsStore,settingsStore = _props2.settingsStore;var
+	            video_instructions_is_visible = this.state.video_instructions_is_visible;
 	            var script = scriptsStore.script(this.props.params.script);
 	            var edit = this.props.location.pathname.includes('edit');
+	
+	            var video_instructions = this.getVideoInstructions();
+	
 	            return (
-	                React.createElement('nav', { className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
+	                React.createElement('nav', {
+	                        className: "navbar navbar-default " + (this.props.location.pathname.includes('edit') || this.props.location.pathname.includes('share') ? 'unmargin' : '') },
 	                    React.createElement('div', { className: 'container-fluid' },
 	                        React.createElement('a', { className: 'navbar-brand', href: '/' },
 	                            React.createElement('img', { className: 'logo', width: '40px', alt: 'Scriptogenerator', src: STATIC_URL + 'img/logo.png' })),
@@ -87141,20 +87171,20 @@
 	                            React.createElement('li', { className: this.props.location.pathname.includes('/scripts/available/') ? 'active' : '' },
 	                                React.createElement(_reactRouter.Link, { to: '/scripts/available/' }, '\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u044B')),
 	
-	                            React.createElement('li', null,
-	                                React.createElement('a', { href: 'http://lp.scriptogenerator.ru/info', target: '_blank' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F')),
-	
 	
 	                            script && script.data.length > 0 ?
-	                            React.createElement('li', { className: 'dropdown ' + (this.props.location.pathname.includes('/tables/') ? 'active' : '') },
-	                                React.createElement(_reactRouter.Link, { to: scriptsStore.scriptUrl(script), className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
+	                            React.createElement('li', { className: 'dropdown nav_tables_dropdown ' + (this.props.location.pathname.includes('/tables/') ? 'active' : '') },
+	                                React.createElement(_reactRouter.Link, { to: scriptsStore.scriptUrl(script), className: 'dropdown-toggle',
+	                                        'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
 	                                    React.createElement('span', { className: 'caret' })),
 	
 	                                React.createElement('ul', { className: 'dropdown-menu' },
 	                                    script.data.map(function (table, key) {
 	                                        return (
-	                                            React.createElement('li', { key: key, className: table.id === _this2.props.params.table ? 'active' : null },
-	                                                React.createElement(_reactRouter.Link, { to: scriptsStore.tableUrl(script, table, edit ? 'edit' : 'share') }, table.name)));
+	                                            React.createElement('li', { key: key,
+	                                                    className: table.id === _this2.props.params.table ? 'active' : null },
+	                                                React.createElement(_reactRouter.Link, {
+	                                                        to: scriptsStore.tableUrl(script, table, edit ? 'edit' : 'share') }, table.name)));
 	
 	
 	                                    }))) :
@@ -87187,11 +87217,30 @@
 	
 	                            null,
 	
-	                            script && script.data.length > 0 ?
 	                            React.createElement('li', null,
-	                                React.createElement('div', { className: 'checkbox button_links_setting_trigger col-md-12' },
+	                                video_instructions.length > 0 ?
+	                                React.createElement('div', { className: 'checkbox nav_switcher_setting_trigger col-md-12' },
 	                                    React.createElement('div', { className: 'col-md-3' },
 	                                        React.createElement(_switcher.Switcher, {
+	                                            html_id: 'video_instructions_switcher',
+	                                            onChange: this.triggerVideoInstructions.bind(this),
+	                                            checked: video_instructions_is_visible })),
+	
+	                                    React.createElement('div', { className: 'col-md-8' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438')) :
+	
+	
+	
+	
+	                                React.createElement('a', { href: 'http://lp.scriptogenerator.ru/info', target: '_blank' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F')),
+	
+	
+	
+	                            script && script.data.length > 0 ?
+	                            React.createElement('li', null,
+	                                React.createElement('div', { className: 'checkbox nav_switcher_setting_trigger col-md-12' },
+	                                    React.createElement('div', { className: 'col-md-3' },
+	                                        React.createElement(_switcher.Switcher, {
+	                                            html_id: 'button_links_switcher',
 	                                            onChange: this.triggerUserButtonLinksSetting.bind(this),
 	                                            checked: usersStore.session_user.button_links_setting })),
 	
@@ -87227,7 +87276,9 @@
 	
 	
 	                            React.createElement('li', { className: 'dropdown' },
-	                                React.createElement('a', { href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, usersStore.session_user.username, ' ', React.createElement('span', { className: 'caret' })),
+	                                React.createElement('a', { href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button',
+	                                        'aria-haspopup': 'true', 'aria-expanded': 'false' }, usersStore.session_user.username, ' ', React.createElement('span', {
+	                                        className: 'caret' })),
 	                                React.createElement('ul', { className: 'dropdown-menu' },
 	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/' }, '\u041B\u0438\u0447\u043D\u044B\u0439 \u041A\u0430\u0431\u0438\u043D\u0435\u0442')),
 	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/payment/' }, '\u041E\u043F\u043B\u0430\u0442\u0430')),
@@ -87238,14 +87289,73 @@
 	
 	
 	
-	                        '')));
+	                        ''),
 	
+	
+	                    video_instructions_is_visible && video_instructions.length > 0 ?
+	                    React.createElement('div', { className: 'container-fluid video_instructions_container' },
+	                        React.createElement('div', { className: 'col-md-12' },
+	                            video_instructions.map(function (video_instruction, key) {
+	                                return (
+	                                    React.createElement('div', { key: key, className: 'col-md-2 video_block' },
+	                                        React.createElement('iframe', { width: '200', height: '150', src: 'https://www.youtube.com/embed/' + video_instruction.youtube_video_id, allowFullScreen: true })));
+	
+	
+	                            }))) :
+	
+	
+	                    null));
 	
 	
 	        } }]);return Nav;}(React.Component)) || _class;
 
 /***/ },
 /* 782 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Switcher = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = __webpack_require__(300);var _react2 = _interopRequireDefault(_react);
+	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+	var _mobxReact = __webpack_require__(561);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+	
+	
+	Switcher = exports.Switcher = function (_React$Component) {_inherits(Switcher, _React$Component);
+	    function Switcher(props) {_classCallCheck(this, Switcher);var _this = _possibleConstructorReturn(this, (Switcher.__proto__ || Object.getPrototypeOf(Switcher)).call(this,
+	        props));
+	
+	        _this.state = {
+	            checked: _this.props.checked };return _this;
+	
+	    }_createClass(Switcher, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
+	
+	        props) {
+	            this.setState({ checked: props.checked });
+	        } }, { key: 'setCheked', value: function setCheked(
+	
+	        checked) {
+	            this.setState({ checked: checked });
+	        } }, { key: 'onChangeHandler', value: function onChangeHandler()
+	
+	        {var
+	            checked = this.state.checked;
+	
+	            this.setCheked(!checked);
+	
+	            return this.props.onChange();
+	        } }, { key: 'render', value: function render()
+	
+	        {var
+	            checked = this.state.checked;
+	
+	            return (
+	                _react2.default.createElement('div', { className: 'onoffswitch' },
+	                    _react2.default.createElement('input', { type: 'checkbox', name: 'onoffswitch', onChange: this.onChangeHandler.bind(this), className: 'onoffswitch-checkbox', id: this.props.html_id, checked: checked }),
+	                    _react2.default.createElement('label', { className: 'onoffswitch-label', htmlFor: this.props.html_id })));
+	
+	
+	        } }]);return Switcher;}(_react2.default.Component);
+
+/***/ },
+/* 783 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ModalStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
@@ -87267,7 +87377,7 @@
 	new ModalStore();
 
 /***/ },
-/* 783 */
+/* 784 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ScriptsStore = undefined;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;var _mobx = __webpack_require__(562);
@@ -87715,13 +87825,13 @@
 	new ScriptsStore();
 
 /***/ },
-/* 784 */
+/* 785 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16;var _mobx = __webpack_require__(562);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17;var _mobx = __webpack_require__(562);
 	var _jquery = __webpack_require__(558);var _jquery2 = _interopRequireDefault(_jquery);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
-	UsersStore = exports.UsersStore = (_class = function () {function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'team', _descriptor2, this);_initDefineProp(this, 'payment_history', _descriptor3, this);_initDefineProp(this, 'payment_per_user', _descriptor4, this);_initDefineProp(this, 'session_user', _descriptor5, this);_initDefineProp(this, 'script_delegation_accesses', _descriptor6, this);_initDefineProp(this, 'script_exporting_accesses', _descriptor7, this);_initDefineProp(this, 'offline_exported_scripts', _descriptor8, this);_initDefineProp(this, 'script_exporting_unlim_access_is_active', _descriptor9, this);_initDefineProp(this, 'creating_teammate_email', _descriptor10, this);_initDefineProp(this, 'creating_teammate_first_name', _descriptor11, this);_initDefineProp(this, 'creating_teammate_last_name', _descriptor12, this);_initDefineProp(this, 'creating_teammate_middle_name', _descriptor13, this);_initDefineProp(this, 'creating_teammate_phone', _descriptor14, this);_initDefineProp(this, 'pressed_key', _descriptor15, this);_initDefineProp(this, 'loading', _descriptor16, this);}
+	UsersStore = exports.UsersStore = (_class = function () {function UsersStore() {_classCallCheck(this, UsersStore);_initDefineProp(this, 'users', _descriptor, this);_initDefineProp(this, 'team', _descriptor2, this);_initDefineProp(this, 'payment_history', _descriptor3, this);_initDefineProp(this, 'payment_per_user', _descriptor4, this);_initDefineProp(this, 'session_user', _descriptor5, this);_initDefineProp(this, 'script_delegation_accesses', _descriptor6, this);_initDefineProp(this, 'script_exporting_accesses', _descriptor7, this);_initDefineProp(this, 'offline_exported_scripts', _descriptor8, this);_initDefineProp(this, 'script_exporting_unlim_access_is_active', _descriptor9, this);_initDefineProp(this, 'creating_teammate_email', _descriptor10, this);_initDefineProp(this, 'creating_teammate_first_name', _descriptor11, this);_initDefineProp(this, 'creating_teammate_last_name', _descriptor12, this);_initDefineProp(this, 'creating_teammate_middle_name', _descriptor13, this);_initDefineProp(this, 'creating_teammate_phone', _descriptor14, this);_initDefineProp(this, 'video_instructions', _descriptor15, this);_initDefineProp(this, 'pressed_key', _descriptor16, this);_initDefineProp(this, 'loading', _descriptor17, this);}
 	
 	
 	
@@ -87733,6 +87843,8 @@
 	
 	    // SCRIPT EXPORTING ACCESSES
 	    _createClass(UsersStore, [{ key: 'setLoading', value: function setLoading()
+	
+	
 	
 	
 	
@@ -87876,13 +87988,13 @@
 	            this.creating_teammate_first_name = '';
 	            this.creating_teammate_middle_name = '';
 	            this.creating_teammate_phone = '';
-	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'payment_history', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'payment_per_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return 0;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'script_delegation_accesses', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'script_exporting_accesses', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'offline_exported_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'script_exporting_unlim_access_is_active', [_mobx.observable], { enumerable: true, initializer: function initializer() {return false;} }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor11 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_first_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor12 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_last_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor13 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_middle_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor14 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_phone', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor15 = _applyDecoratedDescriptor(_class.prototype, 'pressed_key', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor16 = _applyDecoratedDescriptor(_class.prototype, 'loading', [_mobx.observable], { enumerable: true, initializer: function initializer() {return false;} }), _applyDecoratedDescriptor(_class.prototype, 'setLoading', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'setLoading'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getData', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getData'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'updateUserDate', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'updateUserDate'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getTeam', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getTeam'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearPaymentHistory', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'clearPaymentHistory'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getScriptDelegationAccesses', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getScriptDelegationAccesses'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearScriptDelegationAccesses', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'clearScriptDelegationAccesses'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getOfflineScriptsExportAccesses', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getOfflineScriptsExportAccesses'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearOfflineScriptsExportAccesses', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'clearOfflineScriptsExportAccesses'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getOfflineExportedScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getOfflineExportedScripts'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearOfflineExportedScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'clearOfflineExportedScripts'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'triggerUserButtonLinksSetting', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'triggerUserButtonLinksSetting'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
+	        } }]);return UsersStore;}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'users', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'team', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'payment_history', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'payment_per_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return 0;} }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'session_user', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'script_delegation_accesses', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'script_exporting_accesses', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'offline_exported_scripts', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'script_exporting_unlim_access_is_active', [_mobx.observable], { enumerable: true, initializer: function initializer() {return false;} }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_email', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor11 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_first_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor12 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_last_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor13 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_middle_name', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor14 = _applyDecoratedDescriptor(_class.prototype, 'creating_teammate_phone', [_mobx.observable], { enumerable: true, initializer: function initializer() {return '';} }), _descriptor15 = _applyDecoratedDescriptor(_class.prototype, 'video_instructions', [_mobx.observable], { enumerable: true, initializer: function initializer() {return [];} }), _descriptor16 = _applyDecoratedDescriptor(_class.prototype, 'pressed_key', [_mobx.observable], { enumerable: true, initializer: function initializer() {return null;} }), _descriptor17 = _applyDecoratedDescriptor(_class.prototype, 'loading', [_mobx.observable], { enumerable: true, initializer: function initializer() {return false;} }), _applyDecoratedDescriptor(_class.prototype, 'setLoading', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'setLoading'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getData', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getData'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'updateUserDate', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'updateUserDate'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getTeam', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getTeam'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearPaymentHistory', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'clearPaymentHistory'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getScriptDelegationAccesses', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getScriptDelegationAccesses'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearScriptDelegationAccesses', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'clearScriptDelegationAccesses'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getOfflineScriptsExportAccesses', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getOfflineScriptsExportAccesses'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearOfflineScriptsExportAccesses', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'clearOfflineScriptsExportAccesses'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getOfflineExportedScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'getOfflineExportedScripts'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearOfflineExportedScripts', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'clearOfflineExportedScripts'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'triggerUserButtonLinksSetting', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'triggerUserButtonLinksSetting'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetCreating', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'resetCreating'), _class.prototype)), _class);exports.default =
 	
 	
 	new UsersStore();
 
 /***/ },
-/* 785 */
+/* 786 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.PaymentStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}
@@ -87983,7 +88095,7 @@
 	new PaymentStore();
 
 /***/ },
-/* 786 */
+/* 787 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TooltipStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
@@ -88001,7 +88113,7 @@
 	new TooltipStore();
 
 /***/ },
-/* 787 */
+/* 788 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.SettingsStore = undefined;var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(562);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
@@ -88014,7 +88126,7 @@
 	new SettingsStore();
 
 /***/ },
-/* 788 */
+/* 789 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.NoAccess = exports.NoScriptOwnerMoney = exports.NoMoney = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
@@ -88061,56 +88173,6 @@
 	
 	
 	        } }]);return NoAccess;}(React.Component)) || _class3;
-
-/***/ },
-/* 789 */,
-/* 790 */,
-/* 791 */,
-/* 792 */,
-/* 793 */,
-/* 794 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.Switcher = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = __webpack_require__(300);var _react2 = _interopRequireDefault(_react);
-	var _reactAddonsUpdate = __webpack_require__(559);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
-	var _mobxReact = __webpack_require__(561);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
-	
-	
-	Switcher = exports.Switcher = function (_React$Component) {_inherits(Switcher, _React$Component);
-	    function Switcher(props) {_classCallCheck(this, Switcher);var _this = _possibleConstructorReturn(this, (Switcher.__proto__ || Object.getPrototypeOf(Switcher)).call(this,
-	        props));
-	
-	        _this.state = {
-	            checked: _this.props.checked };return _this;
-	
-	    }_createClass(Switcher, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
-	
-	        props) {
-	            this.setState({ checked: props.checked });
-	        } }, { key: 'setCheked', value: function setCheked(
-	
-	        checked) {
-	            this.setState({ checked: checked });
-	        } }, { key: 'onChangeHandler', value: function onChangeHandler()
-	
-	        {var
-	            checked = this.state.checked;
-	
-	            this.setCheked(!checked);
-	
-	            return this.props.onChange();
-	        } }, { key: 'render', value: function render()
-	
-	        {var
-	            checked = this.state.checked;
-	
-	            return (
-	                _react2.default.createElement('div', { className: 'onoffswitch' },
-	                    _react2.default.createElement('input', { type: 'checkbox', name: 'onoffswitch', onChange: this.onChangeHandler.bind(this), className: 'onoffswitch-checkbox', id: 'myonoffswitch', checked: checked }),
-	                    _react2.default.createElement('label', { className: 'onoffswitch-label', htmlFor: 'myonoffswitch' })));
-	
-	
-	        } }]);return Switcher;}(_react2.default.Component);
 
 /***/ }
 /******/ ]);

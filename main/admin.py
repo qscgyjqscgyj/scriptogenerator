@@ -57,6 +57,12 @@ class ScriptAccessAdmin(admin.ModelAdmin):
     search_fields = ('user__username',)
 
 
+class PageVideoInstructionAdmin(admin.ModelAdmin):
+    list_display = ('_get_page_name', 'youtube_video_id')
+
+    def _get_page_name(self, obj):
+        return obj.get_page_name()
+
 admin.site.register(Script, ScriptAdmin)
 admin.site.register(DeletedScript, DeletedScriptAdmin)
 admin.site.register(ScriptData, ScriptDataAdmin)
@@ -66,3 +72,4 @@ admin.site.register(Table, TableAdmin)
 admin.site.register(TableLinksColl)
 admin.site.register(LinkCategory)
 admin.site.register(Link, LinkAdmin)
+admin.site.register(PageVideoInstruction, PageVideoInstructionAdmin)

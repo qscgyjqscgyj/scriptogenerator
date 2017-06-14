@@ -22,6 +22,8 @@ export class UsersStore {
     @observable creating_teammate_middle_name = '';
     @observable creating_teammate_phone = '';
 
+    @observable video_instructions = [];
+
     @observable pressed_key = null;
 
     @observable loading = false;

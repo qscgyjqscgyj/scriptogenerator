@@ -17,7 +17,7 @@ const RENDER_ELEMENT = document.getElementById('content');
 ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={AppWrapper}>
-            <IndexRoute component={Scripts}/>
+            <IndexRoute component={Scripts} page_name="scripts"/>
 
             <Route path="/scripts/user/" component={Scripts} page_name="scripts"/>
             <Route path="/scripts/available/" component={AvailableScripts} page_name="available_scripts"/>

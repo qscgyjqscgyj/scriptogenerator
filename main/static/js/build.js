@@ -8135,7 +8135,7 @@
 	ReactDOM.render(
 	React.createElement(_reactRouter.Router, { history: _reactRouter.browserHistory },
 	    React.createElement(_reactRouter.Route, { path: '/', component: _app.AppWrapper },
-	        React.createElement(_reactRouter.IndexRoute, { component: _scripts.Scripts }),
+	        React.createElement(_reactRouter.IndexRoute, { component: _scripts.Scripts, page_name: 'scripts' }),
 	
 	        React.createElement(_reactRouter.Route, { path: '/scripts/user/', component: _scripts.Scripts, page_name: 'scripts' }),
 	        React.createElement(_reactRouter.Route, { path: '/scripts/available/', component: _scripts.AvailableScripts, page_name: 'available_scripts' }),

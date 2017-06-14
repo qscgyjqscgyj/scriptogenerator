@@ -174,7 +174,7 @@ export class Nav extends React.Component {
                             {video_instructions.map((video_instruction, key) => {
                                 return (
                                     <div key={key} className="col-md-2 video_block">
-                                        <iframe width="200" height="150" src={`https://www.youtube.com/embed/${video_instruction.youtube_video_id}`} allowFullScreen={true}/>
+                                        <iframe width="213" height="120" src={`https://www.youtube.com/embed/${video_instruction.youtube_video_id}`} allowFullScreen={true}/>
                                     </div>
                                 )
                             })}

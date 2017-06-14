@@ -87288,7 +87288,7 @@
 	                            video_instructions.map(function (video_instruction, key) {
 	                                return (
 	                                    React.createElement('div', { key: key, className: 'col-md-2 video_block' },
-	                                        React.createElement('iframe', { width: '200', height: '150', src: 'https://www.youtube.com/embed/' + video_instruction.youtube_video_id, allowFullScreen: true })));
+	                                        React.createElement('iframe', { width: '213', height: '120', src: 'https://www.youtube.com/embed/' + video_instruction.youtube_video_id, allowFullScreen: true })));
 	
 	
 	                            }))) :

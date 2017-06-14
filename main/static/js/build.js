@@ -87284,11 +87284,11 @@
 	
 	                    usersStore.session_user.video_instructions_settings && video_instructions.length > 0 ?
 	                    React.createElement('div', { className: 'container-fluid video_instructions_container' },
-	                        React.createElement('div', { className: 'col-md-12' },
-	                            React.createElement('div', { className: 'col-md-1 pull-right video_instructions_close_icon_container' },
-	                                React.createElement('i', {
-	                                    onClick: this.triggerVideoInstructions.bind(this),
-	                                    className: 'glyphicon glyphicon-remove video_instructions_close_icon' }))),
+	
+	
+	
+	
+	
 	
 	
 	

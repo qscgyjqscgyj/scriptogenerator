@@ -27,6 +27,7 @@ class CustomUser(AbstractUser):
     team_length = models.IntegerField(blank=True, null=True)
 
     button_links_setting = models.BooleanField(default=False)
+    video_instructions_settings = models.BooleanField(default=True)
 
     objects = UserManager()
 

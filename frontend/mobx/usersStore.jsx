@@ -152,6 +152,11 @@ export class UsersStore {
         this.updateUserDate(false);
     }
 
+    @action triggerVideoInstructions() {
+        this.session_user.video_instructions_settings = !this.session_user.video_instructions_settings;
+        this.updateUserDate(false);
+    }
+
     @action resetCreating() {
         this.creating_teammate_email = '';
         this.creating_teammate_last_name = '';

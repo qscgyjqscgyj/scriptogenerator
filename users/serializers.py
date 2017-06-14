@@ -37,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.last_name = validated_data.get('last_name')
         instance.company = validated_data.get('company')
         instance.button_links_setting = validated_data.get('button_links_setting')
+        instance.video_instructions_settings = validated_data.get('video_instructions_settings')
         instance.save()
         return instance
 
@@ -44,7 +45,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = (
         'id', 'username', 'email', 'phone', 'first_name', 'middle_name', 'last_name', 'company', 'balance_total',
-        'promoted', 'positive_balance', 'button_links_setting')
+        'promoted', 'positive_balance', 'button_links_setting', 'video_instructions_settings')
 
 
 class UserAccessSerializer(serializers.ModelSerializer):

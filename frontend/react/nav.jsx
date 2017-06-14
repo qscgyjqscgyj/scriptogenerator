@@ -7,18 +7,9 @@ const STATIC_URL = document.body.getAttribute('data-static-url');
 
 @observer
 export class Nav extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            video_instructions_is_visible: true
-        }
-    }
-
     triggerVideoInstructions() {
-        const {video_instructions_is_visible} = this.state;
-
-        this.setState({video_instructions_is_visible: !video_instructions_is_visible});
+        const {usersStore} = this.props;
+        usersStore.triggerVideoInstructions();
     }
 
     triggerUserButtonLinksSetting() {
@@ -36,7 +27,6 @@ export class Nav extends React.Component {
 
     render() {
         const {usersStore, scriptsStore, settingsStore} = this.props;
-        const {video_instructions_is_visible} = this.state;
         let script = scriptsStore.script(this.props.params.script);
         let edit = this.props.location.pathname.includes('edit');
 
@@ -110,7 +100,7 @@ export class Nav extends React.Component {
                                         <Switcher
                                             html_id="video_instructions_switcher"
                                             onChange={this.triggerVideoInstructions.bind(this)}
-                                            checked={video_instructions_is_visible}/>
+                                            checked={usersStore.session_user.video_instructions_settings}/>
                                     </div>
                                     <div className="col-md-8">
                                         Инструкции
@@ -178,7 +168,7 @@ export class Nav extends React.Component {
                         : ''}
                 </div>
 
-                {video_instructions_is_visible && video_instructions.length > 0 ?
+                {usersStore.session_user.video_instructions_settings && video_instructions.length > 0 ?
                     <div className="container-fluid video_instructions_container">
                         <div className="col-md-12">
                             {video_instructions.map((video_instruction, key) => {

@@ -68,7 +68,7 @@ class Tables extends AccessableComponent {
                                 <div className="col-md-2">
                                     <button onClick={() => {
                                         scriptsStore.createTable(script);
-                                    }} className="btn btn-success">+ Создать таблицу</button>
+                                    }} className="btn btn-success">+ Создать сценарий</button>
                                 </div>
                                 <div className="col-md-7">
                                     <h4>{script.name}</h4>
@@ -89,7 +89,7 @@ class Tables extends AccessableComponent {
                                             <div className="btn-group pull-right">
                                                 {access.edit ?
                                                     <button className='btn btn-default btn-xs'
-                                                            data-tip="Настройка таблицы"
+                                                            data-tip="Настройка сценария"
                                                             onClick={this.openTableEditingModalForm.bind(this, table)}>
                                                         <i className="glyphicon glyphicon-cog"/>
                                                     </button>
@@ -97,7 +97,7 @@ class Tables extends AccessableComponent {
 
                                                 {access.edit ?
                                                     <button className='btn btn-default btn-xs'
-                                                            data-tip="Скопировать таблицу"
+                                                            data-tip="Скопировать сценарий"
                                                             onClick={this.openTableCloningModalForm.bind(this, table)}>
                                                         <i className="glyphicon glyphicon-copy"/>
                                                     </button>
@@ -105,7 +105,7 @@ class Tables extends AccessableComponent {
 
                                                 {access.edit ?
                                                     <button className='btn btn-danger btn-xs'
-                                                            data-tip="Удалить таблицу"
+                                                            data-tip="Удалить сценарий"
                                                             onClick={this.deleteTableHandler.bind(this, table)}>
                                                         <i className="glyphicon glyphicon-remove"/>
                                                     </button>
@@ -144,7 +144,7 @@ class EditingTable extends React.Component {
                     <form action="" onSubmit={(e) => scriptsStore.updateTable(script, scriptsStore.editing, modalStore, e)}>
                         <div className="col-md-12">
                             <div className="form-group">
-                                <input className="form-control" onChange={(e) => scriptsStore.editing.name = e.target.value} value={scriptsStore.editing.name} type="text" name="name" placeholder="Имя таблицы"/>
+                                <input className="form-control" onChange={(e) => scriptsStore.editing.name = e.target.value} value={scriptsStore.editing.name} type="text" name="name" placeholder="Имя сценария"/>
                             </div>
                         </div>
 
@@ -210,7 +210,7 @@ class CloningTable extends React.Component {
             },
             success: (res) => {
                 script.data = res.data;
-                alert(`Таблица "${table.name}" скопирована в ${to_script_result.id === script.id ? 'текущий скрипт' : `скрипт "${to_script_result.name}"`}`);
+                alert(`Сценарий "${table.name}" скопирован в ${to_script_result.id === script.id ? 'текущий скрипт' : `скрипт "${to_script_result.name}"`}`);
                 modalStore.close_modal();
             },
             error: (res) => {
@@ -234,7 +234,7 @@ class CloningTable extends React.Component {
         return(
             <div className="row">
                 <div className="col-md-12">
-                    <h3>Копировать таблицу</h3>
+                    <h3>Копировать сценарий</h3>
 
                     <form action="" onSubmit={this.cloneTable.bind(this)}>
                         <div className="col-md-12">
@@ -253,7 +253,7 @@ class CloningTable extends React.Component {
                                 <Select
                                     disabled={clone_to_current_script}
                                     value={to_script ? to_script.id : null}
-                                    placeholder="Скопировать таблицу в скрипт"
+                                    placeholder="Скопировать сценарий в скрипт"
                                     options={this.getOptions()}
                                     onChange={this.setToScript.bind(this)}/>
                             </div>

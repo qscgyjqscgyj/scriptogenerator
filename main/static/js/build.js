@@ -60094,7 +60094,7 @@
 	                                    React.createElement('div', { className: 'col-md-2' },
 	                                        React.createElement('button', { onClick: function onClick() {
 	                                                    scriptsStore.createTable(script);
-	                                                }, className: 'btn btn-success' }, '+ \u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0442\u0430\u0431\u043B\u0438\u0446\u0443')),
+	                                                }, className: 'btn btn-success' }, '+ \u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u0439')),
 	
 	                                    React.createElement('div', { className: 'col-md-7' },
 	                                        React.createElement('h4', null, script.name))) :
@@ -60115,7 +60115,7 @@
 	                                                    React.createElement('div', { className: 'btn-group pull-right' },
 	                                                        access.edit ?
 	                                                        React.createElement('button', { className: 'btn btn-default btn-xs',
-	                                                                'data-tip': '\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430 \u0442\u0430\u0431\u043B\u0438\u0446\u044B',
+	                                                                'data-tip': '\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430 \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u044F',
 	                                                                onClick: _this2.openTableEditingModalForm.bind(_this2, table) },
 	                                                            React.createElement('i', { className: 'glyphicon glyphicon-cog' })) :
 	
@@ -60123,7 +60123,7 @@
 	
 	                                                        access.edit ?
 	                                                        React.createElement('button', { className: 'btn btn-default btn-xs',
-	                                                                'data-tip': '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u0430\u0431\u043B\u0438\u0446\u0443',
+	                                                                'data-tip': '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u0439',
 	                                                                onClick: _this2.openTableCloningModalForm.bind(_this2, table) },
 	                                                            React.createElement('i', { className: 'glyphicon glyphicon-copy' })) :
 	
@@ -60131,7 +60131,7 @@
 	
 	                                                        access.edit ?
 	                                                        React.createElement('button', { className: 'btn btn-danger btn-xs',
-	                                                                'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0442\u0430\u0431\u043B\u0438\u0446\u0443',
+	                                                                'data-tip': '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u0439',
 	                                                                onClick: _this2.deleteTableHandler.bind(_this2, table) },
 	                                                            React.createElement('i', { className: 'glyphicon glyphicon-remove' })) :
 	
@@ -60170,7 +60170,7 @@
 	                        React.createElement('form', { action: '', onSubmit: function onSubmit(e) {return scriptsStore.updateTable(script, scriptsStore.editing, modalStore, e);} },
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                React.createElement('div', { className: 'form-group' },
-	                                    React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return scriptsStore.editing.name = e.target.value;}, value: scriptsStore.editing.name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0442\u0430\u0431\u043B\u0438\u0446\u044B' }))),
+	                                    React.createElement('input', { className: 'form-control', onChange: function onChange(e) {return scriptsStore.editing.name = e.target.value;}, value: scriptsStore.editing.name, type: 'text', name: 'name', placeholder: '\u0418\u043C\u044F \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u044F' }))),
 	
 	
 	
@@ -60236,7 +60236,7 @@
 	
 	                success: function success(res) {
 	                    script.data = res.data;
-	                    alert('\u0422\u0430\u0431\u043B\u0438\u0446\u0430 "' + table.name + '" \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0430 \u0432 ' + (to_script_result.id === script.id ? 'текущий скрипт' : '\u0441\u043A\u0440\u0438\u043F\u0442 "' + to_script_result.name + '"'));
+	                    alert('\u0421\u0446\u0435\u043D\u0430\u0440\u0438\u0439 "' + table.name + '" \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D \u0432 ' + (to_script_result.id === script.id ? 'текущий скрипт' : '\u0441\u043A\u0440\u0438\u043F\u0442 "' + to_script_result.name + '"'));
 	                    modalStore.close_modal();
 	                },
 	                error: function error(res) {
@@ -60260,7 +60260,7 @@
 	            return (
 	                React.createElement('div', { className: 'row' },
 	                    React.createElement('div', { className: 'col-md-12' },
-	                        React.createElement('h3', null, '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u0430\u0431\u043B\u0438\u0446\u0443'),
+	                        React.createElement('h3', null, '\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u0439'),
 	
 	                        React.createElement('form', { action: '', onSubmit: this.cloneTable.bind(this) },
 	                            React.createElement('div', { className: 'col-md-12' },
@@ -60279,7 +60279,7 @@
 	                                    React.createElement(_reactSelect2.default, {
 	                                        disabled: clone_to_current_script,
 	                                        value: to_script ? to_script.id : null,
-	                                        placeholder: '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u0430\u0431\u043B\u0438\u0446\u0443 \u0432 \u0441\u043A\u0440\u0438\u043F\u0442',
+	                                        placeholder: '\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u0439 \u0432 \u0441\u043A\u0440\u0438\u043F\u0442',
 	                                        options: this.getOptions(),
 	                                        onChange: this.setToScript.bind(this) }))),
 	
@@ -60887,7 +60887,7 @@
 	                                                                            React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443', className: 'btn btn-default', onClick: function onClick() {scriptsStore.createLink(script, table, coll, category);} },
 	                                                                                React.createElement('i', { className: 'icon add_simple_link_icon glyphicon glyphicon-plus' })),
 	
-	                                                                            React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0434\u0440\u0443\u0433\u0443\u044E \u0442\u0430\u0431\u043B\u0438\u0446\u0443', className: 'btn btn-default',
+	                                                                            React.createElement('button', { 'data-tip': '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0434\u0440\u0443\u0433\u043E\u0439 \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u0439', className: 'btn btn-default',
 	                                                                                    onClick: function onClick() {
 	                                                                                        modalStore.open_modal(
 	                                                                                        React.createElement(ToLink, _extends({},
@@ -61264,7 +61264,7 @@
 	                    React.createElement('div', { className: 'col-md-12 col-centered' },
 	                        React.createElement(_reactSelect2.default, {
 	                            name: 'table',
-	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0442\u0430\u0431\u043B\u0438\u0446\u0443',
+	                            placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u0439',
 	                            value: table ? table.id : null,
 	                            options: this.tablesOptions(),
 	                            onChange: function onChange(select) {_this7.onChange(select, 'table');} })),
@@ -87165,7 +87165,7 @@
 	                            script && script.data.length > 0 ?
 	                            React.createElement('li', { className: 'dropdown nav_tables_dropdown ' + (this.props.location.pathname.includes('/tables/') ? 'active' : '') },
 	                                React.createElement(_reactRouter.Link, { to: scriptsStore.scriptUrl(script), className: 'dropdown-toggle',
-	                                        'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
+	                                        'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0421\u0446\u0435\u043D\u0430\u0440\u0438\u0438 ',
 	                                    React.createElement('span', { className: 'caret' })),
 	
 	                                React.createElement('ul', { className: 'dropdown-menu' },
@@ -87178,6 +87178,74 @@
 	
 	
 	                                    }))) :
+	
+	
+	                            null,
+	
+	                            React.createElement('li', null,
+	                                video_instructions.length > 0 ?
+	                                React.createElement('div', { className: 'checkbox nav_switcher_setting_trigger col-md-12' },
+	                                    React.createElement('div', { className: 'col-md-3' },
+	                                        React.createElement(_switcher.Switcher, {
+	                                            html_id: 'video_instructions_switcher',
+	                                            onChange: this.triggerVideoInstructions.bind(this),
+	                                            checked: usersStore.session_user.video_instructions_settings })),
+	
+	                                    React.createElement('div', { className: 'col-md-8' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438')) :
+	
+	
+	
+	
+	                                React.createElement('a', { href: 'http://lp.scriptogenerator.ru/info', target: '_blank' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F'))),
+	
+	
+	
+	                        usersStore.session_user ?
+	                        React.createElement('ul', { className: 'nav navbar-nav navbar-right' },
+	                            settingsStore.advertisment ?
+	                            React.createElement('li', { className: 'nav_promotion_block' },
+	                                React.createElement('a', { target: '_blank', href: settingsStore.advertisment.url },
+	                                    settingsStore.advertisment.title)) :
+	
+	
+	                            null,
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	                            this.props.location.pathname.includes('share') ?
+	                            React.createElement('li', { className: 'dropdown' },
+	                                React.createElement('a', { href: '#', className: 'dropdown-toggle nav_settings_icon_container', 'data-toggle': 'dropdown',
+	                                        role: 'button',
+	                                        'aria-haspopup': 'true', 'aria-expanded': 'false' },
+	                                    React.createElement('i', { className: 'glyphicon glyphicon-cog nav_settings_icon' })),
+	
+	
+	
+	                                React.createElement('div', { className: 'dropdown-menu' },
+	                                    React.createElement('div', { className: 'checkbox nav_switcher_setting_trigger col-md-12' },
+	                                        React.createElement('div', { className: 'col-md-5' },
+	                                            React.createElement(_switcher.Switcher, {
+	                                                html_id: 'button_links_switcher',
+	                                                onChange: this.triggerUserButtonLinksSetting.bind(this),
+	                                                checked: usersStore.session_user.button_links_setting })),
+	
+	                                        React.createElement('div', { className: 'col-md-7' },
+	                                            usersStore.session_user.button_links_setting ? 'Кнопки' : 'Ссылки')))) :
+	
+	
 	
 	
 	                            null,
@@ -87207,68 +87275,17 @@
 	
 	                            null,
 	
-	                            React.createElement('li', null,
-	                                video_instructions.length > 0 ?
-	                                React.createElement('div', { className: 'checkbox nav_switcher_setting_trigger col-md-12' },
-	                                    React.createElement('div', { className: 'col-md-3' },
-	                                        React.createElement(_switcher.Switcher, {
-	                                            html_id: 'video_instructions_switcher',
-	                                            onChange: this.triggerVideoInstructions.bind(this),
-	                                            checked: usersStore.session_user.video_instructions_settings })),
-	
-	                                    React.createElement('div', { className: 'col-md-8' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438')) :
-	
-	
-	
-	
-	                                React.createElement('a', { href: 'http://lp.scriptogenerator.ru/info', target: '_blank' }, '\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F')),
-	
-	
-	
-	                            script && script.data.length > 0 ?
-	                            React.createElement('li', null,
-	                                React.createElement('div', { className: 'checkbox nav_switcher_setting_trigger col-md-12' },
-	                                    React.createElement('div', { className: 'col-md-3' },
-	                                        React.createElement(_switcher.Switcher, {
-	                                            html_id: 'button_links_switcher',
-	                                            onChange: this.triggerUserButtonLinksSetting.bind(this),
-	                                            checked: usersStore.session_user.button_links_setting })),
-	
-	                                    React.createElement('div', { className: 'col-md-8' }, '\u0421\u0441\u044B\u043B\u043A\u0438/\u041A\u043D\u043E\u043F\u043A\u0438'))) :
-	
-	
-	
-	
-	                            null),
-	
-	                        usersStore.session_user ?
-	                        React.createElement('ul', { className: 'nav navbar-nav navbar-right' },
-	                            settingsStore.advertisment ?
-	                            React.createElement('li', { className: 'nav_promotion_block' },
-	                                React.createElement('a', { target: '_blank', href: settingsStore.advertisment.url },
-	                                    settingsStore.advertisment.title)) :
-	
-	
-	                            null,
-	                            React.createElement('li', { className: 'nav_balance_block' },
-	
-	
-	
-	
-	
-	                                React.createElement(_reactRouter.Link, { to: '/profile/payment/',
-	                                        role: 'button',
-	                                        'aria-haspopup': 'true',
-	                                        'aria-expanded': 'false',
-	                                        className: usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance' }, '\u0411\u0430\u043B\u0430\u043D\u0441: ',
-	
-	                                    usersStore.session_user.balance_total, '\u0440.')),
-	
-	
 	                            React.createElement('li', { className: 'dropdown' },
-	                                React.createElement('a', { href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button',
-	                                        'aria-haspopup': 'true', 'aria-expanded': 'false' }, usersStore.session_user.username, ' ', React.createElement('span', {
-	                                        className: 'caret' })),
+	                                React.createElement('a', { href: '#', className: 'dropdown-toggle nav_user_email_dropdown', 'data-toggle': 'dropdown',
+	                                        role: 'button',
+	                                        'aria-haspopup': 'true', 'aria-expanded': 'false' }, usersStore.session_user.username, ' ', React.createElement('span', { className: 'caret' }),
+	
+	                                    React.createElement('p', { className: 'nav_user_email_balance ' + (usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance') }, '\u0411\u0430\u043B\u0430\u043D\u0441: ',
+	                                        usersStore.session_user.balance_total, '\u0440.')),
+	
+	
+	
+	
 	                                React.createElement('ul', { className: 'dropdown-menu' },
 	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/' }, '\u041B\u0438\u0447\u043D\u044B\u0439 \u041A\u0430\u0431\u0438\u043D\u0435\u0442')),
 	                                    React.createElement('li', null, React.createElement(_reactRouter.Link, { to: '/profile/payment/' }, '\u041E\u043F\u043B\u0430\u0442\u0430')),
@@ -87600,7 +87617,7 @@
 	
 	        } }, { key: 'deleteTable', value: function deleteTable(
 	        script, table) {
-	            (0, _confirm2.default)("Вы действительно хотите удалить таблицу: " + table.name).then(
+	            (0, _confirm2.default)("Вы действительно хотите удалить сценарий: " + table.name).then(
 	            function (result) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',

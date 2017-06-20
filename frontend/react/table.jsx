@@ -275,7 +275,7 @@ class TableEdit extends Table {
                                                                             <button data-tip="Создать ссылку" className="btn btn-default" onClick={()=>{scriptsStore.createLink(script, table, coll, category)}}>
                                                                                 <i className="icon add_simple_link_icon glyphicon glyphicon-plus"/>
                                                                             </button>
-                                                                            <button data-tip="Создать ссылку на другую таблицу" className="btn btn-default"
+                                                                            <button data-tip="Создать ссылку на другой сценарий" className="btn btn-default"
                                                                                 onClick={() => {
                                                                                     modalStore.open_modal(
                                                                                         React.createElement(ToLink, {
@@ -652,7 +652,7 @@ class ToLink extends React.Component {
                 <div className="col-md-12 col-centered">
                     <Select
                         name="table"
-                        placeholder="Выберите таблицу"
+                        placeholder="Выберите сценарий"
                         value={table ? table.id : null}
                         options={this.tablesOptions()}
                         onChange={(select) => {this.onChange(select, 'table')}}/>

@@ -77818,7 +77818,7 @@
 	
 	        } }, { key: 'deleteTable', value: function deleteTable(
 	        script, table) {
-	            (0, _confirm2.default)("Вы действительно хотите удалить таблицу: " + table.name).then(
+	            (0, _confirm2.default)("Вы действительно хотите удалить сценарий: " + table.name).then(
 	            function (result) {
 	                _jquery2.default.ajax({
 	                    method: 'DELETE',
@@ -78101,7 +78101,7 @@
 	                                React.createElement('table', { className: 'table' },
 	                                    React.createElement('thead', null,
 	                                        React.createElement('tr', null,
-	                                            React.createElement('td', null, '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0442\u0430\u0431\u043B\u0438\u0446\u044B'))),
+	                                            React.createElement('td', null, '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u044F'))),
 	
 	
 	                                    React.createElement('tbody', null,
@@ -78388,7 +78388,7 @@
 	                        React.createElement('div', { className: 'container-fluid' },
 	                            React.createElement('ul', { className: 'nav navbar-nav' },
 	                                React.createElement('li', { className: 'dropdown ' + (this.props.location.pathname.includes('/tables/') ? 'active' : '') },
-	                                    React.createElement(_reactRouter.Link, { to: this.scriptsStore.scriptUrl(this.script), className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0422\u0430\u0431\u043B\u0438\u0446\u044B ',
+	                                    React.createElement(_reactRouter.Link, { to: this.scriptsStore.scriptUrl(this.script), className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' }, '\u0421\u0446\u0435\u043D\u0430\u0440\u0438\u0438 ',
 	                                        React.createElement('span', { className: 'caret' })),
 	
 	                                    React.createElement('ul', { className: 'dropdown-menu' },

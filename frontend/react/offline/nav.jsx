@@ -19,7 +19,7 @@ export class Nav extends React.Component {
                         <ul className="nav navbar-nav">
                             <li className={`dropdown ${this.props.location.pathname.includes('/tables/') ? 'active' : ''}`}>
                                 <Link to={this.scriptsStore.scriptUrl(this.script)} className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    Таблицы <span className="caret"/>
+                                    Сценарии <span className="caret"/>
                                 </Link>
                                 <ul className="dropdown-menu">
                                     {this.script.data.map((table, key) => {

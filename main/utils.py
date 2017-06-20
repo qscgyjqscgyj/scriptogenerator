@@ -56,7 +56,7 @@ def get_empty_table():
     date_today = datetime.datetime.now()
     return {
         'id': get_uuid(),
-        'name': u'Новая таблица',
+        'name': u'Новый сценарий',
         'text_coll_name': u'Блок с текстом',
         'text_coll_size': 50,
         'text_coll_position': 2,

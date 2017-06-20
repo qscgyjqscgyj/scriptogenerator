@@ -25,7 +25,7 @@ class Tables extends React.Component {
                             <table className="table">
                                 <thead>
                                 <tr>
-                                    <td>Название таблицы</td>
+                                    <td>Название сценария</td>
                                 </tr>
                                 </thead>
                                 <tbody>

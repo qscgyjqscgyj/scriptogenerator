@@ -220,7 +220,7 @@ export class ScriptsStore {
         });
     }
     @action deleteTable(script, table) {
-        confirm("Вы действительно хотите удалить таблицу: " + table.name).then(
+        confirm("Вы действительно хотите удалить сценарий: " + table.name).then(
             (result) => {
                 $.ajax({
                     method: 'DELETE',

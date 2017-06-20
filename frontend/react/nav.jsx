@@ -52,7 +52,7 @@ export class Nav extends React.Component {
                             <li className={`dropdown nav_tables_dropdown ${this.props.location.pathname.includes('/tables/') ? 'active' : ''}`}>
                                 <Link to={scriptsStore.scriptUrl(script)} className="dropdown-toggle"
                                       data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    Таблицы <span className="caret"/>
+                                    Сценарии <span className="caret"/>
                                 </Link>
                                 <ul className="dropdown-menu">
                                     {script.data.map((table, key) => {
@@ -65,31 +65,6 @@ export class Nav extends React.Component {
                                         )
                                     })}
                                 </ul>
-                            </li>
-                            : null}
-
-                        {this.props.location.pathname.includes('edit') ?
-                            <li>
-                                <Link to={
-                                    '/tables/' + this.props.params.script +
-                                    '/table/' + this.props.params.table +
-                                    (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
-                                    '/share/'
-                                } className="nav_button_link">
-                                    <button className="btn btn-default">Просмотр</button>
-                                </Link>
-                            </li>
-                            : null}
-                        {this.props.location.pathname.includes('share') ?
-                            <li>
-                                <Link to={
-                                    '/tables/' + this.props.params.script +
-                                    '/table/' + this.props.params.table +
-                                    (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
-                                    '/edit/'
-                                } className="nav_button_link">
-                                    <button className="btn btn-default">Редактировать</button>
-                                </Link>
                             </li>
                             : null}
 
@@ -110,22 +85,6 @@ export class Nav extends React.Component {
                                 <a href='http://lp.scriptogenerator.ru/info' target="_blank">Инструкция</a>
                             }
                         </li>
-
-                        {script && script.data.length > 0 ?
-                            <li>
-                                <div className="checkbox nav_switcher_setting_trigger col-md-12">
-                                    <div className="col-md-3">
-                                        <Switcher
-                                            html_id="button_links_switcher"
-                                            onChange={this.triggerUserButtonLinksSetting.bind(this)}
-                                            checked={usersStore.session_user.button_links_setting}/>
-                                    </div>
-                                    <div className="col-md-8">
-                                        Ссылки/Кнопки
-                                    </div>
-                                </div>
-                            </li>
-                            : null}
                     </ul>
                     {usersStore.session_user ?
                         <ul className="nav navbar-nav navbar-right">
@@ -136,25 +95,83 @@ export class Nav extends React.Component {
                                     </a>
                                 </li>
                                 : null}
-                            <li className="nav_balance_block">
+                            {/*<li className="nav_balance_block">*/}
                                 {/*<a*/}
                                 {/*href="http://getproff.ru/sgt-pay"*/}
                                 {/*className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}>*/}
                                 {/*Баланс: {usersStore.session_user.balance_total}р.*/}
                                 {/*</a>*/}
-                                <Link to="/profile/payment/"
-                                      role="button"
-                                      aria-haspopup="true"
-                                      aria-expanded="false"
-                                      className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}
-                                >
-                                    Баланс: {usersStore.session_user.balance_total}р.
-                                </Link>
-                            </li>
+                                {/*<Link to="/profile/payment/"*/}
+                                      {/*role="button"*/}
+                                      {/*aria-haspopup="true"*/}
+                                      {/*aria-expanded="false"*/}
+                                      {/*className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}*/}
+                                {/*>*/}
+                                    {/*Баланс: {usersStore.session_user.balance_total}р.*/}
+                                {/*</Link>*/}
+                            {/*</li>*/}
+
+                            {this.props.location.pathname.includes('share') ?
+                                <li className="dropdown">
+                                    <a href="#" className="dropdown-toggle nav_settings_icon_container" data-toggle="dropdown"
+                                        role="button"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <i className="glyphicon glyphicon-cog nav_settings_icon"/>
+                                    </a>
+
+
+                                    <div className="dropdown-menu">
+                                        <div className="checkbox nav_switcher_setting_trigger col-md-12">
+                                            <div className="col-md-5">
+                                                <Switcher
+                                                    html_id="button_links_switcher"
+                                                    onChange={this.triggerUserButtonLinksSetting.bind(this)}
+                                                    checked={usersStore.session_user.button_links_setting}/>
+                                            </div>
+                                            <div className="col-md-7">
+                                                {usersStore.session_user.button_links_setting ? 'Кнопки' : 'Ссылки'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                : null}
+
+                            {this.props.location.pathname.includes('edit') ?
+                                <li>
+                                    <Link to={
+                                        '/tables/' + this.props.params.script +
+                                        '/table/' + this.props.params.table +
+                                        (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
+                                        '/share/'
+                                    } className="nav_button_link">
+                                        <button className="btn btn-default">Просмотр</button>
+                                    </Link>
+                                </li>
+                                : null}
+                            {this.props.location.pathname.includes('share') ?
+                                <li>
+                                    <Link to={
+                                        '/tables/' + this.props.params.script +
+                                        '/table/' + this.props.params.table +
+                                        (this.props.params.link ? ('/link/' + this.props.params.link) : '') +
+                                        '/edit/'
+                                    } className="nav_button_link">
+                                        <button className="btn btn-default">Редактировать</button>
+                                    </Link>
+                                </li>
+                                : null}
+
                             <li className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-haspopup="true" aria-expanded="false">{usersStore.session_user.username} <span
-                                    className="caret"/></a>
+                                <a href="#" className="dropdown-toggle nav_user_email_dropdown" data-toggle="dropdown"
+                                   role="button"
+                                   aria-haspopup="true" aria-expanded="false">{usersStore.session_user.username} <span className="caret"/>
+
+                                    <p className={`nav_user_email_balance ${usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}`}>
+                                        Баланс: {usersStore.session_user.balance_total}р.
+                                    </p>
+                                </a>
+
+
                                 <ul className="dropdown-menu">
                                     <li><Link to='/profile/'>Личный Кабинет</Link></li>
                                     <li><Link to='/profile/payment/'>Оплата</Link></li>

@@ -1,9 +1,13 @@
+import 'react-tabs/style/react-tabs.css';
 import * as React from 'react';
 import {Link} from 'react-router';
 import {observer} from 'mobx-react';
 import {Switcher} from './switcher';
 import {ModalWrapper} from './modal';
 import {NavTableCollsEditor} from './table';
+import {Tabs} from 'react-simpletabs';
+import {EditingScript} from './scripts';
+import {Team} from './profile/team';
 
 const STATIC_URL = document.body.getAttribute('data-static-url');
 
@@ -29,7 +33,8 @@ export class Nav extends React.Component {
 
     openNavTableCollsEditor() {
         const {modalStore} = this.props;
-        modalStore.open_modal(React.createElement(NavTableCollsEditor, {...this.props}));
+        // modalStore.open_modal(React.createElement(NavTableCollsEditor, {...this.props}));
+        modalStore.open_modal(React.createElement(NavModalSettongs, {...this.props}));
     }
 
     render() {
@@ -103,26 +108,27 @@ export class Nav extends React.Component {
                                 </li>
                                 : null}
                             {/*<li className="nav_balance_block">*/}
-                                {/*<a*/}
-                                {/*href="http://getproff.ru/sgt-pay"*/}
-                                {/*className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}>*/}
-                                {/*Баланс: {usersStore.session_user.balance_total}р.*/}
-                                {/*</a>*/}
-                                {/*<Link to="/profile/payment/"*/}
-                                      {/*role="button"*/}
-                                      {/*aria-haspopup="true"*/}
-                                      {/*aria-expanded="false"*/}
-                                      {/*className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}*/}
-                                {/*>*/}
-                                    {/*Баланс: {usersStore.session_user.balance_total}р.*/}
-                                {/*</Link>*/}
+                            {/*<a*/}
+                            {/*href="http://getproff.ru/sgt-pay"*/}
+                            {/*className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}>*/}
+                            {/*Баланс: {usersStore.session_user.balance_total}р.*/}
+                            {/*</a>*/}
+                            {/*<Link to="/profile/payment/"*/}
+                            {/*role="button"*/}
+                            {/*aria-haspopup="true"*/}
+                            {/*aria-expanded="false"*/}
+                            {/*className={usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}*/}
+                            {/*>*/}
+                            {/*Баланс: {usersStore.session_user.balance_total}р.*/}
+                            {/*</Link>*/}
                             {/*</li>*/}
 
                             {this.props.location.pathname.includes('share') ?
                                 <li className="dropdown">
-                                    <a href="#" className="dropdown-toggle nav_settings_icon_container" data-toggle="dropdown"
-                                        role="button"
-                                        aria-haspopup="true" aria-expanded="false">
+                                    <a href="#" className="dropdown-toggle nav_settings_icon_container"
+                                       data-toggle="dropdown"
+                                       role="button"
+                                       aria-haspopup="true" aria-expanded="false">
                                         <i className="glyphicon glyphicon-cog nav_settings_icon"/>
                                     </a>
 
@@ -145,7 +151,8 @@ export class Nav extends React.Component {
 
                             {this.props.location.pathname.includes('edit') ?
                                 <li>
-                                    <a className="nav_settings_icon_container" onClick={this.openNavTableCollsEditor.bind(this)}>
+                                    <a className="nav_settings_icon_container"
+                                       onClick={this.openNavTableCollsEditor.bind(this)}>
                                         <i className="glyphicon glyphicon-cog nav_settings_icon"/>
                                     </a>
                                 </li>
@@ -179,7 +186,8 @@ export class Nav extends React.Component {
                             <li className="dropdown">
                                 <a href="#" className="dropdown-toggle nav_user_email_dropdown" data-toggle="dropdown"
                                    role="button"
-                                   aria-haspopup="true" aria-expanded="false">{usersStore.session_user.username} <span className="caret"/>
+                                   aria-haspopup="true" aria-expanded="false">{usersStore.session_user.username} <span
+                                    className="caret"/>
 
                                     <p className={`nav_user_email_balance ${usersStore.session_user.balance_total <= 0 ? 'negative_balance' : 'positive_balance'}`}>
                                         Баланс: {usersStore.session_user.balance_total}р.
@@ -203,18 +211,20 @@ export class Nav extends React.Component {
                 {usersStore.session_user.video_instructions_settings && video_instructions.length > 0 ?
                     <div className="container-fluid video_instructions_container">
                         {/*<div className="col-md-12">*/}
-                            {/*<div className="col-md-1 pull-right video_instructions_close_icon_container">*/}
-                                {/*<i*/}
-                                    {/*onClick={this.triggerVideoInstructions.bind(this)}*/}
-                                    {/*className="glyphicon glyphicon-remove video_instructions_close_icon"/>*/}
-                            {/*</div>*/}
+                        {/*<div className="col-md-1 pull-right video_instructions_close_icon_container">*/}
+                        {/*<i*/}
+                        {/*onClick={this.triggerVideoInstructions.bind(this)}*/}
+                        {/*className="glyphicon glyphicon-remove video_instructions_close_icon"/>*/}
+                        {/*</div>*/}
                         {/*</div>*/}
 
                         <div className="col-md-12">
                             {video_instructions.map((video_instruction, key) => {
                                 return (
                                     <div key={key} className="col-md-2 video_block">
-                                        <iframe width="213" height="120" src={`https://www.youtube.com/embed/${video_instruction.youtube_video_id}`} allowFullScreen={true}/>
+                                        <iframe width="213" height="120"
+                                                src={`https://www.youtube.com/embed/${video_instruction.youtube_video_id}`}
+                                                allowFullScreen={true}/>
                                     </div>
                                 )
                             })}
@@ -224,5 +234,77 @@ export class Nav extends React.Component {
                 <ModalWrapper stores={[scriptsStore, usersStore]} modalStore={modalStore}/>
             </nav>
         );
+    }
+}
+
+
+class NavModalSettongs extends React.Component {
+    constructor(props) {
+        super(props);
+        const {scriptsStore} = this.props;
+
+        this.script = this.props.script ? this.props.script : scriptsStore.script(this.props.params.script);
+    }
+
+    scriptNameHandler(e) {
+        const {scriptsStore} = this.props;
+        let script_name = e.target.value;
+
+        if(script_name.length > 0) {
+            scriptsStore.updateName(script, script_name);
+        } else {
+            alert('Имя скрипта не должно быть пустым');
+        }
+    }
+
+    render() {
+        const {scriptsStore} = this.props;
+        return (
+            <Tabs>
+                <TabList>
+                    <Tab>Главное</Tab>
+                    <Tab>Доступ к скрипту</Tab>
+                    <Tab>Выгрузка скрипта</Tab>
+                    <Tab>Перенос скрипта</Tab>
+                    <Tab>Сценарии</Tab>
+                </TabList>
+
+                <TabPanel>
+                    <div className="col-md-12">
+                        {/*{React.createElement(NavTableCollsEditor, {...this.props})}*/}
+                        <h3>Изменить название скрипта</h3>
+                        {React.createElement(EditingScript, {...this.props, script: this.script})}
+                    </div>
+                </TabPanel>
+
+                <TabPanel>
+                    <div className="col-md-12">
+                        <h3>Редактирование доступов к скрипту</h3>
+                    </div>
+                    <div className="col-md-12">
+                        <h3>Управление командой</h3>
+                        {React.createElement(Team, {...this.props})}
+                    </div>
+                </TabPanel>
+
+                <TabPanel>
+                    <div className="col-md-12">
+                        Выгрузка скрипта
+                    </div>
+                </TabPanel>
+
+                <TabPanel>
+                    <div className="col-md-12">
+                        Перенос скрипта
+                    </div>
+                </TabPanel>
+
+                <TabPanel>
+                    <div className="col-md-12">
+                        Сценарии
+                    </div>
+                </TabPanel>
+            </Tabs>
+        )
     }
 }

@@ -25,8 +25,8 @@ export class ScriptsStore {
 
     @observable loading = true;
 
-    @action setLoading(loading=true) {
-        if(!this.loading) {
+    @action setLoading(loading = true) {
+        if (!this.loading) {
             this.loading = loading;
         }
     }
@@ -45,13 +45,32 @@ export class ScriptsStore {
             }
         });
     }
+
+    @action updateScript(script, modalStore, e) {
+        if (e) {e.preventDefault()}
+        $.ajax({
+            method: 'PUT',
+            url: document.body.getAttribute('data-scripts-url'),
+            data: JSON.stringify((script ? script : this.editing)),
+            success: (res) => {
+                script = res.script;
+                if(modalStore) {
+                    modalStore.close_modal();
+                }
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
     @action createCloningProcess(length) {
         let scripts = this.scripts.filter(script => {
             return !script.cloning_process;
         });
-        if(length) {
+        if (length) {
             let empty_scripts = [];
-            for(let i = 0; i < length; i++) {
+            for (let i = 0; i < length; i++) {
                 empty_scripts.push(new EmptyInactiveScript());
             }
             this.scripts = [...empty_scripts, ...scripts];
@@ -59,6 +78,7 @@ export class ScriptsStore {
             this.scripts = scripts;
         }
     }
+
     filteredScripts(available) {
         let scripts;
         if ((this.scripts && this.scripts.length > 0) || (this.available_scripts && this.available_scripts.length > 0)) {
@@ -68,21 +88,24 @@ export class ScriptsStore {
         }
         return [];
     }
+
     script(id) {
         return this.scripts.concat(this.available_scripts).find(script => parseInt(script.id) === parseInt(id));
     }
+
     table(script, id) {
         return script.data.find(table => table.id === id);
     }
-    link(script, id, with_parents=false) {
+
+    link(script, id, with_parents = false) {
         // "with_parents=true" returns object with link and table.id
-        if(id) {
+        if (id) {
             let all_links = [];
             script.data.forEach(table => {
                 table.colls.forEach(coll => {
                     coll.categories.forEach(category => {
                         category.links.forEach(link => {
-                            if(with_parents) {
+                            if (with_parents) {
                                 all_links.push({link: link, table: table.id, coll: coll.id, category: category.id});
                             } else {
                                 all_links.push(link);
@@ -95,31 +118,35 @@ export class ScriptsStore {
         }
         return null;
     }
+
     scriptUrl(script) {
         return `/tables/${script.id}/`;
     }
-    tableUrl(script, table, mode='share') {
+
+    tableUrl(script, table, mode = 'share') {
         return `${this.scriptUrl(script)}table/${table.id}/${mode}/`;
     }
-    linkURL(script, table, link, mode='share', copy=false) {
-        function get_url(table_to=table.id, link_to=link.id) {
+
+    linkURL(script, table, link, mode = 'share', copy = false) {
+        function get_url(table_to = table.id, link_to = link.id) {
             return `${!copy ? `/tables/${script.id}` : ''}/table/${table_to}/link/${link_to}/${mode}/`;
         }
 
-        if(!link.to_link) {
+        if (!link.to_link) {
             return get_url();
         } else {
             let to_link = this.link(script, link.to_link, true);
             return to_link ? get_url(to_link.table, to_link.link.id) : null;
         }
     }
+
     resetCreating() {
         this.creating_name = '';
         this.creating_template = null;
     }
 
     getTableSortedColls(table) {
-        if(table) {
+        if (table) {
             let sorted_colls = [];
             sorted_colls.push({position: table.text_coll_position, size: table.text_coll_size, text: true});
             table.colls.map(coll => {
@@ -140,7 +167,11 @@ export class ScriptsStore {
         return [];
     }
 
-    @action getScripts(data={page: 1}, success) {
+    @action updateName(script, script_name) {
+        script.name = script_name;
+    }
+
+    @action getScripts(data = {page: 1}, success) {
         $.ajax({
             method: 'GET',
             url: document.body.getAttribute('data-scripts-url'),
@@ -151,34 +182,39 @@ export class ScriptsStore {
             }
         });
     }
+
     @action getInitialData() {
-        if(this.scripts.length === 0) {
+        if (this.scripts.length === 0) {
             this.loading = true;
             function success(res) {
                 res.scripts.forEach(script => this.scripts.push(script));
-                if(res.next_page) {
+                if (res.next_page) {
                     this.getScripts({page: parseInt(res.page) + 1}, success.bind(this));
                 } else {
                     this.loading = false;
                 }
             }
+
             this.getScripts({page: 1}, success.bind(this));
         }
     }
+
     @action getAvailableScripts() {
-        if(this.scripts.length === 0) {
+        if (this.scripts.length === 0) {
             this.loading = true;
             function success(res) {
                 res.scripts.forEach(script => this.available_scripts.push(script));
-                if(res.next_page) {
+                if (res.next_page) {
                     this.getScripts({page: parseInt(res.page) + 1, available_scripts: true}, success.bind(this));
                 } else {
                     this.loading = false;
                 }
             }
+
             this.getScripts({page: 1, available_scripts: true}, success.bind(this));
         }
     }
+
     @action getScriptData(script, cb) {
         this.loading = true;
         $.ajax({
@@ -187,14 +223,14 @@ export class ScriptsStore {
             data: {script: script.id},
             success: (res) => {
                 this.scripts.forEach(from_all_script => {
-                    if(from_all_script.id !== script.id && from_all_script.data.length > 0) {
+                    if (from_all_script.id !== script.id && from_all_script.data.length > 0) {
                         from_all_script.data = [];
                     }
                 });
                 script.data = res.script.data;
                 script.accesses = res.script.accesses;
                 this.loading = false;
-                if(cb) {
+                if (cb) {
                     return cb();
                 }
             },
@@ -203,6 +239,7 @@ export class ScriptsStore {
             }
         });
     }
+
     @action createTable(script) {
         $.ajax({
             method: 'POST',
@@ -218,8 +255,11 @@ export class ScriptsStore {
             }
         });
     }
+
     @action updateTable(script, table, modalStore, e) {
-        if(e) {e.preventDefault()}
+        if (e) {
+            e.preventDefault()
+        }
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-tables-url'),
@@ -228,10 +268,10 @@ export class ScriptsStore {
                 table: table
             }),
             success: (res) => {
-                if(script.data !== res.data) {
+                if (script.data !== res.data) {
                     script.data = res.data;
                 }
-                if(modalStore) {
+                if (modalStore) {
                     modalStore.close_modal();
                     this.editing = null;
                 }
@@ -241,6 +281,7 @@ export class ScriptsStore {
             }
         });
     }
+
     @action deleteTable(script, table) {
         confirm("Вы действительно хотите удалить сценарий: " + table.name).then(
             (result) => {
@@ -264,6 +305,7 @@ export class ScriptsStore {
             }
         )
     }
+
     @action createColl(script, table) {
         $.ajax({
             method: 'POST',
@@ -274,7 +316,7 @@ export class ScriptsStore {
             }),
             success: (res) => {
                 script.data = res.data;
-                if(this.editing && this.editing.colls) {
+                if (this.editing && this.editing.colls) {
                     this.editing.colls.push(res.new_coll);
                 }
             },
@@ -283,7 +325,8 @@ export class ScriptsStore {
             }
         });
     }
-    @action updateColl(script, table, coll, update_data=true) {
+
+    @action updateColl(script, table, coll, update_data = true) {
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-colls-url'),
@@ -293,7 +336,7 @@ export class ScriptsStore {
                 coll: coll
             }),
             success: (res) => {
-                if(script.data !== res.data && update_data) {
+                if (script.data !== res.data && update_data) {
                     script.data = res.data;
                 }
             },
@@ -302,6 +345,7 @@ export class ScriptsStore {
             }
         });
     }
+
     @action deleteColl(script, table, colls, coll, i) {
         confirm("Вы действительно хотите удалить столбец: " + coll.name).then(
             (result) => {
@@ -327,7 +371,8 @@ export class ScriptsStore {
             }
         );
     }
-    @action createLinkCategory(script, table, coll, hidden=false) {
+
+    @action createLinkCategory(script, table, coll, hidden = false) {
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-link-categories-url'),
@@ -346,7 +391,8 @@ export class ScriptsStore {
             }
         });
     }
-    @action updateLinkCategory(script, table, coll, category, update_data=true) {
+
+    @action updateLinkCategory(script, table, coll, category, update_data = true) {
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-link-categories-url'),
@@ -357,7 +403,7 @@ export class ScriptsStore {
                 category: category,
             }),
             success: (res) => {
-                if(script.data !== res.data && update_data) {
+                if (script.data !== res.data && update_data) {
                     script.data = res.data;
                 }
             },
@@ -366,6 +412,7 @@ export class ScriptsStore {
             }
         });
     }
+
     @action deleteLinkCategory(script, table, coll, category, category_index) {
         confirm("Вы действительно хотите удалить категорию: " + category.name).then(
             (result) => {
@@ -392,7 +439,8 @@ export class ScriptsStore {
             }
         )
     }
-    @action createLink(script, table, coll, category, to_link=null) {
+
+    @action createLink(script, table, coll, category, to_link = null) {
         $.ajax({
             method: 'POST',
             url: document.body.getAttribute('data-links-url'),
@@ -412,6 +460,7 @@ export class ScriptsStore {
             }
         });
     }
+
     @action deleteLink(script, table, coll, category, link, link_index) {
         confirm("Вы действительно хотите удалить ссылку: " + link.name).then(
             (result) => {
@@ -439,7 +488,8 @@ export class ScriptsStore {
             }
         )
     }
-    @action updateLink(script, table, coll, category, link, update_data=true) {
+
+    @action updateLink(script, table, coll, category, link, update_data = true) {
         $.ajax({
             method: 'PUT',
             url: document.body.getAttribute('data-links-url'),
@@ -451,7 +501,7 @@ export class ScriptsStore {
                 link: link,
             }),
             success: (res) => {
-                if(script.data !== res.data && update_data) {
+                if (script.data !== res.data && update_data) {
                     script.data = res.data;
                 }
             },

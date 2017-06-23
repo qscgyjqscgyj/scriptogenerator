@@ -3,14 +3,17 @@ import Modal from 'react-modal';
 import {observer} from 'mobx-react';
 
 export const customModalStyles = {
-    content : {
+    content: {
         top: '50%',
         left: '50%',
         right: 'auto',
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
-        maxWidth: '50%'
+        maxWidth: '50%',
+        minHeight: '10%',
+        maxHeight: '100%',
+        overflow: 'scroll',
     }
 };
 
@@ -31,14 +34,14 @@ export class ModalWrapper extends React.Component {
                 onRequestClose={() => {
                     modalStore.close_modal();
                     stores.map(store => {
-                        if(store.editing) {
+                        if (store.editing) {
                             store.editing = null;
                         }
                     });
                 }}
                 onAfterOpen={() => {
                     stores.map(store => {
-                        if(store.editing) {
+                        if (store.editing) {
                             store.resetCreating();
                         }
                     });

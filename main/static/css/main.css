@@ -409,7 +409,11 @@ html, body {
 }
 
 .ReactModal__Content {
-    overflow: visible !important;
+    overflow: auto !important;
+}
+
+.ReactModal__Body--open {
+    overflow: hidden;
 }
 
 /*TABLE*/

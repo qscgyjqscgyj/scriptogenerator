@@ -65,6 +65,11 @@ export class Scripts extends React.Component {
         }
     }
 
+    updateScript(script) {
+        const {scriptsStore} = this.props;
+        scriptsStore.updateScript(script);
+    }
+
     createScript(e) {
         const {scriptsStore, modalStore, usersStore} = this.props;
         e.preventDefault();
@@ -82,25 +87,6 @@ export class Scripts extends React.Component {
                 scriptsStore.resetCreating();
                 modalStore.close_modal();
                 this.checkingCloningScripts();
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
-    }
-
-    updateScript(e, script) {
-        const {scriptsStore, modalStore} = this.props;
-        if (e) {
-            e.preventDefault()
-        }
-        $.ajax({
-            method: 'PUT',
-            url: document.body.getAttribute('data-scripts-url'),
-            data: JSON.stringify((script ? script : scriptsStore.editing)),
-            success: (res) => {
-                script = res.script;
-                modalStore.close_modal();
             },
             error: (res) => {
                 console.log(res);
@@ -316,13 +302,13 @@ export class Scripts extends React.Component {
                                                     <i className="glyphicon glyphicon-edit edit_icon inline_element"
                                                        data-tip="Редактировать скрипт"
                                                        onClick={() => {
-                                                           scriptsStore.editing = script;
                                                            modalStore.open_modal(
                                                                React.createElement(EditingScript, {
+                                                                   script: script,
                                                                    scriptsStore: scriptsStore,
                                                                    modalStore: modalStore,
                                                                    createScript: this.createScript.bind(this),
-                                                                   updateScript: this.updateScript.bind(this),
+                                                                   updateScript: this.updateScript.bind(this, script),
                                                                    available: available
                                                                })
                                                            );
@@ -533,18 +519,36 @@ class CreatingScript extends React.Component {
 }
 
 @observer
-class EditingScript extends React.Component {
+export class EditingScript extends React.Component {
+    constructor(props) {
+        super(props);
+        const {scriptsStore} = this.props;
+
+        this.script = this.props.script ? this.props.script : scriptsStore.editing;
+    }
+
+    updateScriptFormHandler(e) {
+        e.preventDefault();
+        const {scriptsStore, modalStore} = this.props;
+        scriptsStore.updateScript(this.script, modalStore);
+    }
+
+    scriptNameHandler(e) {
+        const {scriptsStore} = this.props;
+        scriptsStore.updateName(this.script, e.target.value);
+    }
+
     render() {
         const {scriptsStore, available} = this.props;
-        if (scriptsStore.editing) {
+        if (this.script) {
             return (
                 <div className="row">
-                    <form action="" onSubmit={(e) => this.props.updateScript(e)}>
+                    <form action="" onSubmit={this.updateScriptFormHandler.bind(this)}>
                         <div className="col-md-12">
                             <div className="form-group">
                                 <input className="form-control"
-                                       onChange={(e) => scriptsStore.editing.name = e.target.value}
-                                       value={scriptsStore.editing.name} type="text" name="name"
+                                       onChange={this.scriptNameHandler.bind(this)}
+                                       value={this.script.name} type="text" name="name"
                                        placeholder="Имя скрипта"/>
                             </div>
                         </div>

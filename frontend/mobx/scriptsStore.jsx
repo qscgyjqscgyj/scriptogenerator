@@ -118,6 +118,28 @@ export class ScriptsStore {
         this.creating_template = null;
     }
 
+    getTableSortedColls(table) {
+        if(table) {
+            let sorted_colls = [];
+            sorted_colls.push({position: table.text_coll_position, size: table.text_coll_size, text: true});
+            table.colls.map(coll => {
+                sorted_colls.push({coll: coll, position: coll.position, text: false});
+            });
+            return sorted_colls.sort(
+                function (a, b) {
+                    if (a.position > b.position) {
+                        return 1;
+                    }
+                    if (a.position < b.position) {
+                        return -1;
+                    }
+                    return 0;
+                }
+            );
+        }
+        return [];
+    }
+
     @action getScripts(data={page: 1}, success) {
         $.ajax({
             method: 'GET',

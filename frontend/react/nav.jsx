@@ -2,6 +2,8 @@ import * as React from 'react';
 import {Link} from 'react-router';
 import {observer} from 'mobx-react';
 import {Switcher} from './switcher';
+import {ModalWrapper} from './modal';
+import {NavTableCollsEditor} from './table';
 
 const STATIC_URL = document.body.getAttribute('data-static-url');
 
@@ -25,8 +27,13 @@ export class Nav extends React.Component {
         });
     }
 
+    openNavTableCollsEditor() {
+        const {modalStore} = this.props;
+        modalStore.open_modal(React.createElement(NavTableCollsEditor, {...this.props}));
+    }
+
     render() {
-        const {usersStore, scriptsStore, settingsStore} = this.props;
+        const {usersStore, scriptsStore, settingsStore, modalStore} = this.props;
         let script = scriptsStore.script(this.props.params.script);
         let edit = this.props.location.pathname.includes('edit');
 
@@ -138,6 +145,14 @@ export class Nav extends React.Component {
 
                             {this.props.location.pathname.includes('edit') ?
                                 <li>
+                                    <a className="nav_settings_icon_container" onClick={this.openNavTableCollsEditor.bind(this)}>
+                                        <i className="glyphicon glyphicon-cog nav_settings_icon"/>
+                                    </a>
+                                </li>
+                                : null}
+
+                            {this.props.location.pathname.includes('edit') ?
+                                <li>
                                     <Link to={
                                         '/tables/' + this.props.params.script +
                                         '/table/' + this.props.params.table +
@@ -206,6 +221,7 @@ export class Nav extends React.Component {
                         </div>
                     </div>
                     : null}
+                <ModalWrapper stores={[scriptsStore, usersStore]} modalStore={modalStore}/>
             </nav>
         );
     }

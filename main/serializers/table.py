@@ -28,7 +28,7 @@ class TableSerializer(serializers.Serializer):
     id = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
     text_coll_name = serializers.CharField(required=True)
-    text_coll_size = serializers.IntegerField(required=True)
+    text_coll_size = serializers.FloatField(required=True)
     text_coll_position = serializers.IntegerField(required=True)
     date = DateTimeField(required=False, read_only=True)
     date_mod = serializers.DateTimeField(required=True)
@@ -41,7 +41,7 @@ class TableSerializer(serializers.Serializer):
 class TableLinksCollSerializer(serializers.Serializer):
     id = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
-    size = serializers.IntegerField(required=True)
+    size = serializers.FloatField(required=True)
     position = serializers.IntegerField(required=True)
     categories = LinkCategoriesField()
 

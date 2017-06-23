@@ -14,6 +14,7 @@ import Select from 'react-select';
 import {extendObservable} from 'mobx';
 import {Tooltip} from './tooltip';
 import {scriptsIsLoaded} from './scriptsIsLoaded';
+import {UISlider} from './ui_slider';
 
 const ALT_CODE = 18;
 const CTRL_CODE = 17;
@@ -98,29 +99,6 @@ class Table extends AccessableComponent {
     componentDidUpdate() {
         this.fixHeight();
     }
-    sortedColls() {
-        const {scriptsStore} = this.props;
-        const script = scriptsStore.script(this.props.params.script);
-        const table = scriptsStore.table(script, this.props.params.table);
-        if(table) {
-            let sorted_colls = [];
-            sorted_colls.push({position: table.text_coll_position, text: true});
-            table.colls.map(coll => {
-                sorted_colls.push({coll: coll, position: coll.position, text: false});
-            });
-            return sorted_colls.sort(
-                function (a, b) {
-                    if (a.position > b.position) {
-                        return 1;
-                    }
-                    if (a.position < b.position) {
-                        return -1;
-                    }
-                    return 0;
-                }
-            );
-        }
-    }
     copyLink(link) {
         const {scriptsStore} = this.props;
         const script = scriptsStore.script(this.props.params.script);
@@ -203,7 +181,7 @@ class TableEdit extends Table {
         const script = scriptsStore.script(this.props.params.script);
         let table = scriptsStore.table(script, this.props.params.table);
         let active_link = scriptsStore.link(script, this.props.params.link, true);
-        let sorted_colls = this.sortedColls();
+        let sorted_colls = scriptsStore.getTableSortedColls(table);
         let coll_name, coll_size;
 
         if(usersStore.session_user) {
@@ -467,7 +445,7 @@ class TableShare extends Table {
         const script = scriptsStore.script(this.props.params.script);
         const table = scriptsStore.table(script, this.props.params.table);
         let active_link = scriptsStore.link(script, this.props.params.link);
-        let sorted_colls = this.sortedColls();
+        let sorted_colls = scriptsStore.getTableSortedColls(table);
         let coll_name, coll_size;
         if(usersStore.session_user) {
             let access = this.access(usersStore, script);
@@ -750,5 +728,112 @@ export class TableShareWrapper extends React.Component {
 export class TableEditWrapper extends React.Component {
     render() {
         return React.createElement(scriptsIsLoaded, {...this.props, renderComponent: TableEdit});
+    }
+}
+
+
+@observer
+export class NavTableCollsEditor extends React.Component {
+    constructor(props) {
+        super(props);
+
+        const {scriptsStore} = this.props;
+
+        this.script = scriptsStore.script(this.props.params.script);
+        this.table = scriptsStore.table(this.script, this.props.params.table);
+    }
+
+    sliderHandler(slided_coll, new_size, update_data=false) {
+        const {scriptsStore} = this.props;
+        let old_size;
+        let sorted_colls = scriptsStore.getTableSortedColls(this.table);
+        let another_colls = [];
+
+        if(slided_coll.text) {
+            old_size = this.table.text_coll_size;
+            this.table.text_coll_size = new_size;
+        } else {
+            old_size = slided_coll.coll.size;
+            slided_coll.coll.size = new_size;
+        }
+
+        if(slided_coll.text) {
+            sorted_colls.forEach((coll) => {
+                if(!coll.text) {
+                    another_colls.push(coll);
+                }
+            });
+        } else {
+            sorted_colls.forEach((coll) => {
+                if(coll.text) {
+                    another_colls.push(coll);
+                } else if(coll.coll.id !== slided_coll.coll.id) {
+                    another_colls.push(coll);
+                }
+            });
+        }
+
+        let differ_size = 0;
+        if(new_size > old_size) {
+            differ_size = (new_size - old_size) / another_colls.length;
+            another_colls.forEach((coll) => {
+                if(coll.text) {
+                    this.table.text_coll_size = this.table.text_coll_size - differ_size
+                } else {
+                    coll.coll.size = coll.coll.size - differ_size
+                }
+            })
+        } else if(new_size < old_size) {
+            differ_size = (old_size - new_size) / another_colls.length;
+            another_colls.forEach((coll) => {
+                if(coll.text) {
+                    this.table.text_coll_size = this.table.text_coll_size + differ_size
+                } else {
+                    coll.coll.size = coll.coll.size + differ_size
+                }
+            })
+        }
+
+        if(update_data) {
+            const {scriptsStore} = this.props;
+            scriptsStore.updateTable(this.script, this.table);
+        }
+    }
+
+    sliderOnChange(coll, new_size) {
+        return this.sliderHandler(coll, new_size, false);
+    }
+
+    sliderOnAfterChange(coll, new_size) {
+        return this.sliderHandler(coll, new_size, true);
+    }
+
+    render() {
+        const {scriptsStore} = this.props;
+        let sorted_colls = scriptsStore.getTableSortedColls(this.table);
+
+        return (
+            <div className="col-md-12">
+                {sorted_colls.map((coll, key) => {
+                    return (
+                        <div key={key} className="col-md-12">
+                            <div className="slider_container">
+                                <UISlider
+                                    title={
+                                        coll.text ?
+                                            `${this.table.text_coll_name}. Text coll size: ${parseInt(this.table.text_coll_size)}`
+                                            :
+                                            `${coll.coll.name}. Size: ${parseInt(coll.coll.size)}`
+                                    }
+                                    min={0} max={100}
+                                    value={parseInt(coll.text ? coll.size : coll.coll.size)}
+                                    onChange={this.sliderOnChange.bind(this, coll)}
+                                    onAfterChange={this.sliderOnAfterChange.bind(this, coll)} />
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        )
     }
 }

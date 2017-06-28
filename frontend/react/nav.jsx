@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import {Switcher} from './switcher';
 import {ModalWrapper} from './modal';
 import {NavTableCollsEditor} from './table';
-import {Tabs} from 'react-simpletabs';
+import {Tab, Tabs, TabPanel, TabList} from 'react-tabs';
 import {EditingScript} from './scripts';
 import {Team} from './profile/team';
 
@@ -34,7 +34,7 @@ export class Nav extends React.Component {
     openNavTableCollsEditor() {
         const {modalStore} = this.props;
         // modalStore.open_modal(React.createElement(NavTableCollsEditor, {...this.props}));
-        modalStore.open_modal(React.createElement(NavModalSettongs, {...this.props}));
+        modalStore.open_modal(React.createElement(NavModalSettings, {...this.props}), 200);
     }
 
     render() {
@@ -238,7 +238,8 @@ export class Nav extends React.Component {
 }
 
 
-class NavModalSettongs extends React.Component {
+@observer
+class NavModalSettings extends React.Component {
     constructor(props) {
         super(props);
         const {scriptsStore} = this.props;
@@ -250,7 +251,7 @@ class NavModalSettongs extends React.Component {
         const {scriptsStore} = this.props;
         let script_name = e.target.value;
 
-        if(script_name.length > 0) {
+        if (script_name.length > 0) {
             scriptsStore.updateName(script, script_name);
         } else {
             alert('Имя скрипта не должно быть пустым');
@@ -260,51 +261,53 @@ class NavModalSettongs extends React.Component {
     render() {
         const {scriptsStore} = this.props;
         return (
-            <Tabs>
-                <TabList>
-                    <Tab>Главное</Tab>
-                    <Tab>Доступ к скрипту</Tab>
-                    <Tab>Выгрузка скрипта</Tab>
-                    <Tab>Перенос скрипта</Tab>
-                    <Tab>Сценарии</Tab>
-                </TabList>
+            <div className="col-md-12">
+                <Tabs>
+                    <TabList>
+                        <Tab>Главное</Tab>
+                        <Tab>Доступ к скрипту</Tab>
+                        <Tab>Выгрузка скрипта</Tab>
+                        <Tab>Перенос скрипта</Tab>
+                        <Tab>Сценарии</Tab>
+                    </TabList>
 
-                <TabPanel>
-                    <div className="col-md-12">
-                        {/*{React.createElement(NavTableCollsEditor, {...this.props})}*/}
-                        <h3>Изменить название скрипта</h3>
-                        {React.createElement(EditingScript, {...this.props, script: this.script})}
-                    </div>
-                </TabPanel>
+                    <TabPanel>
+                        <div className="col-md-12">
+                            {/*{React.createElement(NavTableCollsEditor, {...this.props})}*/}
+                            <h3>Изменить название скрипта</h3>
+                            {React.createElement(EditingScript, {...this.props, script: this.script})}
+                        </div>
+                    </TabPanel>
 
-                <TabPanel>
-                    <div className="col-md-12">
-                        <h3>Редактирование доступов к скрипту</h3>
-                    </div>
-                    <div className="col-md-12">
-                        <h3>Управление командой</h3>
-                        {React.createElement(Team, {...this.props})}
-                    </div>
-                </TabPanel>
+                    <TabPanel>
+                        <div className="col-md-12">
+                            <h3>Редактирование доступов к скрипту</h3>
+                        </div>
+                        {/*<div className="col-md-12">*/}
+                            {/*<h3>Управление командой</h3>*/}
+                            {/*{React.createElement(Team, {...this.props})}*/}
+                        {/*</div>*/}
+                    </TabPanel>
 
-                <TabPanel>
-                    <div className="col-md-12">
-                        Выгрузка скрипта
-                    </div>
-                </TabPanel>
+                    <TabPanel>
+                        <div className="col-md-12">
+                            Выгрузка скрипта
+                        </div>
+                    </TabPanel>
 
-                <TabPanel>
-                    <div className="col-md-12">
-                        Перенос скрипта
-                    </div>
-                </TabPanel>
+                    <TabPanel>
+                        <div className="col-md-12">
+                            Перенос скрипта
+                        </div>
+                    </TabPanel>
 
-                <TabPanel>
-                    <div className="col-md-12">
-                        Сценарии
-                    </div>
-                </TabPanel>
-            </Tabs>
+                    <TabPanel>
+                        <div className="col-md-12">
+                            Сценарии
+                        </div>
+                    </TabPanel>
+                </Tabs>
+            </div>
         )
     }
 }

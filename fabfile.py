@@ -12,6 +12,7 @@ server_project_dir = '/home/Django/scripts'
 def deploy():
     with cd(server_project_dir):
         try:
+            local('./webpack -p')
             local('git add .')
             local('git commit -a -m "deploy: %s"' % datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             local('git push origin master')

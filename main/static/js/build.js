@@ -96287,27 +96287,7 @@
 	        {var
 	            scriptsStore = this.props.scriptsStore;
 	            return (
-	                React.createElement('div', { className: 'col-md-12' },
-	                    React.createElement(_reactTabs.Tabs, null,
-	                        React.createElement(_reactTabs.TabList, null,
-	                            React.createElement(_reactTabs.Tab, null, '\u0413\u043B\u0430\u0432\u043D\u043E\u0435'),
-	                            React.createElement(_reactTabs.Tab, null, '\u0414\u043E\u0441\u0442\u0443\u043F \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443'),
-	                            React.createElement(_reactTabs.Tab, null, '\u0412\u044B\u0433\u0440\u0443\u0437\u043A\u0430 \u0441\u043A\u0440\u0438\u043F\u0442\u0430'),
-	                            React.createElement(_reactTabs.Tab, null, '\u041F\u0435\u0440\u0435\u043D\u043E\u0441 \u0441\u043A\u0440\u0438\u043F\u0442\u0430'),
-	                            React.createElement(_reactTabs.Tab, null, '\u0421\u0446\u0435\u043D\u0430\u0440\u0438\u0438')),
-	
-	
-	                        React.createElement(_reactTabs.TabPanel, null,
-	                            React.createElement('div', { className: 'col-md-12' },
-	
-	                                React.createElement('h3', null, '\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0441\u043A\u0440\u0438\u043F\u0442\u0430'),
-	                                React.createElement(_scripts.EditingScript, _extends({}, this.props, { script: this.script })))),
-	
-	
-	
-	                        React.createElement(_reactTabs.TabPanel, null,
-	                            React.createElement('div', { className: 'col-md-12' },
-	                                React.createElement('h3', null, '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0434\u043E\u0441\u0442\u0443\u043F\u043E\u0432 \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443'))),
+	                React.createElement('div', { className: 'col-md-12' }));
 	
 	
 	
@@ -96315,20 +96295,40 @@
 	
 	
 	
-	                        React.createElement(_reactTabs.TabPanel, null,
-	                            React.createElement('div', { className: 'col-md-12' }, '\u0412\u044B\u0433\u0440\u0443\u0437\u043A\u0430 \u0441\u043A\u0440\u0438\u043F\u0442\u0430')),
 	
 	
 	
 	
-	                        React.createElement(_reactTabs.TabPanel, null,
-	                            React.createElement('div', { className: 'col-md-12' }, '\u041F\u0435\u0440\u0435\u043D\u043E\u0441 \u0441\u043A\u0440\u0438\u043F\u0442\u0430')),
 	
 	
 	
 	
-	                        React.createElement(_reactTabs.TabPanel, null,
-	                            React.createElement('div', { className: 'col-md-12' }, '\u0421\u0446\u0435\u043D\u0430\u0440\u0438\u0438')))));
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

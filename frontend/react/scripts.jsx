@@ -4,7 +4,6 @@ import $ from 'jquery';
 import update from 'react-addons-update';
 import {observer} from 'mobx-react';
 import Modal from 'react-modal';
-import {ModalWrapper} from './modal';
 import {Link} from 'react-router';
 import Select from 'react-select';
 import {Paginator, getChunkedArray} from './pagination';
@@ -66,32 +65,41 @@ export class Scripts extends React.Component {
     }
 
     updateScript(script) {
-        const {scriptsStore} = this.props;
-        scriptsStore.updateScript(script);
+        const {scriptsStore, modalStore} = this.props;
+        if (script.name) {
+            scriptsStore.updateScript(script, modalStore)
+        } else {
+            alert('Введите название скрипта');
+        }
     }
 
     createScript(e) {
         const {scriptsStore, modalStore, usersStore} = this.props;
         e.preventDefault();
-        scriptsStore.createCloningProcess(1);
-        $.ajax({
-            method: 'POST',
-            url: document.body.getAttribute('data-scripts-url'),
-            data: JSON.stringify({
-                name: scriptsStore.creating_name,
-                owner: usersStore.session_user,
-                template: scriptsStore.creating_template
-            }),
-            success: (res) => {
-                scriptsStore.scripts = res.scripts;
-                scriptsStore.resetCreating();
-                modalStore.close_modal();
-                this.checkingCloningScripts();
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
+        if (scriptsStore.creating_name) {
+            scriptsStore.createCloningProcess(1);
+            $.ajax({
+                method: 'POST',
+                url: document.body.getAttribute('data-scripts-url'),
+                data: JSON.stringify({
+                    name: scriptsStore.creating_name,
+                    owner: usersStore.session_user,
+                    template: scriptsStore.creating_template
+                }),
+                success: (res) => {
+                    scriptsStore.scripts = res.scripts;
+                    scriptsStore.resetCreating();
+                    modalStore.close_modal();
+                    this.checkingCloningScripts();
+                },
+                error: (res) => {
+                    console.log(res);
+                }
+            });
+
+        } else {
+            alert('Введите имя скрипта');
+        }
     }
 
     deleteScript(script) {
@@ -142,7 +150,8 @@ export class Scripts extends React.Component {
                 usersStore: usersStore,
                 modalStore: modalStore,
                 delegateScript: this.delegateScript.bind(this)
-            })
+            }),
+            'Перенос скрипта'
         )
     }
 
@@ -175,8 +184,10 @@ export class Scripts extends React.Component {
                 script: script,
                 usersStore: usersStore,
                 modalStore: modalStore,
-                createScriptExport: this.createScriptExport.bind(this)
-            })
+            }),
+            'Выгрузка скрипта',
+            this.createScriptExport.bind(this, script),
+            'Скачать'
         )
     }
 
@@ -258,10 +269,11 @@ export class Scripts extends React.Component {
                                         React.createElement(CreatingScript, {
                                             scriptsStore: scriptsStore,
                                             modalStore: modalStore,
-                                            createScript: this.createScript.bind(this),
-                                            updateScript: this.updateScript.bind(this),
                                             available: available
-                                        })
+                                        }),
+                                        'Создание скрипта',
+                                        this.createScript.bind(this),
+                                        'Создать'
                                     );
                                 }} className="btn btn-success">+ Создать скрипт
                                 </button>
@@ -307,10 +319,10 @@ export class Scripts extends React.Component {
                                                                    script: script,
                                                                    scriptsStore: scriptsStore,
                                                                    modalStore: modalStore,
-                                                                   createScript: this.createScript.bind(this),
-                                                                   updateScript: this.updateScript.bind(this, script),
                                                                    available: available
-                                                               })
+                                                               }),
+                                                               'Редактирование скрипта',
+                                                               this.updateScript.bind(this, script)
                                                            );
                                                        }}/>
                                                     :
@@ -357,7 +369,8 @@ export class Scripts extends React.Component {
                                                                         modalStore: modalStore,
                                                                         setAccesses: this.setAccesses.bind(this),
                                                                         delegateScript: this.delegateScript.bind(this)
-                                                                    })
+                                                                    }),
+                                                                    'Редактирование прав доступа к скрипту'
                                                                 )
                                                             });
                                                         }}>
@@ -424,7 +437,6 @@ export class Scripts extends React.Component {
                             : null}
                     </div>
                     <Tooltip />
-                    <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>
                 </div>
             );
         }
@@ -436,83 +448,54 @@ export class Scripts extends React.Component {
 class CreatingScript extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            error: null
-        }
-    }
-
-    setError(error) {
-        this.setState(update(this.state, {error: {$set: error}}))
-    }
-
-    submitScript(e) {
-        e.preventDefault();
-        const {scriptsStore} = this.props;
-        if (scriptsStore.creating_name) {
-            this.props.createScript(e)
-        } else {
-            this.setError('Введите имя скрипта');
-        }
     }
 
     render() {
         const {scriptsStore} = this.props;
-        const {error} = this.state;
         return (
             <div className="row">
-                <form action="" onSubmit={this.submitScript.bind(this)}>
-                    <div className="col-md-12">
-                        <div className={`form-group ${error ? 'has-error' : ''}`}>
-                            {error ?
-                                <label className="control-label">{error}</label>
-                                : null}
-                            <input className="form-control" onChange={(e) => {
-                                scriptsStore.creating_name = e.target.value
-                            }} value={scriptsStore.creating_name} type="text" name="name" placeholder="Имя скрипта"/>
-                        </div>
+                <div className="col-md-12">
+                    <div className='form-group'>
+                        <input className="form-control" onChange={(e) => {
+                            scriptsStore.creating_name = e.target.value
+                        }} value={scriptsStore.creating_name} type="text" name="name" placeholder="Имя скрипта"/>
                     </div>
-                    <div className="col-md-12">
-                        <div className="radio">
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="optionsRadios"
-                                    id="optionsRadios1"
-                                    value="option1"
-                                    defaultChecked={!scriptsStore.creating_template}
-                                    onChange={() => {
-                                        scriptsStore.creating_template = null
-                                    }}
-                                />
-                                Пустой
-                            </label>
-                        </div>
-                        {scriptsStore.template_scripts.map((script, key) => {
-                            let is_checked = (scriptsStore.creating_template ? script.id === scriptsStore.creating_template.id : false);
-                            return (
-                                <div key={key} className="radio">
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="optionsRadios"
-                                            defaultChecked={is_checked}
-                                            onChange={() => {
-                                                scriptsStore.creating_template = script
-                                            }}
-                                        />
-                                        {script.name}
-                                    </label>
-                                </div>
-                            )
-                        })}
+                </div>
+                <div className="col-md-12">
+                    <div className="radio">
+                        <label>
+                            <input
+                                type="radio"
+                                name="optionsRadios"
+                                id="optionsRadios1"
+                                value="option1"
+                                defaultChecked={!scriptsStore.creating_template}
+                                onChange={() => {
+                                    scriptsStore.creating_template = null
+                                }}
+                            />
+                            Пустой
+                        </label>
                     </div>
-                    <div className="col-md-12">
-                        <div className="form-group">
-                            <button className="btn btn-success" type="submit">Создать</button>
-                        </div>
-                    </div>
-                </form>
+                    {scriptsStore.template_scripts.map((script, key) => {
+                        let is_checked = (scriptsStore.creating_template ? script.id === scriptsStore.creating_template.id : false);
+                        return (
+                            <div key={key} className="radio">
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="optionsRadios"
+                                        defaultChecked={is_checked}
+                                        onChange={() => {
+                                            scriptsStore.creating_template = script
+                                        }}
+                                    />
+                                    {script.name}
+                                </label>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         )
     }
@@ -550,11 +533,6 @@ export class EditingScript extends React.Component {
                                        onChange={this.scriptNameHandler.bind(this)}
                                        value={this.script.name} type="text" name="name"
                                        placeholder="Имя скрипта"/>
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <div className="form-group">
-                                <button className="btn btn-success" type="submit">Сохранить</button>
                             </div>
                         </div>
                     </form>
@@ -662,10 +640,6 @@ class Accesses extends React.Component {
                                 this.onSelect(selects, false)
                             }}/>
                     </div>
-                    <hr/>
-                    <button className="btn btn-success" onClick={this.closeModal.bind(this)}>
-                        Сохранить
-                    </button>
                 </div>
             </div>
         )
@@ -737,6 +711,10 @@ class DelegationScript extends React.Component {
 
 @observer
 export class OfflineScriptExport extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         const {usersStore, exportingContentBlock} = this.props;
 
@@ -769,6 +747,10 @@ export class OfflineScriptExport extends React.Component {
 
 @observer
 class CreateOfflineScriptExport extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     componentWillMount() {
         const {usersStore} = this.props;
         usersStore.getOfflineScriptsExportAccesses();
@@ -791,17 +773,6 @@ class CreateOfflineScriptExport extends React.Component {
             <div className="row">
                 <div className="col-md-12">
                     <h4>Вы уверены, что хотите скачать скрипт "{script.name}"?</h4>
-                </div>
-                <div className="col-md-12 script_export_confirm_block">
-                    <div className="col-md-6">
-                        <button className="custom_button btn btn-success"
-                                onClick={this.props.createScriptExport.bind(this, script)}>Да
-                        </button>
-                    </div>
-                    <div className="col-md-6">
-                        <button className="custom_button btn btn-danger" onClick={this.cancelExporting.bind(this)}>Нет
-                        </button>
-                    </div>
                 </div>
             </div>
         )
@@ -859,6 +830,10 @@ class MultiSelectField extends React.Component {
 
 @observer
 export class AvailableScripts extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return React.cloneElement(React.createElement(Scripts, this.props), {available: true});
     }

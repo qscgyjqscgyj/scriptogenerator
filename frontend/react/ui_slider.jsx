@@ -27,6 +27,10 @@ const handle = (props) => {
 
 @observer
 export class UISlider extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <div>

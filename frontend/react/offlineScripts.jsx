@@ -1,12 +1,15 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import {ModalWrapper} from './modal';
 import {OfflineScriptExport} from './scripts';
 import {Tooltip} from './tooltip';
 import $ from 'jquery';
 
+
 @observer
 export class OfflineScripts extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     componentWillMount() {
         const {usersStore} = this.props;
@@ -47,11 +50,12 @@ export class OfflineScripts extends React.Component {
 
         modalStore.open_modal(
             React.createElement(UpdateOfflineScriptExport, {
-                script_access: script_access,
-                usersStore: usersStore,
-                modalStore: modalStore,
-                updateScriptExport: this.updateScriptExport.bind(this)
-            })
+                ...this.props,
+                script_access: script_access
+            }),
+            'Обновление скачанного скрипта',
+            this.updateScriptExport.bind(this, script_access),
+            'Обновить'
         )
     }
 
@@ -90,7 +94,6 @@ export class OfflineScripts extends React.Component {
                             )
                         })}
                     </div>
-                    <ModalWrapper stores={[usersStore]} modalStore={modalStore}/>
                 </div>
             );
         }
@@ -101,6 +104,10 @@ export class OfflineScripts extends React.Component {
 
 @observer
 class UpdateOfflineScriptExport extends React.Component {
+    constructor(props){
+        super(props);
+    }
+
     componentWillMount() {
         const {usersStore} = this.props;
         usersStore.getOfflineScriptsExportAccesses();
@@ -124,17 +131,17 @@ class UpdateOfflineScriptExport extends React.Component {
                 <div className="col-md-12">
                     <h4>Вы уверены, что хотите обновить скрипт "{script_access.script.name}"?</h4>
                 </div>
-                <div className="col-md-12 script_export_confirm_block">
-                    <div className="col-md-6">
-                        <button className="custom_button btn btn-success"
-                                onClick={this.props.updateScriptExport.bind(this, script_access)}>Да
-                        </button>
-                    </div>
-                    <div className="col-md-6">
-                        <button className="custom_button btn btn-danger" onClick={this.cancelUpdating.bind(this)}>Нет
-                        </button>
-                    </div>
-                </div>
+                {/*<div className="col-md-12 script_export_confirm_block">*/}
+                    {/*<div className="col-md-6">*/}
+                        {/*<button className="custom_button btn btn-success"*/}
+                                {/*onClick={this.props.updateScriptExport.bind(this, script_access)}>Да*/}
+                        {/*</button>*/}
+                    {/*</div>*/}
+                    {/*<div className="col-md-6">*/}
+                        {/*<button className="custom_button btn btn-danger" onClick={this.cancelUpdating.bind(this)}>Нет*/}
+                        {/*</button>*/}
+                    {/*</div>*/}
+                {/*</div>*/}
             </div>
         )
     }

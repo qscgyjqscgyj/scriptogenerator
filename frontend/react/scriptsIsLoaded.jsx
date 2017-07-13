@@ -4,6 +4,10 @@ import {Link} from 'react-router';
 
 @observer
 export class scriptsIsLoaded extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         const {scriptsStore, renderComponent} = this.props;
         if((scriptsStore.scripts && scriptsStore.scripts.length > 0 ) || (scriptsStore.available_scripts && scriptsStore.available_scripts.length > 0)) {

@@ -4,6 +4,10 @@ import {Link} from 'react-router';
 
 @observer
 export class NoMoney extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <div className="col-md-12">
@@ -18,6 +22,10 @@ export class NoMoney extends React.Component {
 
 @observer
 export class NoScriptOwnerMoney extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <div className="col-md-12">
@@ -32,6 +40,10 @@ export class NoScriptOwnerMoney extends React.Component {
 
 @observer
 export class NoAccess extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <div className="col-md-12">

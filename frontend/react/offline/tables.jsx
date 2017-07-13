@@ -52,6 +52,10 @@ class Tables extends React.Component {
 
 @observer
 export class TablesWrapper extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return React.createElement(Tables, {...this.props});
     }

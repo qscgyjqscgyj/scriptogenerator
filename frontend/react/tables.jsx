@@ -2,7 +2,6 @@ import * as React from 'react';
 import $ from 'jquery';
 import {observer} from 'mobx-react';
 import update from 'react-addons-update';
-import {ModalWrapper} from './modal';
 import {Link} from 'react-router';
 import {Sort} from './sort';
 import {AccessableComponent} from './access';
@@ -12,10 +11,14 @@ import Select from 'react-select';
 
 @observer
 class Tables extends AccessableComponent {
+    constructor(props) {
+        super(props);
+    }
+
     componentWillMount() {
         const {scriptsStore} = this.props;
         const script = scriptsStore.script(this.props.params.script);
-        if(script && !script.data.length > 0) {
+        if (script && !script.data.length > 0) {
             scriptsStore.getScriptData(script);
         }
     }
@@ -30,7 +33,8 @@ class Tables extends AccessableComponent {
                 scriptsStore: scriptsStore,
                 script: script,
                 modalStore: modalStore,
-            })
+            }),
+            'Редактирование сценария'
         );
     }
 
@@ -44,7 +48,8 @@ class Tables extends AccessableComponent {
                 script: script,
                 table: table,
                 modalStore: modalStore,
-            })
+            }),
+            'Копирование сценария'
         );
     }
 
@@ -57,31 +62,33 @@ class Tables extends AccessableComponent {
 
     render() {
         const {scriptsStore, modalStore, usersStore} = this.props;
-        if(usersStore.session_user) {
+        if (usersStore.session_user) {
             let script = scriptsStore.script(this.props.params.script);
             let access = this.access(usersStore, script);
-            if(script && script.data && access) {
-                return(
+            if (script && script.data && access) {
+                return (
                     <div className="col-md-12">
                         {access.edit ?
                             <div className="row list_controls">
                                 <div className="col-md-2">
                                     <button onClick={() => {
                                         scriptsStore.createTable(script);
-                                    }} className="btn btn-success">+ Создать сценарий</button>
+                                    }} className="btn btn-success">+ Создать сценарий
+                                    </button>
                                 </div>
                                 <div className="col-md-7">
                                     <h4>{script.name}</h4>
                                 </div>
                             </div>
-                        : null}
+                            : null}
                         <div className="row">
-                            {script.data.map((table, key)=>{
+                            {script.data.map((table, key) => {
                                 return (
                                     <div key={key} className="col-md-12 hovered_list_item list_item edit_icon_handler">
                                         <div className="col-md-6">
                                             <span className="inline_elements">
-                                                <Link className="inline_element" to={scriptsStore.tableUrl(script, table)}>{table.name}</Link>
+                                                <Link className="inline_element"
+                                                      to={scriptsStore.tableUrl(script, table)}>{table.name}</Link>
                                             </span>
                                         </div>
 
@@ -117,7 +124,6 @@ class Tables extends AccessableComponent {
                                 )
                             })}
                         </div>
-                        <ModalWrapper stores={[scriptsStore]} modalStore={modalStore}/>
                     </div>
                 );
             }
@@ -129,6 +135,10 @@ class Tables extends AccessableComponent {
 
 @observer
 class AvailableTables extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return React.cloneElement(React.createElement(Tables, this.props), {available: true});
     }
@@ -136,15 +146,23 @@ class AvailableTables extends React.Component {
 
 @observer
 class EditingTable extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         const {script, scriptsStore, modalStore} = this.props;
-        if(scriptsStore.editing) {
+        if (scriptsStore.editing) {
             return (
                 <div className="row">
-                    <form action="" onSubmit={(e) => scriptsStore.updateTable(script, scriptsStore.editing, modalStore, e)}>
+                    <form action=""
+                          onSubmit={(e) => scriptsStore.updateTable(script, scriptsStore.editing, modalStore, e)}>
                         <div className="col-md-12">
                             <div className="form-group">
-                                <input className="form-control" onChange={(e) => scriptsStore.editing.name = e.target.value} value={scriptsStore.editing.name} type="text" name="name" placeholder="Имя сценария"/>
+                                <input className="form-control"
+                                       onChange={(e) => scriptsStore.editing.name = e.target.value}
+                                       value={scriptsStore.editing.name} type="text" name="name"
+                                       placeholder="Имя сценария"/>
                             </div>
                         </div>
 
@@ -152,7 +170,10 @@ class EditingTable extends React.Component {
 
                         <div className="col-md-12">
                             <div className="form-group">
-                                <button className="btn btn-success" disabled={scriptsStore.editing.colls_creating_error_message} type="submit">Сохранить</button>
+                                <button className="btn btn-success"
+                                        disabled={scriptsStore.editing.colls_creating_error_message} type="submit">
+                                    Сохранить
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -175,13 +196,18 @@ class CloningTable extends React.Component {
     }
 
     triggerCloneToCurrentScript() {
-        this.setState(update(this.state, {$set: {clone_to_current_script: !this.state.clone_to_current_script, to_script: null}}))
+        this.setState(update(this.state, {
+            $set: {
+                clone_to_current_script: !this.state.clone_to_current_script,
+                to_script: null
+            }
+        }))
     }
 
     setToScript(selected_script) {
         const {clone_to_current_script} = this.state;
 
-        if(!clone_to_current_script) {
+        if (!clone_to_current_script) {
             const {scriptsStore} = this.props;
             let script = scriptsStore.script(selected_script.value);
             this.setState(update(this.state, {$set: {to_script: script}}))
@@ -194,9 +220,9 @@ class CloningTable extends React.Component {
         const {clone_to_current_script, to_script} = this.state;
         let to_script_result;
 
-        if(clone_to_current_script) {
+        if (clone_to_current_script) {
             to_script_result = this.props.script;
-        } else if(to_script) {
+        } else if (to_script) {
             to_script_result = to_script;
         }
 
@@ -231,7 +257,7 @@ class CloningTable extends React.Component {
         const {scriptsStore} = this.props;
         const {clone_to_current_script, to_script} = this.state;
 
-        return(
+        return (
             <div className="row">
                 <div className="col-md-12">
                     <h3>Копировать сценарий</h3>
@@ -241,7 +267,8 @@ class CloningTable extends React.Component {
                             <div className="form-group">
                                 <div className="radio">
                                     <label>
-                                        <input onChange={this.triggerCloneToCurrentScript.bind(this)} type="radio" name="clone_to_current_script" checked={clone_to_current_script}/>
+                                        <input onChange={this.triggerCloneToCurrentScript.bind(this)} type="radio"
+                                               name="clone_to_current_script" checked={clone_to_current_script}/>
                                         Копировать в текущий скрипт
                                     </label>
                                 </div>
@@ -261,7 +288,10 @@ class CloningTable extends React.Component {
 
                         <div className="col-md-12">
                             <div className="form-group">
-                                <button className="btn btn-success" disabled={!(clone_to_current_script || (!clone_to_current_script && to_script))} type="submit">Сохранить</button>
+                                <button className="btn btn-success"
+                                        disabled={!(clone_to_current_script || (!clone_to_current_script && to_script))}
+                                        type="submit">Сохранить
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -273,11 +303,15 @@ class CloningTable extends React.Component {
 
 @observer
 class CollsCreating extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     onSort(items) {
         let {script, scriptsStore} = this.props;
         items.map((item, key) => {
-            if(item.props.text) {
-                if(scriptsStore.editing) {
+            if (item.props.text) {
+                if (scriptsStore.editing) {
                     scriptsStore.editing.text_coll_position = key;
                 }
             } else {
@@ -286,24 +320,26 @@ class CollsCreating extends React.Component {
         });
         scriptsStore.updateTable(script, scriptsStore.editing);
     }
+
     onSizeChange() {
         const {scriptsStore} = this.props;
         let colls = scriptsStore.editing ? scriptsStore.editing.colls : null;
-        if(colls) {
+        if (colls) {
             let full_size = parseInt(scriptsStore.editing.text_coll_size);
 
             colls.map((coll) => {
                 full_size = full_size + parseInt(coll.size);
             });
-            if(full_size > 100) {
+            if (full_size > 100) {
                 scriptsStore.editing.colls_creating_error_message = 'Общая ширина блоков не должна превышать 100%';
-                    } else if(full_size < 100) {
+            } else if (full_size < 100) {
                 scriptsStore.editing.colls_creating_error_message = 'Общая ширина блоков не должна быть меньше 100%';
-            } else if(scriptsStore.editing.colls_creating_error_message) {
+            } else if (scriptsStore.editing.colls_creating_error_message) {
                 scriptsStore.editing.colls_creating_error_message = null;
             }
         }
     }
+
     render() {
         const {script, scriptsStore} = this.props;
         let colls = scriptsStore.editing ? scriptsStore.editing.colls : null;
@@ -316,13 +352,13 @@ class CollsCreating extends React.Component {
                 position={scriptsStore.editing.text_coll_position}
                 text={true}
                 onChangeSize={(e) => {
-                    if(scriptsStore.editing) {
+                    if (scriptsStore.editing) {
                         scriptsStore.editing.text_coll_size = e.target.value;
                     }
                     return this.onSizeChange();
                 }}
                 onChangeName={(e) => {
-                    if(scriptsStore.editing) {
+                    if (scriptsStore.editing) {
                         scriptsStore.editing.text_coll_name = e.target.value;
                     }
                 }}/>
@@ -338,14 +374,25 @@ class CollsCreating extends React.Component {
                     text={false}
                     coll={coll}
                     colls={colls}
-                    deleteColl={() => {scriptsStore.deleteColl(script, scriptsStore.editing, colls, coll, key)}}
-                    onChangeSize={(e) => {coll.size = e.target.value; return this.onSizeChange()}}
-                    onChangeName={(e) => {coll.name = e.target.value}}/>
+                    deleteColl={() => {
+                        scriptsStore.deleteColl(script, scriptsStore.editing, colls, coll, key)
+                    }}
+                    onChangeSize={(e) => {
+                        coll.size = e.target.value;
+                        return this.onSizeChange()
+                    }}
+                    onChangeName={(e) => {
+                        coll.name = e.target.value
+                    }}/>
             )
         });
         colls_inputs = colls_inputs.sort((a, b) => {
-                if (a.props.position > b.props.position) {return 1}
-                if (a.props.position < b.props.position) {return -1}
+                if (a.props.position > b.props.position) {
+                    return 1
+                }
+                if (a.props.position < b.props.position) {
+                    return -1
+                }
                 return 0;
             }
         );
@@ -363,7 +410,8 @@ class CollsCreating extends React.Component {
                             e.preventDefault();
                             scriptsStore.createColl(script, scriptsStore.editing);
                             return this.onSizeChange();
-                        }}>+ Добавить столбец</button>
+                        }}>+ Добавить столбец
+                        </button>
                     </div>
                 </div>
                 {scriptsStore.editing.colls_creating_error_message ?
@@ -374,26 +422,30 @@ class CollsCreating extends React.Component {
                             {scriptsStore.editing.colls_creating_error_message}
                         </div>
                     </div>
-                : null}
+                    : null}
             </div>
         )
     }
 }
 
 class CollInput extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         const {coll} = this.props;
         let links = [];
-        if(coll && coll.categories && coll.categories.length > 0) {
+        if (coll && coll.categories && coll.categories.length > 0) {
             coll.categories.map(category => {
-                if(category.links.length > 0) {
+                if (category.links.length > 0) {
                     category.links.map(link => {
                         links.push(link);
                     });
                 }
             });
         }
-        return(
+        return (
             <div className="form-inline coll_form">
                 <div className="form-group">
                     <input
@@ -416,30 +468,34 @@ class CollInput extends React.Component {
                     <div className="form-group">
                         {'Ссылки: ' + links.length}
                     </div>
-                : null}
+                    : null}
 
                 {!this.props.text ?
                     <div className="form-group">
                         <i
                             className="glyphicon glyphicon-remove icon red_icon"
                             aria-hidden="true"
-                            onClick={(e)=>{
+                            onClick={(e) => {
                                 e.preventDefault();
-                                if(this.props.coll.id) {
+                                if (this.props.coll.id) {
                                     this.props.deleteColl();
                                 } else {
                                     this.props.colls.splice(this.props.index, 1);
                                 }
                             }}/>
                     </div>
-                : null}
+                    : null}
             </div>
-       )
+        )
     }
 }
 
 @observer
 export class TablesWrapper extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return React.createElement(scriptsIsLoaded, {...this.props, renderComponent: Tables});
     }
@@ -447,6 +503,10 @@ export class TablesWrapper extends React.Component {
 
 @observer
 export class AvailableTablesWrapper extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return React.createElement(scriptsIsLoaded, {...this.props, renderComponent: AvailableTables});
     }

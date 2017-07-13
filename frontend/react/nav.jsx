@@ -3,7 +3,6 @@ import * as React from 'react';
 import {Link} from 'react-router';
 import {observer} from 'mobx-react';
 import {Switcher} from './switcher';
-import {ModalWrapper} from './modal';
 import {NavTableCollsEditor} from './table';
 import {Tab, Tabs, TabPanel, TabList} from 'react-tabs';
 import {EditingScript} from './scripts';
@@ -13,6 +12,10 @@ const STATIC_URL = document.body.getAttribute('data-static-url');
 
 @observer
 export class Nav extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     triggerVideoInstructions() {
         const {usersStore} = this.props;
         usersStore.triggerVideoInstructions();
@@ -34,7 +37,10 @@ export class Nav extends React.Component {
     openNavTableCollsEditor() {
         const {modalStore} = this.props;
         // modalStore.open_modal(React.createElement(NavTableCollsEditor, {...this.props}));
-        modalStore.open_modal(React.createElement(NavModalSettings, {...this.props}), 200);
+        modalStore.open_modal(
+            React.createElement(NavModalSettings, {...this.props}),
+            'Настройка скрипта'
+        );
     }
 
     render() {
@@ -231,7 +237,6 @@ export class Nav extends React.Component {
                         </div>
                     </div>
                     : null}
-                <ModalWrapper stores={[scriptsStore, usersStore]} modalStore={modalStore}/>
             </nav>
         );
     }
@@ -261,52 +266,54 @@ class NavModalSettings extends React.Component {
     render() {
         const {scriptsStore} = this.props;
         return (
-            <div className="col-md-12">
-                {/*<Tabs>*/}
-                    {/*<TabList>*/}
-                        {/*<Tab>Главное</Tab>*/}
-                        {/*<Tab>Доступ к скрипту</Tab>*/}
-                        {/*<Tab>Выгрузка скрипта</Tab>*/}
-                        {/*<Tab>Перенос скрипта</Tab>*/}
-                        {/*<Tab>Сценарии</Tab>*/}
-                    {/*</TabList>*/}
+            <div className="row">
+                <div className="col-md-12">
+                    <Tabs>
+                        <TabList>
+                            <Tab>Главное</Tab>
+                            <Tab>Доступ к скрипту</Tab>
+                            <Tab>Выгрузка скрипта</Tab>
+                            <Tab>Перенос скрипта</Tab>
+                            <Tab>Сценарии</Tab>
+                        </TabList>
 
-                    {/*<TabPanel>*/}
-                        {/*<div className="col-md-12">*/}
-                            {/*/!*{React.createElement(NavTableCollsEditor, {...this.props})}*!/*/}
-                            {/*<h3>Изменить название скрипта</h3>*/}
-                            {/*{React.createElement(EditingScript, {...this.props, script: this.script})}*/}
-                        {/*</div>*/}
-                    {/*</TabPanel>*/}
+                        <TabPanel>
+                            <div className="col-md-12">
+                                {/*{React.createElement(NavTableCollsEditor, {...this.props})}*/}
+                                <h3>Изменить название скрипта</h3>
+                                {React.createElement(EditingScript, {...this.props, script: this.script})}
+                            </div>
+                        </TabPanel>
 
-                    {/*<TabPanel>*/}
-                        {/*<div className="col-md-12">*/}
-                            {/*<h3>Редактирование доступов к скрипту</h3>*/}
-                        {/*</div>*/}
-                        {/*/!*<div className="col-md-12">*!/*/}
-                            {/*/!*<h3>Управление командой</h3>*!/*/}
-                            {/*/!*{React.createElement(Team, {...this.props})}*!/*/}
-                        {/*/!*</div>*!/*/}
-                    {/*</TabPanel>*/}
+                        <TabPanel>
+                            <div className="col-md-12">
+                                <h3>Редактирование доступов к скрипту</h3>
+                            </div>
+                            <div className="col-md-12">
+                                <h3>Управление командой</h3>
+                                {React.createElement(Team, {...this.props})}
+                            </div>
+                        </TabPanel>
 
-                    {/*<TabPanel>*/}
-                        {/*<div className="col-md-12">*/}
-                            {/*Выгрузка скрипта*/}
-                        {/*</div>*/}
-                    {/*</TabPanel>*/}
+                        <TabPanel>
+                            <div className="col-md-12">
+                                Выгрузка скрипта
+                            </div>
+                        </TabPanel>
 
-                    {/*<TabPanel>*/}
-                        {/*<div className="col-md-12">*/}
-                            {/*Перенос скрипта*/}
-                        {/*</div>*/}
-                    {/*</TabPanel>*/}
+                        <TabPanel>
+                            <div className="col-md-12">
+                                Перенос скрипта
+                            </div>
+                        </TabPanel>
 
-                    {/*<TabPanel>*/}
-                        {/*<div className="col-md-12">*/}
-                            {/*Сценарии*/}
-                        {/*</div>*/}
-                    {/*</TabPanel>*/}
-                {/*</Tabs>*/}
+                        <TabPanel>
+                            <div className="col-md-12">
+                                Сценарии
+                            </div>
+                        </TabPanel>
+                    </Tabs>
+                </div>
             </div>
         )
     }

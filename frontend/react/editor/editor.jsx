@@ -1,7 +1,18 @@
 import * as React from 'react';
 import update from 'react-addons-update';
 import {observer} from 'mobx-react';
-import {Editor, EditorState, CompositeDecorator, Modifier, RichUtils, ContentState, convertToRaw, convertFromRaw, Entity, convertFromHTML} from 'draft-js';
+import {
+    Editor,
+    EditorState,
+    CompositeDecorator,
+    Modifier,
+    RichUtils,
+    ContentState,
+    convertToRaw,
+    convertFromRaw,
+    Entity,
+    convertFromHTML
+} from 'draft-js';
 import {stateFromHTML} from 'draft-js-import-html';
 import Immutable from 'immutable';
 import {Tooltip} from '../tooltip';
@@ -45,7 +56,7 @@ export class CustomEditor extends React.Component {
 
     getEditorState(props) {
         let editorState;
-        if(props.value) {
+        if (props.value) {
             try {
                 editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(props.value)), this.decorator);
                 // editorState = EditorState.moveFocusToEnd(editorState);
@@ -60,7 +71,7 @@ export class CustomEditor extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        if(this.state.object.id !== props.object.id) {
+        if (this.state.object.id !== props.object.id) {
             this.setState(update(this.state, {object: {$set: props.object}}), () => {
                 this.onChange(this.getEditorState(props));
             });
@@ -84,16 +95,16 @@ export class CustomEditor extends React.Component {
 
     _toggleBlockType(blockType) {
         this.onChange(RichUtils.toggleBlockType(
-                this.state.editorState,
-                blockType
+            this.state.editorState,
+            blockType
             )
         );
     }
 
     _toggleInlineStyle(inlineStyle) {
         this.onChange(RichUtils.toggleInlineStyle(
-                this.state.editorState,
-                inlineStyle
+            this.state.editorState,
+            inlineStyle
             )
         );
     }
@@ -121,11 +132,13 @@ export class CustomEditor extends React.Component {
         );
         const newEditorState = EditorState.push(editorState, contentStateWithEntity, entityKey);
         this.setState(update(this.state, {
-            editorState: {$set: RichUtils.toggleLink(
-                newEditorState,
-                newEditorState.getSelection(),
-                entityKey
-            )},
+            editorState: {
+                $set: RichUtils.toggleLink(
+                    newEditorState,
+                    newEditorState.getSelection(),
+                    entityKey
+                )
+            },
             showURLInput: {$set: false},
             urlValue: {$set: ''}
         }), () => {
@@ -164,8 +177,8 @@ export class CustomEditor extends React.Component {
 
         // Let's just allow one color at a time. Turn off all active colors.
         const nextContentState = Object.keys(styleMap).reduce((contentState, color) => {
-                return Modifier.removeInlineStyle(contentState, selection, color)
-            }, editorState.getCurrentContent());
+            return Modifier.removeInlineStyle(contentState, selection, color)
+        }, editorState.getCurrentContent());
 
         let nextEditorState = EditorState.push(
             editorState,
@@ -237,15 +250,17 @@ export class CustomEditor extends React.Component {
                                     onToggle={this.toggleInlineStyle}/>
                             </div>
                             {/*<div className="btn-group" role="group" aria-label="...">*/}
-                                {/*<BlockStyleControls*/}
-                                    {/*editorState={editorState}*/}
-                                    {/*onToggle={this.toggleBlockType}/>*/}
+                            {/*<BlockStyleControls*/}
+                            {/*editorState={editorState}*/}
+                            {/*onToggle={this.toggleBlockType}/>*/}
                             {/*</div>*/}
                             <div className="btn-group" role="group" aria-label="...">
-                                <button data-tip="Вставить ссылку" id="editor_add_link" onMouseDown={this.promptForLink} style={{marginRight: 10}} className="btn btn-info">
+                                <button data-tip="Вставить ссылку" id="editor_add_link" onMouseDown={this.promptForLink}
+                                        style={{marginRight: 10}} className="btn btn-info">
                                     <i className="glyphicon glyphicon-link"/>
                                 </button>
-                                <button data-tip="Удалить ссылку" id="editor_remove_link" onMouseDown={this.removeLink} className="btn btn-danger">
+                                <button data-tip="Удалить ссылку" id="editor_remove_link" onMouseDown={this.removeLink}
+                                        className="btn btn-danger">
                                     <i className="glyphicon glyphicon-link"/>
                                 </button>
                             </div>
@@ -266,7 +281,9 @@ export class CustomEditor extends React.Component {
                         handleKeyCommand={this.handleKeyCommand}
                         onChange={this.onChange}
                         onTab={this.onTab}
-                        onBlur={() => {this.props.onBlur(JSON.stringify(convertToRaw(editorState.getCurrentContent())))}}
+                        onBlur={() => {
+                            this.props.onBlur(JSON.stringify(convertToRaw(editorState.getCurrentContent())))
+                        }}
                         placeholder="Напишите сюда текст менеджера и создайте ссылки на наиболее вероятные варианты ответов..."
                         ref="editor"
                         spellCheck={true}/>
@@ -311,11 +328,16 @@ const ColorControls = (props) => {
 
 function getBlockStyle(block) {
     switch (block.getType()) {
-        case 'center': return 'RichEditor-align-center';
-        case 'right': return 'RichEditor-align-right';
-        case 'left': return 'RichEditor-align-left';
-        case 'justify': return 'RichEditor-align-justify';
-        default: return null;
+        case 'center':
+            return 'RichEditor-align-center';
+        case 'right':
+            return 'RichEditor-align-right';
+        case 'left':
+            return 'RichEditor-align-left';
+        case 'justify':
+            return 'RichEditor-align-justify';
+        default:
+            return null;
     }
 }
 
@@ -344,9 +366,9 @@ class StyleButton extends React.Component {
                 {this.props.icon ?
                     (this.props.color ?
                         <i className={this.props.icon} style={{color: this.props.color}} aria-hidden="true"/>
-                    :
+                        :
                         <i className={this.props.icon} aria-hidden="true"/>)
-                :
+                    :
                     this.props.label}
             </button>
         );

@@ -7,6 +7,10 @@ import {Paginator, getPagesCount, getChunkedArray} from '../pagination';
 
 @observer
 export class Payment extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     componentWillMount() {
         const {usersStore} = this.props;
         usersStore.getData();
@@ -111,13 +115,18 @@ export class Payment extends React.Component {
 
 @observer
 export class OfflineScriptExportAdditionalService extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         const {usersStore} = this.props;
         let accesses_length = usersStore.script_exporting_accesses.length;
 
         return <AdditionalService
             title={'Выгрузка скрипта'}
-            sub_title={<span className={accesses_length > 0 ? 'green_text' : 'red_text'}>Доступно для выгрузки: <span>{accesses_length}</span></span>}
+            sub_title={<span
+                className={accesses_length > 0 ? 'green_text' : 'red_text'}>Доступно для выгрузки: <span>{accesses_length}</span></span>}
             description={'Вы можете скачать любой скрипт в html-файл и использовать его без доступа к интернету'}
             url={'https://getproff.ru/pay/export.script'}/>
     }
@@ -125,6 +134,10 @@ export class OfflineScriptExportAdditionalService extends React.Component {
 
 @observer
 export class UnlimOfflineScriptExportAdditionalService extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         const {usersStore} = this.props;
 
@@ -139,6 +152,10 @@ export class UnlimOfflineScriptExportAdditionalService extends React.Component {
 
 @observer
 export class DelegationScriptAccessAdditionalService extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         const {usersStore} = this.props;
 
@@ -153,6 +170,10 @@ export class DelegationScriptAccessAdditionalService extends React.Component {
 
 @observer
 class AdditionalService extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <div className="col-md-12 payment_additional_container">

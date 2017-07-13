@@ -1,27 +1,18 @@
 import React, {PropTypes} from 'react';
 import {confirmable, createConfirmation} from 'react-confirm';
-import Modal from 'react-modal';
-import {customModalStyles} from './modal';
+import {Modal} from 'react-bootstrap';
 
 const Dialog = ({show, proceed, dismiss, cancel, confirmation, options}) => {
     return(
-        <Modal
-            isOpen={show}
-            style={customModalStyles}
-            onRequestClose={dismiss}>
-                <div className="row row-centered modal_block">
-                    <div className="col-md-12 col-centered modal_header">
-                        {confirmation}
-                    </div>
-                    <div className="col-md-12 col-centered modal_body">
-                        <div className="col-md-3 col-centered">
-                            <button className="btn btn-danger" onClick={() => cancel('arguments will be passed to the callback')}>Отмена</button>
-                        </div>
-                        <div className="col-md-3 col-centered">
-                            <button className="btn btn-success" onClick={() => proceed('same as cancel')}>Принять</button>
-                        </div>
-                    </div>
-                </div>
+        <Modal show={show} onHide={dismiss}>
+            <Modal.Header closeButton>
+                <Modal.Title>{confirmation}?</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Footer>
+                <button className="btn btn-success" onClick={() => proceed('same as cancel')}>Принять</button>
+                <button className="btn btn-danger" onClick={() => cancel('arguments will be passed to the callback')}>Отмена</button>
+            </Modal.Footer>
         </Modal>
     )
 };

@@ -9,6 +9,10 @@ import {TableEdit} from './table';
 
 @observer
 export class App extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         const {script, scriptsStore} = this.props;
 

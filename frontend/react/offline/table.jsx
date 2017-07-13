@@ -15,6 +15,7 @@ class Table extends React.Component {
         this.script = this.props.script;
         this.scriptsStore = this.props.scriptsStore;
     }
+
     fixHeight() {
         const content_height = window.innerHeight - $('.navbar').height() - 7;
         let scroll_links = [].slice.call(document.getElementsByClassName('scroll_links'));
@@ -23,17 +24,21 @@ class Table extends React.Component {
             $(el).css('max-height', content_height + 'px');
         });
     }
+
     componentWillMount() {
     }
+
     componentDidMount() {
         this.fixHeight();
     }
+
     componentDidUpdate() {
         this.fixHeight();
     }
+
     sortedColls() {
         const {scriptsStore, script} = this;
-        if(scriptsStore) {
+        if (scriptsStore) {
             const table = scriptsStore.table(script, this.props.params.table);
             let sorted_colls = [];
             sorted_colls.push({position: table.text_coll_position, text: true});
@@ -63,24 +68,27 @@ class TableShare extends Table {
         this.script = this.props.script;
         this.sciptsStore = this.props.scriptsStore;
     }
+
     componentDidMount() {
         this.fixHeight();
         $(document).on("click", "#link_text_block a", (e) => {
             e.preventDefault();
             const {router} = this.props;
 
-            if(e.target.tagName !== 'A') {
+            if (e.target.tagName !== 'A') {
                 return router.push($(e.target).closest('a').attr('href'));
             }
             return router.push(e.target.getAttribute('href'));
         });
     }
+
     componentWillUnmount() {
         $('#link_text_block a').off('click');
     }
+
     render() {
         const {scriptsStore, script} = this;
-        if(scriptsStore) {
+        if (scriptsStore) {
             const table = scriptsStore.table(script, this.props.params.table);
             let active_link = scriptsStore.link(script, this.props.params.link);
             let sorted_colls = this.sortedColls();
@@ -99,20 +107,21 @@ class TableShare extends Table {
                                         },
                                     };
 
-                                    {/*TODO: FIX THIS SHIT (MIDDLEWARE)*/}
+                                    {/*TODO: FIX THIS SHIT (MIDDLEWARE)*/
+                                    }
                                     let active_link_json = JSON.parse(active_link.text);
-                                    let active_link_entities_list = $.map(active_link_json.entityMap, function(value, index) {
+                                    let active_link_entities_list = $.map(active_link_json.entityMap, function (value, index) {
                                         return [value];
                                     });
                                     active_link_entities_list.forEach((entity, i) => {
-                                        if(entity.type === 'LINK' && entity.data.url.includes('/table/') && !entity.data.url.includes('/tables/')) {
+                                        if (entity.type === 'LINK' && entity.data.url.includes('/table/') && !entity.data.url.includes('/tables/')) {
                                             active_link_json.entityMap[String(i)].data.url = `/tables/${script.id}${entity.data.url}`;
                                         }
                                     });
 
                                     let editorState = EditorState.createWithContent(convertFromRaw(active_link_json));
                                     text = stateToHTML(editorState.getCurrentContent(), options);
-                                } catch(err) {
+                                } catch (err) {
                                     text = '';
                                 }
                                 return (
@@ -120,7 +129,8 @@ class TableShare extends Table {
                                         {active_link ?
                                             <div>
                                                 <h4 className="table_header_text">{active_link.name}</h4>
-                                                <div id="link_text_block" dangerouslySetInnerHTML={{__html: text}}></div>
+                                                <div id="link_text_block"
+                                                     dangerouslySetInnerHTML={{__html: text}}></div>
                                             </div>
                                             :
                                             ''
@@ -132,7 +142,7 @@ class TableShare extends Table {
                                 return (
                                     <div className="scroll_links" key={key} style={{width: coll.size + '%'}}>
                                         {coll.categories.map((category, key) => {
-                                            if(!category.hidden) {
+                                            if (!category.hidden) {
                                                 return (
                                                     <div key={key} className={category.hidden ? 'hidden_links' : ''}>
                                                         <span className="table_header_text">
@@ -144,7 +154,7 @@ class TableShare extends Table {
                                                         </span>
                                                         {category.links.map((link, key) => {
                                                             let link_url = scriptsStore.linkURL(script, table, link);
-                                                            if(link_url) {
+                                                            if (link_url) {
                                                                 return (
                                                                     <div key={key}>
                                                                         <div className="row">
@@ -174,6 +184,10 @@ class TableShare extends Table {
 
 @observer
 export class TableWrapper extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return React.createElement(TableShare, {...this.props});
     }

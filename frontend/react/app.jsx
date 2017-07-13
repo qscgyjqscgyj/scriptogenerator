@@ -11,12 +11,17 @@ import SettingsStore from '../mobx/settingsStore';
 import {NoMoney, NoScriptOwnerMoney} from './noMoney';
 import {observer} from 'mobx-react';
 import {Scripts} from './scripts';
+import {ModalWrapper} from './modal';
 import {Tables} from './tables';
 import {TableEdit, TableShare} from './table';
 
 
 @observer
 export class App extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     componentWillMount() {
         const {scriptsStore, usersStore, paymentStore, settingsStore} = this.props;
         $.ajax({
@@ -42,7 +47,7 @@ export class App extends React.Component {
         });
     }
     render() {
-        const {usersStore, scriptsStore, settingsStore} = this.props;
+        const {usersStore, scriptsStore, settingsStore, modalStore} = this.props;
         const PAYMENT_REQUIRED_COMPONENTS = [Scripts, Tables, TableEdit, TableShare];
         const script = this.props.params.script ? scriptsStore.script(this.props.params.script) : null;
         let payment_required_children = this.props.children.filter(child => {
@@ -92,6 +97,7 @@ export class App extends React.Component {
 
                         {this.props.children}
                     </div>
+                    <ModalWrapper stores={[scriptsStore, usersStore]} modalStore={modalStore}/>
                 </div>
             );
         }
@@ -100,6 +106,10 @@ export class App extends React.Component {
 }
 
 export class AppWrapper extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         let scriptsStore = ScriptsStore;
         let modalStore = ModalStore;

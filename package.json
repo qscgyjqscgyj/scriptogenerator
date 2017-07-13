@@ -69,6 +69,7 @@
     "rc-tooltip": "^3.4.6",
     "react": "^15.4.1",
     "react-addons-update": "^15.4.1",
+    "react-bootstrap": "^0.31.0",
     "react-confirm": "^0.1.14",
     "react-dom": "^15.4.1",
     "react-hot-loader": "^3.0.0-beta.6",

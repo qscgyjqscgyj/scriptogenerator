@@ -4,6 +4,10 @@ import {Link} from 'react-router';
 
 @observer
 export class AccessableComponent extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     access(usersStore, script) {
         if(script && usersStore) {
             let access;

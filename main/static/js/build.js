@@ -35401,11 +35401,10 @@
 	                                                    'data-tip': '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442',
 	                                                    onClick: function onClick() {
 	                                                        modalStore.open_modal(
-	                                                        React.createElement(EditingScript, {
+	                                                        React.createElement(EditingScript, _extends({},
+	                                                        _this3.props, {
 	                                                            script: script,
-	                                                            scriptsStore: scriptsStore,
-	                                                            modalStore: modalStore,
-	                                                            available: available }),
+	                                                            available: available })),
 	
 	                                                        'Редактирование скрипта',
 	                                                        _this3.updateScript.bind(_this3, script));
@@ -35615,7 +35614,12 @@
 	                                    React.createElement('input', { className: 'form-control',
 	                                        onChange: this.scriptNameHandler.bind(this),
 	                                        value: this.script.name, type: 'text', name: 'name',
-	                                        placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))))));
+	                                        placeholder: '\u0418\u043C\u044F \u0441\u043A\u0440\u0438\u043F\u0442\u0430' }))),
+	
+	
+	                            React.createElement('div', { className: 'col-md-12' },
+	                                React.createElement('div', { className: 'form-group' },
+	                                    React.createElement('button', { className: 'btn btn-success', type: 'submit' }, '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'))))));
 	
 	
 	
@@ -113944,9 +113948,9 @@
 	var _paymentStore = __webpack_require__(1128);var _paymentStore2 = _interopRequireDefault(_paymentStore);
 	var _tooltipStore = __webpack_require__(1129);var _tooltipStore2 = _interopRequireDefault(_tooltipStore);
 	var _settingsStore = __webpack_require__(1130);var _settingsStore2 = _interopRequireDefault(_settingsStore);
-	var _routerStore = __webpack_require__(1137);var _routerStore2 = _interopRequireDefault(_routerStore);
+	var _routerStore = __webpack_require__(1131);var _routerStore2 = _interopRequireDefault(_routerStore);
 	
-	var _noMoney = __webpack_require__(1131);
+	var _noMoney = __webpack_require__(1132);
 	var _mobxReact = __webpack_require__(549);
 	var _scripts = __webpack_require__(545);
 	var _modal = __webpack_require__(1125);
@@ -116579,6 +116583,18 @@
 /* 1131 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.RouterStore = undefined;var _desc, _value, _class, _descriptor;var _mobx = __webpack_require__(550);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
+	
+	RouterStore = exports.RouterStore = (_class = function RouterStore() {_classCallCheck(this, RouterStore);_initDefineProp(this, 'params', _descriptor, this);}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'params', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
+	            {});} })), _class);exports.default =
+	
+	
+	new RouterStore();
+
+/***/ },
+/* 1132 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.NoAccess = exports.NoScriptOwnerMoney = exports.NoMoney = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _mobxReact = __webpack_require__(549);
 	var _reactRouter = __webpack_require__(464);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
@@ -116635,23 +116651,6 @@
 	
 	
 	        } }]);return NoAccess;}(React.Component)) || _class3;
-
-/***/ },
-/* 1132 */,
-/* 1133 */,
-/* 1134 */,
-/* 1135 */,
-/* 1136 */,
-/* 1137 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.RouterStore = undefined;var _desc, _value, _class, _descriptor;var _mobx = __webpack_require__(550);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
-	
-	RouterStore = exports.RouterStore = (_class = function RouterStore() {_classCallCheck(this, RouterStore);_initDefineProp(this, 'params', _descriptor, this);}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'params', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
-	            {});} })), _class);exports.default =
-	
-	
-	new RouterStore();
 
 /***/ }
 /******/ ]);

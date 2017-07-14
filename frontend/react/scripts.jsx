@@ -255,9 +255,8 @@ export class Scripts extends React.Component {
                                                        onClick={() => {
                                                            modalStore.open_modal(
                                                                React.createElement(EditingScript, {
+                                                                   ...this.props,
                                                                    script: script,
-                                                                   scriptsStore: scriptsStore,
-                                                                   modalStore: modalStore,
                                                                    available: available
                                                                }),
                                                                'Редактирование скрипта',
@@ -469,6 +468,11 @@ export class EditingScript extends React.Component {
                                        onChange={this.scriptNameHandler.bind(this)}
                                        value={this.script.name} type="text" name="name"
                                        placeholder="Имя скрипта"/>
+                            </div>
+                        </div>
+                        <div className="col-md-12">
+                            <div className="form-group">
+                                <button className="btn btn-success" type="submit">Сохранить</button>
                             </div>
                         </div>
                     </form>

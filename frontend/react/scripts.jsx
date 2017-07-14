@@ -124,30 +124,14 @@ export class Scripts extends React.Component {
         )
     }
 
-    setAccesses(accesses, script) {
-        const {scriptsStore} = this.props;
-        $.ajax({
-            method: 'POST',
-            url: document.body.getAttribute('data-accesses-url'),
-            data: JSON.stringify({accesses: accesses, script_id: script.id}),
-            success: (res) => {
-                if (script.data !== res.data) {
-                    script.data = res.data;
-                }
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
-    }
-
     openDelegationModalForm(script) {
-        const {modalStore, usersStore} = this.props;
+        const {modalStore, usersStore, scriptsStore} = this.props;
 
         modalStore.open_modal(
             React.createElement(DelegationScript, {
                 script: script,
                 usersStore: usersStore,
+                scriptsStore: scriptsStore,
                 modalStore: modalStore
             }),
             'Перенос скрипта'
@@ -319,11 +303,8 @@ export class Scripts extends React.Component {
                                                             scriptsStore.getScriptData(script, () => {
                                                                 modalStore.open_modal(
                                                                     React.createElement(Accesses, {
-                                                                        script: script,
-                                                                        usersStore: usersStore,
-                                                                        modalStore: modalStore,
-                                                                        setAccesses: this.setAccesses.bind(this),
-                                                                        delegateScript: this.delegateScript.bind(this)
+                                                                        ...this.props,
+                                                                        script: script
                                                                     }),
                                                                     'Редактирование прав доступа к скрипту'
                                                                 )
@@ -504,7 +485,7 @@ function validateEmail(email) {
 }
 
 @observer
-class Accesses extends React.Component {
+export class Accesses extends React.Component {
     constructor(props) {
         super(props);
 
@@ -525,6 +506,23 @@ class Accesses extends React.Component {
         });
     }
 
+    setAccesses(accesses, script) {
+        const {scriptsStore} = this.props;
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-accesses-url'),
+            data: JSON.stringify({accesses: accesses, script_id: script.id}),
+            success: (res) => {
+                if (script.data !== res.data) {
+                    script.data = res.data;
+                }
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
     onSelect(selects, edit) {
         const {script} = this.props;
         let {accesses} = this.state;
@@ -537,7 +535,7 @@ class Accesses extends React.Component {
             )
         });
         this.setState(update(this.state, {accesses: {$set: new_accesses}}), () => {
-            this.props.setAccesses(new_accesses.map(access => {
+            this.setAccesses(new_accesses.map(access => {
                 return {user_id: access.value, edit: access.edit}
             }), script);
         });
@@ -621,6 +619,10 @@ export class DelegationScript extends React.Component {
         usersStore.clearScriptDelegationAccesses();
     }
 
+    clearEmail() {
+        this.setState(update(this.state, {delegate_email: {$set: null}}))
+    }
+
     delegateScript() {
         const {script, scriptsStore, modalStore} = this.props;
         const {delegate_email} = this.state;
@@ -633,11 +635,14 @@ export class DelegationScript extends React.Component {
                 email: delegate_email
             }),
             success: (res) => {
-                window.location.replace('/');
-                // scriptsStore.scripts = res.scripts;
-                // modalStore.close_modal();
-                // alert('Скрипт "' + script.name + '" делегирован пользователю: ' + delegate_email);
-                // this.setState(update(this.state, {delegate_email: {$set: null}}));
+                if (!this.props.params || !this.props.params.script) {
+                    scriptsStore.scripts = res.scripts;
+                    modalStore.close_modal();
+                    alert('Скрипт "' + script.name + '" делегирован пользователю: ' + delegate_email);
+                    this.clearEmail();
+                } else {
+                    window.location.replace('/');
+                }
             },
             error: (res) => {
                 console.log(res);

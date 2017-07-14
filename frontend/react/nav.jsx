@@ -5,7 +5,8 @@ import {observer} from 'mobx-react';
 import {Switcher} from './switcher';
 import {NavTableCollsEditor} from './table';
 import {Tab, Tabs, TabPanel, TabList} from 'react-tabs';
-import {EditingScript, CreateOfflineScriptExport, DelegationScript} from './scripts';
+import {EditingScript, CreateOfflineScriptExport, DelegationScript, Accesses} from './scripts';
+import {Tables} from './tables';
 import {Team} from './profile/team';
 import {ModalStore} from '../mobx/modalStore';
 import {ModalWrapper} from './modal';
@@ -16,6 +17,10 @@ const STATIC_URL = document.body.getAttribute('data-static-url');
 export class Nav extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            router_params: this.props.params
+        }
     }
 
     triggerVideoInstructions() {
@@ -28,6 +33,10 @@ export class Nav extends React.Component {
         usersStore.triggerUserButtonLinksSetting();
     }
 
+    componentWillReceiveProps(props) {
+        this.setState({router_params: props.params});
+    }
+
     getVideoInstructions() {
         const {usersStore, page_name} = this.props;
 
@@ -38,9 +47,12 @@ export class Nav extends React.Component {
 
     openNavTableCollsEditor() {
         const {modalStore} = this.props;
+        let subModalStore = new ModalStore;
+        subModalStore.router_params = modalStore.router_params;
+
         // modalStore.open_modal(React.createElement(NavTableCollsEditor, {...this.props}));
         modalStore.open_modal(
-            React.createElement(NavModalSettings, {...this.props, subModalStore: new ModalStore}),
+            React.createElement(NavModalSettings, {...this.props, subModalStore: subModalStore}),
             'Настройка скрипта',
             null,
             null,
@@ -269,7 +281,7 @@ class NavModalSettings extends React.Component {
     }
 
     render() {
-        const {scriptsStore, subModalStore, modalStore} = this.props;
+        const {scriptsStore, subModalStore, usersStore} = this.props;
 
         return (
             <div className="row">
@@ -297,6 +309,13 @@ class NavModalSettings extends React.Component {
                             </div>
                             <div className="col-md-12">
                                 <h3>Управление командой</h3>
+
+                                {usersStore.team.length > 0 ?
+                                    React.createElement(Accesses, {...this.props, script: this.script})
+                                    : null}
+
+                                <hr/>
+
                                 {React.createElement(Team, {...this.props, modalStore: subModalStore})}
                             </div>
                         </TabPanel>
@@ -317,7 +336,8 @@ class NavModalSettings extends React.Component {
 
                         <TabPanel>
                             <div className="col-md-12">
-                                Сценарии
+                                <h3>Сценарии</h3>
+                                {React.createElement(Tables, {...this.props, script: this.script, modalStore: subModalStore})}
                             </div>
                         </TabPanel>
                     </Tabs>

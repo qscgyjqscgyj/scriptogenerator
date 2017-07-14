@@ -7,6 +7,7 @@ import UsersStore from '../mobx/usersStore';
 import PaymentStore from '../mobx/paymentStore';
 import TooltipStore from '../mobx/tooltipStore';
 import SettingsStore from '../mobx/settingsStore';
+import RouterStore from '../mobx/routerStore';
 
 import {NoMoney, NoScriptOwnerMoney} from './noMoney';
 import {observer} from 'mobx-react';
@@ -46,6 +47,12 @@ export class App extends React.Component {
             }
         });
     }
+
+    componentWillReceiveProps(props) {
+        const {routerStore} = this.props;
+        routerStore.params = props.params;
+    }
+
     render() {
         const {usersStore, scriptsStore, settingsStore, modalStore} = this.props;
         const PAYMENT_REQUIRED_COMPONENTS = [Scripts, Tables, TableEdit, TableShare];
@@ -54,20 +61,26 @@ export class App extends React.Component {
             return PAYMENT_REQUIRED_COMPONENTS.includes(child.type)
         });
         let available_children = this.props.children.filter(child => {
-            if(script && usersStore.session_user) {
+            if (script && usersStore.session_user) {
                 switch (child.type) {
                     case Tables:
-                        if(script.accesses.find(access => {return access.user.id === usersStore.session_user.id})) {
+                        if (script.accesses.find(access => {
+                                return access.user.id === usersStore.session_user.id
+                            })) {
                             return true;
                         }
                         break;
                     case TableEdit:
-                        if(script.accesses.find(access => {return (access.user.id === usersStore.session_user.id) && access.edit})) {
+                        if (script.accesses.find(access => {
+                                return (access.user.id === usersStore.session_user.id) && access.edit
+                            })) {
                             return true;
                         }
                         break;
                     case TableShare:
-                        if(script.accesses.find(access => {return access.user.id === usersStore.session_user.id})) {
+                        if (script.accesses.find(access => {
+                                return access.user.id === usersStore.session_user.id
+                            })) {
                             return true;
                         }
                         break;
@@ -77,8 +90,8 @@ export class App extends React.Component {
             }
             return false;
         });
-        if(usersStore.session_user) {
-            return(
+        if (usersStore.session_user) {
+            return (
                 <div>
                     {React.createElement(Nav, {...this.props})}
                     {/*<Nav location={this.props.location} params={this.props.params} usersStore={usersStore} scriptsStore={scriptsStore} settingsStore={settingsStore}/>*/}
@@ -86,13 +99,13 @@ export class App extends React.Component {
                     <div className="container-fluid" id="main_container">
 
                         {/*{payment_required_children.length > 0 ?*/}
-                            {/*(available_children.length > 0 ?*/}
-                                {/*(script.owner.balance_total > 0 ? this.props.children : <NoScriptOwnerMoney/>)*/}
-                            {/*:*/}
-                                {/*(usersStore.session_user.balance_total > 0 ? this.props.children : <NoMoney/>)*/}
-                            {/*)*/}
+                        {/*(available_children.length > 0 ?*/}
+                        {/*(script.owner.balance_total > 0 ? this.props.children : <NoScriptOwnerMoney/>)*/}
                         {/*:*/}
-                            {/*this.props.children*/}
+                        {/*(usersStore.session_user.balance_total > 0 ? this.props.children : <NoMoney/>)*/}
+                        {/*)*/}
+                        {/*:*/}
+                        {/*this.props.children*/}
                         {/*}*/}
 
                         {this.props.children}
@@ -117,6 +130,7 @@ export class AppWrapper extends React.Component {
         let paymentStore = PaymentStore;
         let tooltipStore = TooltipStore;
         let settingsStore = SettingsStore;
+        let routerStore = RouterStore;
 
         const childrenWithProps = React.Children.map(this.props.children,
             (child) => React.cloneElement(child, {
@@ -125,10 +139,11 @@ export class AppWrapper extends React.Component {
                 usersStore: usersStore,
                 paymentStore: paymentStore,
                 tooltipStore: tooltipStore,
-                settingsStore: settingsStore
+                settingsStore: settingsStore,
+                routerStore: routerStore
             })
         );
-        return(
+        return (
             <App
                 modalStore={modalStore}
                 usersStore={usersStore}
@@ -136,6 +151,7 @@ export class AppWrapper extends React.Component {
                 paymentStore={paymentStore}
                 tooltipStore={tooltipStore}
                 settingsStore={settingsStore}
+                routerStore={routerStore}
                 children={childrenWithProps}
                 location={this.props.location}
                 params={this.props.params}

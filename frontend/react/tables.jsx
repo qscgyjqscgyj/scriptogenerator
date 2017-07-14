@@ -10,7 +10,7 @@ import {Tooltip} from './tooltip';
 import Select from 'react-select';
 
 @observer
-class Tables extends AccessableComponent {
+export class Tables extends AccessableComponent {
     constructor(props) {
         super(props);
     }
@@ -61,7 +61,7 @@ class Tables extends AccessableComponent {
     }
 
     render() {
-        const {scriptsStore, modalStore, usersStore} = this.props;
+        const {scriptsStore, modalStore, usersStore, routerStore} = this.props;
         if (usersStore.session_user) {
             let script = scriptsStore.script(this.props.params.script);
             let access = this.access(usersStore, script);
@@ -70,13 +70,13 @@ class Tables extends AccessableComponent {
                     <div className="col-md-12">
                         {access.edit ?
                             <div className="row list_controls">
-                                <div className="col-md-2">
+                                <div className="col-md-4">
                                     <button onClick={() => {
                                         scriptsStore.createTable(script);
                                     }} className="btn btn-success">+ Создать сценарий
                                     </button>
                                 </div>
-                                <div className="col-md-7">
+                                <div className="col-md-8">
                                     <h4>{script.name}</h4>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@ class Tables extends AccessableComponent {
                         <div className="row">
                             {script.data.map((table, key) => {
                                 return (
-                                    <div key={key} className="col-md-12 hovered_list_item list_item edit_icon_handler">
+                                    <div key={key} className={`col-md-12 hovered_list_item list_item edit_icon_handler ${routerStore.params && (routerStore.params.table === table.id) ? 'active_list_item' : ''}`}>
                                         <div className="col-md-6">
                                             <span className="inline_elements">
                                                 <Link className="inline_element"

@@ -166,6 +166,10 @@ html, body {
     background-color: #f0f0f0;
 }
 
+.active_list_item {
+    background-color: #f0f0f0;
+}
+
 .scrollable_panel {
     /*border: 1px solid #ddd;*/
 }

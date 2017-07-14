@@ -27,10 +27,12 @@ ReactDOM.render(
             <Route path="/tables/:script/available/" component={AvailableTablesWrapper} page_name="available_tables"/>
 
             <Route path="/tables/:script/table/:table/edit/" component={TableEditWrapper} page_name="table_edit"/>
-            <Route path="/tables/:script/table/:table/link/:link/edit/" component={TableEditWrapper} page_name="table_edit"/>
+            <Route path="/tables/:script/table/:table/link/:link/edit/" component={TableEditWrapper}
+                   page_name="table_edit"/>
 
             <Route path="/tables/:script/table/:table/share/" component={TableShareWrapper} page_name="table_share"/>
-            <Route path="/tables/:script/table/:table/link/:link/share/" component={TableShareWrapper} page_name="table_share"/>
+            <Route path="/tables/:script/table/:table/link/:link/share/" component={TableShareWrapper}
+                   page_name="table_share"/>
 
             <Route path="/profile/" component={Profile} page_name="profile"/>
             <Route path="/profile/payment/" component={Payment} page_name="payment"/>

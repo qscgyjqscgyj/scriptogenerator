@@ -8145,10 +8145,12 @@
 	        React.createElement(_reactRouter.Route, { path: '/tables/:script/available/', component: _tables.AvailableTablesWrapper, page_name: 'available_tables' }),
 	
 	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/edit/', component: _table.TableEditWrapper, page_name: 'table_edit' }),
-	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/link/:link/edit/', component: _table.TableEditWrapper, page_name: 'table_edit' }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/link/:link/edit/', component: _table.TableEditWrapper,
+	            page_name: 'table_edit' }),
 	
 	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/share/', component: _table.TableShareWrapper, page_name: 'table_share' }),
-	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/link/:link/share/', component: _table.TableShareWrapper, page_name: 'table_share' }),
+	        React.createElement(_reactRouter.Route, { path: '/tables/:script/table/:table/link/:link/share/', component: _table.TableShareWrapper,
+	            page_name: 'table_share' }),
 	
 	        React.createElement(_reactRouter.Route, { path: '/profile/', component: _profile.Profile, page_name: 'profile' }),
 	        React.createElement(_reactRouter.Route, { path: '/profile/payment/', component: _payment.Payment, page_name: 'payment' }),
@@ -35143,7 +35145,7 @@
 /* 545 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AvailableScripts = exports.CreateOfflineScriptExport = exports.OfflineScriptExport = exports.DelegationScript = exports.EditingScript = exports.Scripts = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3, _class4, _class5, _class6, _class7, _class8;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AvailableScripts = exports.CreateOfflineScriptExport = exports.OfflineScriptExport = exports.DelegationScript = exports.Accesses = exports.EditingScript = exports.Scripts = undefined;var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3, _class4, _class5, _class6, _class7, _class8;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _reactDom = __webpack_require__(327);var ReactDOM = _interopRequireWildcard(_reactDom);
 	var _jquery = __webpack_require__(546);var _jquery2 = _interopRequireDefault(_jquery);
 	var _reactAddonsUpdate = __webpack_require__(547);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
@@ -35267,32 +35269,16 @@
 	                console.log('cancel called');
 	            });
 	
-	        } }, { key: 'setAccesses', value: function setAccesses(
-	
-	        accesses, script) {var
-	            scriptsStore = this.props.scriptsStore;
-	            _jquery2.default.ajax({
-	                method: 'POST',
-	                url: document.body.getAttribute('data-accesses-url'),
-	                data: JSON.stringify({ accesses: accesses, script_id: script.id }),
-	                success: function success(res) {
-	                    if (script.data !== res.data) {
-	                        script.data = res.data;
-	                    }
-	                },
-	                error: function error(res) {
-	                    console.log(res);
-	                } });
-	
 	        } }, { key: 'openDelegationModalForm', value: function openDelegationModalForm(
 	
 	        script) {var _props5 =
-	            this.props,modalStore = _props5.modalStore,usersStore = _props5.usersStore;
+	            this.props,modalStore = _props5.modalStore,usersStore = _props5.usersStore,scriptsStore = _props5.scriptsStore;
 	
 	            modalStore.open_modal(
 	            React.createElement(DelegationScript, {
 	                script: script,
 	                usersStore: usersStore,
+	                scriptsStore: scriptsStore,
 	                modalStore: modalStore }),
 	
 	            'Перенос скрипта');
@@ -35463,12 +35449,9 @@
 	                                                            usersStore.getTeam();
 	                                                            scriptsStore.getScriptData(script, function () {
 	                                                                modalStore.open_modal(
-	                                                                React.createElement(Accesses, {
-	                                                                    script: script,
-	                                                                    usersStore: usersStore,
-	                                                                    modalStore: modalStore,
-	                                                                    setAccesses: _this3.setAccesses.bind(_this3),
-	                                                                    delegateScript: _this3.delegateScript.bind(_this3) }),
+	                                                                React.createElement(Accesses, _extends({},
+	                                                                _this3.props, {
+	                                                                    script: script })),
 	
 	                                                                'Редактирование прав доступа к скрипту');
 	
@@ -35649,7 +35632,7 @@
 	}var
 	
 	
-	Accesses = (0, _mobxReact.observer)(_class4 = function (_React$Component4) {_inherits(Accesses, _React$Component4);
+	Accesses = exports.Accesses = (0, _mobxReact.observer)(_class4 = function (_React$Component4) {_inherits(Accesses, _React$Component4);
 	    function Accesses(props) {_classCallCheck(this, Accesses);var _this6 = _possibleConstructorReturn(this, (Accesses.__proto__ || Object.getPrototypeOf(Accesses)).call(this,
 	        props));
 	
@@ -35668,6 +35651,23 @@
 	            return accesses.map(function (access) {
 	                return { value: access.user.id, label: access.user.email, selected: true, edit: access.edit };
 	            });
+	        } }, { key: 'setAccesses', value: function setAccesses(
+	
+	        accesses, script) {var
+	            scriptsStore = this.props.scriptsStore;
+	            _jquery2.default.ajax({
+	                method: 'POST',
+	                url: document.body.getAttribute('data-accesses-url'),
+	                data: JSON.stringify({ accesses: accesses, script_id: script.id }),
+	                success: function success(res) {
+	                    if (script.data !== res.data) {
+	                        script.data = res.data;
+	                    }
+	                },
+	                error: function error(res) {
+	                    console.log(res);
+	                } });
+	
 	        } }, { key: 'onSelect', value: function onSelect(
 	
 	        selects, edit) {var _this7 = this;var
@@ -35682,7 +35682,7 @@
 	
 	            });
 	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { accesses: { $set: new_accesses } }), function () {
-	                _this7.props.setAccesses(new_accesses.map(function (access) {
+	                _this7.setAccesses(new_accesses.map(function (access) {
 	                    return { user_id: access.value, edit: access.edit };
 	                }), script);
 	            });
@@ -35764,9 +35764,13 @@
 	        {var
 	            usersStore = this.props.usersStore;
 	            usersStore.clearScriptDelegationAccesses();
+	        } }, { key: 'clearEmail', value: function clearEmail()
+	
+	        {
+	            this.setState((0, _reactAddonsUpdate2.default)(this.state, { delegate_email: { $set: null } }));
 	        } }, { key: 'delegateScript', value: function delegateScript()
 	
-	        {var _props12 =
+	        {var _this10 = this;var _props12 =
 	            this.props,script = _props12.script,scriptsStore = _props12.scriptsStore,modalStore = _props12.modalStore;var
 	            delegate_email = this.state.delegate_email;
 	
@@ -35778,11 +35782,14 @@
 	                    email: delegate_email }),
 	
 	                success: function success(res) {
-	                    window.location.replace('/');
-	                    // scriptsStore.scripts = res.scripts;
-	                    // modalStore.close_modal();
-	                    // alert('Скрипт "' + script.name + '" делегирован пользователю: ' + delegate_email);
-	                    // this.setState(update(this.state, {delegate_email: {$set: null}}));
+	                    if (!_this10.props.params || !_this10.props.params.script) {
+	                        scriptsStore.scripts = res.scripts;
+	                        modalStore.close_modal();
+	                        alert('Скрипт "' + script.name + '" делегирован пользователю: ' + delegate_email);
+	                        _this10.clearEmail();
+	                    } else {
+	                        window.location.replace('/');
+	                    }
 	                },
 	                error: function error(res) {
 	                    console.log(res);
@@ -35790,7 +35797,7 @@
 	
 	        } }, { key: 'render', value: function render()
 	
-	        {var _this10 = this;var
+	        {var _this11 = this;var
 	            usersStore = this.props.usersStore;var
 	            delegate_email = this.state.delegate_email;
 	
@@ -35806,13 +35813,13 @@
 	                                    React.createElement('label', null, 'Email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430'),
 	                                    React.createElement('input', { type: 'text', name: 'email', className: 'form-control',
 	                                        placeholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 email \u043D\u043E\u0432\u043E\u0433\u043E \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430', onChange: function onChange(e) {
-	                                            _this10.setState((0, _reactAddonsUpdate2.default)(_this10.state, { delegate_email: { $set: e.target.value } }));
+	                                            _this11.setState((0, _reactAddonsUpdate2.default)(_this11.state, { delegate_email: { $set: e.target.value } }));
 	                                        } })),
 	
 	                                React.createElement('button', {
 	                                        className: 'btn ' + (validateEmail(delegate_email) ? 'btn-success' : 'btn-default disabled'),
 	                                        onClick: function onClick(e) {
-	                                            validateEmail(delegate_email) ? _this10.delegateScript() : null;
+	                                            validateEmail(delegate_email) ? _this11.delegateScript() : null;
 	                                        } }, '\u041F\u0435\u0440\u0435\u043D\u0435\u0441\u0442\u0438')) :
 	
 	
@@ -35940,15 +35947,15 @@
 	
 	
 	MultiSelectField = function (_React$Component8) {_inherits(MultiSelectField, _React$Component8);
-	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this13 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
+	    function MultiSelectField(props) {_classCallCheck(this, MultiSelectField);var _this14 = _possibleConstructorReturn(this, (MultiSelectField.__proto__ || Object.getPrototypeOf(MultiSelectField)).call(this,
 	        props));
 	
-	        _this13.displayName = 'MultiSelect';
-	        _this13.state = {
+	        _this14.displayName = 'MultiSelect';
+	        _this14.state = {
 	            options: props.options,
 	            value: props.options.filter(function (i) {
 	                return i.selected;
-	            }) };return _this13;
+	            }) };return _this14;
 	
 	    }_createClass(MultiSelectField, [{ key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
 	
@@ -35961,7 +35968,7 @@
 	
 	        } }, { key: 'render', value: function render()
 	
-	        {var _this14 = this;
+	        {var _this15 = this;
 	            return (
 	                React.createElement(_reactSelect2.default, {
 	                    multi: true,
@@ -35969,8 +35976,8 @@
 	                    placeholder: '\u0414\u0430\u0442\u044C \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0441\u043A\u0440\u0438\u043F\u0442\u0443',
 	                    options: this.state.options,
 	                    onChange: function onChange(e) {
-	                        _this14.setState((0, _reactAddonsUpdate2.default)(_this14.state, { value: { $set: e } }), function () {
-	                            _this14.props.onChange(e);
+	                        _this15.setState((0, _reactAddonsUpdate2.default)(_this15.state, { value: { $set: e } }), function () {
+	                            _this15.props.onChange(e);
 	                        });
 	                    } }));
 	
@@ -78460,7 +78467,7 @@
 /* 864 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AvailableTablesWrapper = exports.TablesWrapper = undefined;var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3, _class4, _class5, _class6, _class7;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.AvailableTablesWrapper = exports.TablesWrapper = exports.Tables = undefined;var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3, _class4, _class5, _class6, _class7;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
 	var _jquery = __webpack_require__(546);var _jquery2 = _interopRequireDefault(_jquery);
 	var _mobxReact = __webpack_require__(549);
 	var _reactAddonsUpdate = __webpack_require__(547);var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
@@ -78472,7 +78479,7 @@
 	var _reactSelect = __webpack_require__(572);var _reactSelect2 = _interopRequireDefault(_reactSelect);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
 	
-	Tables = (0, _mobxReact.observer)(_class = function (_AccessableComponent) {_inherits(Tables, _AccessableComponent);
+	Tables = exports.Tables = (0, _mobxReact.observer)(_class = function (_AccessableComponent) {_inherits(Tables, _AccessableComponent);
 	    function Tables(props) {_classCallCheck(this, Tables);return _possibleConstructorReturn(this, (Tables.__proto__ || Object.getPrototypeOf(Tables)).call(this,
 	        props));
 	    }_createClass(Tables, [{ key: 'componentWillMount', value: function componentWillMount()
@@ -78523,7 +78530,7 @@
 	        } }, { key: 'render', value: function render()
 	
 	        {var _this2 = this;var _props3 =
-	            this.props,scriptsStore = _props3.scriptsStore,modalStore = _props3.modalStore,usersStore = _props3.usersStore;
+	            this.props,scriptsStore = _props3.scriptsStore,modalStore = _props3.modalStore,usersStore = _props3.usersStore,routerStore = _props3.routerStore;
 	            if (usersStore.session_user) {var _ret = function () {
 	                    var script = scriptsStore.script(_this2.props.params.script);
 	                    var access = _this2.access(usersStore, script);
@@ -78532,13 +78539,13 @@
 	                            React.createElement('div', { className: 'col-md-12' },
 	                                access.edit ?
 	                                React.createElement('div', { className: 'row list_controls' },
-	                                    React.createElement('div', { className: 'col-md-2' },
+	                                    React.createElement('div', { className: 'col-md-4' },
 	                                        React.createElement('button', { onClick: function onClick() {
 	                                                    scriptsStore.createTable(script);
 	                                                }, className: 'btn btn-success' }, '+ \u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0446\u0435\u043D\u0430\u0440\u0438\u0439')),
 	
 	
-	                                    React.createElement('div', { className: 'col-md-7' },
+	                                    React.createElement('div', { className: 'col-md-8' },
 	                                        React.createElement('h4', null, script.name))) :
 	
 	
@@ -78546,7 +78553,7 @@
 	                                React.createElement('div', { className: 'row' },
 	                                    script.data.map(function (table, key) {
 	                                        return (
-	                                            React.createElement('div', { key: key, className: 'col-md-12 hovered_list_item list_item edit_icon_handler' },
+	                                            React.createElement('div', { key: key, className: 'col-md-12 hovered_list_item list_item edit_icon_handler ' + (routerStore.params && routerStore.params.table === table.id ? 'active_list_item' : '') },
 	                                                React.createElement('div', { className: 'col-md-6' },
 	                                                    React.createElement('span', { className: 'inline_elements' },
 	                                                        React.createElement(_reactRouter.Link, { className: 'inline_element',
@@ -113932,16 +113939,17 @@
 	var _jquery = __webpack_require__(546);var _jquery2 = _interopRequireDefault(_jquery);
 	var _nav = __webpack_require__(1110);
 	var _modalStore = __webpack_require__(1124);var _modalStore2 = _interopRequireDefault(_modalStore);
-	var _scriptsStore = __webpack_require__(1125);var _scriptsStore2 = _interopRequireDefault(_scriptsStore);
-	var _usersStore = __webpack_require__(1126);var _usersStore2 = _interopRequireDefault(_usersStore);
-	var _paymentStore = __webpack_require__(1127);var _paymentStore2 = _interopRequireDefault(_paymentStore);
-	var _tooltipStore = __webpack_require__(1128);var _tooltipStore2 = _interopRequireDefault(_tooltipStore);
-	var _settingsStore = __webpack_require__(1129);var _settingsStore2 = _interopRequireDefault(_settingsStore);
+	var _scriptsStore = __webpack_require__(1126);var _scriptsStore2 = _interopRequireDefault(_scriptsStore);
+	var _usersStore = __webpack_require__(1127);var _usersStore2 = _interopRequireDefault(_usersStore);
+	var _paymentStore = __webpack_require__(1128);var _paymentStore2 = _interopRequireDefault(_paymentStore);
+	var _tooltipStore = __webpack_require__(1129);var _tooltipStore2 = _interopRequireDefault(_tooltipStore);
+	var _settingsStore = __webpack_require__(1130);var _settingsStore2 = _interopRequireDefault(_settingsStore);
+	var _routerStore = __webpack_require__(1137);var _routerStore2 = _interopRequireDefault(_routerStore);
 	
-	var _noMoney = __webpack_require__(1130);
+	var _noMoney = __webpack_require__(1131);
 	var _mobxReact = __webpack_require__(549);
 	var _scripts = __webpack_require__(545);
-	var _modal = __webpack_require__(1131);
+	var _modal = __webpack_require__(1125);
 	var _tables = __webpack_require__(864);
 	var _table = __webpack_require__(868);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
 	
@@ -113975,7 +113983,13 @@
 	                    console.log(res);
 	                } });
 	
+	        } }, { key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
+	
+	        props) {var
+	            routerStore = this.props.routerStore;
+	            routerStore.params = props.params;
 	        } }, { key: 'render', value: function render()
+	
 	        {var _props2 =
 	            this.props,usersStore = _props2.usersStore,scriptsStore = _props2.scriptsStore,settingsStore = _props2.settingsStore,modalStore = _props2.modalStore;
 	            var PAYMENT_REQUIRED_COMPONENTS = [_scripts.Scripts, _tables.Tables, _table.TableEdit, _table.TableShare];
@@ -113987,17 +114001,23 @@
 	                if (script && usersStore.session_user) {
 	                    switch (child.type) {
 	                        case _tables.Tables:
-	                            if (script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;})) {
+	                            if (script.accesses.find(function (access) {
+	                                return access.user.id === usersStore.session_user.id;
+	                            })) {
 	                                return true;
 	                            }
 	                            break;
 	                        case _table.TableEdit:
-	                            if (script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id && access.edit;})) {
+	                            if (script.accesses.find(function (access) {
+	                                return access.user.id === usersStore.session_user.id && access.edit;
+	                            })) {
 	                                return true;
 	                            }
 	                            break;
 	                        case _table.TableShare:
-	                            if (script.accesses.find(function (access) {return access.user.id === usersStore.session_user.id;})) {
+	                            if (script.accesses.find(function (access) {
+	                                return access.user.id === usersStore.session_user.id;
+	                            })) {
 	                                return true;
 	                            }
 	                            break;
@@ -114047,6 +114067,7 @@
 	            var paymentStore = _paymentStore2.default;
 	            var tooltipStore = _tooltipStore2.default;
 	            var settingsStore = _settingsStore2.default;
+	            var routerStore = _routerStore2.default;
 	
 	            var childrenWithProps = React.Children.map(this.props.children,
 	            function (child) {return React.cloneElement(child, {
@@ -114055,7 +114076,8 @@
 	                    usersStore: usersStore,
 	                    paymentStore: paymentStore,
 	                    tooltipStore: tooltipStore,
-	                    settingsStore: settingsStore });});
+	                    settingsStore: settingsStore,
+	                    routerStore: routerStore });});
 	
 	
 	            return (
@@ -114066,6 +114088,7 @@
 	                    paymentStore: paymentStore,
 	                    tooltipStore: tooltipStore,
 	                    settingsStore: settingsStore,
+	                    routerStore: routerStore,
 	                    children: childrenWithProps,
 	                    location: this.props.location,
 	                    params: this.props.params,
@@ -114085,16 +114108,21 @@
 	var _table = __webpack_require__(868);
 	var _reactTabs = __webpack_require__(1114);
 	var _scripts = __webpack_require__(545);
+	var _tables = __webpack_require__(864);
 	var _team = __webpack_require__(863);
 	var _modalStore = __webpack_require__(1124);
-	var _modal = __webpack_require__(1131);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
+	var _modal = __webpack_require__(1125);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
 	
 	var STATIC_URL = document.body.getAttribute('data-static-url');var
 	
 	
 	Nav = exports.Nav = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(Nav, _React$Component);
-	    function Nav(props) {_classCallCheck(this, Nav);return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this,
+	    function Nav(props) {_classCallCheck(this, Nav);var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this,
 	        props));
+	
+	        _this.state = {
+	            router_params: _this.props.params };return _this;
+	
 	    }_createClass(Nav, [{ key: 'triggerVideoInstructions', value: function triggerVideoInstructions()
 	
 	        {var
@@ -114105,6 +114133,10 @@
 	        {var
 	            usersStore = this.props.usersStore;
 	            usersStore.triggerUserButtonLinksSetting();
+	        } }, { key: 'componentWillReceiveProps', value: function componentWillReceiveProps(
+	
+	        props) {
+	            this.setState({ router_params: props.params });
 	        } }, { key: 'getVideoInstructions', value: function getVideoInstructions()
 	
 	        {var _props =
@@ -114117,9 +114149,12 @@
 	
 	        {var
 	            modalStore = this.props.modalStore;
+	            var subModalStore = new _modalStore.ModalStore();
+	            subModalStore.router_params = modalStore.router_params;
+	
 	            // modalStore.open_modal(React.createElement(NavTableCollsEditor, {...this.props}));
 	            modalStore.open_modal(
-	            React.createElement(NavModalSettings, _extends({}, this.props, { subModalStore: new _modalStore.ModalStore() })),
+	            React.createElement(NavModalSettings, _extends({}, this.props, { subModalStore: subModalStore })),
 	            'Настройка скрипта',
 	            null,
 	            null,
@@ -114348,7 +114383,7 @@
 	        } }, { key: 'render', value: function render()
 	
 	        {var _props3 =
-	            this.props,scriptsStore = _props3.scriptsStore,subModalStore = _props3.subModalStore,modalStore = _props3.modalStore;
+	            this.props,scriptsStore = _props3.scriptsStore,subModalStore = _props3.subModalStore,usersStore = _props3.usersStore;
 	
 	            return (
 	                React.createElement('div', { className: 'row' },
@@ -114376,6 +114411,13 @@
 	
 	                                React.createElement('div', { className: 'col-md-12' },
 	                                    React.createElement('h3', null, '\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043A\u043E\u043C\u0430\u043D\u0434\u043E\u0439'),
+	
+	                                    usersStore.team.length > 0 ?
+	                                    React.createElement(_scripts.Accesses, _extends({}, this.props, { script: this.script })) :
+	                                    null,
+	
+	                                    React.createElement('hr', null),
+	
 	                                    React.createElement(_team.Team, _extends({}, this.props, { modalStore: subModalStore })))),
 	
 	
@@ -114395,8 +114437,9 @@
 	
 	
 	                            React.createElement(_reactTabs.TabPanel, null,
-	                                React.createElement('div', { className: 'col-md-12' }, '\u0421\u0446\u0435\u043D\u0430\u0440\u0438\u0438')))),
-	
+	                                React.createElement('div', { className: 'col-md-12' },
+	                                    React.createElement('h3', null, '\u0421\u0446\u0435\u043D\u0430\u0440\u0438\u0438'),
+	                                    React.createElement(_tables.Tables, _extends({}, this.props, { script: this.script, modalStore: subModalStore })))))),
 	
 	
 	
@@ -115619,6 +115662,97 @@
 /* 1125 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ModalWrapper = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;
+	// import Modal from 'react-modal';
+	var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);var _reactBootstrap = __webpack_require__(590);
+	var _mobxReact = __webpack_require__(549);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
+	
+	function isFunction(functionToCheck) {
+	    var getType = {};
+	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	}var
+	
+	
+	ModalWrapper = exports.ModalWrapper = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(ModalWrapper, _React$Component);
+	    function ModalWrapper(props) {_classCallCheck(this, ModalWrapper);return _possibleConstructorReturn(this, (ModalWrapper.__proto__ || Object.getPrototypeOf(ModalWrapper)).call(this,
+	        props));
+	    }_createClass(ModalWrapper, [{ key: 'onRequestClose', value: function onRequestClose()
+	
+	        {var _props =
+	            this.props,stores = _props.stores,modalStore = _props.modalStore;
+	            modalStore.close_modal();
+	            stores.map(function (store) {
+	                if (store.editing) {
+	                    store.editing = null;
+	                }
+	            });
+	        } }, { key: 'onAfterOpen', value: function onAfterOpen()
+	
+	        {var
+	            stores = this.props.stores;
+	            stores.map(function (store) {
+	                if (store.editing) {
+	                    store.resetCreating();
+	                }
+	            });
+	        } }, { key: 'render', value: function render()
+	
+	        {var _props2 =
+	            this.props,modalStore = _props2.modalStore,container = _props2.container;
+	            return (
+	                React.createElement(_reactBootstrap.Modal, {
+	                        show: modalStore.modal,
+	                        container: container,
+	                        bsSize: modalStore.size,
+	                        onHide: this.onRequestClose.bind(this) },
+	                    modalStore.modal_title ?
+	                    React.createElement(_reactBootstrap.Modal.Header, { closeButton: true },
+	                        React.createElement(_reactBootstrap.Modal.Title, null, modalStore.modal_title)) :
+	
+	                    null,
+	
+	                    React.createElement(_reactBootstrap.Modal.Body, null,
+	                        modalStore.component),
+	
+	
+	                    React.createElement(_reactBootstrap.Modal.Footer, null,
+	                        modalStore.onSuccessButton ?
+	                        React.createElement('button', { className: 'btn btn-success',
+	                                onClick: modalStore.onSuccessButton.bind(this) }, modalStore.success_button_name) :
+	                        null,
+	                        React.createElement('button', { className: 'btn btn-info', onClick: this.onRequestClose.bind(this) }, '\u0417\u0430\u043A\u0440\u044B\u0442\u044C'))));
+	
+	
+	
+	        } }]);return ModalWrapper;}(React.Component)) || _class;
+	
+	{/*<Modal*/
+	}
+	{/*isOpen={modalStore.modal}*/
+	}
+	{/*style={modalStore.modal_styles}*/
+	}
+	
+	{/*dialogClassName={modalStore.fullscreen ? 'modal_fullscreen_main' : ''}*/
+	}
+	{/*bsClass={modalStore.fullscreen ? 'modal_fullscreen_bs' : ''}*/
+	}
+	
+	{/*contentLabel=""*/
+	}
+	{/*onRequestClose={this.onRequestClose.bind(this)}*/
+	}
+	{/*onAfterOpen={this.onAfterOpen.bind(this)}>*/
+	}
+	{/*{modalStore.component}*/
+	}
+	{/*</Modal>*/
+	}
+
+/***/ },
+/* 1126 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ScriptsStore = undefined;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;var _mobx = __webpack_require__(550);
 	var _jquery = __webpack_require__(546);var _jquery2 = _interopRequireDefault(_jquery);
 	var _confirm = __webpack_require__(586);var _confirm2 = _interopRequireDefault(_confirm);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;} else {return Array.from(arr);}}function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
@@ -116136,7 +116270,7 @@
 	new ScriptsStore();
 
 /***/ },
-/* 1126 */
+/* 1127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.UsersStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17;var _mobx = __webpack_require__(550);
@@ -116310,7 +116444,7 @@
 	new UsersStore();
 
 /***/ },
-/* 1127 */
+/* 1128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.PaymentStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;var _mobx = __webpack_require__(550);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}
@@ -116411,7 +116545,7 @@
 	new PaymentStore();
 
 /***/ },
-/* 1128 */
+/* 1129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.TooltipStore = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(550);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
@@ -116429,7 +116563,7 @@
 	new TooltipStore();
 
 /***/ },
-/* 1129 */
+/* 1130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.SettingsStore = undefined;var _desc, _value, _class, _descriptor, _descriptor2;var _mobx = __webpack_require__(550);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
@@ -116442,7 +116576,7 @@
 	new SettingsStore();
 
 /***/ },
-/* 1130 */
+/* 1131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.NoAccess = exports.NoScriptOwnerMoney = exports.NoMoney = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class, _class2, _class3;var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);
@@ -116503,95 +116637,21 @@
 	        } }]);return NoAccess;}(React.Component)) || _class3;
 
 /***/ },
-/* 1131 */
+/* 1132 */,
+/* 1133 */,
+/* 1134 */,
+/* 1135 */,
+/* 1136 */,
+/* 1137 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.ModalWrapper = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _class;
-	// import Modal from 'react-modal';
-	var _react = __webpack_require__(300);var React = _interopRequireWildcard(_react);var _reactBootstrap = __webpack_require__(590);
-	var _mobxReact = __webpack_require__(549);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}
+	'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.RouterStore = undefined;var _desc, _value, _class, _descriptor;var _mobx = __webpack_require__(550);function _initDefineProp(target, property, descriptor, context) {if (!descriptor) return;Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 });}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {var desc = {};Object['ke' + 'ys'](descriptor).forEach(function (key) {desc[key] = descriptor[key];});desc.enumerable = !!desc.enumerable;desc.configurable = !!desc.configurable;if ('value' in desc || desc.initializer) {desc.writable = true;}desc = decorators.slice().reverse().reduce(function (desc, decorator) {return decorator(target, property, desc) || desc;}, desc);if (context && desc.initializer !== void 0) {desc.value = desc.initializer ? desc.initializer.call(context) : void 0;desc.initializer = undefined;}if (desc.initializer === void 0) {Object['define' + 'Property'](target, property, desc);desc = null;}return desc;}function _initializerWarningHelper(descriptor, context) {throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');}var
 	
-	function isFunction(functionToCheck) {
-	    var getType = {};
-	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-	}var
+	RouterStore = exports.RouterStore = (_class = function RouterStore() {_classCallCheck(this, RouterStore);_initDefineProp(this, 'params', _descriptor, this);}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'params', [_mobx.observable], { enumerable: true, initializer: function initializer() {return (
+	            {});} })), _class);exports.default =
 	
 	
-	ModalWrapper = exports.ModalWrapper = (0, _mobxReact.observer)(_class = function (_React$Component) {_inherits(ModalWrapper, _React$Component);
-	    function ModalWrapper(props) {_classCallCheck(this, ModalWrapper);return _possibleConstructorReturn(this, (ModalWrapper.__proto__ || Object.getPrototypeOf(ModalWrapper)).call(this,
-	        props));
-	    }_createClass(ModalWrapper, [{ key: 'onRequestClose', value: function onRequestClose()
-	
-	        {var _props =
-	            this.props,stores = _props.stores,modalStore = _props.modalStore;
-	            modalStore.close_modal();
-	            stores.map(function (store) {
-	                if (store.editing) {
-	                    store.editing = null;
-	                }
-	            });
-	        } }, { key: 'onAfterOpen', value: function onAfterOpen()
-	
-	        {var
-	            stores = this.props.stores;
-	            stores.map(function (store) {
-	                if (store.editing) {
-	                    store.resetCreating();
-	                }
-	            });
-	        } }, { key: 'render', value: function render()
-	
-	        {var _props2 =
-	            this.props,modalStore = _props2.modalStore,container = _props2.container;
-	            return (
-	                React.createElement(_reactBootstrap.Modal, {
-	                        show: modalStore.modal,
-	                        container: container,
-	                        bsSize: modalStore.size,
-	                        onHide: this.onRequestClose.bind(this) },
-	                    modalStore.modal_title ?
-	                    React.createElement(_reactBootstrap.Modal.Header, { closeButton: true },
-	                        React.createElement(_reactBootstrap.Modal.Title, null, modalStore.modal_title)) :
-	
-	                    null,
-	
-	                    React.createElement(_reactBootstrap.Modal.Body, null,
-	                        modalStore.component),
-	
-	
-	                    React.createElement(_reactBootstrap.Modal.Footer, null,
-	                        modalStore.onSuccessButton ?
-	                        React.createElement('button', { className: 'btn btn-success',
-	                                onClick: modalStore.onSuccessButton.bind(this) }, modalStore.success_button_name) :
-	                        null,
-	                        React.createElement('button', { className: 'btn btn-info', onClick: this.onRequestClose.bind(this) }, '\u0417\u0430\u043A\u0440\u044B\u0442\u044C'))));
-	
-	
-	
-	        } }]);return ModalWrapper;}(React.Component)) || _class;
-	
-	{/*<Modal*/
-	}
-	{/*isOpen={modalStore.modal}*/
-	}
-	{/*style={modalStore.modal_styles}*/
-	}
-	
-	{/*dialogClassName={modalStore.fullscreen ? 'modal_fullscreen_main' : ''}*/
-	}
-	{/*bsClass={modalStore.fullscreen ? 'modal_fullscreen_bs' : ''}*/
-	}
-	
-	{/*contentLabel=""*/
-	}
-	{/*onRequestClose={this.onRequestClose.bind(this)}*/
-	}
-	{/*onAfterOpen={this.onAfterOpen.bind(this)}>*/
-	}
-	{/*{modalStore.component}*/
-	}
-	{/*</Modal>*/
-	}
+	new RouterStore();
 
 /***/ }
 /******/ ]);

@@ -148,32 +148,10 @@ export class Scripts extends React.Component {
             React.createElement(DelegationScript, {
                 script: script,
                 usersStore: usersStore,
-                modalStore: modalStore,
-                delegateScript: this.delegateScript.bind(this)
+                modalStore: modalStore
             }),
             'Перенос скрипта'
         )
-    }
-
-    delegateScript(script, email) {
-        const {scriptsStore, modalStore} = this.props;
-
-        $.ajax({
-            method: 'POST',
-            url: document.body.getAttribute('data-scripts-delegation-url'),
-            data: JSON.stringify({
-                script_id: script.id,
-                email: email
-            }),
-            success: (res) => {
-                scriptsStore.scripts = res.scripts;
-                modalStore.close_modal();
-                alert('Скрипт "' + script.name + '" делегирован пользователю: ' + email);
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
     }
 
     openScriptExportCreatingModalForm(script) {
@@ -183,33 +161,10 @@ export class Scripts extends React.Component {
             React.createElement(CreateOfflineScriptExport, {
                 script: script,
                 usersStore: usersStore,
-                modalStore: modalStore,
+                modalStore: modalStore
             }),
             'Выгрузка скрипта',
-            this.createScriptExport.bind(this, script),
-            'Скачать'
         )
-    }
-
-    createScriptExport(script) {
-        const {modalStore} = this.props;
-
-        $.ajax({
-            method: 'POST',
-            url: document.body.getAttribute('data-scripts-exporting-url'),
-            data: JSON.stringify({
-                script_id: script.id,
-            }),
-            success: (res) => {
-                modalStore.close_modal();
-                window.location.href = `/offline/${res.script_access.id}/`;
-                // this.props.router.push('/scripts/offline/user/');
-                // alert(`Скрипт ${script.name} экспортирован`);
-            },
-            error: (res) => {
-                console.log(res);
-            }
-        });
     }
 
     cloneScript(script) {
@@ -647,7 +602,7 @@ class Accesses extends React.Component {
 }
 
 @observer
-class DelegationScript extends React.Component {
+export class DelegationScript extends React.Component {
     constructor(props) {
         super(props);
 
@@ -667,9 +622,27 @@ class DelegationScript extends React.Component {
     }
 
     delegateScript() {
+        const {script, scriptsStore, modalStore} = this.props;
         const {delegate_email} = this.state;
-        this.props.delegateScript(this.props.script, delegate_email);
-        return this.setState(update(this.state, {delegate_email: {$set: null}}));
+
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-scripts-delegation-url'),
+            data: JSON.stringify({
+                script_id: script.id,
+                email: delegate_email
+            }),
+            success: (res) => {
+                window.location.replace('/');
+                // scriptsStore.scripts = res.scripts;
+                // modalStore.close_modal();
+                // alert('Скрипт "' + script.name + '" делегирован пользователю: ' + delegate_email);
+                // this.setState(update(this.state, {delegate_email: {$set: null}}));
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
     }
 
     render() {
@@ -746,7 +719,7 @@ export class OfflineScriptExport extends React.Component {
 }
 
 @observer
-class CreateOfflineScriptExport extends React.Component {
+export class CreateOfflineScriptExport extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -766,13 +739,44 @@ class CreateOfflineScriptExport extends React.Component {
         modalStore.close_modal();
     }
 
+    createScriptExport() {
+        const {script, modalStore} = this.props;
+
+        $.ajax({
+            method: 'POST',
+            url: document.body.getAttribute('data-scripts-exporting-url'),
+            data: JSON.stringify({
+                script_id: script.id,
+            }),
+            success: (res) => {
+                modalStore.close_modal();
+                window.location.href = `/offline/${res.script_access.id}/`;
+            },
+            error: (res) => {
+                console.log(res);
+            }
+        });
+    }
+
     getExportingContentBlock() {
-        const {usersStore, script} = this.props;
+        const {script} = this.props;
 
         return (
             <div className="row">
                 <div className="col-md-12">
                     <h4>Вы уверены, что хотите скачать скрипт "{script.name}"?</h4>
+                </div>
+
+                <div className="col-md-12 script_export_confirm_block">
+                    <div className="col-md-6">
+                        <button className="custom_button btn btn-success"
+                                onClick={this.createScriptExport.bind(this)}>Да
+                        </button>
+                    </div>
+                    <div className="col-md-6">
+                        <button className="custom_button btn btn-danger" onClick={this.cancelExporting.bind(this)}>Нет
+                        </button>
+                    </div>
                 </div>
             </div>
         )

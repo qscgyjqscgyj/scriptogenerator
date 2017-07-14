@@ -34,9 +34,13 @@ export class ModalWrapper extends React.Component {
     }
 
     render() {
-        const {modalStore} = this.props;
+        const {modalStore, container} = this.props;
         return (
-            <Modal show={modalStore.modal} onHide={this.onRequestClose.bind(this)}>
+            <Modal
+                show={modalStore.modal}
+                container={container}
+                bsSize={modalStore.size}
+                onHide={this.onRequestClose.bind(this)}>
                 {modalStore.modal_title ?
                     <Modal.Header closeButton>
                         <Modal.Title>{modalStore.modal_title}</Modal.Title>

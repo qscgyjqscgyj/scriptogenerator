@@ -5,8 +5,10 @@ import {observer} from 'mobx-react';
 import {Switcher} from './switcher';
 import {NavTableCollsEditor} from './table';
 import {Tab, Tabs, TabPanel, TabList} from 'react-tabs';
-import {EditingScript} from './scripts';
+import {EditingScript, CreateOfflineScriptExport, DelegationScript} from './scripts';
 import {Team} from './profile/team';
+import {ModalStore} from '../mobx/modalStore';
+import {ModalWrapper} from './modal';
 
 const STATIC_URL = document.body.getAttribute('data-static-url');
 
@@ -38,8 +40,11 @@ export class Nav extends React.Component {
         const {modalStore} = this.props;
         // modalStore.open_modal(React.createElement(NavTableCollsEditor, {...this.props}));
         modalStore.open_modal(
-            React.createElement(NavModalSettings, {...this.props}),
-            'Настройка скрипта'
+            React.createElement(NavModalSettings, {...this.props, subModalStore: new ModalStore}),
+            'Настройка скрипта',
+            null,
+            null,
+            'large'
         );
     }
 
@@ -264,7 +269,8 @@ class NavModalSettings extends React.Component {
     }
 
     render() {
-        const {scriptsStore} = this.props;
+        const {scriptsStore, subModalStore, modalStore} = this.props;
+
         return (
             <div className="row">
                 <div className="col-md-12">
@@ -291,19 +297,21 @@ class NavModalSettings extends React.Component {
                             </div>
                             <div className="col-md-12">
                                 <h3>Управление командой</h3>
-                                {React.createElement(Team, {...this.props})}
+                                {React.createElement(Team, {...this.props, modalStore: subModalStore})}
                             </div>
                         </TabPanel>
 
                         <TabPanel>
                             <div className="col-md-12">
-                                Выгрузка скрипта
+                                <h3>Выгрузка скрипта</h3>
+                                {React.createElement(CreateOfflineScriptExport, {...this.props, script: this.script})}
                             </div>
                         </TabPanel>
 
                         <TabPanel>
                             <div className="col-md-12">
-                                Перенос скрипта
+                                <h3>Перенос скрипта</h3>
+                                {React.createElement(DelegationScript, {...this.props, script: this.script})}
                             </div>
                         </TabPanel>
 
@@ -314,6 +322,7 @@ class NavModalSettings extends React.Component {
                         </TabPanel>
                     </Tabs>
                 </div>
+                <ModalWrapper stores={[scriptsStore]} modalStore={subModalStore} container={this}/>
             </div>
         )
     }

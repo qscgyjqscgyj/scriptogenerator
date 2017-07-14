@@ -54,8 +54,6 @@ export class OfflineScripts extends React.Component {
                 script_access: script_access
             }),
             'Обновление скачанного скрипта',
-            this.updateScriptExport.bind(this, script_access),
-            'Обновить'
         )
     }
 
@@ -131,17 +129,17 @@ class UpdateOfflineScriptExport extends React.Component {
                 <div className="col-md-12">
                     <h4>Вы уверены, что хотите обновить скрипт "{script_access.script.name}"?</h4>
                 </div>
-                {/*<div className="col-md-12 script_export_confirm_block">*/}
-                    {/*<div className="col-md-6">*/}
-                        {/*<button className="custom_button btn btn-success"*/}
-                                {/*onClick={this.props.updateScriptExport.bind(this, script_access)}>Да*/}
-                        {/*</button>*/}
-                    {/*</div>*/}
-                    {/*<div className="col-md-6">*/}
-                        {/*<button className="custom_button btn btn-danger" onClick={this.cancelUpdating.bind(this)}>Нет*/}
-                        {/*</button>*/}
-                    {/*</div>*/}
-                {/*</div>*/}
+                <div className="col-md-12 script_export_confirm_block">
+                    <div className="col-md-6">
+                        <button className="custom_button btn btn-success"
+                                onClick={this.props.updateScriptExport.bind(this, script_access)}>Да
+                        </button>
+                    </div>
+                    <div className="col-md-6">
+                        <button className="custom_button btn btn-danger" onClick={this.cancelUpdating.bind(this)}>Нет
+                        </button>
+                    </div>
+                </div>
             </div>
         )
     }
